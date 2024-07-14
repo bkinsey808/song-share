@@ -1,0 +1,19 @@
+{
+	"editor.tabSize": 2,
+	"editor.inlayHints.enabled": "on",
+	"prettier.useTabs": true,
+	"javascript.referencesCodeLens.enabled": true,
+	"typescript.referencesCodeLens.enabled": true,
+	// "typescript.inlayHints.variableTypes.enabled": true,
+	"typescript.tsserver.experimental.enableProjectDiagnostics": true,
+	"jest.debugMode": true,
+	"editor.detectIndentation": false,
+	"workbench.editor.customLabels.enabled": true,
+	"workbench.editor.customLabels.patterns": {
+		"**/app/**/page.tsx": "${dirname(1)}/${dirname} <page>",
+		"**/app/**/layout.tsx": "${dirname(1)}/${dirname} <layout>",
+		"**/app/api/**/route.ts": "${dirname(1)}/${dirname} <route>",
+		"**/src/**/*.tsx": "${dirname}/${filename}",
+		"**/src/**/*.ts": "${dirname}/${filename}"
+	}
+}
