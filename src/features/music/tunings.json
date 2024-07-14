@@ -1,0 +1,39 @@
+{
+  "Ukulele": {
+    "Soprano, Standard, Concert, Re-entrant": ["G4", "C4", "E4", "A4"],
+    "G": ["D4", "G4", "B4", "E4"],
+    "Open G, Taro Patch": ["G4", "C4", "E4", "G4"],
+    "C Wahine": ["G4", "B4", "E4", "G4"],
+    "D": ["A4", "D4", "Gb4", "B4"],
+    "Baritone, Standard, Common": ["D3", "G3", "B3", "E4"],
+    "Bass": ["E2", "A2", "D3", "G3"],
+    "Contrabass, Ubass": ["E1", "A1", "D2", "G2"],
+    "High D": ["D4", "G3", "B3", "E4"],
+    "Sopranino, D6": ["A4", "D4", "Gb4", "B4"],
+    "Tenor": ["G4", "C4", "E4", "A4"],
+    "G6": ["D4", "G4", "B4", "E4"],
+    "C6": ["A4", "D4", "F4", "B4"],
+    "A6": ["E4", "A4", "C#4", "Gb4"],
+    "D6": ["B4", "E4", "Gb4", "B4"],
+    "Low G": ["G3", "C4", "B4", "E5"],
+    "Pocket": ["D5", "G4", "B4", "E5"],
+    "Slide": ["G4", "C4", "E4", "Bb4"]
+  },
+  "Guitar": {
+    "Standard": ["E2", "A2", "D3", "G3", "B3", "E4"],
+    "Drop D": ["D2", "A2", "D3", "G3", "B3", "E4"],
+    "Double Drop D": ["D2", "A2", "D3", "G3", "B3", "D4"],
+    "DADGAD": ["D2", "A2", "D3", "G3", "A3", "D4"],
+    "Open D": ["D2", "A2", "D3", "Gb3", "A3", "D4"],
+    "Open G": ["D2", "G2", "D3", "G3", "B3", "D4"],
+    "Lute": ["E2", "A2", "D3", "Gb3", "B3", "E4"],
+    "Nashville": ["E2", "A2", "D3", "G3", "B3", "E4"],
+    "Irish": ["E2", "A2", "D3", "G3", "A3", "D4"]
+
+  },
+  "Charango": {
+    "Standard": ["G4", "C4", "E4", "A4", "E5"],
+    "Argentine": ["C4", "F4", "A4", "D4", "A4"],
+    "Gm7/Bb": ["F4", "Bb5", "C4", "G4", "D5"]
+  }
+}

@@ -1,0 +1,101 @@
+{
+	"3": {
+		"major-triad": {
+			"name": "Major Triad",
+			"code": "M",
+			"spelling": "3-5"
+		},
+		"minor-triad": {
+			"name": "Minor Triad",
+			"code": "m",
+			"spelling": "b3-5"
+		},
+		"diminished-triad": {
+			"name": "Diminished Triad",
+			"code": "o",
+			"spelling": "b3-b5"
+		},
+		"augmented-triad": {
+			"name": "Augmented Triad",
+			"code": "+",
+			"spelling": "3-b6"
+		},
+		"suspended-triad": {
+			"name": "Suspended 4th",
+			"code": "sus4",
+			"spelling": "4-5"
+		}
+	},
+	"4": {
+		"two-tetrad": {
+			"name": "Two",
+			"code": "2",
+			"spelling": "2-3-5"
+		},
+		"minor-two-tetrad": {
+			"name": "Minor Two",
+			"code": "m2",
+			"spelling": "2-b3-5"
+		},
+		"four-tetrad": {
+			"name": "Four",
+			"code": "4",
+			"spelling": "3-4-5"
+		},
+		"minor-four-tetrad": {
+			"name": "Minor Four",
+			"code": "m4",
+			"spelling": "b3-4-5"
+		},
+		"major-seven-tetrad": {
+			"name": "Major Seven",
+			"code": "M7",
+			"spelling": "3-5-7"
+		},
+		"minor-seven-tetrad": {
+			"name": "Minor Seven",
+			"code": "m7",
+			"spelling": "b3-5-b7"
+		},
+		"dominant-seven-tetrad": {
+			"name": "Dominant Seven",
+			"code": "7",
+			"spelling": "3-5-b7"
+		},
+		"seven-flat-five-tetrad": {
+			"name": "Seven Flat Five",
+			"code": "7b5",
+			"spelling": "3-b5-b7"
+		},
+		"diminished-seven-tetrad": {
+			"name": "Diminished Seven",
+			"code": "o7",
+			"spelling": "b3-b5-6"
+		},
+		"augmented-seven-tetrad": {
+			"name": "Augmented Seven",
+			"code": "+7",
+			"spelling": "3-b6-b7"
+		},
+		"major-six-tetrad": {
+			"name": "Major Six",
+			"code": "M6",
+			"spelling": "3-5-6"
+		},
+		"minor-six-tetrad": {
+			"name": "Minor Six",
+			"code": "m6",
+			"spelling": "b3-5-6"
+		},
+		"seven-suspended-four-tetrad": {
+			"name": "Seven Suspended Four",
+			"code": "7sus4",
+			"spelling": "4-5-b7"
+		},
+		"minor-major-seven-tetrad": {
+			"name": "Minor Major Seven",
+			"code": "mM7",
+			"spelling": "b3-5-7"
+		}
+	}
+}
