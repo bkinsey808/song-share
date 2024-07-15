@@ -26,6 +26,7 @@ module.exports = {
 		],
 		"object-shorthand": "error",
 		"destructuring/in-params": "off",
+		"no-case-declarations": "off",
 	},
 	overrides: [
 		{
