@@ -16,9 +16,8 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 	deletingAccount: false,
 	deleteAccountError: null,
 	registerError: null,
-	signIn: (user) => {
-		set({ sessionCookieData: user });
-		toast({ title: "You have been signed in" });
+	signIn: (sessionCookieData) => {
+		set({ sessionCookieData, isSignedIn: true });
 	},
 	signOut: () => set({ sessionCookieData: null, isSignedIn: false }),
 	signInClick: signInClick(set),

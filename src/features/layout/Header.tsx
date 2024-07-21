@@ -7,12 +7,8 @@ import { useAuthStore } from "../auth/useAuthStore";
 import { Button } from "@/components/ui/button";
 
 export const Header = () => {
-	const {
-		sessionCookieData: signInFields,
-		isSignedIn,
-		signInClick,
-		manageAccountClick,
-	} = useAuthStore();
+	const { sessionCookieData, isSignedIn, signInClick, manageAccountClick } =
+		useAuthStore();
 
 	return (
 		<>
@@ -24,7 +20,7 @@ export const Header = () => {
 				<h1 className="text-4xl font-bold">Song Share</h1>
 				{isSignedIn ? (
 					<Button variant="ghost" onClick={manageAccountClick}>
-						{signInFields?.username}
+						{sessionCookieData?.username}
 					</Button>
 				) : (
 					<Button variant="ghost" onClick={signInClick}>
