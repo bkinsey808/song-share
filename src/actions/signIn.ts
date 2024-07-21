@@ -8,7 +8,7 @@ import { cookies } from "next/headers";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
 import { SignInResultType } from "@/features/auth/enums";
-import { getSessionCookieOptions } from "@/features/auth/getSessionCookieOptions";
+import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
@@ -39,6 +39,7 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 		S.decodeUnknownEither(UserDocSchema)(existingUserDocData);
 
 	if (Either.isLeft(existingUserDocResult)) {
+		console.error("UserDoc data is invalid", existingUserDocResult.left);
 		return {
 			signInResultType: SignInResultType.ERROR,
 			message: "UserDoc data is invalid",
@@ -48,11 +49,12 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 	const sessionCookieData: SessionCookieData = {
 		email,
 		...existingUserDocResult.right,
+		picture: existingUserDocResult.right.picture ?? null,
 	};
 
 	const sessionToken = await encodeSessionToken(sessionCookieData);
 
-	cookies().set(SESSION_COOKIE_NAME, sessionToken, getSessionCookieOptions());
+	cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
 	return {
 		signInResultType: SignInResultType.EXISTING,

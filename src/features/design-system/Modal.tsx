@@ -122,9 +122,12 @@ export const ModalContent = ({ children }: { children: ReactNode }) => {
 	);
 };
 
-export const ModalFooter = ({ children }: { children: ReactNode }) => {
+export const ModalFooter = ({ children }: { children?: ReactNode }) => {
 	return (
-		<footer className="flex flex-shrink-0 gap-[1rem] p-[1rem]">
+		<footer
+			id="modal-footer"
+			className="flex flex-shrink-0 gap-[1rem] p-[1rem]"
+		>
 			{children}
 		</footer>
 	);

@@ -14,7 +14,7 @@ import {
 
 export const ManageAccountModal = () => {
 	const { appModal, setAppModal } = useAppStore();
-	const { signOutClick } = useAuthStore();
+	const { signOutClick, deleteAccountClick } = useAuthStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
@@ -32,12 +32,7 @@ export const ManageAccountModal = () => {
 			<ModalContent>
 				<Button onClick={signOutClick}>Sign Out</Button>
 
-				<Button
-					variant="destructive"
-					onClick={() => {
-						// setOpenAuthModal(AuthModal.DELETE_ACCOUNT_CONFIRM);
-					}}
-				>
+				<Button variant="destructive" onClick={deleteAccountClick}>
 					Delete Account
 				</Button>
 			</ModalContent>

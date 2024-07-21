@@ -24,6 +24,15 @@ module.exports = {
 				caughtErrorsIgnorePattern: "^_",
 			},
 		],
+		"@typescript-eslint/consistent-type-definitions": ["error", "type"],
+		"@typescript-eslint/no-misused-promises": [
+			"error",
+			{
+				checksVoidReturn: {
+					attributes: false,
+				},
+			},
+		],
 		"object-shorthand": "error",
 		"destructuring/in-params": "off",
 		"no-case-declarations": "off",
