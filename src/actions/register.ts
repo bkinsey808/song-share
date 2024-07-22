@@ -10,6 +10,7 @@ import {
 	RegisterFormFieldKey,
 	RegisterResultType,
 } from "@/features/auth/enums";
+import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
 import { RegistrationSchema } from "@/features/auth/schemas";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
@@ -74,6 +75,7 @@ export const register = async ({
 		const sessionCookieData: SessionCookieData = {
 			email,
 			...userDoc,
+			sessionWarningTimestamp: getSessionWarningTimestamp(),
 		};
 
 		await setDoc(doc(db, "users", email), userDoc);

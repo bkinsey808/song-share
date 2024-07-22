@@ -12,7 +12,6 @@ export const registerSubmit =
 	(form: UseFormReturn<RegistrationData>) =>
 	(e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log("register submit");
 		return form.handleSubmit(async (registrationData) => {
 			{
 				const sessionCookieData = get().sessionCookieData;
@@ -38,7 +37,6 @@ export const registerSubmit =
 
 				switch (result.registerResultType) {
 					case RegisterResultType.ERROR:
-						console.log(result.fieldErrors);
 						const keys = result.fieldErrors
 							? getKeys(result.fieldErrors)
 							: undefined;

@@ -2,9 +2,10 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 import { AppModal } from "../app-store/enums";
 import { getKeys } from "../global/getKeys";
-import { Writeable } from "../global/types";
-import { SongLibrary } from "../music/types";
+import type { Writeable } from "../global/types";
+import type { SongLibrary } from "../music/types";
 import { Role, SignInResultType } from "./enums";
+import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
 import type { Set } from "./types";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
@@ -14,6 +15,9 @@ export const signInClick = (set: Set) => () => {
 	void (async () => {
 		try {
 			const auth = getAuth();
+			set({
+				isSigningIn: true,
+			});
 			const provider = new GoogleAuthProvider();
 
 			const userCredential = await signInWithPopup(auth, provider);
@@ -27,11 +31,13 @@ export const signInClick = (set: Set) => () => {
 				case SignInResultType.NEW:
 					set({
 						isSignedIn: false,
+						isSigningIn: false,
 						sessionCookieData: {
 							email,
 							picture: userCredential.user.photoURL ?? null,
 							username: null,
 							roles: [],
+							sessionWarningTimestamp: getSessionWarningTimestamp(),
 						},
 					});
 					useAppStore.setState({
@@ -40,16 +46,6 @@ export const signInClick = (set: Set) => () => {
 
 					break;
 				case SignInResultType.EXISTING:
-					set({
-						isSignedIn: true,
-						sessionCookieData: {
-							email: signInResult.userData.email,
-							picture: signInResult.userData.picture ?? null,
-							username: signInResult.userData.username,
-							roles: signInResult.userData.roles as Role[],
-						},
-					});
-
 					const songs = signInResult.songs;
 					const songIds = getKeys(songs);
 
@@ -65,10 +61,22 @@ export const signInClick = (set: Set) => () => {
 						return acc;
 					}, {} as Writeable<SongLibrary>);
 
-					useAppStore.setState({ songLibrary: newSongLibrary });
-					toast({ title: "Welcome back!" });
+					useAppStore.setState({ songLibrary: newSongLibrary, appModal: null });
 
-				// setLastSignInCheck(0);
+					set({
+						isSignedIn: true,
+						isSigningIn: false,
+						lastSignInCheck: 0,
+						sessionCookieData: {
+							email: signInResult.userData.email,
+							picture: signInResult.userData.picture ?? null,
+							username: signInResult.userData.username,
+							roles: signInResult.userData.roles as Role[],
+							sessionWarningTimestamp: getSessionWarningTimestamp(),
+						},
+					});
+
+					toast({ title: "Welcome back!" });
 			}
 		} catch (error) {
 			console.error(error);

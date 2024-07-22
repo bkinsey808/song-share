@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
 import { SignInResultType } from "@/features/auth/enums";
+import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
@@ -50,6 +51,7 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 		email,
 		...existingUserDocResult.right,
 		picture: existingUserDocResult.right.picture ?? null,
+		sessionWarningTimestamp: getSessionWarningTimestamp(),
 	};
 
 	const sessionToken = await encodeSessionToken(sessionCookieData);

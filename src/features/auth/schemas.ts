@@ -21,6 +21,7 @@ const shared = {
 export const SessionCookieDataSchema = S.Struct({
 	email: S.String,
 	...shared,
+	sessionWarningTimestamp: S.Number,
 });
 
 export const UserDataSchema = S.Struct({
