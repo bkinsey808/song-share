@@ -1,12 +1,10 @@
 "use client";
 
-import { DashboardStateKey } from "@/app/d/enums";
-import { useDashboardState } from "@/app/d/useDashboardState";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibraryTitle = () => {
-	const { getValue } = useDashboardState();
-	const songLibrary = getValue(DashboardStateKey.SONG_LIBRARY);
+	const { songLibrary } = useAppStore();
 	const numberOfSongs = getKeys(songLibrary).length;
 
 	return (

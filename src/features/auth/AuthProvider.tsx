@@ -15,29 +15,27 @@ import { useAuthStore } from "./useAuthStore";
 import { getSessionCookieData } from "@/actions/getSessionCookieData";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const {
-		signIn,
-		isSignedIn,
-		lastSignInCheck,
-		setLastSignInCheck,
-		signOut,
-		sessionCookieData,
-	} = useAuthStore();
+	const { signIn, isSignedIn, lastSignInCheck, setLastSignInCheck, signOut } =
+		useAuthStore();
 	const { setAppModal } = useAppStore();
 	const handleRefresh = useCallback(async () => {
 		const refreshSessionCookieData = await getSessionCookieData();
 
 		if (refreshSessionCookieData) {
+			setAppModal(null);
 			signIn(refreshSessionCookieData);
+		} else {
+			signOut();
+			setAppModal(null);
 		}
-	}, [signIn]);
+	}, [setAppModal, signIn, signOut]);
 
 	// handle refresh
 	useEffect(() => {
 		void handleRefresh();
 	}, [handleRefresh]);
 
-	const intervalFn = useCallback(() => {
+	const intervalFn = useCallback(async () => {
 		// we only need to poll if we haven't recently checked
 		if (
 			Date.now() - lastSignInCheck <
@@ -46,13 +44,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 
-		if (!sessionCookieData) {
+		const freshSessionCookieData = await getSessionCookieData();
+		if (!freshSessionCookieData) {
 			signOut();
 			setAppModal(AppModal.SESSION_EXPIRED);
 			return;
 		}
 
-		const { sessionWarningTimestamp } = sessionCookieData;
+		const { sessionWarningTimestamp } = freshSessionCookieData;
+
+		console.log({
+			diff: sessionWarningTimestamp - Date.now(),
+			freshSessionCookieData,
+		});
 
 		if (sessionWarningTimestamp < Date.now()) {
 			setAppModal(AppModal.SESSION_EXPIRE_WARNING);
@@ -60,13 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 
 		setLastSignInCheck(Date.now());
-	}, [
-		lastSignInCheck,
-		setLastSignInCheck,
-		signOut,
-		setAppModal,
-		sessionCookieData,
-	]);
+	}, [lastSignInCheck, setLastSignInCheck, signOut, setAppModal]);
 
 	useInterval(
 		() => {

@@ -48,17 +48,17 @@ export const signInClick = (set: Set) => () => {
 					const userDocSongs = signInResult.songs;
 					const userDocSongIds = getKeys(userDocSongs);
 
-					const songLibrary = useAppStore.getState().songLibrary;
-
+					// Add to the existing song library
+					const existingSongLibrary = useAppStore.getState().songLibrary;
 					const newSongLibrary = userDocSongIds.reduce((acc, songId) => {
-						const existingSong = songLibrary[songId];
+						const existingSong = existingSongLibrary[songId];
 						const slimSong = userDocSongs[songId];
 						acc[songId] = {
 							...existingSong,
 							...slimSong,
 						};
 						return acc;
-					}, {} as SongLibrary);
+					}, existingSongLibrary);
 
 					useAppStore.setState({ songLibrary: newSongLibrary, appModal: null });
 

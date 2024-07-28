@@ -1,4 +1,4 @@
-import { create, useStore } from "zustand";
+import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { songDetailsSubmit } from "../sections/song/songDetailsSubmit";
@@ -35,5 +35,6 @@ export const useAppStore = create<AppStore>()(
 	),
 );
 
+// makes it reactive
 export const useOpenSection = (sectionId: SectionId) =>
 	useAppStore((state) => state.openSections.includes(sectionId));

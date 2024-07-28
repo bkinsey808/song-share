@@ -16,7 +16,17 @@ export const songDetailsSubmit =
 		e.preventDefault();
 		return form.handleSubmit(async (songDetails) => {
 			console.log("in here");
-			const username = useAuthStore.getState().sessionCookieData?.username;
+			const sessionCookieData = useAuthStore.getState().sessionCookieData;
+
+			if (!sessionCookieData) {
+				toast({
+					variant: "destructive",
+					title: "Please sign in again",
+				});
+				return;
+			}
+
+			const username = sessionCookieData.username;
 			if (!username) {
 				form.setError("root", {
 					message: "Username is null",
@@ -28,10 +38,6 @@ export const songDetailsSubmit =
 			const result = await songDetailsSave({
 				songDetails,
 				songId: originalSongId,
-			});
-
-			form.reset(undefined, {
-				keepValues: true,
 			});
 
 			switch (result.actionResultType) {
@@ -70,6 +76,8 @@ export const songDetailsSubmit =
 						songName: songDetails.songName,
 						translation: songDetails.translation,
 					});
+					console.log("reset");
+					form.reset(songDetails, { keepValues: true });
 					toast({ title: "Song details saved" });
 					break;
 			}

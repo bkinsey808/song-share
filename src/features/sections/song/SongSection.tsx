@@ -42,16 +42,17 @@ export const SongSection = () => {
 		[],
 	);
 
-	console.log({ defaultValues });
-
 	const form = useForm<SongDetails>({
 		resolver: valibotResolver(SongSchema),
 		defaultValues,
 	});
 
 	return (
-		<>
+		<div suppressHydrationWarning={true}>
 			<Form {...form}>
+				<div suppressHydrationWarning={true}>
+					isDirty: {form.formState.isDirty.toString()}
+				</div>
 				<form onSubmit={songDetailsSubmit(form)}>
 					<FormField
 						control={form.control}
@@ -138,6 +139,6 @@ export const SongSection = () => {
 					<ScaleSection />
 				</DashboardAccordion>
 			</div> */}
-		</>
+		</div>
 	);
 };
