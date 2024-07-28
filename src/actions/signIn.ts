@@ -1,9 +1,8 @@
 "use server";
 
-import { Schema as S } from "@effect/schema";
-import { Either } from "effect";
 import { doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
+import { safeParse } from "valibot";
 
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
@@ -36,11 +35,10 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 
 	const existingUserDocData = existingUserDoc.data();
 
-	const existingUserDocResult =
-		S.decodeUnknownEither(UserDocSchema)(existingUserDocData);
+	const existingUserDocResult = safeParse(UserDocSchema, existingUserDocData);
 
-	if (Either.isLeft(existingUserDocResult)) {
-		console.error("UserDoc data is invalid", existingUserDocResult.left);
+	if (!existingUserDocResult.success) {
+		console.error("UserDoc data is invalid", existingUserDocResult.issues);
 		return {
 			signInResultType: SignInResultType.ERROR,
 			message: "UserDoc data is invalid",
@@ -49,8 +47,8 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 
 	const sessionCookieData: SessionCookieData = {
 		email,
-		...existingUserDocResult.right,
-		picture: existingUserDocResult.right.picture ?? null,
+		...existingUserDocResult.output,
+		picture: existingUserDocResult.output.picture ?? null,
 		sessionWarningTimestamp: getSessionWarningTimestamp(),
 	};
 
@@ -61,6 +59,6 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 	return {
 		signInResultType: SignInResultType.EXISTING,
 		userData: sessionCookieData,
-		songs: existingUserDocResult.right.songs,
+		songs: existingUserDocResult.output.songs,
 	};
 };

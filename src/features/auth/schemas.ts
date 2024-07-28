@@ -9,7 +9,6 @@ import {
 	string,
 } from "valibot";
 
-import { SlimSongSchema } from "../music/schemas";
 import { Role } from "./enums";
 
 const shared = {
@@ -22,11 +21,6 @@ export const SessionCookieDataSchema = S.Struct({
 	email: S.String,
 	...shared,
 	sessionWarningTimestamp: S.Number,
-});
-
-export const UserDataSchema = S.Struct({
-	songs: S.Record(S.String, SlimSongSchema),
-	...shared,
 });
 
 export const RegistrationSchema = object({

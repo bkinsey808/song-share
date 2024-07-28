@@ -1,24 +1,39 @@
-import { create } from "zustand";
+import { create, useStore } from "zustand";
+import { persist } from "zustand/middleware";
 
-import { SongLibrary } from "../music/types";
-import { AppModal } from "./enums";
+import { songDetailsSubmit } from "../sections/song/songDetailsSubmit";
+import { SectionId } from "./enums";
+import { AppStore } from "./types";
 
-interface AppStore {
-	appModal: AppModal | null;
-	songId: string | null;
-	songName: string | null;
-	sharer: string | null;
-	credits: string | null;
-	songLibrary: SongLibrary;
-	setAppModal: (modal: AppModal | null) => void;
-}
+export const useAppStore = create<AppStore>()(
+	persist(
+		(set, get) => ({
+			appModal: null,
+			songName: null,
+			songId: null,
+			translation: null,
+			sharer: null,
+			credits: null,
+			songLibrary: {},
+			setAppModal: (modal) => set({ appModal: modal }),
+			songDetailsSubmit: songDetailsSubmit(get, set),
+			openSections: [],
+			toggleSection: (sectionId: SectionId) => {
+				set((state) => {
+					const isOpen = state.openSections.includes(sectionId);
+					return {
+						openSections: isOpen
+							? state.openSections.filter((id) => id !== sectionId)
+							: [...state.openSections, sectionId],
+					};
+				});
+			},
+		}),
+		{
+			name: "app-store",
+		},
+	),
+);
 
-export const useAppStore = create<AppStore>()((set, _get) => ({
-	appModal: null,
-	songName: null,
-	songId: null,
-	sharer: null,
-	credits: null,
-	songLibrary: {},
-	setAppModal: (modal) => set({ appModal: modal }),
-}));
+export const useOpenSection = (sectionId: SectionId) =>
+	useAppStore((state) => state.openSections.includes(sectionId));

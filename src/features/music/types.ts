@@ -6,17 +6,15 @@ import {
 	InstrumentTuningSchema,
 	KeyNoteSchema,
 	PositionSchema,
-	ScaleSchema,
-	SlimSongSchema,
-	SongLibrarySchema,
-	SongSchema,
+	ScaleSchema, // SlimSongSchema, // SongLibrarySchema,
+	// SongSchema,
 	TuningSchema,
 } from "./schemas";
 
 export type Chord = S.Schema.Type<typeof ChordSchema>;
-export type SlimSong = S.Schema.Type<typeof SlimSongSchema>;
-export type Song = S.Schema.Type<typeof SongSchema>;
-export type SongLibrary = S.Schema.Type<typeof SongLibrarySchema>;
+// export type SlimSong = S.Schema.Type<typeof SlimSongSchema>;
+// export type Song = S.Schema.Type<typeof SongSchema>;
+// export type SongLibrary = S.Schema.Type<typeof SongLibrarySchema>;
 export type InstrumentTuning = S.Schema.Type<typeof InstrumentTuningSchema>;
 export type Tuning = S.Schema.Type<typeof TuningSchema>;
 export type Position = S.Schema.Type<typeof PositionSchema>;

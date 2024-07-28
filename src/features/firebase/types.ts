@@ -1,5 +1,5 @@
-import { Schema as S } from "@effect/schema";
+import { InferOutput } from "valibot";
 
 import { UserDocSchema } from "./schemas";
 
-export type UserDoc = S.Schema.Type<typeof UserDocSchema>;
+export type UserDoc = InferOutput<typeof UserDocSchema>;

@@ -1,11 +1,23 @@
-import { Schema as S } from "@effect/schema";
+import {
+	array,
+	object,
+	optional,
+	record,
+	string,
+	enum as venum,
+} from "valibot";
 
 import { Role } from "../auth/enums";
-import { SlimSongSchema } from "../music/schemas";
+import {
+	SlimSongSchema,
+	SongLibrarySongSchema,
+} from "../sections/song/schemas";
 
-export const UserDocSchema = S.Struct({
-	username: S.String,
-	picture: S.Union(S.String, S.Null),
-	roles: S.Array(S.Literal(...Object.values(Role))),
-	songs: S.Record(S.String, SlimSongSchema),
+export const UserDocSchema = object({
+	username: string(),
+	picture: optional(string()),
+	roles: array(venum(Role)),
+	songs: record(string(), SlimSongSchema),
 });
+
+export const SongsSchema = record(string(), SongLibrarySongSchema);

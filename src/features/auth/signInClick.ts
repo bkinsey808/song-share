@@ -2,8 +2,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 import { AppModal } from "../app-store/enums";
 import { getKeys } from "../global/getKeys";
-import type { Writeable } from "../global/types";
-import type { SongLibrary } from "../music/types";
+import { SongLibrary } from "../sections/song/types";
 import { Role, SignInResultType } from "./enums";
 import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
 import type { Set } from "./types";
@@ -46,20 +45,20 @@ export const signInClick = (set: Set) => () => {
 
 					break;
 				case SignInResultType.EXISTING:
-					const songs = signInResult.songs;
-					const songIds = getKeys(songs);
+					const userDocSongs = signInResult.songs;
+					const userDocSongIds = getKeys(userDocSongs);
 
 					const songLibrary = useAppStore.getState().songLibrary;
 
-					const newSongLibrary = songIds.reduce((acc, songId) => {
+					const newSongLibrary = userDocSongIds.reduce((acc, songId) => {
 						const existingSong = songLibrary[songId];
-						const slimSong = songs[songId];
+						const slimSong = userDocSongs[songId];
 						acc[songId] = {
 							...existingSong,
 							...slimSong,
 						};
 						return acc;
-					}, {} as Writeable<SongLibrary>);
+					}, {} as SongLibrary);
 
 					useAppStore.setState({ songLibrary: newSongLibrary, appModal: null });
 

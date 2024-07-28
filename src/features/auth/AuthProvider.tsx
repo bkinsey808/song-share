@@ -25,10 +25,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	} = useAuthStore();
 	const { setAppModal } = useAppStore();
 	const handleRefresh = useCallback(async () => {
-		const sessionCookieData = await getSessionCookieData();
+		const refreshSessionCookieData = await getSessionCookieData();
 
-		if (sessionCookieData) {
-			signIn(sessionCookieData);
+		if (refreshSessionCookieData) {
+			signIn(refreshSessionCookieData);
 		}
 	}, [signIn]);
 
@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		void handleRefresh();
 	}, [handleRefresh]);
 
-	const intervalFn = useCallback(async () => {
+	const intervalFn = useCallback(() => {
 		// we only need to poll if we haven't recently checked
 		if (
 			Date.now() - lastSignInCheck <
@@ -46,9 +46,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 
-		const freshSessionCookieData = await getSessionCookieData();
-
-		if (!freshSessionCookieData || !sessionCookieData) {
+		if (!sessionCookieData) {
 			signOut();
 			setAppModal(AppModal.SESSION_EXPIRED);
 			return;
@@ -61,12 +59,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 
-		signIn(freshSessionCookieData);
 		setLastSignInCheck(Date.now());
 	}, [
 		lastSignInCheck,
 		setLastSignInCheck,
-		signIn,
 		signOut,
 		setAppModal,
 		sessionCookieData,

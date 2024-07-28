@@ -66,7 +66,7 @@ export const register = async ({
 
 		const userDoc: UserDoc = {
 			...registrationData,
-			picture,
+			picture: picture ?? undefined,
 			username,
 			songs: {},
 			roles: [],
@@ -75,6 +75,7 @@ export const register = async ({
 		const sessionCookieData: SessionCookieData = {
 			email,
 			...userDoc,
+			picture: picture ?? null,
 			sessionWarningTimestamp: getSessionWarningTimestamp(),
 		};
 

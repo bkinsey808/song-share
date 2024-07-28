@@ -2,12 +2,13 @@
 
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
+import { safeParse } from "valibot";
 
 import { getSessionCookieData } from "./getSessionCookieData";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { DeleteAccountResultType } from "@/features/auth/enums";
 import { db } from "@/features/firebase/firebase";
-import { guardAsUserDoc } from "@/features/firebase/guards";
+import { UserDocSchema } from "@/features/firebase/schemas";
 import { getKeys } from "@/features/global/getKeys";
 
 export type DeleteAccountResult =
@@ -37,16 +38,16 @@ export const deleteAccount = async (): Promise<DeleteAccountResult> => {
 			};
 		}
 
-		const userDoc = guardAsUserDoc(userDocumentData);
+		const userDoc = safeParse(UserDocSchema, userDocumentData);
 
-		if (!userDoc) {
+		if (!userDoc.success) {
 			return {
 				result: DeleteAccountResultType.ERROR,
 				message: "UserDoc data is missing or invalid",
 			};
 		}
 
-		const songs = userDoc.songs;
+		const songs = userDoc.output.songs;
 		const songIds = getKeys(songs);
 		const deleteSongPromises = songIds.map((songId) =>
 			deleteDoc(doc(db, "songs", songId)),
