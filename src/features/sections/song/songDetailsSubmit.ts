@@ -12,10 +12,8 @@ import { getKeys } from "@/features/global/getKeys";
 export const songDetailsSubmit =
 	(get: Get, set: Set) =>
 	(form: UseFormReturn<SongDetails>) =>
-	(e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		return form.handleSubmit(async (songDetails) => {
-			console.log("in here");
+	(e: FormEvent<HTMLFormElement>) =>
+		form.handleSubmit(async (songDetails) => {
 			const sessionCookieData = useAuthStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
@@ -82,4 +80,3 @@ export const songDetailsSubmit =
 					break;
 			}
 		})(e);
-	};

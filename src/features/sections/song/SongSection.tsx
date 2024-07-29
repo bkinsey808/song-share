@@ -38,6 +38,7 @@ export const SongSection = () => {
 		songDetailsSubmit,
 		setIsSongUnsaved,
 		isSongUnsaved,
+		songDetailsNewClick,
 	} = useAppStore();
 
 	const defaultValues: SongDetails = useMemo(
@@ -112,7 +113,7 @@ export const SongSection = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
-							<Button>New</Button>
+							<Button onClick={songDetailsNewClick(form)}>New</Button>
 						</div>
 					) : null}
 				</form>

@@ -32,4 +32,5 @@ export type AppStore = {
 	songLoadClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
+	songDetailsNewClick: (form: UseFormReturn<SongDetails>) => () => void;
 };

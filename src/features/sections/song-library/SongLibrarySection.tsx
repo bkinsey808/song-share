@@ -1,6 +1,5 @@
 "use client";
 
-import { songLoad } from "@/actions/songLoad";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
@@ -11,7 +10,6 @@ export const SongLibrarySection = () => {
 
 	return (
 		<section data-title="Song Library Section">
-			<pre>{JSON.stringify(songLibrary, null, 2)}</pre>
 			<div className="p-[1rem]">
 				<div className="grid grid-flow-col grid-cols-[3fr,2fr,1fr] border-b">
 					<div>Song Name</div>
