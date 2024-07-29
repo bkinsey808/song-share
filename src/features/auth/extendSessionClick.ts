@@ -1,32 +1,35 @@
 import { useAppStore } from "../app-store/useAppStore";
-import type { Set } from "./types";
+import type { Get, Set } from "./types";
 import { extendSession } from "@/actions/extendSession";
 
-export const extendSessionClick = (set: Set) => async () => {
-	try {
-		set({
-			isSigningIn: true,
-		});
-		const result = await extendSession();
-
-		if (result) {
-			console.log({
-				newtimestamp: result.sessionWarningTimestamp,
-				resultDiff: result.sessionWarningTimestamp - Date.now(),
-			});
-
+export const extendSessionClick = (get: Get, set: Set) => () => {
+	void (async () => {
+		try {
 			set({
-				sessionCookieData: result,
-				lastSignInCheck: 0,
+				isSigningIn: true,
 			});
-			useAppStore.setState({
-				appModal: null,
-			});
+			const result = await extendSession();
+
+			if (result) {
+				console.warn({
+					newtimestamp: result.sessionWarningTimestamp,
+					resultDiff: result.sessionWarningTimestamp - Date.now(),
+				});
+
+				set({
+					sessionCookieData: result,
+					lastSignInCheck: Date.now(),
+				});
+				useAppStore.setState({
+					appModal: null,
+				});
+			}
+		} catch (error) {
+			get().signOut();
+			console.error(error);
 		}
-	} catch (error) {
-		console.error(error);
-	}
-	set({
-		isSigningIn: false,
-	});
+		set({
+			isSigningIn: false,
+		});
+	})();
 };

@@ -1,4 +1,4 @@
-import { FormEventHandler } from "react";
+import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import { AppModal, SectionId } from "./enums";
@@ -21,10 +21,15 @@ export type AppStore = {
 	sharer: string | null;
 	credits: string | null;
 	songLibrary: SongLibrary;
+	isSongUnsaved: boolean;
+	setIsSongUnsaved: (unsavedSong: boolean) => void;
 	setAppModal: (modal: AppModal | null) => void;
 	songDetailsSubmit: (
 		form: UseFormReturn<SongDetails>,
-	) => (e: React.FormEvent<HTMLFormElement>) => void;
+	) => (e: FormEvent<HTMLFormElement>) => void;
 	openSections: SectionId[];
-	toggleSection: (sectionId: SectionId) => void;
+	sectionToggle: (sectionId: SectionId) => void;
+	songLoadClick: (
+		songId: string,
+	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 };

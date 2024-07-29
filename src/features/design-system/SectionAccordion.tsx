@@ -14,7 +14,7 @@ export const SectionAccordion = ({
 	sectionId: SectionId;
 	children: ReactNode;
 }) => {
-	const { toggleSection } = useAppStore();
+	const { sectionToggle } = useAppStore();
 	const isOpen = useOpenSection(sectionId);
 
 	const detailsRef = useRef<HTMLDetailsElement>(null);
@@ -37,7 +37,7 @@ export const SectionAccordion = ({
 				className="mb-[0.25rem] flex cursor-pointer flex-row flex-nowrap gap-[0.5rem]"
 				onClick={(e) => {
 					e.preventDefault();
-					toggleSection(sectionId);
+					sectionToggle(sectionId);
 
 					if (detailsRef.current) {
 						detailsRef.current.open = !detailsRef.current.open;

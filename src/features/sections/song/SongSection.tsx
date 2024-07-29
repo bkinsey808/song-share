@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import { CreditsSection } from "../credits/CreditsSection";
@@ -31,7 +31,14 @@ import { SectionAccordion } from "@/features/design-system/SectionAccordion";
 
 export const SongSection = () => {
 	const { isSignedIn } = useAuthStore();
-	const { songId, songName, translation, songDetailsSubmit } = useAppStore();
+	const {
+		songId,
+		songName,
+		translation,
+		songDetailsSubmit,
+		setIsSongUnsaved,
+		isSongUnsaved,
+	} = useAppStore();
 
 	const defaultValues: SongDetails = useMemo(
 		() => ({
@@ -47,11 +54,24 @@ export const SongSection = () => {
 		defaultValues,
 	});
 
+	// keep unsavedSong in sync with form state
+	useEffect(() => {
+		setIsSongUnsaved(form.formState.isDirty);
+	}, [form.formState.isDirty, setIsSongUnsaved]);
+
+	// handle load song form song library
+	useEffect(() => {
+		form.reset({
+			songName: songName ?? "",
+			translation: translation ?? "",
+		});
+	}, [songName, translation, form]);
+
 	return (
 		<div suppressHydrationWarning={true}>
 			<Form {...form}>
 				<div suppressHydrationWarning={true}>
-					isDirty: {form.formState.isDirty.toString()}
+					isDirty: {isSongUnsaved.toString()}
 				</div>
 				<form onSubmit={songDetailsSubmit(form)}>
 					<FormField

@@ -45,5 +45,5 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 	},
 	confirmDeleteAccountClick: confirmDeleteAccountClick(set),
 	registerSubmit: registerSubmit(get, set),
-	extendSessionClick: extendSessionClick(set),
+	extendSessionClick: extendSessionClick(get, set),
 }));

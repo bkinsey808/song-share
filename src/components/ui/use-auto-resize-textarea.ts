@@ -9,20 +9,20 @@ export const useAutoResizeTextarea = (
 	React.useImperativeHandle(ref, () => textAreaRef.current!);
 
 	React.useEffect(() => {
-		const ref = textAreaRef?.current;
+		const textAreaEl = textAreaRef?.current;
 
 		const updateTextareaHeight = () => {
-			if (ref && autoResize) {
-				ref.style.height = "auto";
-				ref.style.height = ref?.scrollHeight + 2 + "px";
+			if (textAreaEl && autoResize) {
+				textAreaEl.style.height = "auto";
+				textAreaEl.style.height = textAreaEl?.scrollHeight + 2 + "px";
 			}
 		};
 
 		updateTextareaHeight();
 
-		ref?.addEventListener("input", updateTextareaHeight);
+		textAreaEl?.addEventListener("input", updateTextareaHeight);
 
-		return () => ref?.removeEventListener("input", updateTextareaHeight);
+		return () => textAreaEl?.removeEventListener("input", updateTextareaHeight);
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

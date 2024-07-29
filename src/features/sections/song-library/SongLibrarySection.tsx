@@ -1,11 +1,12 @@
 "use client";
 
+import { songLoad } from "@/actions/songLoad";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibrarySection = () => {
-	const { songLibrary } = useAppStore();
+	const { songLibrary, songLoadClick } = useAppStore();
 	const songIds = getKeys(songLibrary);
 
 	return (
@@ -26,20 +27,7 @@ export const SongLibrarySection = () => {
 						<div>{songLibrary[songId].songName}</div>
 						<div>{songLibrary[songId].sharer}</div>
 						<div>
-							<Button
-							// onClick={() => {
-							// 	if (isSongChanged) {
-							// 		setOpenDashboardModal(DashboardModal.CONFIRM_LOAD_SONG);
-							// 		return;
-							// 	}
-							// 	loadSongClientSide({
-							// 		setValues,
-							// 		getValues,
-							// 	})();
-							// }}
-							>
-								Load
-							</Button>
+							<Button onClick={songLoadClick(songId)}>Load</Button>
 						</div>
 					</div>
 				))}

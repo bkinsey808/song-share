@@ -16,10 +16,12 @@ export const extendSession = async () => {
 			throw new Error("Session cookie data is not defined");
 		}
 
+		const sessionWarningTimestamp = getSessionWarningTimestamp();
+
 		// Extend the session
 		const newSessionCookieData: SessionCookieData = {
 			...sessionCookieData,
-			sessionWarningTimestamp: getSessionWarningTimestamp(),
+			sessionWarningTimestamp,
 		};
 
 		const sessionToken = await encodeSessionToken(sessionCookieData);

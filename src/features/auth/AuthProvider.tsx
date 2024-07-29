@@ -15,8 +15,14 @@ import { useAuthStore } from "./useAuthStore";
 import { getSessionCookieData } from "@/actions/getSessionCookieData";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-	const { signIn, isSignedIn, lastSignInCheck, setLastSignInCheck, signOut } =
-		useAuthStore();
+	const {
+		signIn,
+		isSignedIn,
+		lastSignInCheck,
+		setLastSignInCheck,
+		signOut,
+		sessionCookieData,
+	} = useAuthStore();
 	const { setAppModal } = useAppStore();
 	const handleRefresh = useCallback(async () => {
 		const refreshSessionCookieData = await getSessionCookieData();
@@ -29,6 +35,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			setAppModal(null);
 		}
 	}, [setAppModal, signIn, signOut]);
+
+	const existingSessionWarningTimestamp =
+		sessionCookieData?.sessionWarningTimestamp ?? 0;
 
 	// handle refresh
 	useEffect(() => {
@@ -51,20 +60,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 
-		const { sessionWarningTimestamp } = freshSessionCookieData;
+		console.log(
+			`old diff: ${(existingSessionWarningTimestamp - Date.now()) / 1000}`,
+		);
 
-		console.log({
-			diff: sessionWarningTimestamp - Date.now(),
-			freshSessionCookieData,
-		});
-
-		if (sessionWarningTimestamp < Date.now()) {
+		if (existingSessionWarningTimestamp < Date.now()) {
 			setAppModal(AppModal.SESSION_EXPIRE_WARNING);
 			return;
 		}
 
 		setLastSignInCheck(Date.now());
-	}, [lastSignInCheck, setLastSignInCheck, signOut, setAppModal]);
+	}, [
+		lastSignInCheck,
+		setLastSignInCheck,
+		signOut,
+		setAppModal,
+		existingSessionWarningTimestamp,
+	]);
 
 	useInterval(
 		() => {

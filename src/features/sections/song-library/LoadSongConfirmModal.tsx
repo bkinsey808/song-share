@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 
-import { loadSongClientSide } from "./loadSongClientSide";
+import { loadSongClientSide } from "./songLoadClick";
 import { DashboardModal } from "@/app/d/enums";
 import { useDashboardState } from "@/app/d/useDashboardState";
 import { Alert } from "@/components/ui/alert";
