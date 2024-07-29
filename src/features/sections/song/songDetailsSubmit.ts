@@ -63,16 +63,14 @@ export const songDetailsSubmit =
 					const newSongId = result.songId;
 					const songLibrary = get().songLibrary;
 					const newSongLibrarySong: SongLibrarySong = {
-						songName: songDetails.songName,
-						translation: songDetails.translation,
+						...songDetails,
 						sharer: username,
 					};
 					songLibrary[newSongId] = newSongLibrarySong;
 					set({
 						songLibrary,
 						songId: newSongId,
-						songName: songDetails.songName,
-						translation: songDetails.translation,
+						...songDetails,
 					});
 					console.log("reset");
 					form.reset(songDetails, { keepValues: true });

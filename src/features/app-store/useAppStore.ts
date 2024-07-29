@@ -11,8 +11,9 @@ export const useAppStore = create<AppStore>()(
 	persist(
 		(set, get) => ({
 			appModal: null,
-			songName: null,
 			songId: null,
+			songName: null,
+			lyrics: null,
 			translation: null,
 			sharer: null,
 			credits: null,

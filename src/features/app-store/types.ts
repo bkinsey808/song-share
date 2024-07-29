@@ -17,6 +17,7 @@ export type AppStore = {
 	appModal: AppModal | null;
 	songId: string | null;
 	songName: string | null;
+	lyrics: string | null;
 	translation: string | null;
 	sharer: string | null;
 	credits: string | null;

@@ -25,6 +25,7 @@ export const confirmDeleteAccountClick =
 						deleteAccountError: deleteAccountResult.message,
 						deletingAccount: false,
 					});
+					useAppStore.getState().setAppModal(null);
 					toast({
 						variant: "destructive",
 						title: "There was an error deleting your account",

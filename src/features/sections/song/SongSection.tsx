@@ -7,10 +7,8 @@ import { useForm } from "react-hook-form";
 import { CreditsSection } from "../credits/CreditsSection";
 import { KeySection } from "../key/KeySection";
 import { KeyTitle } from "../key/KeyTitle";
-import { LyricsSection } from "../lyrics/LyricsSection";
 import { ScaleSection } from "../scale/ScaleSection";
 import { ScaleTitle } from "../scale/ScaleTitle";
-import { Section } from "../sections";
 import { SongSchema } from "./schemas";
 import { SongDetails } from "./types";
 import { Button } from "@/components/ui/button";
@@ -34,6 +32,7 @@ export const SongSection = () => {
 	const {
 		songId,
 		songName,
+		lyrics,
 		translation,
 		songDetailsSubmit,
 		setIsSongUnsaved,
@@ -44,6 +43,7 @@ export const SongSection = () => {
 	const defaultValues: SongDetails = useMemo(
 		() => ({
 			songName: songName ?? "",
+			lyrics: lyrics ?? "",
 			translation: translation ?? "",
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,9 +64,10 @@ export const SongSection = () => {
 	useEffect(() => {
 		form.reset({
 			songName: songName ?? "",
+			lyrics: lyrics ?? "",
 			translation: translation ?? "",
 		});
-	}, [songName, translation, form]);
+	}, [songName, lyrics, translation, form]);
 
 	return (
 		<div suppressHydrationWarning={true}>
@@ -88,6 +89,21 @@ export const SongSection = () => {
 							</FormItem>
 						)}
 					/>
+
+					<SectionAccordion sectionId={SectionId.LYICS} title="Lyrics">
+						<FormField
+							control={form.control}
+							name="lyrics"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Textarea autoResize={true} {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</SectionAccordion>
 
 					<SectionAccordion
 						sectionId={SectionId.TRANSLATION}

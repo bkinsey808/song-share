@@ -38,9 +38,8 @@ export const songLoadClick =
 		};
 
 		set({
+			...songLibrarySong,
 			songId,
-			songName: songLibrarySong.songName,
-			translation: songLibrarySong.translation,
 			songLibrary: newSongLibrary,
 		});
 

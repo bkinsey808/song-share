@@ -11,6 +11,7 @@ export enum SectionId {
 	SET_LIST = "SET_LIST",
 	SONG_LIBRARY = "SONG_LIBRARY",
 	TRANSLATION = "TRANSLATION",
+	LYICS = "LYICS",
 }
 
 export enum ActionResultType {
