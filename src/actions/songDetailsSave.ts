@@ -1,6 +1,7 @@
 "use server";
 
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { get } from "http";
 import { flatten, safeParse } from "valibot";
 
 import { extendSession } from "./extendSession";
@@ -9,8 +10,19 @@ import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { SongDetailsFieldKey } from "@/features/sections/song/enums";
-import { SongSchema } from "@/features/sections/song/schemas";
+import {
+	SongLibrarySongSchema,
+	SongSchema,
+} from "@/features/sections/song/schemas";
 import type { SlimSong, SongDetails } from "@/features/sections/song/types";
+
+const getFormError = (formError: string) => {
+	console.error(formError);
+	return {
+		actionResultType: ActionResultType.ERROR as ActionResultType.ERROR,
+		formError,
+	};
+};
 
 export type SongDetailsSaveResult =
 	| {
@@ -45,42 +57,29 @@ export const songDetailsSave = async ({
 
 		const sessionCookieData = await extendSession();
 		if (!sessionCookieData) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				formError: "Session expired",
-			};
+			return getFormError("Session expired");
 		}
 
 		const username = sessionCookieData.username;
 
 		if (!username) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				formError: "Username not found",
-			};
+			return getFormError("Username not found");
 		}
 
 		const userDocRef = doc(db, "users", sessionCookieData.email);
 		const userDoc = await getDoc(userDocRef);
 		if (!userDoc.exists()) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				formError: "User not found",
-			};
+			return getFormError("User not found");
 		}
+
 		const userDocData = userDoc.data();
 		if (!userDocData) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				formError: "User data not found",
-			};
+			return getFormError("User data not found");
 		}
+
 		const userDocResult = safeParse(UserDocSchema, userDocData);
 		if (!userDocResult.success) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				formError: "User data is invalid",
-			};
+			return getFormError("User data is invalid");
 		}
 
 		const slimSong: SlimSong = {
@@ -92,10 +91,7 @@ export const songDetailsSave = async ({
 
 		// first, confirm user owns the song
 		if (songId && !userDocSongs[songId]) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				formError: "User does not own this song",
-			};
+			return getFormError("User does not own this song");
 		}
 
 		// second update the song in the songs collection, or create it if it doesn't exist
@@ -103,6 +99,26 @@ export const songDetailsSave = async ({
 		const songDocRef = songId
 			? doc(songsCollection, songId)
 			: doc(songsCollection);
+
+		const songSnapshot = await getDoc(songDocRef);
+		const songData = songSnapshot.data();
+		if (!songData && songId) {
+			return getFormError("Song data not found");
+		}
+
+		if (songData) {
+			const songResult = safeParse(SongLibrarySongSchema, songData);
+			if (!songResult.success) {
+				console.log(songData);
+				return getFormError("Song data is invalid");
+			}
+
+			const songLibrarySong = songResult.output;
+			if (songId && songLibrarySong.sharer !== username) {
+				return getFormError("User does not own this song");
+			}
+		}
+
 		await setDoc(songDocRef, {
 			...songDetails,
 			sharer: username,
@@ -127,9 +143,6 @@ export const songDetailsSave = async ({
 		};
 	} catch (error) {
 		console.error({ error });
-		return {
-			actionResultType: ActionResultType.ERROR,
-			formError: "Failed to save song",
-		};
+		return getFormError("Failed to save song");
 	}
 };
