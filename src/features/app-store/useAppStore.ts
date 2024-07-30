@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { songLoadClick } from "../sections/song-library/songLoadClick";
-import { songDetailsNewClick } from "../sections/song/songDetailsNewClick";
-import { songDetailsSubmit } from "../sections/song/songDetailsSubmit";
+import { songNewClick } from "../sections/song/songNewClick";
+import { songSubmit } from "../sections/song/songSubmit";
 import { SectionId } from "./enums";
 import { AppStore } from "./types";
 
@@ -19,8 +19,8 @@ export const useAppStore = create<AppStore>()(
 			credits: null,
 			songLibrary: {},
 			setAppModal: (modal) => set({ appModal: modal }),
-			songDetailsSubmit: songDetailsSubmit(get, set),
-			songDetailsNewClick: songDetailsNewClick(set),
+			songSubmit: songSubmit(get, set),
+			songNewClick: songNewClick(set),
 			openSections: [],
 			isSongUnsaved: false,
 			setIsSongUnsaved: (unsavedSong) => set({ isSongUnsaved: unsavedSong }),

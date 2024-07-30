@@ -10,7 +10,7 @@ import { KeyTitle } from "../key/KeyTitle";
 import { ScaleSection } from "../scale/ScaleSection";
 import { ScaleTitle } from "../scale/ScaleTitle";
 import { SongSchema } from "./schemas";
-import { SongDetails } from "./types";
+import { Song } from "./types";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -34,13 +34,13 @@ export const SongSection = () => {
 		songName,
 		lyrics,
 		translation,
-		songDetailsSubmit,
+		songSubmit,
 		setIsSongUnsaved,
 		isSongUnsaved,
-		songDetailsNewClick,
+		songNewClick,
 	} = useAppStore();
 
-	const defaultValues: SongDetails = useMemo(
+	const defaultValues: Song = useMemo(
 		() => ({
 			songName: songName ?? "",
 			lyrics: lyrics ?? "",
@@ -50,7 +50,7 @@ export const SongSection = () => {
 		[],
 	);
 
-	const form = useForm<SongDetails>({
+	const form = useForm<Song>({
 		resolver: valibotResolver(SongSchema),
 		defaultValues,
 	});
@@ -75,7 +75,7 @@ export const SongSection = () => {
 				<div suppressHydrationWarning={true}>
 					isDirty: {isSongUnsaved.toString()}
 				</div>
-				<form onSubmit={songDetailsSubmit(form)}>
+				<form onSubmit={songSubmit(form)}>
 					<FormField
 						control={form.control}
 						name="songName"
@@ -129,7 +129,7 @@ export const SongSection = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
-							<Button onClick={songDetailsNewClick(form)}>New</Button>
+							<Button onClick={songNewClick(form)}>New</Button>
 						</div>
 					) : null}
 				</form>

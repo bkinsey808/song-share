@@ -9,12 +9,12 @@ import { ActionResultType } from "@/features/app-store/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
-import { SongDetailsFieldKey } from "@/features/sections/song/enums";
+import { SongFieldKey } from "@/features/sections/song/enums";
 import {
 	SongLibrarySongSchema,
 	SongSchema,
 } from "@/features/sections/song/schemas";
-import type { SlimSong, SongDetails } from "@/features/sections/song/types";
+import type { SlimSong, Song } from "@/features/sections/song/types";
 
 const getFormError = (formError: string) => {
 	console.error(formError);
@@ -24,7 +24,7 @@ const getFormError = (formError: string) => {
 	};
 };
 
-export type SongDetailsSaveResult =
+export type SongSaveResult =
 	| {
 			actionResultType: ActionResultType.SUCCESS;
 			songId: string;
@@ -34,20 +34,20 @@ export type SongDetailsSaveResult =
 			formError?: string;
 			fieldErrors?:
 				| {
-						[fieldKey in SongDetailsFieldKey]?: string[];
+						[fieldKey in SongFieldKey]?: string[];
 				  }
 				| undefined;
 	  };
 
-export const songDetailsSave = async ({
-	songDetails,
+export const songSave = async ({
+	song,
 	songId,
 }: {
-	songDetails: SongDetails;
+	song: Song;
 	songId: string | null;
-}): Promise<SongDetailsSaveResult> => {
+}): Promise<SongSaveResult> => {
 	try {
-		const result = safeParse(SongSchema, songDetails);
+		const result = safeParse(SongSchema, song);
 		if (!result.success) {
 			return {
 				actionResultType: ActionResultType.ERROR,
@@ -83,7 +83,7 @@ export const songDetailsSave = async ({
 		}
 
 		const slimSong: SlimSong = {
-			songName: songDetails.songName,
+			songName: song.songName,
 			sharer: username,
 		};
 
@@ -120,7 +120,7 @@ export const songDetailsSave = async ({
 		}
 
 		await setDoc(songDocRef, {
-			...songDetails,
+			...song,
 			sharer: username,
 		});
 

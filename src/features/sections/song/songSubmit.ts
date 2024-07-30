@@ -1,19 +1,19 @@
 import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 
-import { SongDetails, SongLibrarySong } from "./types";
-import { songDetailsSave } from "@/actions/songDetailsSave";
+import { Song, SongLibrarySong } from "./types";
+import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
 import { Get, Set } from "@/features/app-store/types";
 import { useAuthStore } from "@/features/auth/useAuthStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const songDetailsSubmit =
+export const songSubmit =
 	(get: Get, set: Set) =>
-	(form: UseFormReturn<SongDetails>) =>
+	(form: UseFormReturn<Song>) =>
 	(e: FormEvent<HTMLFormElement>) =>
-		form.handleSubmit(async (songDetails) => {
+		form.handleSubmit(async (song) => {
 			const sessionCookieData = useAuthStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
@@ -33,8 +33,8 @@ export const songDetailsSubmit =
 			}
 
 			const originalSongId = get().songId;
-			const result = await songDetailsSave({
-				songDetails,
+			const result = await songSave({
+				song,
 				songId: originalSongId,
 			});
 
@@ -63,17 +63,17 @@ export const songDetailsSubmit =
 					const newSongId = result.songId;
 					const songLibrary = get().songLibrary;
 					const newSongLibrarySong: SongLibrarySong = {
-						...songDetails,
+						...song,
 						sharer: username,
 					};
 					songLibrary[newSongId] = newSongLibrarySong;
 					set({
 						songLibrary,
 						songId: newSongId,
-						...songDetails,
+						...song,
 					});
 					console.log("reset");
-					form.reset(songDetails, { keepValues: true });
+					form.reset(song, { keepValues: true });
 					toast({ title: "Song details saved" });
 					break;
 			}

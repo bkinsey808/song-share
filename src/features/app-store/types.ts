@@ -2,7 +2,7 @@ import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import { AppModal, SectionId } from "./enums";
-import { SongDetails, SongLibrary } from "@/features/sections/song/types";
+import { Song, SongLibrary } from "@/features/sections/song/types";
 
 export type Get = () => AppStore;
 export type Set = (
@@ -25,13 +25,13 @@ export type AppStore = {
 	isSongUnsaved: boolean;
 	setIsSongUnsaved: (unsavedSong: boolean) => void;
 	setAppModal: (modal: AppModal | null) => void;
-	songDetailsSubmit: (
-		form: UseFormReturn<SongDetails>,
+	songSubmit: (
+		form: UseFormReturn<Song>,
 	) => (e: FormEvent<HTMLFormElement>) => void;
 	openSections: SectionId[];
 	sectionToggle: (sectionId: SectionId) => void;
 	songLoadClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	songDetailsNewClick: (form: UseFormReturn<SongDetails>) => () => void;
+	songNewClick: (form: UseFormReturn<Song>) => () => void;
 };

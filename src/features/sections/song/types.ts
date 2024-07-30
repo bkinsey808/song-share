@@ -7,7 +7,7 @@ import {
 	SongSchema,
 } from "./schemas";
 
-export type SongDetails = InferOutput<typeof SongSchema>;
+export type Song = InferOutput<typeof SongSchema>;
 
 export type SlimSong = InferOutput<typeof SlimSongSchema>;
 
