@@ -62,11 +62,12 @@ export const SongSection = () => {
 
 	// handle load song form song library
 	useEffect(() => {
-		form.reset({
+		const song: Song = {
 			songName: songName ?? "",
 			lyrics: lyrics ?? "",
 			translation: translation ?? "",
-		});
+		};
+		form.reset(song);
 	}, [songName, lyrics, translation, form]);
 
 	return (

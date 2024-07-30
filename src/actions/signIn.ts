@@ -2,7 +2,6 @@
 
 import { doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
-import { safeParse } from "valibot";
 
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
@@ -13,6 +12,7 @@ import { SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
+import { serverParse } from "@/features/global/serverParse";
 
 export type SignInResult =
 	| { signInResultType: SignInResultType.NEW }
@@ -35,7 +35,7 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 
 	const existingUserDocData = existingUserDoc.data();
 
-	const existingUserDocResult = safeParse(UserDocSchema, existingUserDocData);
+	const existingUserDocResult = serverParse(UserDocSchema, existingUserDocData);
 
 	if (!existingUserDocResult.success) {
 		console.error("UserDoc data is invalid", existingUserDocResult.issues);

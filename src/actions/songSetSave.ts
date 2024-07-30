@@ -1,13 +1,14 @@
 "use server";
 
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { flatten, safeParse } from "valibot";
+import { flatten } from "valibot";
 
 import { extendSession } from "./extendSession";
 import { ActionResultType } from "@/features/app-store/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
+import { serverParse } from "@/features/global/serverParse";
 import { SongSetFieldKey } from "@/features/sections/song-set/enums";
 import {
 	SongSetLibrarySongSetSchema,
@@ -46,7 +47,7 @@ export const songSetSave = async ({
 	songSetId: string | null;
 }): Promise<SongSetSaveResult> => {
 	try {
-		const result = safeParse(SongSetSchema, songSet);
+		const result = serverParse(SongSetSchema, songSet);
 		if (!result.success) {
 			return {
 				actionResultType: ActionResultType.ERROR,
@@ -76,8 +77,13 @@ export const songSetSave = async ({
 			return getFormError("User data not found");
 		}
 
-		const userDocResult = safeParse(UserDocSchema, userDocData);
+		const userDocResult = serverParse(UserDocSchema, userDocData);
 		if (!userDocResult.success) {
+			console.log({
+				userDocData,
+				issues: userDocResult.issues,
+				path: userDocResult.issues[0].path,
+			});
 			return getFormError("User data is invalid");
 		}
 
@@ -106,7 +112,10 @@ export const songSetSave = async ({
 		}
 
 		if (songSetData) {
-			const songSetResult = safeParse(SongSetLibrarySongSetSchema, songSetData);
+			const songSetResult = serverParse(
+				SongSetLibrarySongSetSchema,
+				songSetData,
+			);
 			if (!songSetResult.success) {
 				console.log(songSetData);
 				return getFormError("SongSet data is invalid");

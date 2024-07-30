@@ -2,7 +2,7 @@
 
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
-import { flatten, safeParse } from "valibot";
+import { flatten } from "valibot";
 
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
@@ -16,6 +16,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
 import { UserDoc } from "@/features/firebase/types";
+import { serverParse } from "@/features/global/serverParse";
 
 export type RegisterResult =
 	| {
@@ -42,7 +43,7 @@ export const register = async ({
 	registrationData: RegistrationData;
 }): Promise<RegisterResult> => {
 	try {
-		const result = safeParse(RegistrationSchema, registrationData);
+		const result = serverParse(RegistrationSchema, registrationData);
 		if (!result.success) {
 			return {
 				registerResultType: RegisterResultType.ERROR,

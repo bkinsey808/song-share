@@ -2,7 +2,6 @@
 
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
-import { safeParse } from "valibot";
 
 import { getSessionCookieData } from "./getSessionCookieData";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
@@ -10,6 +9,7 @@ import { DeleteAccountResultType } from "@/features/auth/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { getKeys } from "@/features/global/getKeys";
+import { serverParse } from "@/features/global/serverParse";
 
 export type DeleteAccountResult =
 	| { result: DeleteAccountResultType.SUCCESS }
@@ -38,7 +38,7 @@ export const deleteAccount = async (): Promise<DeleteAccountResult> => {
 			};
 		}
 
-		const userDoc = safeParse(UserDocSchema, userDocumentData);
+		const userDoc = serverParse(UserDocSchema, userDocumentData);
 
 		if (!userDoc.success) {
 			return {

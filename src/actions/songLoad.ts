@@ -1,10 +1,10 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { safeParse } from "valibot";
 
 import { extendSession } from "./extendSession";
 import { ActionResultType } from "@/features/app-store/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
+import { serverParse } from "@/features/global/serverParse";
 import { SongLibrarySongSchema } from "@/features/sections/song/schemas";
 import { SlimSong, SongLibrarySong } from "@/features/sections/song/types";
 
@@ -60,7 +60,7 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 			};
 		}
 
-		const songLibrarySongParseResult = safeParse(
+		const songLibrarySongParseResult = serverParse(
 			SongLibrarySongSchema,
 			songData,
 		);
@@ -90,7 +90,7 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 			};
 		}
 
-		const userDocResult = safeParse(UserDocSchema, userDocData);
+		const userDocResult = serverParse(UserDocSchema, userDocData);
 		if (!userDocResult.success) {
 			return {
 				actionResultType: ActionResultType.ERROR,

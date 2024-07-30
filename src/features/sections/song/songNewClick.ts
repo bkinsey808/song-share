@@ -11,8 +11,10 @@ export const songNewClick = (set: Set) => (form: UseFormReturn<Song>) => () => {
 		songSharer: null,
 		credits: null,
 	});
-	form.reset({
+	const newSong: Song = {
 		songName: "",
+		lyrics: "",
 		translation: "",
-	});
+	};
+	form.reset(newSong);
 };
