@@ -69,6 +69,7 @@ export const register = async ({
 			picture: picture ?? undefined,
 			username,
 			songs: {},
+			songSets: {},
 			roles: [],
 		};
 

@@ -47,7 +47,7 @@ export const deleteAccount = async (): Promise<DeleteAccountResult> => {
 			};
 		}
 
-		const songs = userDoc.output.songs;
+		const songs = userDoc.output.songSets;
 		const songIds = getKeys(songs);
 		const deleteSongPromises = songIds.map((songId) =>
 			deleteDoc(doc(db, "songs", songId)),

@@ -5,20 +5,25 @@ import { extendSession } from "./extendSession";
 import { ActionResultType } from "@/features/app-store/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
-import { SongLibrarySongSchema } from "@/features/sections/song/schemas";
-import { SlimSong, SongLibrarySong } from "@/features/sections/song/types";
+import { SongSetLibrarySongSetSchema } from "@/features/sections/song-set/schemas";
+import {
+	SlimSongSet,
+	SongSetLibrarySongSet,
+} from "@/features/sections/song-set/types";
 
-export type SongLoadResult =
+export type SongSetLoadResult =
 	| {
 			actionResultType: ActionResultType.SUCCESS;
-			songLibrarySong: SongLibrarySong;
+			songSetLibrarySongSet: SongSetLibrarySongSet;
 	  }
 	| {
 			actionResultType: ActionResultType.ERROR;
 			error: string;
 	  };
 
-export const songLoad = async (songId: string): Promise<SongLoadResult> => {
+export const songSetLoad = async (
+	songSetId: string,
+): Promise<SongSetLoadResult> => {
 	try {
 		const sessionCookieData = await extendSession();
 		if (!sessionCookieData) {
@@ -44,34 +49,34 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 			};
 		}
 
-		const songDocSnapshot = await getDoc(doc(db, "songs", songId));
-		if (!songDocSnapshot.exists()) {
+		const songSetDocSnapshot = await getDoc(doc(db, "songSets", songSetId));
+		if (!songSetDocSnapshot.exists()) {
 			return {
 				actionResultType: ActionResultType.ERROR,
-				error: "Song not found",
+				error: "Song Set not found",
 			};
 		}
 
-		const songData = songDocSnapshot.data();
-		if (!songData) {
+		const songSetData = songSetDocSnapshot.data();
+		if (!songSetData) {
 			return {
 				actionResultType: ActionResultType.ERROR,
-				error: "Song data not found",
+				error: "Song Set data not found",
 			};
 		}
 
-		const songLibrarySongParseResult = safeParse(
-			SongLibrarySongSchema,
-			songData,
+		const songSetLibrarySongSetParseResult = safeParse(
+			SongSetLibrarySongSetSchema,
+			songSetData,
 		);
-		if (!songLibrarySongParseResult.success) {
+		if (!songSetLibrarySongSetParseResult.success) {
 			return {
 				actionResultType: ActionResultType.ERROR,
-				error: "Song data invalid",
+				error: "Song Set data invalid",
 			};
 		}
 
-		const songLibrarySong = songLibrarySongParseResult.output;
+		const songSetLibrarySongSet = songSetLibrarySongSetParseResult.output;
 
 		// update user's song library
 		const userDocSnapshot = await getDoc(doc(db, "users", email));
@@ -98,24 +103,24 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 			};
 		}
 		const userDoc = userDocResult.output;
-		const oldSlimSong = userDoc.songSets[songId];
+		const oldSlimSongSet = userDoc.songSets[songSetId];
 
-		const newSlimSong: SlimSong = {
-			songSetName: songLibrarySong.songName,
+		const newSlimSongSet: SlimSongSet = {
+			songSetName: songSetLibrarySongSet.songSetName,
 			sharer: username,
 		};
 
 		const slimSongsAreEqual =
-			JSON.stringify(oldSlimSong) === JSON.stringify(newSlimSong);
+			JSON.stringify(oldSlimSongSet) === JSON.stringify(newSlimSongSet);
 
 		if (!slimSongsAreEqual) {
-			userDoc.songSets[songId] = newSlimSong;
+			userDoc.songSets[songSetId] = newSlimSongSet;
 			await setDoc(doc(db, "users", username), userDoc);
 		}
 
 		return {
 			actionResultType: ActionResultType.SUCCESS,
-			songLibrarySong: songLibrarySongParseResult.output,
+			songSetLibrarySongSet: songSetLibrarySongSetParseResult.output,
 		};
 	} catch (error) {
 		console.error(error);

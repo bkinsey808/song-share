@@ -20,7 +20,7 @@ export type SignInResult =
 	| {
 			signInResultType: SignInResultType.EXISTING;
 			userData: SessionCookieData;
-			songs: UserDoc["songs"];
+			songs: UserDoc["songSets"];
 	  };
 
 export const signIn = async (email: string): Promise<SignInResult> => {
@@ -59,6 +59,6 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 	return {
 		signInResultType: SignInResultType.EXISTING,
 		userData: sessionCookieData,
-		songs: existingUserDocResult.output.songs,
+		songs: existingUserDocResult.output.songSets,
 	};
 };

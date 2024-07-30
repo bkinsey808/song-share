@@ -1,7 +1,6 @@
 "use server";
 
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
-import { get } from "http";
 import { flatten, safeParse } from "valibot";
 
 import { extendSession } from "./extendSession";
@@ -83,11 +82,11 @@ export const songSave = async ({
 		}
 
 		const slimSong: SlimSong = {
-			songName: song.songName,
+			songSetName: song.songName,
 			sharer: username,
 		};
 
-		const userDocSongs = userDocResult.output.songs;
+		const userDocSongs = userDocResult.output.songSets;
 
 		// first, confirm user owns the song
 		if (songId && !userDocSongs[songId]) {
@@ -127,7 +126,7 @@ export const songSave = async ({
 		const newSongId = songDocRef.id;
 
 		// third, update the slimSong in the userDoc
-		const newSongs: UserDoc["songs"] = {
+		const newSongs: UserDoc["songSets"] = {
 			...userDocSongs,
 			[songId ?? newSongId]: slimSong,
 		};

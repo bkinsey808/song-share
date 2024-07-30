@@ -8,8 +8,9 @@ export enum AppModal {
 
 export enum SectionId {
 	SONG = "SONG",
-	SET_LIST = "SET_LIST",
+	SONG_SET = "SONG_SET",
 	SONG_LIBRARY = "SONG_LIBRARY",
+	SONG_SET_LIBRARY = "SONG_SET_LIBRARY",
 	TRANSLATION = "TRANSLATION",
 	LYICS = "LYICS",
 }

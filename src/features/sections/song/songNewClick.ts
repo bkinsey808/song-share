@@ -8,7 +8,7 @@ export const songNewClick = (set: Set) => (form: UseFormReturn<Song>) => () => {
 		songId: null,
 		songName: null,
 		translation: null,
-		sharer: null,
+		songSharer: null,
 		credits: null,
 	});
 	form.reset({
