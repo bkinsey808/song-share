@@ -5,13 +5,13 @@ import { ActionResultType } from "@/features/app-store/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { serverParse } from "@/features/global/serverParse";
-import { SongLibrarySongSchema } from "@/features/sections/song/schemas";
-import { SlimSong, SongLibrarySong } from "@/features/sections/song/types";
+import { SongSchema } from "@/features/sections/song/schemas";
+import { SlimSong, Song } from "@/features/sections/song/types";
 
 export type SongLoadResult =
 	| {
 			actionResultType: ActionResultType.SUCCESS;
-			songLibrarySong: SongLibrarySong;
+			songLibrarySong: Song;
 	  }
 	| {
 			actionResultType: ActionResultType.ERROR;
@@ -60,18 +60,15 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 			};
 		}
 
-		const songLibrarySongParseResult = serverParse(
-			SongLibrarySongSchema,
-			songData,
-		);
-		if (!songLibrarySongParseResult.success) {
+		const songParseResult = serverParse(SongSchema, songData);
+		if (!songParseResult.success) {
 			return {
 				actionResultType: ActionResultType.ERROR,
 				error: "Song data invalid",
 			};
 		}
 
-		const songLibrarySong = songLibrarySongParseResult.output;
+		const song = songParseResult.output;
 
 		// update user's song library
 		const userDocSnapshot = await getDoc(doc(db, "users", email));
@@ -101,7 +98,7 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 		const oldSlimSong = userDoc.songSets[songId];
 
 		const newSlimSong: SlimSong = {
-			songSetName: songLibrarySong.songName,
+			songSetName: song.songName,
 			sharer: username,
 		};
 
@@ -115,7 +112,7 @@ export const songLoad = async (songId: string): Promise<SongLoadResult> => {
 
 		return {
 			actionResultType: ActionResultType.SUCCESS,
-			songLibrarySong: songLibrarySongParseResult.output,
+			songLibrarySong: songParseResult.output,
 		};
 	} catch (error) {
 		console.error(error);

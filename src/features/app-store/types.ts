@@ -1,6 +1,7 @@
 import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 
+import { Nullable } from "../global/types";
 import { SongSet, SongSetLibrary } from "../sections/song-set/types";
 import { AppModal, SectionId } from "./enums";
 import { Song, SongLibrary } from "@/features/sections/song/types";
@@ -14,17 +15,17 @@ export type Set = (
 	replace?: boolean | undefined,
 ) => void;
 
+// each property in Song type needs to be nullable.
+// type AppSong is derived from Song
+export type AppSong = Nullable<Song>;
+
 export type AppStore = {
 	appModal: AppModal | null;
 	songId: string | null;
+	song: AppSong;
 	songSetId: string | null;
-	songName: string | null;
 	songSetName: string | null;
-	songSharer: string | null;
 	songSetSharer: string | null;
-	lyrics: string | null;
-	translation: string | null;
-	credits: string | null;
 	songLibrary: SongLibrary;
 	songSetLibrary: SongSetLibrary;
 	isSongUnsaved: boolean;

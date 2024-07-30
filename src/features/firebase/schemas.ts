@@ -12,10 +12,7 @@ import {
 	SlimSongSetSchema,
 	SongSetLibrarySongSetSchema,
 } from "../sections/song-set/schemas";
-import {
-	SlimSongSchema,
-	SongLibrarySongSchema,
-} from "../sections/song/schemas";
+import { SlimSongSchema } from "@/features/sections/song/schemas";
 
 export const UserDocSchema = object({
 	username: string(),
@@ -24,7 +21,5 @@ export const UserDocSchema = object({
 	songs: record(string(), SlimSongSchema),
 	songSets: record(string(), SlimSongSetSchema),
 });
-
-export const SongsSchema = record(string(), SongLibrarySongSchema);
 
 export const SongsSetSchema = record(string(), SongSetLibrarySongSetSchema);

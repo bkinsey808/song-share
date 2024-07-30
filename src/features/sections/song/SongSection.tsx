@@ -4,7 +4,6 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { CreditsSection } from "../credits/CreditsSection";
 import { KeySection } from "../key/KeySection";
 import { KeyTitle } from "../key/KeyTitle";
 import { ScaleSection } from "../scale/ScaleSection";
@@ -31,9 +30,7 @@ export const SongSection = () => {
 	const { isSignedIn } = useAuthStore();
 	const {
 		songId,
-		songName,
-		lyrics,
-		translation,
+		song,
 		songSubmit,
 		setIsSongUnsaved,
 		isSongUnsaved,
@@ -42,9 +39,11 @@ export const SongSection = () => {
 
 	const defaultValues: Song = useMemo(
 		() => ({
-			songName: songName ?? "",
-			lyrics: lyrics ?? "",
-			translation: translation ?? "",
+			songName: song?.songName ?? "",
+			lyrics: song?.songName ?? "",
+			translation: song?.translation ?? "",
+			credits: song?.credits ?? "",
+			sharer: song?.sharer ?? "",
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
@@ -62,13 +61,8 @@ export const SongSection = () => {
 
 	// handle load song form song library
 	useEffect(() => {
-		const song: Song = {
-			songName: songName ?? "",
-			lyrics: lyrics ?? "",
-			translation: translation ?? "",
-		};
-		form.reset(song);
-	}, [songName, lyrics, translation, form]);
+		form.reset(defaultValues);
+	}, [form, defaultValues]);
 
 	return (
 		<div suppressHydrationWarning={true}>
@@ -90,6 +84,21 @@ export const SongSection = () => {
 							</FormItem>
 						)}
 					/>
+
+					<SectionAccordion sectionId={SectionId.CREDITS} title="Credits">
+						<FormField
+							control={form.control}
+							name="credits"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Textarea autoResize={true} {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</SectionAccordion>
 
 					<SectionAccordion sectionId={SectionId.LYICS} title="Lyrics">
 						<FormField
@@ -137,30 +146,6 @@ export const SongSection = () => {
 			</Form>
 
 			{/* <div className="flex flex-col gap-[0.2rem] px-[0.2rem]">
-				<DashboardAccordion
-					key={Section.CREDITS}
-					id={Section.CREDITS}
-					title="Credits"
-				>
-					<CreditsSection />
-				</DashboardAccordion>
-
-				<DashboardAccordion
-					key={Section.LYRICS}
-					id={Section.LYRICS}
-					title="Lyrics"
-				>
-					<LyricsSection />
-				</DashboardAccordion>
-
-				<DashboardAccordion
-					key={Section.TRANSLATION}
-					id={Section.TRANSLATION}
-					title="Translation"
-				>
-					<TranslationSection />
-				</DashboardAccordion>
-
 				<DashboardAccordion
 					key={Section.KEY}
 					id={Section.KEY}

@@ -10,10 +10,7 @@ import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongFieldKey } from "@/features/sections/song/enums";
-import {
-	SongLibrarySongSchema,
-	SongSchema,
-} from "@/features/sections/song/schemas";
+import { SongSchema } from "@/features/sections/song/schemas";
 import type { SlimSong, Song } from "@/features/sections/song/types";
 
 const getFormError = (formError: string) => {
@@ -107,7 +104,7 @@ export const songSave = async ({
 		}
 
 		if (songData) {
-			const songResult = serverParse(SongLibrarySongSchema, songData);
+			const songResult = serverParse(SongSchema, songData);
 			if (!songResult.success) {
 				console.log(songData);
 				return getFormError("Song data is invalid");

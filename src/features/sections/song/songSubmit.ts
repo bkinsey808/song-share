@@ -1,7 +1,7 @@
 import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 
-import { Song, SongLibrarySong } from "./types";
+import { Song } from "./types";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
@@ -62,11 +62,11 @@ export const songSubmit =
 				case ActionResultType.SUCCESS:
 					const newSongId = result.songId;
 					const songLibrary = get().songLibrary;
-					const newSongLibrarySong: SongLibrarySong = {
+					const newSong: Song = {
 						...song,
 						sharer: username,
 					};
-					songLibrary[newSongId] = newSongLibrarySong;
+					songLibrary[newSongId] = newSong;
 					set({
 						songLibrary,
 						songId: newSongId,

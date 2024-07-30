@@ -8,21 +8,25 @@ import { songSetSubmit } from "../sections/song-set/songSetSubmit";
 import { songNewClick } from "../sections/song/songNewClick";
 import { songSubmit } from "../sections/song/songSubmit";
 import { SectionId } from "./enums";
-import { AppStore } from "./types";
+import { AppSong, AppStore } from "./types";
+
+const song: AppSong = {
+	songName: null,
+	lyrics: null,
+	translation: null,
+	credits: null,
+	sharer: null,
+};
 
 export const useAppStore = create<AppStore>()(
 	persist(
 		(set, get) => ({
 			appModal: null,
 			songId: null,
+			song,
 			songSetId: null,
-			songName: null,
 			songSetName: null,
-			translation: null,
-			songSharer: null,
 			songSetSharer: null,
-			lyrics: null,
-			credits: null,
 			songLibrary: {},
 			songSetLibrary: {},
 			setAppModal: (modal) => set({ appModal: modal }),

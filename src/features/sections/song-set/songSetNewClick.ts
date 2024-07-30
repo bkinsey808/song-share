@@ -8,7 +8,6 @@ export const songSetNewClick =
 		set({
 			songSetId: null,
 			songSetName: null,
-			songSharer: null,
 		});
 		form.reset({
 			songSetName: "",

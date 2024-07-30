@@ -13,13 +13,8 @@ export const SongSchema = object({
 	),
 	lyrics: string(),
 	translation: string(),
-});
-
-export const SongLibrarySongSchema = object({
-	songName: string(),
+	credits: string(),
 	sharer: string(),
-	lyrics: string(),
-	translation: string(),
 });
 
-export const SongLibrarySchema = record(string(), SongLibrarySongSchema);
+export const SongLibrarySchema = record(string(), SongSchema);

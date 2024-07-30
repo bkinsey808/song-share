@@ -24,8 +24,6 @@ export const SongSetSection = () => {
 	const {
 		songSetId,
 		songSetName,
-		lyrics,
-		translation,
 		songSetSubmit,
 		setIsSongSetUnsaved,
 		isSongSetUnsaved,
@@ -35,8 +33,6 @@ export const SongSetSection = () => {
 	const defaultValues: SongSet = useMemo(
 		() => ({
 			songSetName: songSetName ?? "",
-			lyrics: lyrics ?? "",
-			translation: translation ?? "",
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
@@ -57,7 +53,7 @@ export const SongSetSection = () => {
 		form.reset({
 			songSetName: songSetName ?? "",
 		});
-	}, [songSetName, lyrics, translation, form]);
+	}, [songSetName, form]);
 
 	return (
 		<div suppressHydrationWarning={true}>
