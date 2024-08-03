@@ -4,26 +4,20 @@ import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 
 import { getSessionCookieData } from "./getSessionCookieData";
+import { ActionResultType } from "@/features/app-store/enums";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { DeleteAccountResultType } from "@/features/auth/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
+import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
 import { getKeys } from "@/features/global/getKeys";
 import { serverParse } from "@/features/global/serverParse";
 
-export type DeleteAccountResult =
-	| { result: DeleteAccountResultType.SUCCESS }
-	| { result: DeleteAccountResultType.ERROR; message: string };
-
-export const deleteAccount = async (): Promise<DeleteAccountResult> => {
+export const deleteAccount = async () => {
 	try {
 		const sessionCookieData = await getSessionCookieData();
 
 		if (!sessionCookieData) {
-			return {
-				result: DeleteAccountResultType.ERROR,
-				message: "Session cookie data is missing",
-			};
+			return getActionErrorMessage("Session cookie data is missing");
 		}
 
 		const { username, email } = sessionCookieData;
@@ -32,19 +26,13 @@ export const deleteAccount = async (): Promise<DeleteAccountResult> => {
 		const userDocumentData = userDocumentSnapshot.data();
 
 		if (!userDocumentData) {
-			return {
-				result: DeleteAccountResultType.ERROR,
-				message: "User does not exist",
-			};
+			return getActionErrorMessage("User does not exist");
 		}
 
 		const userDoc = serverParse(UserDocSchema, userDocumentData);
 
 		if (!userDoc.success) {
-			return {
-				result: DeleteAccountResultType.ERROR,
-				message: "UserDoc data is missing or invalid",
-			};
+			return getActionErrorMessage("UserDoc data is missing or invalid");
 		}
 
 		const songs = userDoc.output.songSets;
@@ -59,17 +47,11 @@ export const deleteAccount = async (): Promise<DeleteAccountResult> => {
 			(result) => result.status === "rejected",
 		);
 		if (failedDeletes.length > 0) {
-			return {
-				result: DeleteAccountResultType.ERROR,
-				message: "Failed to delete songs",
-			};
+			return getActionErrorMessage("Failed to delete songs");
 		}
 
 		if (username === null) {
-			return {
-				result: DeleteAccountResultType.ERROR,
-				message: "Username is not defined",
-			};
+			return getActionErrorMessage("Username is not defined");
 		}
 
 		await deleteDoc(doc(db, "users", email));
@@ -77,12 +59,9 @@ export const deleteAccount = async (): Promise<DeleteAccountResult> => {
 
 		cookies().delete(SESSION_COOKIE_NAME);
 
-		return { result: DeleteAccountResultType.SUCCESS };
+		return { actionResultType: ActionResultType.SUCCESS as const };
 	} catch (error) {
 		console.error({ error });
-		return {
-			result: DeleteAccountResultType.ERROR,
-			message: "Error deleting account",
-		};
+		return getActionErrorMessage("Error deleting account");
 	}
 };

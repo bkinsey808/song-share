@@ -9,32 +9,17 @@ import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
-import { SongFieldKey } from "@/features/sections/song/enums";
 import { SongSchema } from "@/features/sections/song/schemas";
 import type { SlimSong, Song } from "@/features/sections/song/types";
 
 const getFormError = (formError: string) => {
 	console.error(formError);
 	return {
-		actionResultType: ActionResultType.ERROR as ActionResultType.ERROR,
+		actionResultType: ActionResultType.ERROR as const,
 		formError,
+		fieldErrors: undefined,
 	};
 };
-
-export type SongSaveResult =
-	| {
-			actionResultType: ActionResultType.SUCCESS;
-			songId: string;
-	  }
-	| {
-			actionResultType: ActionResultType.ERROR;
-			formError?: string;
-			fieldErrors?:
-				| {
-						[fieldKey in SongFieldKey]?: string[];
-				  }
-				| undefined;
-	  };
 
 export const songSave = async ({
 	song,
@@ -42,12 +27,12 @@ export const songSave = async ({
 }: {
 	song: Song;
 	songId: string | null;
-}): Promise<SongSaveResult> => {
+}) => {
 	try {
 		const result = serverParse(SongSchema, song);
 		if (!result.success) {
 			return {
-				actionResultType: ActionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR as const,
 				fieldErrors: flatten<typeof SongSchema>(result.issues).nested,
 			};
 		}

@@ -4,65 +4,36 @@ import { extendSession } from "./extendSession";
 import { ActionResultType } from "@/features/app-store/enums";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
+import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSetLibrarySongSetSchema } from "@/features/sections/song-set/schemas";
-import {
-	SlimSongSet,
-	SongSetLibrarySongSet,
-} from "@/features/sections/song-set/types";
+import { SlimSongSet } from "@/features/sections/song-set/types";
 
-export type SongSetLoadResult =
-	| {
-			actionResultType: ActionResultType.SUCCESS;
-			songSetLibrarySongSet: SongSetLibrarySongSet;
-	  }
-	| {
-			actionResultType: ActionResultType.ERROR;
-			error: string;
-	  };
-
-export const songSetLoad = async (
-	songSetId: string,
-): Promise<SongSetLoadResult> => {
+export const songSetLoad = async (songSetId: string) => {
 	try {
 		const sessionCookieData = await extendSession();
 		if (!sessionCookieData) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "Session expired",
-			};
+			return getActionErrorMessage("Session expired");
 		}
 
 		const { username, email } = sessionCookieData;
 
 		if (!username) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "Username not found",
-			};
+			return getActionErrorMessage("Username not found");
 		}
 
 		if (!email) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "Email not found",
-			};
+			return getActionErrorMessage("Email not found");
 		}
 
 		const songSetDocSnapshot = await getDoc(doc(db, "songSets", songSetId));
 		if (!songSetDocSnapshot.exists()) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "Song Set not found",
-			};
+			return getActionErrorMessage("Song Set not found");
 		}
 
 		const songSetData = songSetDocSnapshot.data();
 		if (!songSetData) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "Song Set data not found",
-			};
+			return getActionErrorMessage("Song Set data not found");
 		}
 
 		const songSetLibrarySongSetParseResult = serverParse(
@@ -70,10 +41,7 @@ export const songSetLoad = async (
 			songSetData,
 		);
 		if (!songSetLibrarySongSetParseResult.success) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "Song Set data invalid",
-			};
+			return getActionErrorMessage("Song Set data invalid");
 		}
 
 		const songSetLibrarySongSet = songSetLibrarySongSetParseResult.output;
@@ -81,26 +49,17 @@ export const songSetLoad = async (
 		// update user's song library
 		const userDocSnapshot = await getDoc(doc(db, "users", email));
 		if (!userDocSnapshot.exists()) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: `User not found: ${email}`,
-			};
+			return getActionErrorMessage(`User not found: ${email}`);
 		}
 
 		const userDocData = userDocSnapshot.data();
 		if (!userDocData) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "User data not found",
-			};
+			return getActionErrorMessage("User data not found");
 		}
 
 		const userDocResult = serverParse(UserDocSchema, userDocData);
 		if (!userDocResult.success) {
-			return {
-				actionResultType: ActionResultType.ERROR,
-				error: "User data invalid",
-			};
+			return getActionErrorMessage("User data invalid");
 		}
 		const userDoc = userDocResult.output;
 		const oldSlimSongSet = userDoc.songSets[songSetId];
@@ -119,14 +78,11 @@ export const songSetLoad = async (
 		}
 
 		return {
-			actionResultType: ActionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS as const,
 			songSetLibrarySongSet: songSetLibrarySongSetParseResult.output,
 		};
 	} catch (error) {
 		console.error(error);
-		return {
-			actionResultType: ActionResultType.ERROR,
-			error: "An error occurred",
-		};
+		return getActionErrorMessage("An error occurred");
 	}
 };

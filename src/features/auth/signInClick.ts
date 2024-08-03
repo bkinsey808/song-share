@@ -2,7 +2,6 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 import { AppModal } from "../app-store/enums";
 import { getKeys } from "../global/getKeys";
-import { SongLibrary } from "../sections/song/types";
 import { Role, SignInResultType } from "./enums";
 import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
 import type { Set } from "./types";

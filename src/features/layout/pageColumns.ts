@@ -39,7 +39,7 @@ const leftSections: SectionId[] = [
 	SectionId.SONG_SET_LIBRARY,
 	SectionId.SONG_SET,
 ];
-const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
-const rightSections: SectionId[] = [];
+// const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
+const rightSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
 
-export const pageColumns = [leftSections, centerSections, rightSections];
+export const pageColumns = [leftSections, rightSections];

@@ -11,26 +11,16 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
-import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 
-export type SignInResult =
-	| { signInResultType: SignInResultType.NEW }
-	| { signInResultType: SignInResultType.ERROR; message: string }
-	| {
-			signInResultType: SignInResultType.EXISTING;
-			userData: SessionCookieData;
-			songs: UserDoc["songSets"];
-	  };
-
-export const signIn = async (email: string): Promise<SignInResult> => {
+export const signIn = async (email: string) => {
 	const existingUserDoc =
 		email === null ? undefined : await getDoc(doc(db, "users", email));
 
 	if (!existingUserDoc?.exists()) {
 		console.log("No existing user");
 
-		return { signInResultType: SignInResultType.NEW };
+		return { signInResultType: SignInResultType.NEW as const };
 	}
 
 	const existingUserDocData = existingUserDoc.data();
@@ -40,7 +30,7 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 	if (!existingUserDocResult.success) {
 		console.error("UserDoc data is invalid", existingUserDocResult.issues);
 		return {
-			signInResultType: SignInResultType.ERROR,
+			signInResultType: SignInResultType.ERROR as const,
 			message: "UserDoc data is invalid",
 		};
 	}
@@ -57,7 +47,7 @@ export const signIn = async (email: string): Promise<SignInResult> => {
 	cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
 	return {
-		signInResultType: SignInResultType.EXISTING,
+		signInResultType: SignInResultType.EXISTING as const,
 		userData: sessionCookieData,
 		songs: existingUserDocResult.output.songSets,
 	};

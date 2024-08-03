@@ -1,5 +1,5 @@
+import { ActionResultType } from "../app-store/enums";
 import { useAppStore } from "../app-store/useAppStore";
-import { DeleteAccountResultType } from "./enums";
 import { AuthStore } from "./types";
 import { deleteAccount } from "@/actions/deleteAccount";
 import { toast } from "@/components/ui/use-toast";
@@ -20,7 +20,7 @@ export const confirmDeleteAccountClick =
 			try {
 				const deleteAccountResult = await deleteAccount();
 
-				if (deleteAccountResult.result === DeleteAccountResultType.ERROR) {
+				if (deleteAccountResult.actionResultType === ActionResultType.ERROR) {
 					set({
 						deleteAccountError: deleteAccountResult.message,
 						deletingAccount: false,

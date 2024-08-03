@@ -1,8 +1,8 @@
 import { UseFormReturn } from "react-hook-form";
 
+import { ActionResultType } from "../app-store/enums";
 import { useAppStore } from "../app-store/useAppStore";
 import { getKeys } from "../global/getKeys";
-import { RegisterResultType } from "./enums";
 import { Get, RegistrationData, Set } from "./types";
 import { register } from "@/actions/register";
 import { toast } from "@/components/ui/use-toast";
@@ -35,8 +35,8 @@ export const registerSubmit =
 					registrationData,
 				});
 
-				switch (result.registerResultType) {
-					case RegisterResultType.ERROR:
+				switch (result.actionResultType) {
+					case ActionResultType.ERROR:
 						const keys = result.fieldErrors
 							? getKeys(result.fieldErrors)
 							: undefined;
@@ -56,7 +56,7 @@ export const registerSubmit =
 						});
 
 						break;
-					case RegisterResultType.SUCCESS:
+					case ActionResultType.SUCCESS:
 						set({
 							isSignedIn: true,
 							sessionCookieData: {

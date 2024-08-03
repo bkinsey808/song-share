@@ -24,7 +24,7 @@ export const songLoadClick =
 		if (result.actionResultType === ActionResultType.ERROR) {
 			toast({
 				variant: "destructive",
-				title: result.error,
+				title: result.message,
 			});
 			return;
 		}
