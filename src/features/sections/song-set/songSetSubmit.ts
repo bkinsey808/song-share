@@ -10,12 +10,13 @@ import { getKeys } from "@/features/global/getKeys";
 
 export const songSetSubmit =
 	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
-		const form = get().songSetForm;
-		if (!form) {
+		e.preventDefault();
+		const { songSetForm, songSetId, songSetLibrary } = get();
+		if (!songSetForm) {
 			console.error("no form");
 			return;
 		}
-		return form.handleSubmit(async (songSet) => {
+		return songSetForm.handleSubmit(async (songSet) => {
 			const sessionCookieData = useAuthStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
@@ -28,16 +29,15 @@ export const songSetSubmit =
 
 			const username = sessionCookieData.username;
 			if (!username) {
-				form.setError("root", {
+				songSetForm.setError("root", {
 					message: "Username is null",
 				});
 				return;
 			}
 
-			const originalSongSetId = get().songSetId;
 			const result = await songSetSave({
 				songSet,
-				songSetId: originalSongSetId,
+				songSetId,
 			});
 
 			switch (result.actionResultType) {
@@ -50,20 +50,19 @@ export const songSetSubmit =
 						if (!message) {
 							return;
 						}
-						form.setError(key, {
+						songSetForm.setError(key, {
 							type: "manual",
 							message,
 						});
 					});
 					toast({
 						variant: "destructive",
-						title: "There was an error saving songSet",
+						title: "There was an error saving song set",
 					});
 
 					break;
 				case ActionResultType.SUCCESS:
 					const newSongSetId = result.songSetId;
-					const songSetLibrary = get().songSetLibrary;
 					const newSongSetLibrarySongSet: SongSetLibrarySongSet = {
 						...songSet,
 						sharer: username,
@@ -75,8 +74,8 @@ export const songSetSubmit =
 						...songSet,
 					});
 					console.log("reset");
-					form.reset(songSet, { keepValues: true });
-					toast({ title: "SongSet details saved" });
+					songSetForm.reset(songSet, { keepValues: true });
+					toast({ title: "Song Set details saved" });
 					break;
 			}
 		})(e);

@@ -11,6 +11,7 @@ export const SongSetSchema = object({
 		nonEmpty("Song Set Name is required"),
 		minLength(3, "Song Set Name must be at least 3 characters"),
 	),
+	sharer: string(),
 });
 
 export const SongSetLibrarySongSetSchema = object({

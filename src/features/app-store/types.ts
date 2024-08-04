@@ -18,14 +18,14 @@ export type Set = (
 // each property in Song type needs to be nullable.
 // type AppSong is derived from Song
 export type AppSong = Nullable<Song>;
+export type AppSongSet = Nullable<SongSet>;
 
 export type AppStore = {
 	appModal: AppModal | null;
 	songId: string | null;
 	song: AppSong;
+	songSet: AppSongSet;
 	songSetId: string | null;
-	songSetName: string | null;
-	songSetSharer: string | null;
 	songLibrary: SongLibrary;
 	songSetLibrary: SongSetLibrary;
 	isSongUnsaved: boolean;
@@ -46,10 +46,13 @@ export type AppStore = {
 	songNewClick: () => void;
 	songSetNewClick: () => void;
 	songDeleteClick: () => void;
+	songSetDeleteClick: () => void;
 	deletingSong: boolean;
+	deletingSongSet: boolean;
 	songDeleteConfirmClick: () => Promise<void> | undefined;
+	songSetDeleteConfirmClick: () => Promise<void> | undefined;
 	songForm: UseFormReturn<Song> | null;
 	songSetForm: UseFormReturn<SongSet> | null;
-	setSongForm: (songForm: UseFormReturn<Song) => void;
+	setSongForm: (songForm: UseFormReturn<Song>) => void;
 	setSongSetForm: (songSetForm: UseFormReturn<SongSet>) => void;
 };

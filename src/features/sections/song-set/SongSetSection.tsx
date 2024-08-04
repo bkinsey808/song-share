@@ -4,6 +4,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
+import { SongSetDeleteConfirmModal } from "./SongSetDeleteConfirmModal";
 import { SongSetSchema } from "./schemas";
 import { SongSet } from "./types";
 import { Button } from "@/components/ui/button";
@@ -23,16 +24,19 @@ export const SongSetSection = () => {
 	const { isSignedIn } = useAuthStore();
 	const {
 		songSetId,
-		songSetName,
+		songSet,
 		songSetSubmit,
 		setIsSongSetUnsaved,
 		isSongSetUnsaved,
 		songSetNewClick,
+		setSongSetForm,
+		songSetDeleteClick,
 	} = useAppStore();
 
 	const defaultValues: SongSet = useMemo(
 		() => ({
-			songSetName: songSetName ?? "",
+			songSetName: songSet?.songSetName ?? "",
+			sharer: songSet?.sharer ?? "",
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
@@ -48,15 +52,19 @@ export const SongSetSection = () => {
 		setIsSongSetUnsaved(form.formState.isDirty);
 	}, [form.formState.isDirty, setIsSongSetUnsaved]);
 
-	// handle load songSet form songSet library
+	// handle load song set from song set library
 	useEffect(() => {
-		form.reset({
-			songSetName: songSetName ?? "",
-		});
-	}, [songSetName, form]);
+		form.reset(defaultValues);
+	}, [form, defaultValues]);
+
+	// set song form
+	useEffect(() => {
+		setSongSetForm(form);
+	}, [form, setSongSetForm]);
 
 	return (
 		<div suppressHydrationWarning={true}>
+			<SongSetDeleteConfirmModal />
 			<Form {...form}>
 				<div suppressHydrationWarning={true}>
 					isDirty: {isSongSetUnsaved.toString()}
@@ -67,9 +75,9 @@ export const SongSetSection = () => {
 						name="songSetName"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>SongSet name</FormLabel>
+								<FormLabel>Song Set name</FormLabel>
 								<FormControl>
-									<Input placeholder="SongSet Name" {...field} />
+									<Input placeholder="Song Set Name" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -83,6 +91,11 @@ export const SongSetSection = () => {
 							</Button>
 							{songSetId ? <Button>Save As...</Button> : null}
 							<Button onClick={songSetNewClick}>New</Button>
+							{songSetId ? (
+								<Button variant="destructive" onClick={songSetDeleteClick}>
+									Delete
+								</Button>
+							) : null}
 						</div>
 					) : null}
 				</form>

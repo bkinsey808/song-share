@@ -62,7 +62,7 @@ export const SongSection = () => {
 		setIsSongUnsaved(form.formState.isDirty);
 	}, [form.formState.isDirty, setIsSongUnsaved]);
 
-	// handle load song form song library
+	// handle load song from song library
 	useEffect(() => {
 		form.reset(defaultValues);
 	}, [form, defaultValues]);
