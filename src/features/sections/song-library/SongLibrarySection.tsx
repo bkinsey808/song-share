@@ -25,7 +25,14 @@ export const SongLibrarySection = () => {
 						<div>{songLibrary[songId].songName}</div>
 						<div>{songLibrary[songId].sharer}</div>
 						<div>
-							<Button onClick={songLoadClick(songId)}>Load</Button>
+							<Button
+								onClick={(e) => {
+									console.log(e);
+									return songLoadClick(songId)(e);
+								}}
+							>
+								Load
+							</Button>
 						</div>
 					</div>
 				))}

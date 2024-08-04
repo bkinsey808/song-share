@@ -1,7 +1,6 @@
 import { FormEvent } from "react";
-import { UseFormReturn } from "react-hook-form";
 
-import { SongSet, SongSetLibrarySongSet } from "./types";
+import { SongSetLibrarySongSet } from "./types";
 import { songSetSave } from "@/actions/songSetSave";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
@@ -10,10 +9,13 @@ import { useAuthStore } from "@/features/auth/useAuthStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSetSubmit =
-	(get: Get, set: Set) =>
-	(form: UseFormReturn<SongSet>) =>
-	(e: FormEvent<HTMLFormElement>) =>
-		form.handleSubmit(async (songSet) => {
+	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
+		const form = get().songSetForm;
+		if (!form) {
+			console.error("no form");
+			return;
+		}
+		return form.handleSubmit(async (songSet) => {
 			const sessionCookieData = useAuthStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
@@ -78,3 +80,4 @@ export const songSetSubmit =
 					break;
 			}
 		})(e);
+	};

@@ -9,7 +9,6 @@ import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
-import { SongSetFieldKey } from "@/features/sections/song-set/enums";
 import {
 	SongSetLibrarySongSetSchema,
 	SongSetSchema,
@@ -21,23 +20,9 @@ const getFormError = (formError: string) => {
 	return {
 		actionResultType: ActionResultType.ERROR as ActionResultType.ERROR,
 		formError,
+		fieldErrors: [],
 	};
 };
-
-export type SongSetSaveResult =
-	| {
-			actionResultType: ActionResultType.SUCCESS;
-			songSetId: string;
-	  }
-	| {
-			actionResultType: ActionResultType.ERROR;
-			formError?: string;
-			fieldErrors?:
-				| {
-						[fieldKey in SongSetFieldKey]?: string[];
-				  }
-				| undefined;
-	  };
 
 export const songSetSave = async ({
 	songSet,
@@ -45,12 +30,12 @@ export const songSetSave = async ({
 }: {
 	songSet: SongSet;
 	songSetId: string | null;
-}): Promise<SongSetSaveResult> => {
+}) => {
 	try {
 		const result = serverParse(SongSetSchema, songSet);
 		if (!result.success) {
 			return {
-				actionResultType: ActionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR as const,
 				fieldErrors: flatten<typeof SongSetSchema>(result.issues).nested,
 			};
 		}

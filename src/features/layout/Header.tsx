@@ -4,8 +4,12 @@ import { useAuthStore } from "../auth/useAuthStore";
 import { Button } from "@/components/ui/button";
 
 export const Header = () => {
-	const { sessionCookieData, isSignedIn, signInClick, manageAccountClick } =
-		useAuthStore();
+	const {
+		sessionCookieData,
+		isSignedIn,
+		signInClick,
+		acocuntManageClick: manageAccountClick,
+	} = useAuthStore();
 
 	return (
 		<header className="flex justify-between bg-[gray] p-[0.5rem] text-[hsl(var(--background))]">

@@ -1,9 +1,9 @@
 import { create } from "zustand";
 
 import { AppModal } from "../app-store/enums";
-import { confirmDeleteAccountClick } from "./confirmDeleteAccountClick";
-import { extendSessionClick } from "./extendSessionClick";
+import { accountDeleteConfirmClick } from "./accountDeleteConfirmClick";
 import { registerSubmit } from "./registerSubmit";
+import { sessionExtendClick } from "./sessionExtendClick";
 import { signInClick } from "./signInClick";
 import { AuthStore } from "./types";
 import { signOut } from "@/actions/signOut";
@@ -15,7 +15,6 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 	isSignedIn: false,
 	sessionCookieData: null,
 	deletingAccount: false,
-	deleteAccountError: null,
 	registerError: null,
 	lastSignInCheck: 0,
 	isSigningIn: false,
@@ -28,8 +27,8 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 		useAppStore.getState().setAppModal(null);
 	},
 	signInClick: signInClick(set),
-	manageAccountClick: () => {
-		useAppStore.getState().setAppModal(AppModal.MANAGE_ACCOUNT);
+	acocuntManageClick: () => {
+		useAppStore.getState().setAppModal(AppModal.ACCOUNT_MANAGE);
 	},
 	signOutClick: () => {
 		signOut();
@@ -41,9 +40,9 @@ export const useAuthStore = create<AuthStore>()((set, get) => ({
 		toast({ title: "You have been signed out" });
 	},
 	deleteAccountClick: () => {
-		useAppStore.getState().setAppModal(AppModal.DELETE_ACCOUNT_CONFIRM);
+		useAppStore.getState().setAppModal(AppModal.ACCOUNT_DELETE_CONFIRM);
 	},
-	confirmDeleteAccountClick: confirmDeleteAccountClick(set),
+	accountDeleteConfirmClick: accountDeleteConfirmClick(set),
 	registerSubmit: registerSubmit(get, set),
-	extendSessionClick: extendSessionClick(get, set),
+	sessionExtendClick: sessionExtendClick(get, set),
 }));

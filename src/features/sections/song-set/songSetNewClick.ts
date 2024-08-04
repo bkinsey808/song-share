@@ -1,15 +1,16 @@
-import { UseFormReturn } from "react-hook-form";
+import { Get, Set } from "@/features/app-store/types";
 
-import { SongSet } from "./types";
-import { Set } from "@/features/app-store/types";
-
-export const songSetNewClick =
-	(set: Set) => (form: UseFormReturn<SongSet>) => () => {
-		set({
-			songSetId: null,
-			songSetName: null,
-		});
-		form.reset({
-			songSetName: "",
-		});
-	};
+export const songSetNewClick = (get: Get, set: Set) => () => {
+	const form = get().songSetForm;
+	if (!form) {
+		console.error("no form");
+		return;
+	}
+	set({
+		songSetId: null,
+		songSetName: null,
+	});
+	form.reset({
+		songSetName: "",
+	});
+};

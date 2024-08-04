@@ -28,7 +28,10 @@ export const signIn = async (email: string) => {
 	const existingUserDocResult = serverParse(UserDocSchema, existingUserDocData);
 
 	if (!existingUserDocResult.success) {
-		console.error("UserDoc data is invalid", existingUserDocResult.issues);
+		console.error(
+			"UserDoc data is invalid",
+			JSON.stringify(existingUserDocResult.issues, null, 2),
+		);
 		return {
 			signInResultType: SignInResultType.ERROR as const,
 			message: "UserDoc data is invalid",

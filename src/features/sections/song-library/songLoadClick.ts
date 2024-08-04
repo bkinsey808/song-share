@@ -11,8 +11,10 @@ export const songLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const isSongLoaded = get().isSongUnsaved;
-		if (isSongLoaded) {
+		console.log("songLoadClick");
+
+		const { isSongUnsaved, songForm } = get();
+		if (isSongUnsaved) {
 			toast({
 				variant: "destructive",
 				title: "Please save your current song before loading a new one",
@@ -20,7 +22,13 @@ export const songLoadClick =
 			return;
 		}
 
+		if (!songForm) {
+			console.error("no form");
+			return;
+		}
+
 		const result = await songLoad(songId);
+		console.log(result);
 		if (result.actionResultType === ActionResultType.ERROR) {
 			toast({
 				variant: "destructive",
@@ -42,6 +50,8 @@ export const songLoadClick =
 			songId,
 			songLibrary: newSongLibrary,
 		});
+
+		songForm.reset(songLibrarySong);
 
 		toast({
 			title: "Song loaded",

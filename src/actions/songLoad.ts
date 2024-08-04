@@ -62,7 +62,7 @@ export const songLoad = async (songId: string) => {
 		const oldSlimSong = userDoc.songSets[songId];
 
 		const newSlimSong: SlimSong = {
-			songSetName: song.songName,
+			songName: song.songName,
 			sharer: username,
 		};
 
@@ -70,7 +70,7 @@ export const songLoad = async (songId: string) => {
 			JSON.stringify(oldSlimSong) === JSON.stringify(newSlimSong);
 
 		if (!slimSongsAreEqual) {
-			userDoc.songSets[songId] = newSlimSong;
+			userDoc.songs[songId] = newSlimSong;
 			await setDoc(doc(db, "users", username), userDoc);
 		}
 

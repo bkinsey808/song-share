@@ -8,6 +8,7 @@ import { KeySection } from "../key/KeySection";
 import { KeyTitle } from "../key/KeyTitle";
 import { ScaleSection } from "../scale/ScaleSection";
 import { ScaleTitle } from "../scale/ScaleTitle";
+import { SongDeleteConfirmModal } from "./SongDeleteConfirmModal";
 import { SongSchema } from "./schemas";
 import { Song } from "./types";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,8 @@ export const SongSection = () => {
 		setIsSongUnsaved,
 		isSongUnsaved,
 		songNewClick,
+		setSongForm,
+		songDeleteClick,
 	} = useAppStore();
 
 	const defaultValues: Song = useMemo(
@@ -64,13 +67,19 @@ export const SongSection = () => {
 		form.reset(defaultValues);
 	}, [form, defaultValues]);
 
+	// set song form
+	useEffect(() => {
+		setSongForm(form);
+	}, [form, setSongForm]);
+
 	return (
 		<div suppressHydrationWarning={true}>
+			<SongDeleteConfirmModal />
 			<Form {...form}>
 				<div suppressHydrationWarning={true}>
 					isDirty: {isSongUnsaved.toString()}
 				</div>
-				<form onSubmit={songSubmit(form)}>
+				<form onSubmit={songSubmit}>
 					<FormField
 						control={form.control}
 						name="songName"
@@ -139,7 +148,12 @@ export const SongSection = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
-							<Button onClick={songNewClick(form)}>New</Button>
+							<Button onClick={songNewClick}>New</Button>
+							{songId ? (
+								<Button variant="destructive" onClick={songDeleteClick}>
+									Delete
+								</Button>
+							) : null}
 						</div>
 					) : null}
 				</form>

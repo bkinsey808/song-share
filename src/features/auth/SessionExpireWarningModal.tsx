@@ -7,7 +7,11 @@ import { useAuthStore } from "./useAuthStore";
 import { Button } from "@/components/ui/button";
 
 export const SessionExpireWarningModal = () => {
-	const { extendSessionClick, signOut, isSigningIn } = useAuthStore();
+	const {
+		sessionExtendClick: extendSessionClick,
+		signOut,
+		isSigningIn,
+	} = useAuthStore();
 	const { appModal, setAppModal } = useAppStore();
 
 	const setOpen = useCallback(

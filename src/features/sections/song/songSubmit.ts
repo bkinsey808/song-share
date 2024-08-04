@@ -1,5 +1,4 @@
 import { FormEvent } from "react";
-import { UseFormReturn } from "react-hook-form";
 
 import { Song } from "./types";
 import { songSave } from "@/actions/songSave";
@@ -10,10 +9,13 @@ import { useAuthStore } from "@/features/auth/useAuthStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSubmit =
-	(get: Get, set: Set) =>
-	(form: UseFormReturn<Song>) =>
-	(e: FormEvent<HTMLFormElement>) =>
-		form.handleSubmit(async (song) => {
+	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+		const form = get().songForm;
+		if (!form) {
+			console.error("no form");
+			return;
+		}
+		return form.handleSubmit(async (song) => {
 			const sessionCookieData = useAuthStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
@@ -78,3 +80,4 @@ export const songSubmit =
 					break;
 			}
 		})(e);
+	};

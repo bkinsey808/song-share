@@ -2,7 +2,7 @@ import { useAppStore } from "../app-store/useAppStore";
 import type { Get, Set } from "./types";
 import { extendSession } from "@/actions/extendSession";
 
-export const extendSessionClick = (get: Get, set: Set) => () => {
+export const sessionExtendClick = (get: Get, set: Set) => () => {
 	void (async () => {
 		try {
 			set({

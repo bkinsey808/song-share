@@ -33,12 +33,8 @@ export type AppStore = {
 	setIsSongUnsaved: (unsavedSong: boolean) => void;
 	setIsSongSetUnsaved: (unsavedSongSet: boolean) => void;
 	setAppModal: (modal: AppModal | null) => void;
-	songSubmit: (
-		form: UseFormReturn<Song>,
-	) => (e: FormEvent<HTMLFormElement>) => void;
-	songSetSubmit: (
-		form: UseFormReturn<SongSet>,
-	) => (e: FormEvent<HTMLFormElement>) => void;
+	songSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
+	songSetSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
 	openSections: SectionId[];
 	sectionToggle: (sectionId: SectionId) => void;
 	songLoadClick: (
@@ -47,6 +43,13 @@ export type AppStore = {
 	songSetLoadClick: (
 		songSetId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	songNewClick: (form: UseFormReturn<Song>) => () => void;
-	songSetNewClick: (form: UseFormReturn<SongSet>) => () => void;
+	songNewClick: () => void;
+	songSetNewClick: () => void;
+	songDeleteClick: () => void;
+	deletingSong: boolean;
+	songDeleteConfirmClick: () => Promise<void> | undefined;
+	songForm: UseFormReturn<Song> | null;
+	songSetForm: UseFormReturn<SongSet> | null;
+	setSongForm: (songForm: UseFormReturn<Song) => void;
+	setSongSetForm: (songSetForm: UseFormReturn<SongSet>) => void;
 };

@@ -61,7 +61,7 @@ export const SongSetSection = () => {
 				<div suppressHydrationWarning={true}>
 					isDirty: {isSongSetUnsaved.toString()}
 				</div>
-				<form onSubmit={songSetSubmit(form)}>
+				<form onSubmit={songSetSubmit}>
 					<FormField
 						control={form.control}
 						name="songSetName"
@@ -82,7 +82,7 @@ export const SongSetSection = () => {
 								Save
 							</Button>
 							{songSetId ? <Button>Save As...</Button> : null}
-							<Button onClick={songSetNewClick(form)}>New</Button>
+							<Button onClick={songSetNewClick}>New</Button>
 						</div>
 					) : null}
 				</form>

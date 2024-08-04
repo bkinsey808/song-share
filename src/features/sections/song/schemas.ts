@@ -1,7 +1,7 @@
 import { minLength, nonEmpty, object, pipe, record, string } from "valibot";
 
 export const SlimSongSchema = object({
-	songSetName: string(),
+	songName: string(),
 	sharer: string(),
 });
 

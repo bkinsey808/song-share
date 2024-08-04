@@ -6,17 +6,15 @@ import { AppModal } from "../app-store/enums";
 import { useAppStore } from "../app-store/useAppStore";
 import { Modal, ModalContent, ModalFooter } from "../design-system/Modal";
 import { useAuthStore } from "./useAuthStore";
-import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 
-export const DeleteAccountConfirmModal = () => {
+export const AccountDeleteConfirmModal = () => {
 	const { appModal, setAppModal } = useAppStore();
-	const { deleteAccountError, confirmDeleteAccountClick, deletingAccount } =
-		useAuthStore();
+	const { accountDeleteConfirmClick, deletingAccount } = useAuthStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
-			setAppModal(open ? AppModal.DELETE_ACCOUNT_CONFIRM : null);
+			setAppModal(open ? AppModal.ACCOUNT_DELETE_CONFIRM : null);
 		},
 		[setAppModal],
 	);
@@ -24,13 +22,10 @@ export const DeleteAccountConfirmModal = () => {
 	return (
 		<Modal
 			heading="Confirm Delete Account"
-			open={appModal === AppModal.DELETE_ACCOUNT_CONFIRM}
+			open={appModal === AppModal.ACCOUNT_DELETE_CONFIRM}
 			setOpen={setOpen}
 		>
 			<ModalContent>
-				{deleteAccountError ? (
-					<Alert variant="destructive">{deleteAccountError}</Alert>
-				) : null}
 				<p>
 					Are you sure you want to delete your account? This cannot be undone.
 				</p>
@@ -40,7 +35,7 @@ export const DeleteAccountConfirmModal = () => {
 				<Button
 					variant="destructive"
 					disabled={deletingAccount}
-					onClick={confirmDeleteAccountClick}
+					onClick={accountDeleteConfirmClick}
 				>
 					Delete Account
 				</Button>

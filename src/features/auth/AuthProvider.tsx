@@ -5,8 +5,8 @@ import { ReactNode, useCallback, useEffect } from "react";
 import { AppModal } from "../app-store/enums";
 import { useAppStore } from "../app-store/useAppStore";
 import { useInterval } from "../global/useInterval";
-import { DeleteAccountConfirmModal } from "./DeleteAccountConfirmModal";
-import { ManageAccountModal } from "./ManageAccountModal";
+import { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
+import { AccountManageModal } from "./AccountManageModal";
 import { RegisterModal } from "./RegisterModal";
 import { SessionExpireWarningModal } from "./SessionExpireWarningModal";
 import { SessionExpiredModal } from "./SessionExpiredModal";
@@ -87,8 +87,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 	return (
 		<>
-			<ManageAccountModal />
-			<DeleteAccountConfirmModal />
+			<AccountManageModal />
+			<AccountDeleteConfirmModal />
 			<RegisterModal />
 			<SessionExpiredModal />
 			<SessionExpireWarningModal />

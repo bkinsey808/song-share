@@ -1,11 +1,14 @@
-import { UseFormReturn } from "react-hook-form";
-
 import { Song } from "./types";
-import { Set } from "@/features/app-store/types";
+import { Get, Set } from "@/features/app-store/types";
 import { useAuthStore } from "@/features/auth/useAuthStore";
 
-export const songNewClick = (set: Set) => (form: UseFormReturn<Song>) => () => {
+export const songNewClick = (get: Get, set: Set) => () => {
 	const username = useAuthStore.getState().sessionCookieData?.username;
+	const form = get().songForm;
+	if (!form) {
+		console.error("no form");
+		return;
+	}
 
 	set({
 		songId: null,

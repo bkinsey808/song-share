@@ -4,7 +4,7 @@ import { AuthStore } from "./types";
 import { deleteAccount } from "@/actions/deleteAccount";
 import { toast } from "@/components/ui/use-toast";
 
-export const confirmDeleteAccountClick =
+export const accountDeleteConfirmClick =
 	(
 		set: (
 			partial:
@@ -17,38 +17,25 @@ export const confirmDeleteAccountClick =
 	() => {
 		void (async () => {
 			set({ deletingAccount: true });
-			try {
-				const deleteAccountResult = await deleteAccount();
+			const deleteAccountResult = await deleteAccount();
 
-				if (deleteAccountResult.actionResultType === ActionResultType.ERROR) {
-					set({
-						deleteAccountError: deleteAccountResult.message,
-						deletingAccount: false,
-					});
-					useAppStore.getState().setAppModal(null);
-					toast({
-						variant: "destructive",
-						title: "There was an error deleting your account",
-					});
-
-					return;
-				}
-
-				set({ deleteAccountError: null });
-				useAppStore.getState().setAppModal(null);
-			} catch (error) {
-				set({ deleteAccountError: "There was an error deleting your account" });
+			if (deleteAccountResult.actionResultType === ActionResultType.ERROR) {
+				set({
+					deletingAccount: false,
+				});
 				toast({
 					variant: "destructive",
 					title: "There was an error deleting your account",
 				});
+				useAppStore.getState().setAppModal(null);
+				return;
 			}
 
 			set({
 				isSignedIn: false,
 				deletingAccount: false,
 			});
-
 			toast({ title: "Your account has been deleted" });
+			useAppStore.getState().setAppModal(null);
 		})();
 	};

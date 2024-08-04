@@ -25,15 +25,14 @@ export type AuthStore = {
 	setLastSignInCheck: (lastSignInCheck: number) => void;
 	signIn: (sessionCookieData: SessionCookieData) => void;
 	signInClick: () => void;
-	manageAccountClick: () => void;
+	acocuntManageClick: () => void;
 	signOut: () => void;
 	signOutClick: () => void;
-	deleteAccountError: null | string;
 	deletingAccount: boolean;
 	deleteAccountClick: () => void;
-	confirmDeleteAccountClick: () => void;
+	accountDeleteConfirmClick: () => void;
 	registerSubmit: (
 		form: UseFormReturn<RegistrationData>,
 	) => (e: React.FormEvent<HTMLFormElement>) => void;
-	extendSessionClick: () => void;
+	sessionExtendClick: () => void;
 };

@@ -5,6 +5,8 @@ import { songLoadClick } from "../sections/song-library/songLoadClick";
 import { songSetLoadClick } from "../sections/song-set-library/songSetLoadClick";
 import { songSetNewClick } from "../sections/song-set/songSetNewClick";
 import { songSetSubmit } from "../sections/song-set/songSetSubmit";
+import { songDeleteClick } from "../sections/song/songDeleteClick";
+import { songDeleteConfirmClick } from "../sections/song/songDeleteConfirmClick";
 import { songNewClick } from "../sections/song/songNewClick";
 import { songSubmit } from "../sections/song/songSubmit";
 import { SectionId } from "./enums";
@@ -32,8 +34,8 @@ export const useAppStore = create<AppStore>()(
 			setAppModal: (modal) => set({ appModal: modal }),
 			songSubmit: songSubmit(get, set),
 			songSetSubmit: songSetSubmit(get, set),
-			songNewClick: songNewClick(set),
-			songSetNewClick: songSetNewClick(set),
+			songNewClick: songNewClick(get, set),
+			songSetNewClick: songSetNewClick(get, set),
 			openSections: [],
 			isSongUnsaved: false,
 			isSongSetUnsaved: false,
@@ -52,6 +54,13 @@ export const useAppStore = create<AppStore>()(
 			},
 			songLoadClick: songLoadClick(get, set),
 			songSetLoadClick: songSetLoadClick(get, set),
+			songDeleteClick: songDeleteClick(get),
+			deletingSong: false,
+			songDeleteConfirmClick: songDeleteConfirmClick(get, set),
+			songForm: null,
+			songSetForm: null,
+			setSongForm: (songForm) => set({ songForm }),
+			setSongSetForm: (songSetForm) => set({ songSetForm }),
 		}),
 		{
 			name: "app-store",

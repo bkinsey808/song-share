@@ -1,6 +1,6 @@
 "use server";
 
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { flatten } from "valibot";
 
 import { extendSession } from "./extendSession";
@@ -64,12 +64,7 @@ export const songSave = async ({
 			return getFormError("User data is invalid");
 		}
 
-		const slimSong: SlimSong = {
-			songSetName: song.songName,
-			sharer: username,
-		};
-
-		const userDocSongs = userDocResult.output.songSets;
+		const userDocSongs = userDocResult.output.songs;
 
 		// first, confirm user owns the song
 		if (songId && !userDocSongs[songId]) {
@@ -107,15 +102,18 @@ export const songSave = async ({
 		});
 
 		const newSongId = songDocRef.id;
+		const slimSong: SlimSong = {
+			songName: song.songName,
+			sharer: username,
+		};
 
 		// third, update the slimSong in the userDoc
-		const newSongs: UserDoc["songSets"] = {
+		const newSongs: UserDoc["songs"] = {
 			...userDocSongs,
 			[songId ?? newSongId]: slimSong,
 		};
 
-		await setDoc(userDocRef, {
-			...userDocResult.output,
+		await updateDoc(userDocRef, {
 			songs: newSongs,
 		});
 
