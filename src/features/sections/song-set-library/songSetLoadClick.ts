@@ -11,12 +11,17 @@ export const songSetLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const isSongSetLoaded = get().isSongSetUnsaved;
-		if (isSongSetLoaded) {
+		const { isSongSetUnsaved, songSetLibrary, songSetForm } = get();
+		if (isSongSetUnsaved) {
 			toast({
 				variant: "destructive",
 				title: "Please save your current Song Set before loading a new one",
 			});
+			return;
+		}
+
+		if (!songSetForm) {
+			console.error("no form");
 			return;
 		}
 
@@ -31,9 +36,8 @@ export const songSetLoadClick =
 
 		const songSetLibrarySongSet = result.songSetLibrarySongSet;
 
-		const oldSongSetLibrary = get().songSetLibrary;
 		const newSongSetLibrary = {
-			...oldSongSetLibrary,
+			...songSetLibrary,
 			[songSetId]: songSetLibrarySongSet,
 		};
 
@@ -42,6 +46,8 @@ export const songSetLoadClick =
 			songSetId,
 			songSetLibrary: newSongSetLibrary,
 		});
+
+		songSetForm.reset(songSetLibrarySongSet);
 
 		toast({
 			title: "Song Set loaded",
