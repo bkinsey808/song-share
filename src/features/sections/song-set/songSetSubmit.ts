@@ -4,12 +4,12 @@ import { SongSetLibrarySongSet } from "./types";
 import { songSetSave } from "@/actions/songSetSave";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
-import { Get, Set } from "@/features/app-store/types";
-import { useAuthStore } from "@/features/auth/useAuthStore";
+import { OldGet, OldSet } from "@/features/app-store/types";
+import { useAppSliceStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSetSubmit =
-	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
+	(get: OldGet, set: OldSet) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { songSetForm, songSetId, songSetLibrary } = get();
 		if (!songSetForm) {
@@ -17,7 +17,7 @@ export const songSetSubmit =
 			return;
 		}
 		return songSetForm.handleSubmit(async (songSet) => {
-			const sessionCookieData = useAuthStore.getState().sessionCookieData;
+			const sessionCookieData = useAppSliceStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
 				toast({

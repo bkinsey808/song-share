@@ -2,8 +2,6 @@
 
 import { ReactNode, useCallback, useEffect } from "react";
 
-import { AppModal } from "../app-store/enums";
-import { useAppStore } from "../app-store/useAppStore";
 import { useInterval } from "../global/useInterval";
 import { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
 import { AccountManageModal } from "./AccountManageModal";
@@ -11,19 +9,20 @@ import { RegisterModal } from "./RegisterModal";
 import { SessionExpireWarningModal } from "./SessionExpireWarningModal";
 import { SessionExpiredModal } from "./SessionExpiredModal";
 import { SESSION_POLLING_INTERVAL_SECONDS } from "./consts";
-import { useAuthStore } from "./useAuthStore";
 import { getSessionCookieData } from "@/actions/getSessionCookieData";
+import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { AppModal } from "@/features/modal/enums";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const {
+		setAppModal,
 		signIn,
 		isSignedIn,
 		lastSignInCheck,
 		setLastSignInCheck,
 		signOut,
 		sessionCookieData,
-	} = useAuthStore();
-	const { setAppModal } = useAppStore();
+	} = useAppSliceStore();
 	const handleRefresh = useCallback(async () => {
 		const refreshSessionCookieData = await getSessionCookieData();
 

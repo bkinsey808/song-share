@@ -1,7 +1,7 @@
 import { PageColumn } from "./PageColumn";
 import { SECTIONS, pageColumns } from "./pageColumns";
-import { SectionAccordion } from "@/features/design-system/SectionAccordion";
 import { Header } from "@/features/layout/Header";
+import { SectionAccordion } from "@/features/section/SectionAccordion";
 
 export const PageContent = () => {
 	return (

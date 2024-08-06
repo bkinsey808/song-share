@@ -66,11 +66,11 @@ export const Modal = forwardRef<HTMLDialogElement, ModalProps>(
 
 		// keep state in sync with dialog open state
 		useEffect(() => {
-			const dialog = mutableDialogRef.current;
-			dialog?.addEventListener("close", handleClose);
+			const innerDialog = mutableDialogRef.current;
+			innerDialog?.addEventListener("close", handleClose);
 
 			return () => {
-				dialog?.removeEventListener("close", handleClose);
+				innerDialog?.removeEventListener("close", handleClose);
 			};
 		}, [handleClose]);
 

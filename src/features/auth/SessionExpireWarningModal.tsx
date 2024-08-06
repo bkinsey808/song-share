@@ -1,18 +1,13 @@
 import { useCallback } from "react";
 
-import { AppModal } from "../app-store/enums";
-import { useAppStore } from "../app-store/useAppStore";
+import { useAppSliceStore } from "../app-store/useAppStore";
 import { Modal, ModalContent, ModalFooter } from "../design-system/Modal";
-import { useAuthStore } from "./useAuthStore";
 import { Button } from "@/components/ui/button";
+import { AppModal } from "@/features/modal/enums";
 
 export const SessionExpireWarningModal = () => {
-	const {
-		sessionExtendClick: extendSessionClick,
-		signOut,
-		isSigningIn,
-	} = useAuthStore();
-	const { appModal, setAppModal } = useAppStore();
+	const { appModal, setAppModal, sessionExtendClick, signOut, isSigningIn } =
+		useAppSliceStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
@@ -31,7 +26,7 @@ export const SessionExpireWarningModal = () => {
 				<p>Your session will expire soon</p>
 			</ModalContent>
 			<ModalFooter>
-				<Button disabled={isSigningIn} onClick={extendSessionClick}>
+				<Button disabled={isSigningIn} onClick={sessionExtendClick}>
 					Extend Session
 				</Button>
 				<Button onClick={signOut}>Sign out</Button>

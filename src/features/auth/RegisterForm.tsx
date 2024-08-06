@@ -3,10 +3,10 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 
+import { useAppSliceStore } from "../app-store/useAppStore";
 import { ModalContent, ModalFooter } from "../design-system/Modal";
 import { RegistrationSchema } from "./schemas";
 import { RegistrationData } from "./types";
-import { useAuthStore } from "./useAuthStore";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -35,7 +35,7 @@ export const RegisterForm = ({
 		defaultValues,
 	});
 
-	const { registerSubmit } = useAuthStore();
+	const { registerSubmit } = useAppSliceStore();
 
 	return (
 		<Form {...form}>

@@ -1,13 +1,16 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
-import { AppModal } from "../app-store/enums";
 import { getKeys } from "../global/getKeys";
 import { Role, SignInResultType } from "./enums";
 import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
-import type { Set } from "./types";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
-import { useAppStore } from "@/features/app-store/useAppStore";
+import type { Set } from "@/features/app-store/types";
+import {
+	useAppSliceStore,
+	useAppStore,
+} from "@/features/app-store/useAppStore";
+import { AppModal } from "@/features/modal/enums";
 
 export const signInClick = (set: Set) => () => {
 	void (async () => {
@@ -38,9 +41,7 @@ export const signInClick = (set: Set) => () => {
 							sessionWarningTimestamp: getSessionWarningTimestamp(),
 						},
 					});
-					useAppStore.setState({
-						appModal: AppModal.REGISTER,
-					});
+					useAppSliceStore.getState().setAppModal(AppModal.REGISTER);
 
 					break;
 				case SignInResultType.EXISTING:
@@ -59,7 +60,8 @@ export const signInClick = (set: Set) => () => {
 						return acc;
 					}, existingSongLibrary);
 
-					useAppStore.setState({ songLibrary: newSongLibrary, appModal: null });
+					useAppStore.setState({ songLibrary: newSongLibrary });
+					useAppSliceStore.getState().setAppModal(null);
 
 					set({
 						isSignedIn: true,

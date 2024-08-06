@@ -22,15 +22,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { SectionId } from "@/features/app-store/enums";
-import { useAppStore } from "@/features/app-store/useAppStore";
-import { useAuthStore } from "@/features/auth/useAuthStore";
-import { SectionAccordion } from "@/features/design-system/SectionAccordion";
+import {
+	useAppSliceStore,
+	useAppStore,
+} from "@/features/app-store/useAppStore";
+import { SectionAccordion } from "@/features/section/SectionAccordion";
+import { SectionId } from "@/features/sections/enums";
 
 export const SongSection = () => {
-	const { isSignedIn } = useAuthStore();
+	const { isSignedIn } = useAppSliceStore();
 	const {
 		songId,
+		songSetId,
 		song,
 		songSubmit,
 		setIsSongUnsaved,
@@ -148,6 +151,7 @@ export const SongSection = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
+							{songSetId ? <Button>Add to Song Set</Button> : null}
 							<Button onClick={songNewClick}>New</Button>
 							{songId ? (
 								<Button variant="destructive" onClick={songDeleteClick}>

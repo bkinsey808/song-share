@@ -1,4 +1,4 @@
-import { SectionId } from "@/features/app-store/enums";
+import { SectionId } from "@/features/sections/enums";
 import { SongLibrarySection } from "@/features/sections/song-library/SongLibrarySection";
 import { SongLibraryTitle } from "@/features/sections/song-library/SongLibraryTitle";
 import { SongSetLibrarySection } from "@/features/sections/song-set-library/SongSetLibrarySection";

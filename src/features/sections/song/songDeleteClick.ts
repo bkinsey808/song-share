@@ -1,8 +1,7 @@
-import { AppModal } from "@/features/app-store/enums";
-import { Get } from "@/features/app-store/types";
+import { OldGet } from "@/features/app-store/types";
+import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { AppModal } from "@/features/modal/enums";
 
-export const songDeleteClick = (get: Get) => () => {
-	console.log("songDeleteClick");
-	const { setAppModal } = get();
-	setAppModal(AppModal.SONG_DELETE_CONFIRM);
+export const songDeleteClick = (get: OldGet) => () => {
+	useAppSliceStore.getState().setAppModal(AppModal.SONG_DELETE_CONFIRM);
 };

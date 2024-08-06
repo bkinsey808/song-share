@@ -5,9 +5,9 @@ import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
 import type { OldGet, OldSet } from "@/features/app-store/types";
 
-export const songLoadClick =
+export const songSetSongLoadClick =
 	(get: OldGet, set: OldSet) =>
-	(songId: string) =>
+	({ songId, songSetId }: { songId: string; songSetId: string | null }) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 

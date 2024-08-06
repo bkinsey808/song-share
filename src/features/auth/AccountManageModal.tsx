@@ -2,19 +2,18 @@
 
 import { useCallback } from "react";
 
-import { AppModal } from "../app-store/enums";
-import { useAppStore } from "../app-store/useAppStore";
-import { useAuthStore } from "./useAuthStore";
+import { useAppSliceStore } from "../app-store/useAppStore";
 import { Button } from "@/components/ui/button";
 import {
 	Modal,
 	ModalContent,
 	ModalFooter,
 } from "@/features/design-system/Modal";
+import { AppModal } from "@/features/modal/enums";
 
 export const AccountManageModal = () => {
-	const { appModal, setAppModal } = useAppStore();
-	const { signOutClick, deleteAccountClick } = useAuthStore();
+	const { appModal, setAppModal, signOutClick, deleteAccountClick } =
+		useAppSliceStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {

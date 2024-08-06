@@ -1,11 +1,13 @@
 "use client";
 
-import { SectionId } from "../app-store/enums";
+import { ReactNode } from "react";
+
 import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import { SectionId } from "@/features/sections/enums";
 
 export const SectionAccordionItem = ({
 	sectionId,
@@ -13,8 +15,8 @@ export const SectionAccordionItem = ({
 	children,
 }: {
 	sectionId: SectionId;
-	title: React.ReactNode;
-	children: React.ReactNode;
+	title: ReactNode;
+	children: ReactNode;
 }) => {
 	return (
 		<AccordionItem

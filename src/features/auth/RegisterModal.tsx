@@ -2,13 +2,13 @@
 
 import { useCallback } from "react";
 
-import { AppModal } from "../app-store/enums";
-import { useAppStore } from "../app-store/useAppStore";
 import { Modal } from "../design-system/Modal";
 import { RegisterForm } from "./RegisterForm";
+import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { AppModal } from "@/features/modal/enums";
 
 export const RegisterModal = () => {
-	const { appModal, setAppModal } = useAppStore();
+	const { appModal, setAppModal } = useAppSliceStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {

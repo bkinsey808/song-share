@@ -1,6 +1,6 @@
-import { useAppStore } from "../app-store/useAppStore";
-import type { Get, Set } from "./types";
+import { useAppSliceStore } from "../app-store/useAppStore";
 import { extendSession } from "@/actions/extendSession";
+import type { Get, Set } from "@/features/app-store/types";
 
 export const sessionExtendClick = (get: Get, set: Set) => () => {
 	void (async () => {
@@ -20,9 +20,7 @@ export const sessionExtendClick = (get: Get, set: Set) => () => {
 					sessionCookieData: result,
 					lastSignInCheck: Date.now(),
 				});
-				useAppStore.setState({
-					appModal: null,
-				});
+				useAppSliceStore.getState().setAppModal(null);
 			}
 		} catch (error) {
 			get().signOut();

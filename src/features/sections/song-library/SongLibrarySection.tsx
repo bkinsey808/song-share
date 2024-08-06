@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
+import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibrarySection = () => {
@@ -9,34 +10,23 @@ export const SongLibrarySection = () => {
 	const songIds = getKeys(songLibrary);
 
 	return (
-		<section data-title="Song Library Section">
-			<div className="p-[1rem]">
-				<div className="grid grid-flow-col grid-cols-[3fr,2fr,1fr] border-b">
+		<section data-title="Song Library Section" className="p-[1rem]">
+			<Grid gridClassName="grid-cols-[3fr,2fr,1fr]">
+				<GridHeader>
 					<div>Song Name</div>
 					<div>Sharer</div>
 					<div>Options</div>
-				</div>
-
+				</GridHeader>
 				{songIds.map((songId) => (
-					<div
-						key={songId}
-						className="grid grid-flow-col grid-cols-[3fr,2fr,1fr]"
-					>
+					<GridRow key={songId}>
 						<div>{songLibrary[songId].songName}</div>
 						<div>{songLibrary[songId].sharer}</div>
 						<div>
-							<Button
-								onClick={(e) => {
-									console.log(e);
-									return songLoadClick(songId)(e);
-								}}
-							>
-								Load
-							</Button>
+							<Button onClick={songLoadClick(songId)}>Load</Button>
 						</div>
-					</div>
+					</GridRow>
 				))}
-			</div>
+			</Grid>
 		</section>
 	);
 };

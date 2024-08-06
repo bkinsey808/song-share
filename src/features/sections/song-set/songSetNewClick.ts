@@ -1,8 +1,8 @@
-import { Get, Set } from "@/features/app-store/types";
-import { useAuthStore } from "@/features/auth/useAuthStore";
+import { OldGet, OldSet } from "@/features/app-store/types";
+import { useAppSliceStore } from "@/features/app-store/useAppStore";
 
-export const songSetNewClick = (get: Get, set: Set) => () => {
-	const username = useAuthStore.getState().sessionCookieData?.username;
+export const songSetNewClick = (get: OldGet, set: OldSet) => () => {
+	const username = useAppSliceStore.getState().sessionCookieData?.username;
 	const form = get().songSetForm;
 	if (!form) {
 		console.error("no form");
@@ -13,6 +13,8 @@ export const songSetNewClick = (get: Get, set: Set) => () => {
 		songSet: {
 			songSetName: null,
 			sharer: username ?? null,
+			songSetSongList: [],
+			songSetSongs: {},
 		},
 	});
 	form.reset({
