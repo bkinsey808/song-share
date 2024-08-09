@@ -27,5 +27,3 @@ export const SongSetSchema = object({
 	songSetSongList: array(string()),
 	songSetSongs: record(string(), SongSetSongSchema),
 });
-
-export const SongSetLibrarySchema = record(string(), SongSetSchema);

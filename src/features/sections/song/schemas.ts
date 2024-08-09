@@ -1,4 +1,4 @@
-import { minLength, nonEmpty, object, pipe, record, string } from "valibot";
+import { minLength, nonEmpty, object, pipe, string } from "valibot";
 
 export const SlimSongSchema = object({
 	songName: string(),
@@ -16,5 +16,3 @@ export const SongSchema = object({
 	credits: string(),
 	sharer: string(),
 });
-
-export const SongLibrarySchema = record(string(), SongSchema);
