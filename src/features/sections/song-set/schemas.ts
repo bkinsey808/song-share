@@ -28,12 +28,4 @@ export const SongSetSchema = object({
 	songSetSongs: record(string(), SongSetSongSchema),
 });
 
-export const SongSetLibrarySongSetSchema = object({
-	songSetName: string(),
-	sharer: string(),
-});
-
-export const SongSetLibrarySchema = record(
-	string(),
-	SongSetLibrarySongSetSchema,
-);
+export const SongSetLibrarySchema = record(string(), SongSetSchema);

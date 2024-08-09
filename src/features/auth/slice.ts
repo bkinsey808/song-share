@@ -8,7 +8,7 @@ import { signInClick } from "./signInClick";
 import { RegistrationData, SessionCookieData } from "./types";
 import { signOut } from "@/actions/signOut";
 import { toast } from "@/components/ui/use-toast";
-import { AppSlice, useAppSliceStore } from "@/features/app-store/useAppStore";
+import { AppSlice, useAppStore } from "@/features/app-store/useAppStore";
 import "@/features/firebase/firebase";
 import { AppModal } from "@/features/modal/enums";
 
@@ -47,11 +47,11 @@ export const createAuthSlice: AppAuthSlice = (set, get) => ({
 	},
 	signOut: () => {
 		set({ sessionCookieData: null, isSignedIn: false });
-		useAppSliceStore.getState().setAppModal(null);
+		useAppStore.getState().setAppModal(null);
 	},
-	signInClick: signInClick(set),
+	signInClick: signInClick(set, get),
 	accountManageClick: () => {
-		useAppSliceStore.getState().setAppModal(AppModal.ACCOUNT_MANAGE);
+		useAppStore.getState().setAppModal(AppModal.ACCOUNT_MANAGE);
 	},
 	signOutClick: () => {
 		signOut();
@@ -59,11 +59,11 @@ export const createAuthSlice: AppAuthSlice = (set, get) => ({
 			isSignedIn: false,
 			sessionCookieData: null,
 		});
-		useAppSliceStore.getState().setAppModal(null);
+		useAppStore.getState().setAppModal(null);
 		toast({ title: "You have been signed out" });
 	},
 	deleteAccountClick: () => {
-		useAppSliceStore.getState().setAppModal(AppModal.ACCOUNT_DELETE_CONFIRM);
+		useAppStore.getState().setAppModal(AppModal.ACCOUNT_DELETE_CONFIRM);
 	},
 	accountDeleteConfirmClick: accountDeleteConfirmClick(set),
 	registerSubmit: registerSubmit(get, set),

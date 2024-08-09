@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect, useRef } from "react";
 
-import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { useOpenSection } from "@/features/section/slice";
 import { SectionId } from "@/features/sections/enums";
 
@@ -15,7 +15,7 @@ export const SectionAccordion = ({
 	sectionId: SectionId;
 	children: ReactNode;
 }) => {
-	const { sectionToggle } = useAppSliceStore();
+	const { sectionToggle } = useAppStore();
 	const isOpen = useOpenSection(sectionId);
 
 	const detailsRef = useRef<HTMLDetailsElement>(null);

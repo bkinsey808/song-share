@@ -10,7 +10,7 @@ import { SessionExpireWarningModal } from "./SessionExpireWarningModal";
 import { SessionExpiredModal } from "./SessionExpiredModal";
 import { SESSION_POLLING_INTERVAL_SECONDS } from "./consts";
 import { getSessionCookieData } from "@/actions/getSessionCookieData";
-import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { AppModal } from "@/features/modal/enums";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setLastSignInCheck,
 		signOut,
 		sessionCookieData,
-	} = useAppSliceStore();
+	} = useAppStore();
 	const handleRefresh = useCallback(async () => {
 		const refreshSessionCookieData = await getSessionCookieData();
 

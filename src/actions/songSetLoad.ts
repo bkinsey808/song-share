@@ -6,7 +6,7 @@ import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
 import { serverParse } from "@/features/global/serverParse";
-import { SongSetLibrarySongSetSchema } from "@/features/sections/song-set/schemas";
+import { SongSetSchema } from "@/features/sections/song-set/schemas";
 import { SlimSongSet } from "@/features/sections/song-set/types";
 
 export const songSetLoad = async (songSetId: string) => {
@@ -36,15 +36,12 @@ export const songSetLoad = async (songSetId: string) => {
 			return getActionErrorMessage("Song Set data not found");
 		}
 
-		const songSetLibrarySongSetParseResult = serverParse(
-			SongSetLibrarySongSetSchema,
-			songSetData,
-		);
-		if (!songSetLibrarySongSetParseResult.success) {
+		const songSetParseResult = serverParse(SongSetSchema, songSetData);
+		if (!songSetParseResult.success) {
 			return getActionErrorMessage("Song Set data invalid");
 		}
 
-		const songSetLibrarySongSet = songSetLibrarySongSetParseResult.output;
+		const songSetLibrarySongSet = songSetParseResult.output;
 
 		// update user's song library
 		const userDocSnapshot = await getDoc(doc(db, "users", email));
@@ -79,7 +76,7 @@ export const songSetLoad = async (songSetId: string) => {
 
 		return {
 			actionResultType: ActionResultType.SUCCESS as const,
-			songSetLibrarySongSet: songSetLibrarySongSetParseResult.output,
+			songSetLibrarySongSet: songSetParseResult.output,
 		};
 	} catch (error) {
 		console.error(error);

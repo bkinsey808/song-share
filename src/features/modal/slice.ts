@@ -10,7 +10,7 @@ export type ModalSlice = {
 
 type AppModalSlice = StateCreator<AppSlice, [], [], ModalSlice>;
 
-export const createModalSlice: AppModalSlice = (set, get) => ({
+export const createModalSlice: AppModalSlice = (set, _get) => ({
 	appModal: null,
 	setAppModal: (modal) => set({ appModal: modal }),
 });

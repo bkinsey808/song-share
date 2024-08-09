@@ -9,10 +9,7 @@ import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
-import {
-	SongSetLibrarySongSetSchema,
-	SongSetSchema,
-} from "@/features/sections/song-set/schemas";
+import { SongSetSchema } from "@/features/sections/song-set/schemas";
 import type { SlimSongSet, SongSet } from "@/features/sections/song-set/types";
 
 const getFormError = (formError: string) => {
@@ -97,10 +94,7 @@ export const songSetSave = async ({
 		}
 
 		if (songSetData) {
-			const songSetResult = serverParse(
-				SongSetLibrarySongSetSchema,
-				songSetData,
-			);
+			const songSetResult = serverParse(SongSetSchema, songSetData);
 			if (!songSetResult.success) {
 				console.log(songSetData);
 				return getFormError("SongSet data is invalid");

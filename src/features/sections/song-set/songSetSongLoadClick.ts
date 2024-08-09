@@ -3,10 +3,10 @@ import { MouseEventHandler } from "react";
 import { songLoad } from "@/actions/songLoad";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
-import type { OldGet, OldSet } from "@/features/app-store/types";
+import type { Get, Set } from "@/features/app-store/types";
 
 export const songSetSongLoadClick =
-	(get: OldGet, set: OldSet) =>
+	(get: Get, set: Set) =>
 	({ songId, songSetId }: { songId: string; songSetId: string | null }) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();

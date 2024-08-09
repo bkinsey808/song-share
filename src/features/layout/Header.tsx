@@ -1,11 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const Header = () => {
 	const { sessionCookieData, isSignedIn, signInClick, accountManageClick } =
-		useAppSliceStore();
+		useAppStore();
 
 	return (
 		<header className="flex justify-between bg-[gray] p-[0.5rem] text-[hsl(var(--background))]">

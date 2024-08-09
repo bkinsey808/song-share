@@ -22,15 +22,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-	useAppSliceStore,
-	useAppStore,
-} from "@/features/app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 import { SectionId } from "@/features/sections/enums";
 
 export const SongSection = () => {
-	const { isSignedIn } = useAppSliceStore();
+	const { isSignedIn } = useAppStore();
 	const {
 		songId,
 		songSetId,

@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 
-import { useAppSliceStore } from "../app-store/useAppStore";
+import { useAppStore } from "../app-store/useAppStore";
 import { Button } from "@/components/ui/button";
 import {
 	Modal,
@@ -13,7 +13,7 @@ import { AppModal } from "@/features/modal/enums";
 
 export const AccountManageModal = () => {
 	const { appModal, setAppModal, signOutClick, deleteAccountClick } =
-		useAppSliceStore();
+		useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {

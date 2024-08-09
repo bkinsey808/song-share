@@ -1,15 +1,15 @@
 import { FormEvent } from "react";
 
-import { SongSetLibrarySongSet } from "./types";
+import { SongSet } from "./types";
 import { songSetSave } from "@/actions/songSetSave";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
-import { OldGet, OldSet } from "@/features/app-store/types";
-import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { Get, Set } from "@/features/app-store/types";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSetSubmit =
-	(get: OldGet, set: OldSet) => (e: FormEvent<HTMLFormElement>) => {
+	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { songSetForm, songSetId, songSetLibrary } = get();
 		if (!songSetForm) {
@@ -17,7 +17,7 @@ export const songSetSubmit =
 			return;
 		}
 		return songSetForm.handleSubmit(async (songSet) => {
-			const sessionCookieData = useAppSliceStore.getState().sessionCookieData;
+			const sessionCookieData = useAppStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
 				toast({
@@ -63,7 +63,7 @@ export const songSetSubmit =
 					break;
 				case ActionResultType.SUCCESS:
 					const newSongSetId = result.songSetId;
-					const newSongSetLibrarySongSet: SongSetLibrarySongSet = {
+					const newSongSetLibrarySongSet: SongSet = {
 						...songSet,
 						sharer: username,
 					};

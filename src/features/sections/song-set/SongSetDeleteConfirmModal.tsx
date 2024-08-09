@@ -3,10 +3,7 @@
 import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-	useAppSliceStore,
-	useAppStore,
-} from "@/features/app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import {
 	Modal,
 	ModalContent,
@@ -15,9 +12,8 @@ import {
 import { AppModal } from "@/features/modal/enums";
 
 export const SongSetDeleteConfirmModal = () => {
-	const { deletingSongSet, songSetDeleteConfirmClick } = useAppStore();
-
-	const { appModal, setAppModal } = useAppSliceStore();
+	const { appModal, setAppModal, deletingSongSet, songSetDeleteConfirmClick } =
+		useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {

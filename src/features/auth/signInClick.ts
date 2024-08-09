@@ -5,14 +5,10 @@ import { Role, SignInResultType } from "./enums";
 import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
-import type { Set } from "@/features/app-store/types";
-import {
-	useAppSliceStore,
-	useAppStore,
-} from "@/features/app-store/useAppStore";
+import type { Get, Set } from "@/features/app-store/types";
 import { AppModal } from "@/features/modal/enums";
 
-export const signInClick = (set: Set) => () => {
+export const signInClick = (set: Set, get: Get) => () => {
 	void (async () => {
 		try {
 			const auth = getAuth();
@@ -28,6 +24,8 @@ export const signInClick = (set: Set) => () => {
 			}
 			const signInResult = await signIn(email);
 
+			const { setAppModal, songLibrary } = get();
+
 			switch (signInResult.signInResultType) {
 				case SignInResultType.NEW:
 					set({
@@ -41,7 +39,7 @@ export const signInClick = (set: Set) => () => {
 							sessionWarningTimestamp: getSessionWarningTimestamp(),
 						},
 					});
-					useAppSliceStore.getState().setAppModal(AppModal.REGISTER);
+					setAppModal(AppModal.REGISTER);
 
 					break;
 				case SignInResultType.EXISTING:
@@ -49,19 +47,18 @@ export const signInClick = (set: Set) => () => {
 					const userDocSongIds = getKeys(userDocSongs);
 
 					// Add to the existing song library
-					const existingSongLibrary = useAppStore.getState().songLibrary;
 					const newSongLibrary = userDocSongIds.reduce((acc, songId) => {
-						const existingSong = existingSongLibrary[songId];
+						const existingSong = songLibrary[songId];
 						const slimSong = userDocSongs[songId];
 						acc[songId] = {
 							...existingSong,
 							...slimSong,
 						};
 						return acc;
-					}, existingSongLibrary);
+					}, songLibrary);
 
-					useAppStore.setState({ songLibrary: newSongLibrary });
-					useAppSliceStore.getState().setAppModal(null);
+					set({ songLibrary: newSongLibrary });
+					setAppModal(null);
 
 					set({
 						isSignedIn: true,

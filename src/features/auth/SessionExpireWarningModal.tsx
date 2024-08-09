@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 
-import { useAppSliceStore } from "../app-store/useAppStore";
+import { useAppStore } from "../app-store/useAppStore";
 import { Modal, ModalContent, ModalFooter } from "../design-system/Modal";
 import { Button } from "@/components/ui/button";
 import { AppModal } from "@/features/modal/enums";
 
 export const SessionExpireWarningModal = () => {
 	const { appModal, setAppModal, sessionExtendClick, signOut, isSigningIn } =
-		useAppSliceStore();
+		useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {

@@ -17,14 +17,11 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-	useAppSliceStore,
-	useAppStore,
-} from "@/features/app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 
 export const SongSetSection = () => {
-	const { isSignedIn } = useAppSliceStore();
+	const { isSignedIn } = useAppStore();
 	const {
 		songSetId,
 		songSet,

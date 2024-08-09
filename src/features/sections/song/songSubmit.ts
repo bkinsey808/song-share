@@ -4,19 +4,19 @@ import { Song } from "./types";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/enums";
-import { OldGet, OldSet } from "@/features/app-store/types";
-import { useAppSliceStore } from "@/features/app-store/useAppStore";
+import { Get, Set } from "@/features/app-store/types";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSubmit =
-	(get: OldGet, set: OldSet) => async (e: FormEvent<HTMLFormElement>) => {
+	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
 		const form = get().songForm;
 		if (!form) {
 			console.error("no form");
 			return;
 		}
 		return form.handleSubmit(async (song) => {
-			const sessionCookieData = useAppSliceStore.getState().sessionCookieData;
+			const sessionCookieData = useAppStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
 				toast({

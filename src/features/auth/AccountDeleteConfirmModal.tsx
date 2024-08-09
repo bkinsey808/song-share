@@ -2,14 +2,14 @@
 
 import { useCallback } from "react";
 
-import { useAppSliceStore } from "../app-store/useAppStore";
+import { useAppStore } from "../app-store/useAppStore";
 import { Modal, ModalContent, ModalFooter } from "../design-system/Modal";
 import { Button } from "@/components/ui/button";
 import { AppModal } from "@/features/modal/enums";
 
 export const AccountDeleteConfirmModal = () => {
 	const { appModal, setAppModal, accountDeleteConfirmClick, deletingAccount } =
-		useAppSliceStore();
+		useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {

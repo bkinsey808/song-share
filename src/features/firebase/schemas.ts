@@ -8,10 +8,7 @@ import {
 } from "valibot";
 
 import { Role } from "../auth/enums";
-import {
-	SlimSongSetSchema,
-	SongSetLibrarySongSetSchema,
-} from "../sections/song-set/schemas";
+import { SlimSongSetSchema } from "../sections/song-set/schemas";
 import { SlimSongSchema } from "@/features/sections/song/schemas";
 
 export const UserDocSchema = object({
@@ -21,5 +18,3 @@ export const UserDocSchema = object({
 	songs: record(string(), SlimSongSchema),
 	songSets: record(string(), SlimSongSetSchema),
 });
-
-export const SongsSetSchema = record(string(), SongSetLibrarySongSetSchema);

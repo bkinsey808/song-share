@@ -3,7 +3,7 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 
-import { useAppSliceStore } from "../app-store/useAppStore";
+import { useAppStore } from "../app-store/useAppStore";
 import { ModalContent, ModalFooter } from "../design-system/Modal";
 import { RegistrationSchema } from "./schemas";
 import { RegistrationData } from "./types";
@@ -35,7 +35,7 @@ export const RegisterForm = ({
 		defaultValues,
 	});
 
-	const { registerSubmit } = useAppSliceStore();
+	const { registerSubmit } = useAppStore();
 
 	return (
 		<Form {...form}>

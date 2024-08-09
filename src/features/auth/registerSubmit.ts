@@ -2,7 +2,7 @@ import { UseFormReturn } from "react-hook-form";
 
 import { ActionResultType } from "../app-store/enums";
 import { Get, Set } from "../app-store/types";
-import { useAppSliceStore } from "../app-store/useAppStore";
+import { useAppStore } from "../app-store/useAppStore";
 import { getKeys } from "../global/getKeys";
 import { RegistrationData } from "./types";
 import { register } from "@/actions/register";
@@ -65,7 +65,7 @@ export const registerSubmit =
 								roles: result.sessionCookieData.roles,
 							},
 						});
-						useAppSliceStore.getState().setAppModal(null);
+						useAppStore.getState().setAppModal(null);
 						toast({ title: "You have been registered" });
 						break;
 				}
