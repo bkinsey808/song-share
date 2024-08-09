@@ -22,7 +22,14 @@ export const songDelete = async (songId: string) => {
 			return getActionErrorMessage("Song ID is required");
 		}
 
-		const sessionCookieData = await extendSession();
+		const extendSessionResult = await extendSession();
+
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+			return getActionErrorMessage("Session expired");
+		}
+
+		const sessionCookieData = extendSessionResult.sessionCookieData;
+
 		if (!sessionCookieData) {
 			return getActionErrorMessage("Session expired");
 		}

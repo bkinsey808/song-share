@@ -37,7 +37,14 @@ export const songSave = async ({
 			};
 		}
 
-		const sessionCookieData = await extendSession();
+		const extendSessionResult = await extendSession();
+
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+			return getFormError("Session expired");
+		}
+
+		const sessionCookieData = extendSessionResult.sessionCookieData;
+
 		if (!sessionCookieData) {
 			return getFormError("Session expired");
 		}

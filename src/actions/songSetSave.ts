@@ -37,10 +37,13 @@ export const songSetSave = async ({
 			};
 		}
 
-		const sessionCookieData = await extendSession();
-		if (!sessionCookieData) {
+		const extendSessionResult = await extendSession();
+
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
+
+		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const username = sessionCookieData.username;
 
@@ -71,7 +74,7 @@ export const songSetSave = async ({
 
 		const slimSongSet: SlimSongSet = {
 			songSetName: songSet.songSetName,
-			sharer: username,
+			sharer: sessionCookieData.username,
 		};
 
 		const userDocSongSets = userDocResult.output.songSets;

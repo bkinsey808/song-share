@@ -23,6 +23,17 @@ export type AppSlice = ModalSlice &
 	SongLibrarySlice &
 	SongSetLibrarySlice;
 
+/** for security, these shall not be stored in localStorage */
+const omittedKeys: (keyof AppSlice)[] = [
+	"isSignedIn",
+	"sessionCookieData",
+	"deletingAccount",
+	"registerError",
+	"lastSignInCheck",
+	"isSigningIn",
+	"appModal",
+];
+
 export const useAppStore = create<AppSlice>()(
 	persist(
 		(...a) => ({
@@ -35,7 +46,13 @@ export const useAppStore = create<AppSlice>()(
 			...createSongSetLibrarySlice(...a),
 		}),
 		{
-			name: "app-slice-store",
+			name: "app-store",
+			partialize: (state) =>
+				Object.fromEntries(
+					Object.entries(state).filter(
+						([key]) => !omittedKeys.includes(key as keyof AppSlice),
+					),
+				),
 		},
 	),
 );

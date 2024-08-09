@@ -11,10 +11,12 @@ import { SlimSongSet } from "@/features/sections/song-set/types";
 
 export const songSetLoad = async (songSetId: string) => {
 	try {
-		const sessionCookieData = await extendSession();
-		if (!sessionCookieData) {
+		const extendSessionResult = await extendSession();
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return getActionErrorMessage("Session expired");
 		}
+
+		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const { username, email } = sessionCookieData;
 

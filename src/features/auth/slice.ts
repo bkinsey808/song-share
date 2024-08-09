@@ -17,6 +17,7 @@ export type AuthSlice = {
 	sessionCookieData: null | SessionCookieData;
 	lastSignInCheck: number;
 	isSigningIn: boolean;
+  registerError: null | string;
 	setLastSignInCheck: (lastSignInCheck: number) => void;
 	signIn: (sessionCookieData: SessionCookieData) => void;
 	signInClick: () => void;

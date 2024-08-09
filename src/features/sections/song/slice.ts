@@ -2,6 +2,8 @@ import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
+import { addSongToSongSetClick } from "./addSongToSongSetClick";
+import { showAddSongToSongSetButton } from "./showAddSongToSongSetButton";
 import { songDeleteClick } from "./songDeleteClick";
 import { songDeleteConfirmClick } from "./songDeleteConfirmClick";
 import { songNewClick } from "./songNewClick";
@@ -24,6 +26,9 @@ export type SongSlice = {
 	songForm: UseFormReturn<Song> | null;
 	setSongForm: (songForm: UseFormReturn<Song>) => void;
 	songDeleteConfirmClick: () => Promise<void>;
+	showAddSongToSongSetButton: () => boolean;
+	addingSongToSongSet: boolean;
+	addSongToSongSetClick: () => Promise<void>;
 };
 
 type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
@@ -48,4 +53,7 @@ export const createSongSlice: AppSongSlice = (set, get) => ({
 	songForm: null,
 	setSongForm: (songForm) => set({ songForm }),
 	songDeleteConfirmClick: songDeleteConfirmClick(get, set),
+	showAddSongToSongSetButton: showAddSongToSongSetButton(get),
+	addingSongToSongSet: false,
+	addSongToSongSetClick: addSongToSongSetClick(get, set),
 });

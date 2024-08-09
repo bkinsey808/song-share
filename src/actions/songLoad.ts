@@ -11,7 +11,14 @@ import { SlimSong } from "@/features/sections/song/types";
 
 export const songLoad = async (songId: string) => {
 	try {
-		const sessionCookieData = await extendSession();
+		const extendSessionResult = await extendSession();
+
+    if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+      return getActionErrorMessage("Session expired");
+    }
+
+    const sessionCookieData = extendSessionResult.sessionCookieData;
+    
 		if (!sessionCookieData) {
 			return getActionErrorMessage("Session expired");
 		}

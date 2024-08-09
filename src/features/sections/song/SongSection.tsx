@@ -30,7 +30,6 @@ export const SongSection = () => {
 	const { isSignedIn } = useAppStore();
 	const {
 		songId,
-		songSetId,
 		song,
 		songSubmit,
 		setIsSongUnsaved,
@@ -38,6 +37,9 @@ export const SongSection = () => {
 		songNewClick,
 		setSongForm,
 		songDeleteClick,
+		showAddSongToSongSetButton,
+		addingSongToSongSet,
+		addSongToSongSetClick,
 	} = useAppStore();
 
 	const defaultValues: Song = useMemo(
@@ -148,7 +150,14 @@ export const SongSection = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
-							{songSetId ? <Button>Add to Song Set</Button> : null}
+							{showAddSongToSongSetButton() ? (
+								<Button
+									disabled={addingSongToSongSet}
+									onClick={addSongToSongSetClick}
+								>
+									Add to Song Set
+								</Button>
+							) : null}
 							<Button onClick={songNewClick}>New</Button>
 							{songId ? (
 								<Button variant="destructive" onClick={songDeleteClick}>
