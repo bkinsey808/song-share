@@ -1,12 +1,12 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 import { getKeys } from "../global/getKeys";
-import { Role, SignInResultType } from "./enums";
+import { signInResultType } from "./consts";
 import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
 import type { Get, Set } from "@/features/app-store/types";
-import { AppModal } from "@/features/modal/enums";
+import { appModal } from "@/features/modal/consts";
 
 export const signInClick = (set: Set, get: Get) => () => {
 	void (async () => {
@@ -24,10 +24,10 @@ export const signInClick = (set: Set, get: Get) => () => {
 			}
 			const signInResult = await signIn(email);
 
-			const { setAppModal, songLibrary } = get();
+			const { setOpenAppModal, songLibrary, songSetLibrary } = get();
 
 			switch (signInResult.signInResultType) {
-				case SignInResultType.NEW:
+				case signInResultType.NEW:
 					set({
 						isSignedIn: false,
 						isSigningIn: false,
@@ -39,14 +39,13 @@ export const signInClick = (set: Set, get: Get) => () => {
 							sessionWarningTimestamp: getSessionWarningTimestamp(),
 						},
 					});
-					setAppModal(AppModal.REGISTER);
+					setOpenAppModal(appModal.REGISTER);
 
 					break;
-				case SignInResultType.EXISTING:
+				case signInResultType.EXISTING:
+					// Add to the existing song library
 					const userDocSongs = signInResult.songs;
 					const userDocSongIds = getKeys(userDocSongs);
-
-					// Add to the existing song library
 					const newSongLibrary = userDocSongIds.reduce((acc, songId) => {
 						const existingSong = songLibrary[songId];
 						const slimSong = userDocSongs[songId];
@@ -57,8 +56,21 @@ export const signInClick = (set: Set, get: Get) => () => {
 						return acc;
 					}, songLibrary);
 
-					set({ songLibrary: newSongLibrary });
-					setAppModal(null);
+					// Add to the existing song set library
+					const userDocSongSets = signInResult.songSets;
+					const userDocSongSetIds = getKeys(userDocSongSets);
+					const newSongSetLibrary = userDocSongSetIds.reduce(
+						(acc, songSetId) => {
+							const existingSongSet = songSetLibrary[songSetId];
+							const slimSongSet = userDocSongSets[songSetId];
+							acc[songSetId] = {
+								...existingSongSet,
+								...slimSongSet,
+							};
+							return acc;
+						},
+						songSetLibrary,
+					);
 
 					set({
 						isSignedIn: true,
@@ -66,13 +78,19 @@ export const signInClick = (set: Set, get: Get) => () => {
 						lastSignInCheck: 0,
 						sessionCookieData: {
 							email: signInResult.userData.email,
-							picture: signInResult.userData.picture ?? null,
+							picture: signInResult.userData.picture,
 							username: signInResult.userData.username,
-							roles: signInResult.userData.roles as Role[],
+							roles: signInResult.userData.roles,
 							sessionWarningTimestamp: getSessionWarningTimestamp(),
 						},
+						songLibrary: newSongLibrary,
+						songSetLibrary: newSongSetLibrary,
+						songId: signInResult.songId,
+						songSetId: signInResult.songSetId,
+						activeSongId: signInResult.activeSongId,
+						activeSongSetId: signInResult.activeSongSetId,
 					});
-
+					setOpenAppModal(null);
 					toast({ title: "Welcome back!" });
 			}
 		} catch (error) {

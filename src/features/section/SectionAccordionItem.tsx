@@ -2,12 +2,12 @@
 
 import { ReactNode } from "react";
 
+import { SectionId } from "../sections/types";
 import {
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
-import { SectionId } from "@/features/sections/enums";
 
 export const SectionAccordionItem = ({
 	sectionId,

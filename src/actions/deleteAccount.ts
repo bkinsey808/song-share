@@ -4,7 +4,7 @@ import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 
 import { getSessionCookieData } from "./getSessionCookieData";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
@@ -14,11 +14,13 @@ import { serverParse } from "@/features/global/serverParse";
 
 export const deleteAccount = async () => {
 	try {
-		const sessionCookieData = await getSessionCookieData();
+		const cookieResult = await getSessionCookieData();
 
-		if (!sessionCookieData) {
-			return getActionErrorMessage("Session cookie data is missing");
+		if (cookieResult.actionResultType === actionResultType.ERROR) {
+			return getActionErrorMessage("Session expired");
 		}
+
+		const sessionCookieData = cookieResult.sessionCookieData;
 
 		const { username, email } = sessionCookieData;
 
@@ -76,7 +78,7 @@ export const deleteAccount = async () => {
 
 		cookies().delete(SESSION_COOKIE_NAME);
 
-		return { actionResultType: ActionResultType.SUCCESS as const };
+		return { actionResultType: actionResultType.SUCCESS };
 	} catch (error) {
 		console.error({ error });
 		return getActionErrorMessage("Error deleting account");

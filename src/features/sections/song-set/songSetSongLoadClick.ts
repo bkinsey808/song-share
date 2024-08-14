@@ -2,7 +2,7 @@ import { MouseEventHandler } from "react";
 
 import { songLoad } from "@/actions/songLoad";
 import { toast } from "@/components/ui/use-toast";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
 
 export const songSetSongLoadClick =
@@ -25,9 +25,9 @@ export const songSetSongLoadClick =
 			return;
 		}
 
-		const result = await songLoad(songId);
+		const result = await songLoad({ songId, songSetId });
 
-		if (result.actionResultType === ActionResultType.ERROR) {
+		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: result.message,
@@ -35,7 +35,7 @@ export const songSetSongLoadClick =
 			return;
 		}
 
-		const songLibrarySong = result.songLibrarySong;
+		const songLibrarySong = result.song;
 
 		const oldSongLibrary = get().songLibrary;
 		const newSongLibrary = {

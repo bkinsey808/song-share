@@ -3,7 +3,7 @@
 import { cookies } from "next/headers";
 
 import { getSessionCookieData } from "./getSessionCookieData";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
 import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
@@ -13,15 +13,13 @@ import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
 
 export const extendSession = async () => {
 	try {
-		const sessionCookieData = await getSessionCookieData();
+		const cookieResult = await getSessionCookieData();
 
-		if (!sessionCookieData) {
-			return getActionErrorMessage("Session cookie data is not defined");
+		if (cookieResult.actionResultType === actionResultType.ERROR) {
+			return getActionErrorMessage("Session expired");
 		}
 
-		if (!sessionCookieData.email) {
-			return getActionErrorMessage("Session cookie missing data");
-		}
+		const sessionCookieData = cookieResult.sessionCookieData;
 
 		const sessionWarningTimestamp = getSessionWarningTimestamp();
 
@@ -36,7 +34,7 @@ export const extendSession = async () => {
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
 		return {
-			actionResultType: ActionResultType.SUCCESS,
+			actionResultType: actionResultType.SUCCESS,
 			sessionCookieData: newSessionCookieData,
 		};
 	} catch (error) {

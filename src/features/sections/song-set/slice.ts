@@ -15,6 +15,7 @@ export type AppSongSet = Nullable<SongSet>;
 
 export type SongSetSlice = {
 	songSetId: string | null;
+	activeSongSetId: string | null;
 	songSet: AppSongSet;
 	songSetSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
 	songSetNewClick: () => void;
@@ -32,6 +33,7 @@ export type SongSetSlice = {
 		songId: string;
 		songSetId: string | null;
 	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
+	setActiveSongSetId: (activeSongSetId: string | null) => void;
 };
 
 type AppSongSetSlice = StateCreator<AppSlice, [], [], SongSetSlice>;
@@ -45,6 +47,7 @@ const songSet: AppSongSet = {
 
 export const createSongSetSlice: AppSongSetSlice = (set, get) => ({
 	songSetId: null,
+	activeSongSetId: null,
 	songSet,
 	songSetSubmit: songSetSubmit(get, set),
 	songSetNewClick: songSetNewClick(get, set),
@@ -58,4 +61,6 @@ export const createSongSetSlice: AppSongSetSlice = (set, get) => ({
 	songSetDeleteConfirmClick: songSetDeleteConfirmClick(get, set),
 	songSetLoadClick: songSetSongLoadClick(get, set),
 	songSetSongLoadClick: songSetSongLoadClick(get, set),
+	setActiveSongSetId: (activeSongSetId: string | null) =>
+		set({ activeSongSetId }),
 });

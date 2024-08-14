@@ -2,6 +2,7 @@ import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
+import { activeSongClick } from "./activeSongClick";
 import { addSongToSongSetClick } from "./addSongToSongSetClick";
 import { showAddSongToSongSetButton } from "./showAddSongToSongSetButton";
 import { songDeleteClick } from "./songDeleteClick";
@@ -16,6 +17,7 @@ export type AppSong = Nullable<Song>;
 
 export type SongSlice = {
 	songId: string | null;
+	activeSongId: string | null;
 	song: AppSong;
 	songSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
 	songNewClick: () => void;
@@ -29,6 +31,8 @@ export type SongSlice = {
 	showAddSongToSongSetButton: () => boolean;
 	addingSongToSongSet: boolean;
 	addSongToSongSetClick: () => Promise<void>;
+	setActiveSongId: (activeSongId: string | null) => void;
+	activeSongClick: (songId: string) => () => Promise<void>;
 };
 
 type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
@@ -43,6 +47,7 @@ const song: AppSong = {
 
 export const createSongSlice: AppSongSlice = (set, get) => ({
 	songId: null,
+	activeSongId: null,
 	song,
 	songSubmit: songSubmit(get, set),
 	songNewClick: songNewClick(get, set),
@@ -56,4 +61,6 @@ export const createSongSlice: AppSongSlice = (set, get) => ({
 	showAddSongToSongSetButton: showAddSongToSongSetButton(get),
 	addingSongToSongSet: false,
 	addSongToSongSetClick: addSongToSongSetClick(get, set),
+	setActiveSongId: (activeSongId: string | null) => set({ activeSongId }),
+	activeSongClick: activeSongClick(get),
 });

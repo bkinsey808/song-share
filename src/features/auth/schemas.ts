@@ -9,12 +9,12 @@ import {
 	string,
 } from "valibot";
 
-import { Role } from "./enums";
+import { role } from "./consts";
 
 const shared = {
 	username: S.Union(S.String, S.Null),
 	picture: S.Union(S.String, S.Null),
-	roles: S.Array(S.Literal(...Object.values(Role))),
+	roles: S.Array(S.Literal(...Object.values(role))),
 };
 
 export const SessionCookieDataSchema = S.Struct({

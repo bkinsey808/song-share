@@ -5,23 +5,27 @@ import { useCallback } from "react";
 import { useAppStore } from "../app-store/useAppStore";
 import { Modal, ModalContent, ModalFooter } from "../design-system/Modal";
 import { Button } from "@/components/ui/button";
-import { AppModal } from "@/features/modal/enums";
+import { appModal } from "@/features/modal/consts";
 
 export const AccountDeleteConfirmModal = () => {
-	const { appModal, setAppModal, accountDeleteConfirmClick, deletingAccount } =
-		useAppStore();
+	const {
+		openAppModal,
+		setOpenAppModal,
+		accountDeleteConfirmClick,
+		deletingAccount,
+	} = useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
-			setAppModal(open ? AppModal.ACCOUNT_DELETE_CONFIRM : null);
+			setOpenAppModal(open ? appModal.ACCOUNT_DELETE_CONFIRM : null);
 		},
-		[setAppModal],
+		[setOpenAppModal],
 	);
 
 	return (
 		<Modal
 			heading="Confirm Delete Account"
-			open={appModal === AppModal.ACCOUNT_DELETE_CONFIRM}
+			open={openAppModal === appModal.ACCOUNT_DELETE_CONFIRM}
 			setOpen={setOpen}
 		>
 			<ModalContent>

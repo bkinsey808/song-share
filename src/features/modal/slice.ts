@@ -1,16 +1,17 @@
 import { StateCreator } from "zustand";
 
-import { AppModal } from "./enums";
+import { appModal } from "./consts";
+import { AppModal } from "./types";
 import { AppSlice } from "@/features/app-store/useAppStore";
 
 export type ModalSlice = {
-	appModal: AppModal | null;
-	setAppModal: (modal: AppModal | null) => void;
+	openAppModal: (typeof appModal)[keyof typeof appModal] | null;
+	setOpenAppModal: (modal: AppModal | null) => void;
 };
 
 type AppModalSlice = StateCreator<AppSlice, [], [], ModalSlice>;
 
 export const createModalSlice: AppModalSlice = (set, _get) => ({
-	appModal: null,
-	setAppModal: (modal) => set({ appModal: modal }),
+	openAppModal: null,
+	setOpenAppModal: (modal) => set({ openAppModal: modal }),
 });

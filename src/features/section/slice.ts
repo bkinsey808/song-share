@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand";
 
 import { AppSlice, useAppStore } from "@/features/app-store/useAppStore";
-import { SectionId } from "@/features/sections/enums";
+import { SectionId } from "@/features/sections/types";
 
 export type SectionSlice = {
 	openSections: SectionId[];
@@ -10,7 +10,7 @@ export type SectionSlice = {
 
 type AppSectionSlice = StateCreator<AppSlice, [], [], SectionSlice>;
 
-export const createSectionSlice: AppSectionSlice = (set, get) => ({
+export const createSectionSlice: AppSectionSlice = (set, _get) => ({
 	openSections: [],
 	sectionToggle: (sectionId: SectionId) => {
 		set((state) => {

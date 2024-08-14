@@ -1,12 +1,12 @@
 "use server";
 
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { flatten } from "valibot";
 
 import { extendSession } from "./extendSession";
-import { ActionResultType } from "@/features/app-store/enums";
+import { getUserDoc } from "./getUserDoc";
+import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
-import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSetSchema } from "@/features/sections/song-set/schemas";
@@ -15,7 +15,7 @@ import type { SlimSongSet, SongSet } from "@/features/sections/song-set/types";
 const getFormError = (formError: string) => {
 	console.error(formError);
 	return {
-		actionResultType: ActionResultType.ERROR as ActionResultType.ERROR,
+		actionResultType: actionResultType.ERROR,
 		formError,
 		fieldErrors: [],
 	};
@@ -28,60 +28,43 @@ export const songSetSave = async ({
 	songSet: SongSet;
 	songSetId: string | null;
 }) => {
+	console.log("songSetSave");
 	try {
 		const result = serverParse(SongSetSchema, songSet);
 		if (!result.success) {
 			return {
-				actionResultType: ActionResultType.ERROR as const,
+				actionResultType: actionResultType.ERROR,
 				fieldErrors: flatten<typeof SongSetSchema>(result.issues).nested,
 			};
 		}
 
 		const extendSessionResult = await extendSession();
-
-		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
-
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const username = sessionCookieData.username;
-
 		if (!username) {
 			return getFormError("Username not found");
 		}
 
-		const userDocRef = doc(db, "users", sessionCookieData.email);
-		const userDoc = await getDoc(userDocRef);
-		if (!userDoc.exists()) {
-			return getFormError("User not found");
+		const userDocResult = await getUserDoc();
+		if (userDocResult.actionResultType === actionResultType.ERROR) {
+			return getFormError("Failed to get user doc");
 		}
-
-		const userDocData = userDoc.data();
-		if (!userDocData) {
-			return getFormError("User data not found");
-		}
-
-		const userDocResult = serverParse(UserDocSchema, userDocData);
-		if (!userDocResult.success) {
-			console.log({
-				userDocData,
-				issues: userDocResult.issues,
-				path: userDocResult.issues[0].path,
-			});
-			return getFormError("User data is invalid");
-		}
+		const { userDoc, userDocRef } = userDocResult;
 
 		const slimSongSet: SlimSongSet = {
 			songSetName: songSet.songSetName,
 			sharer: sessionCookieData.username,
 		};
 
-		const userDocSongSets = userDocResult.output.songSets;
+		const userDocSongSets = userDoc.songSets;
 
 		// first, confirm user owns the songSet
 		if (songSetId && !userDocSongSets[songSetId]) {
-			return getFormError("User does not own this songSet");
+			return getFormError("User does not own this song set");
 		}
 
 		// second update the songSet in the songSets collection, or create it if it doesn't exist
@@ -99,13 +82,12 @@ export const songSetSave = async ({
 		if (songSetData) {
 			const songSetResult = serverParse(SongSetSchema, songSetData);
 			if (!songSetResult.success) {
-				console.log(songSetData);
 				return getFormError("SongSet data is invalid");
 			}
 
 			const songSetLibrarySongSet = songSetResult.output;
 			if (songSetId && songSetLibrarySongSet.sharer !== username) {
-				return getFormError("User does not own this songSet");
+				return getFormError("User does not own this song set");
 			}
 		}
 
@@ -122,13 +104,13 @@ export const songSetSave = async ({
 			[songSetId ?? newSongSetId]: slimSongSet,
 		};
 
-		await setDoc(userDocRef, {
-			...userDocResult.output,
+		await updateDoc(userDocRef, {
+			songSetId,
 			songSets: newSongSets,
 		});
 
 		return {
-			actionResultType: ActionResultType.SUCCESS,
+			actionResultType: actionResultType.SUCCESS,
 			songSetId: songSetId ?? newSongSetId,
 		};
 	} catch (error) {

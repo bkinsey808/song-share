@@ -31,7 +31,10 @@ const omittedKeys: (keyof AppSlice)[] = [
 	"registerError",
 	"lastSignInCheck",
 	"isSigningIn",
-	"appModal",
+	"openAppModal",
+	"addingSongToSongSet",
+	"deletingSong",
+	"deletingSongSet",
 ];
 
 export const useAppStore = create<AppSlice>()(

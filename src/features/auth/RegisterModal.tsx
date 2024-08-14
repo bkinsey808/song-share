@@ -5,25 +5,25 @@ import { useCallback } from "react";
 import { Modal } from "../design-system/Modal";
 import { RegisterForm } from "./RegisterForm";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { AppModal } from "@/features/modal/enums";
+import { appModal } from "@/features/modal/consts";
 
 export const RegisterModal = () => {
-	const { appModal, setAppModal } = useAppStore();
+	const { openAppModal, setOpenAppModal } = useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
-			setAppModal(open ? AppModal.REGISTER : null);
+			setOpenAppModal(open ? appModal.REGISTER : null);
 		},
-		[setAppModal],
+		[setOpenAppModal],
 	);
 
 	return (
 		<Modal
 			heading="Create a user name to get started"
-			open={appModal === AppModal.REGISTER}
+			open={openAppModal === appModal.REGISTER}
 			setOpen={setOpen}
 		>
-			<RegisterForm key={appModal} setOpen={setOpen} />
+			<RegisterForm key={openAppModal} setOpen={setOpen} />
 		</Modal>
 	);
 };

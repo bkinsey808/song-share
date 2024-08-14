@@ -1,6 +1,6 @@
 import { songAddToSongSet } from "@/actions/songAddToSongSet";
 import { toast } from "@/components/ui/use-toast";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 
 export const addSongToSongSetClick = (get: Get, set: Set) => async () => {
@@ -15,6 +15,9 @@ export const addSongToSongSetClick = (get: Get, set: Set) => async () => {
 			});
 			return;
 		}
+
+		console.log({ song });
+
 		const result = await songAddToSongSet({
 			songId,
 			song: {
@@ -27,7 +30,7 @@ export const addSongToSongSetClick = (get: Get, set: Set) => async () => {
 			songSetId,
 		});
 
-		if (result.actionResultType === ActionResultType.ERROR) {
+		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: "There was an error adding song to song set",
@@ -53,5 +56,5 @@ export const addSongToSongSetClick = (get: Get, set: Set) => async () => {
 		});
 	}
 
-	set({ addingSongToSongSet: true });
+	set({ addingSongToSongSet: false });
 };

@@ -1,7 +1,7 @@
 import { Get } from "@/features/app-store/types";
-import { AppModal } from "@/features/modal/enums";
+import { appModal } from "@/features/modal/consts";
 
 export const songDeleteClick = (get: Get) => () => {
-	const { setAppModal } = get();
-	setAppModal(AppModal.SONG_DELETE_CONFIRM);
+	const { setOpenAppModal } = get();
+	setOpenAppModal(appModal.SONG_DELETE_CONFIRM);
 };

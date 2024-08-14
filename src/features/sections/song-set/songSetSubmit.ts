@@ -3,7 +3,7 @@ import { FormEvent } from "react";
 import { SongSet } from "./types";
 import { songSetSave } from "@/actions/songSetSave";
 import { toast } from "@/components/ui/use-toast";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
@@ -12,11 +12,14 @@ export const songSetSubmit =
 	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { songSetForm, songSetId, songSetLibrary } = get();
+
 		if (!songSetForm) {
 			console.error("no form");
 			return;
 		}
+
 		return songSetForm.handleSubmit(async (songSet) => {
+			console.log("handle submit");
 			const sessionCookieData = useAppStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {
@@ -35,18 +38,18 @@ export const songSetSubmit =
 				return;
 			}
 
-			const result = await songSetSave({
+			const songSaveResult = await songSetSave({
 				songSet,
 				songSetId,
 			});
 
-			switch (result.actionResultType) {
-				case ActionResultType.ERROR:
-					const keys = result.fieldErrors
-						? getKeys(result.fieldErrors)
+			switch (songSaveResult.actionResultType) {
+				case actionResultType.ERROR:
+					const keys = songSaveResult.fieldErrors
+						? getKeys(songSaveResult.fieldErrors)
 						: undefined;
 					keys?.forEach((key) => {
-						const message = result.fieldErrors?.[key]?.[0];
+						const message = songSaveResult.fieldErrors?.[key]?.[0];
 						if (!message) {
 							return;
 						}
@@ -61,8 +64,8 @@ export const songSetSubmit =
 					});
 
 					break;
-				case ActionResultType.SUCCESS:
-					const newSongSetId = result.songSetId;
+				case actionResultType.SUCCESS:
+					const newSongSetId = songSaveResult.songSetId;
 					const newSongSetLibrarySongSet: SongSet = {
 						...songSet,
 						sharer: username,
@@ -71,9 +74,8 @@ export const songSetSubmit =
 					set({
 						songSetLibrary,
 						songSetId: newSongSetId,
-						...songSet,
+						songSet,
 					});
-					console.log("reset");
 					songSetForm.reset(songSet, { keepValues: true });
 					toast({ title: "Song Set details saved" });
 					break;

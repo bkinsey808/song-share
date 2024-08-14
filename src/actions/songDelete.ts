@@ -1,20 +1,14 @@
-import { update } from "effect/Differ";
-import {
-	collection,
-	deleteDoc,
-	doc,
-	getDoc,
-	setDoc,
-	updateDoc,
-} from "firebase/firestore";
+"use server";
+
+import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
 import { extendSession } from "./extendSession";
-import { ActionResultType } from "@/features/app-store/enums";
+import { getSong } from "./getSong";
+import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
 import { serverParse } from "@/features/global/serverParse";
-import { SongSchema } from "@/features/sections/song/schemas";
 
 export const songDelete = async (songId: string) => {
 	try {
@@ -24,7 +18,7 @@ export const songDelete = async (songId: string) => {
 
 		const extendSessionResult = await extendSession();
 
-		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getActionErrorMessage("Session expired");
 		}
 
@@ -63,23 +57,13 @@ export const songDelete = async (songId: string) => {
 			return getActionErrorMessage("User does not own this song");
 		}
 
-		const songsCollection = collection(db, "songs");
-		const songDocRef = doc(songsCollection, songId);
-		const songSnapshot = await getDoc(songDocRef);
-
-		const songData = songSnapshot.data();
-		if (!songData) {
-			return getActionErrorMessage("Song data not found");
+		const songResult = await getSong(songId);
+		if (songResult.actionResultType === actionResultType.ERROR) {
+			return songResult;
 		}
+		const { song, songDocRef } = songResult;
 
-		const songResult = serverParse(SongSchema, songData);
-		if (!songResult.success) {
-			console.log(songData);
-			return getActionErrorMessage("Song data is invalid");
-		}
-
-		const songLibrarySong = songResult.output;
-		if (songLibrarySong.sharer !== username) {
+		if (song.sharer !== username) {
 			return getActionErrorMessage("User does not own this song");
 		}
 
@@ -94,7 +78,7 @@ export const songDelete = async (songId: string) => {
 		});
 
 		return {
-			actionResultType: ActionResultType.SUCCESS as const,
+			actionResultType: actionResultType.SUCCESS,
 		};
 	} catch (error) {
 		console.error({ error });

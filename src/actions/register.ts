@@ -4,10 +4,10 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 import { flatten } from "valibot";
 
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
+import { registerFormFieldKey } from "@/features/auth/consts";
 import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
-import { RegisterFormFieldKey } from "@/features/auth/enums";
 import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
 import { RegistrationSchema } from "@/features/auth/schemas";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
@@ -29,32 +29,36 @@ export const register = async ({
 		const result = serverParse(RegistrationSchema, registrationData);
 		if (!result.success) {
 			return {
-				actionResultType: ActionResultType.ERROR as const,
+				actionResultType: actionResultType.ERROR,
 				fieldErrors: flatten<typeof RegistrationSchema>(result.issues).nested,
 			};
 		}
 
-		const username = registrationData[RegisterFormFieldKey.Username];
+		const username = registrationData[registerFormFieldKey.Username];
 
 		const existingUsernameDocumentSnapshot = await getDoc(
 			doc(db, "usernames", username),
 		);
 		if (existingUsernameDocumentSnapshot.exists()) {
 			return {
-				actionResultType: ActionResultType.ERROR as const,
+				actionResultType: actionResultType.ERROR,
 				fieldErrors: {
-					[RegisterFormFieldKey.Username]: ["Username is already taken"],
+					[registerFormFieldKey.Username]: ["Username is already taken"],
 				},
 			};
 		}
 
 		const userDoc: UserDoc = {
 			...registrationData,
-			picture: picture ?? undefined,
+			picture: picture ?? null,
 			username,
 			songs: {},
 			songSets: {},
 			roles: [],
+			activeSongId: null,
+			activeSongSetId: null,
+			songId: null,
+			songSetId: null,
 		};
 
 		const sessionCookieData: SessionCookieData = {
@@ -74,13 +78,13 @@ export const register = async ({
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
 		return {
-			actionResultType: ActionResultType.SUCCESS as const,
+			actionResultType: actionResultType.SUCCESS,
 			sessionCookieData,
 		};
 	} catch (error) {
 		console.error({ error });
 		return {
-			actionResultType: ActionResultType.ERROR as const,
+			actionResultType: actionResultType.ERROR,
 			formError: "Failed to register",
 		};
 	}

@@ -5,6 +5,7 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 export const songNewClick = (get: Get, set: Set) => () => {
 	const username = useAppStore.getState().sessionCookieData?.username;
 	const form = get().songForm;
+
 	if (!form) {
 		console.error("no form");
 		return;
@@ -20,6 +21,7 @@ export const songNewClick = (get: Get, set: Set) => () => {
 			sharer: username ?? null,
 		},
 	});
+
 	const newSong: Song = {
 		songName: "",
 		credits: "",
@@ -27,5 +29,6 @@ export const songNewClick = (get: Get, set: Set) => () => {
 		translation: "",
 		sharer: username ?? "",
 	};
+
 	form.reset(newSong);
 };

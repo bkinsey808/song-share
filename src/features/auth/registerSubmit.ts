@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 
-import { ActionResultType } from "../app-store/enums";
+import { actionResultType } from "../app-store/consts";
 import { Get, Set } from "../app-store/types";
 import { useAppStore } from "../app-store/useAppStore";
 import { getKeys } from "../global/getKeys";
@@ -37,7 +37,7 @@ export const registerSubmit =
 				});
 
 				switch (result.actionResultType) {
-					case ActionResultType.ERROR:
+					case actionResultType.ERROR:
 						const keys = result.fieldErrors
 							? getKeys(result.fieldErrors)
 							: undefined;
@@ -57,7 +57,7 @@ export const registerSubmit =
 						});
 
 						break;
-					case ActionResultType.SUCCESS:
+					case actionResultType.SUCCESS:
 						set({
 							isSignedIn: true,
 							sessionCookieData: {
@@ -65,7 +65,7 @@ export const registerSubmit =
 								roles: result.sessionCookieData.roles,
 							},
 						});
-						useAppStore.getState().setAppModal(null);
+						useAppStore.getState().setOpenAppModal(null);
 						toast({ title: "You have been registered" });
 						break;
 				}

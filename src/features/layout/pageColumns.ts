@@ -1,4 +1,4 @@
-import { SectionId } from "@/features/sections/enums";
+import { sectionId } from "@/features/sections/consts";
 import { SongLibrarySection } from "@/features/sections/song-library/SongLibrarySection";
 import { SongLibraryTitle } from "@/features/sections/song-library/SongLibraryTitle";
 import { SongSetLibrarySection } from "@/features/sections/song-set-library/SongSetLibrarySection";
@@ -7,6 +7,7 @@ import { SongSetSection } from "@/features/sections/song-set/SongSetSection";
 import { SongSetTitle } from "@/features/sections/song-set/SongSetTitle";
 import { SongSection } from "@/features/sections/song/SongSection";
 import { SongTitle } from "@/features/sections/song/SongTitle";
+import { SectionId } from "@/features/sections/types";
 
 type DashboardComponent = () => JSX.Element;
 type Sections = Partial<
@@ -17,29 +18,29 @@ type Sections = Partial<
 >;
 
 export const SECTIONS: Sections = {
-	[SectionId.SONG_SET]: {
+	[sectionId.SONG_SET]: {
 		title: SongSetTitle,
 		section: SongSetSection,
 	},
-	[SectionId.SONG_SET_LIBRARY]: {
+	[sectionId.SONG_SET_LIBRARY]: {
 		title: SongSetLibraryTitle,
 		section: SongSetLibrarySection,
 	},
-	[SectionId.SONG]: {
+	[sectionId.SONG]: {
 		title: SongTitle,
 		section: SongSection,
 	},
-	[SectionId.SONG_LIBRARY]: {
+	[sectionId.SONG_LIBRARY]: {
 		title: SongLibraryTitle,
 		section: SongLibrarySection,
 	},
 };
 
 const leftSections: SectionId[] = [
-	SectionId.SONG_SET_LIBRARY,
-	SectionId.SONG_SET,
+	sectionId.SONG_SET_LIBRARY,
+	sectionId.SONG_SET,
 ];
 // const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
-const rightSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
+const rightSections: SectionId[] = [sectionId.SONG_LIBRARY, sectionId.SONG];
 
 export const pageColumns = [leftSections, rightSections];

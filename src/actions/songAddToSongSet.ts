@@ -1,15 +1,16 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+"use server";
+
+import { doc, setDoc } from "firebase/firestore";
 
 import { extendSession } from "./extendSession";
-import { ActionResultType } from "@/features/app-store/enums";
+import { getSong } from "./getSong";
+import { getSongSet } from "./getSongSet";
+import { getUserDoc } from "./getUserDoc";
+import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
-import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
-import { serverParse } from "@/features/global/serverParse";
-import { SongSetSchema } from "@/features/sections/song-set/schemas";
 import { SongSet } from "@/features/sections/song-set/types";
-import { SongSchema } from "@/features/sections/song/schemas";
 import { Song } from "@/features/sections/song/types";
 
 export const songAddToSongSet = async ({
@@ -21,60 +22,30 @@ export const songAddToSongSet = async ({
 	song: Song;
 	songSetId: string;
 }) => {
+	console.log({ song });
 	try {
 		const extendSessionResult = await extendSession();
-
-		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getActionErrorMessage("Session expired");
 		}
-
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
-		if (!sessionCookieData) {
-			return getActionErrorMessage("Session expired");
-		}
-
 		const { username, email } = sessionCookieData;
-
 		if (!username) {
 			return getActionErrorMessage("Username not found");
 		}
 
-		// get song data
-		const songDocSnapshot = await getDoc(doc(db, "songs", songId));
-		if (!songDocSnapshot.exists()) {
+		const songResult = await getSong(songId);
+		if (songResult.actionResultType === actionResultType.ERROR) {
 			return getActionErrorMessage("Song not found");
 		}
+		const existingSong = songResult.song;
 
-		const songData = songDocSnapshot.data();
-		if (!songData) {
-			return getActionErrorMessage("Song data not found");
-		}
-
-		const songParseResult = serverParse(SongSchema, songData);
-		if (!songParseResult.success) {
-			return getActionErrorMessage("Song data invalid");
-		}
-
-		const existingSong = songParseResult.output;
-
-		// get song set data
-		const songSetDocSnapshot = await getDoc(doc(db, "songSets", songSetId));
-		if (!songSetDocSnapshot.exists()) {
+		const songSetResult = await getSongSet(songSetId);
+		if (songSetResult.actionResultType === actionResultType.ERROR) {
 			return getActionErrorMessage("Song set not found");
 		}
-
-		const songSetData = songSetDocSnapshot.data();
-		if (!songSetData) {
-			return getActionErrorMessage("Song set data not found");
-		}
-
-		const songSetParseResult = serverParse(SongSetSchema, songSetData);
-		if (!songSetParseResult.success) {
-			return getActionErrorMessage("Song set data invalid");
-		}
-
-		const existingSongSet = songSetParseResult.output;
+		const existingSongSet = songSetResult.songSet;
 
 		const songSetSongList = existingSongSet.songSetSongList;
 		if (!songSetSongList) {
@@ -101,23 +72,11 @@ export const songAddToSongSet = async ({
 			songSetSongs: newSongSetSongs,
 		};
 
-		// update user's song set
-		const userDocSnapshot = await getDoc(doc(db, "users", email));
-		if (!userDocSnapshot.exists()) {
-			return getActionErrorMessage(`User not found: ${email}`);
+		const userDocResult = await getUserDoc();
+		if (userDocResult.actionResultType === actionResultType.ERROR) {
+			return getActionErrorMessage("User doc not found");
 		}
-
-		const userDocData = userDocSnapshot.data();
-		if (!userDocData) {
-			return getActionErrorMessage("User data not found");
-		}
-
-		const userDocDataParseResult = serverParse(UserDocSchema, userDocData);
-		if (!userDocDataParseResult.success) {
-			return getActionErrorMessage("User data invalid");
-		}
-
-		const existinguserDoc = userDocDataParseResult.output;
+		const existinguserDoc = userDocResult.userDoc;
 
 		const userSongSets = existinguserDoc.songSets;
 		if (!userSongSets) {
@@ -158,7 +117,7 @@ export const songAddToSongSet = async ({
 		await setDoc(doc(db, "users", email), newUserDoc);
 
 		return {
-			actionResultType: ActionResultType.SUCCESS as const,
+			actionResultType: actionResultType.SUCCESS,
 			songSet: newSongSet,
 		};
 	} catch (error) {

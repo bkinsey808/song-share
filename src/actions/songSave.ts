@@ -4,9 +4,9 @@ import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { flatten } from "valibot";
 
 import { extendSession } from "./extendSession";
-import { ActionResultType } from "@/features/app-store/enums";
+import { getUserDoc } from "./getUserDoc";
+import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
-import { UserDocSchema } from "@/features/firebase/schemas";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
@@ -15,7 +15,7 @@ import type { SlimSong, Song } from "@/features/sections/song/types";
 const getFormError = (formError: string) => {
 	console.error(formError);
 	return {
-		actionResultType: ActionResultType.ERROR as const,
+		actionResultType: actionResultType.ERROR,
 		formError,
 		fieldErrors: undefined,
 	};
@@ -32,22 +32,17 @@ export const songSave = async ({
 		const result = serverParse(SongSchema, song);
 		if (!result.success) {
 			return {
-				actionResultType: ActionResultType.ERROR as const,
+				actionResultType: actionResultType.ERROR,
 				fieldErrors: flatten<typeof SongSchema>(result.issues).nested,
 			};
 		}
 
 		const extendSessionResult = await extendSession();
-
-		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
-
-		if (!sessionCookieData) {
-			return getFormError("Session expired");
-		}
 
 		const username = sessionCookieData.username;
 
@@ -55,23 +50,13 @@ export const songSave = async ({
 			return getFormError("Username not found");
 		}
 
-		const userDocRef = doc(db, "users", sessionCookieData.email);
-		const userDoc = await getDoc(userDocRef);
-		if (!userDoc.exists()) {
-			return getFormError("User not found");
+		const userDocResult = await getUserDoc();
+		if (userDocResult.actionResultType === actionResultType.ERROR) {
+			return getFormError("Failed to get user doc");
 		}
+		const { userDoc, userDocRef } = userDocResult;
 
-		const userDocData = userDoc.data();
-		if (!userDocData) {
-			return getFormError("User data not found");
-		}
-
-		const userDocResult = serverParse(UserDocSchema, userDocData);
-		if (!userDocResult.success) {
-			return getFormError("User data is invalid");
-		}
-
-		const userDocSongs = userDocResult.output.songs;
+		const userDocSongs = userDoc.songs;
 
 		// first, confirm user owns the song
 		if (songId && !userDocSongs[songId]) {
@@ -93,7 +78,7 @@ export const songSave = async ({
 		if (songData) {
 			const songResult = serverParse(SongSchema, songData);
 			if (!songResult.success) {
-				console.log(songData);
+				console.warn(songData);
 				return getFormError("Song data is invalid");
 			}
 
@@ -121,11 +106,12 @@ export const songSave = async ({
 		};
 
 		await updateDoc(userDocRef, {
+			songId,
 			songs: newSongs,
 		});
 
 		return {
-			actionResultType: ActionResultType.SUCCESS,
+			actionResultType: actionResultType.SUCCESS,
 			songId: songId ?? newSongId,
 		};
 	} catch (error) {

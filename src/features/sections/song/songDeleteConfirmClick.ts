@@ -1,7 +1,7 @@
 import { Song } from "./types";
 import { songDelete } from "@/actions/songDelete";
 import { toast } from "@/components/ui/use-toast";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
@@ -9,7 +9,6 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
 		deletingSong: true,
 	});
-	console.log("song deletee confirm click");
 	const username = useAppStore.getState().sessionCookieData?.username;
 	const { songForm, songLibrary, songId } = get();
 	if (!songForm) {
@@ -21,16 +20,16 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 			variant: "destructive",
 			title: "No song selected",
 		});
-		useAppStore.getState().setAppModal(null);
+		useAppStore.getState().setOpenAppModal(null);
 		return;
 	}
 	const result = await songDelete(songId);
-	if (result.actionResultType === ActionResultType.ERROR) {
+	if (result.actionResultType === actionResultType.ERROR) {
 		toast({
 			variant: "destructive",
 			title: "There was an error deleting the song",
 		});
-		useAppStore.getState().setAppModal(null);
+		useAppStore.getState().setOpenAppModal(null);
 		return;
 	}
 	delete songLibrary[songId];
@@ -48,5 +47,5 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		deletingSong: false,
 	});
 	songForm.reset(song);
-	useAppStore.getState().setAppModal(null);
+	useAppStore.getState().setOpenAppModal(null);
 };

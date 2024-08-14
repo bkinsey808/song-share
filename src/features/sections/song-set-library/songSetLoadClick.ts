@@ -2,7 +2,7 @@ import { MouseEventHandler } from "react";
 
 import { songSetLoad } from "@/actions/songSetLoad";
 import { toast } from "@/components/ui/use-toast";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
 
 export const songSetLoadClick =
@@ -26,7 +26,7 @@ export const songSetLoadClick =
 		}
 
 		const result = await songSetLoad(songSetId);
-		if (result.actionResultType === ActionResultType.ERROR) {
+		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: result.message,
@@ -34,20 +34,20 @@ export const songSetLoadClick =
 			return;
 		}
 
-		const songSetLibrarySongSet = result.songSetLibrarySongSet;
+		const songSet = result.songSet;
 
 		const newSongSetLibrary = {
 			...songSetLibrary,
-			[songSetId]: songSetLibrarySongSet,
+			[songSetId]: songSet,
 		};
 
 		set({
-			...songSetLibrarySongSet,
+			songSet,
 			songSetId,
 			songSetLibrary: newSongSetLibrary,
 		});
 
-		songSetForm.reset(songSetLibrarySongSet);
+		songSetForm.reset(songSet);
 
 		toast({
 			title: "Song Set loaded",

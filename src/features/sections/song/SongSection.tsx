@@ -17,14 +17,13 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
-import { SectionId } from "@/features/sections/enums";
+import { sectionId } from "@/features/sections/consts";
 
 export const SongSection = () => {
 	const { isSignedIn } = useAppStore();
@@ -33,7 +32,6 @@ export const SongSection = () => {
 		song,
 		songSubmit,
 		setIsSongUnsaved,
-		isSongUnsaved,
 		songNewClick,
 		setSongForm,
 		songDeleteClick,
@@ -78,16 +76,12 @@ export const SongSection = () => {
 		<div suppressHydrationWarning={true}>
 			<SongDeleteConfirmModal />
 			<Form {...form}>
-				<div suppressHydrationWarning={true}>
-					isDirty: {isSongUnsaved.toString()}
-				</div>
 				<form onSubmit={songSubmit}>
 					<FormField
 						control={form.control}
 						name="songName"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Song name</FormLabel>
 								<FormControl>
 									<Input placeholder="Song Name" {...field} />
 								</FormControl>
@@ -96,7 +90,7 @@ export const SongSection = () => {
 						)}
 					/>
 
-					<SectionAccordion sectionId={SectionId.CREDITS} title="Credits">
+					<SectionAccordion sectionId={sectionId.CREDITS} title="Credits">
 						<FormField
 							control={form.control}
 							name="credits"
@@ -111,7 +105,7 @@ export const SongSection = () => {
 						/>
 					</SectionAccordion>
 
-					<SectionAccordion sectionId={SectionId.LYICS} title="Lyrics">
+					<SectionAccordion sectionId={sectionId.LYICS} title="Lyrics">
 						<FormField
 							control={form.control}
 							name="lyrics"
@@ -127,7 +121,7 @@ export const SongSection = () => {
 					</SectionAccordion>
 
 					<SectionAccordion
-						sectionId={SectionId.TRANSLATION}
+						sectionId={sectionId.TRANSLATION}
 						title="Translation"
 					>
 						<FormField

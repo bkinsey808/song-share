@@ -9,23 +9,27 @@ import {
 	ModalContent,
 	ModalFooter,
 } from "@/features/design-system/Modal";
-import { AppModal } from "@/features/modal/enums";
+import { appModal } from "@/features/modal/consts";
 
 export const SongSetDeleteConfirmModal = () => {
-	const { appModal, setAppModal, deletingSongSet, songSetDeleteConfirmClick } =
-		useAppStore();
+	const {
+		openAppModal,
+		setOpenAppModal,
+		deletingSongSet,
+		songSetDeleteConfirmClick,
+	} = useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
-			setAppModal(open ? AppModal.SONG_SET_DELETE_CONFIRM : null);
+			setOpenAppModal(open ? appModal.SONG_SET_DELETE_CONFIRM : null);
 		},
-		[setAppModal],
+		[setOpenAppModal],
 	);
 
 	return (
 		<Modal
 			heading="Confirm Delete Song Set"
-			open={appModal === AppModal.SONG_SET_DELETE_CONFIRM}
+			open={openAppModal === appModal.SONG_SET_DELETE_CONFIRM}
 			setOpen={setOpen}
 		>
 			<ModalContent>

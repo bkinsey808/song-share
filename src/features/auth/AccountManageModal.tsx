@@ -9,23 +9,23 @@ import {
 	ModalContent,
 	ModalFooter,
 } from "@/features/design-system/Modal";
-import { AppModal } from "@/features/modal/enums";
+import { appModal } from "@/features/modal/consts";
 
 export const AccountManageModal = () => {
-	const { appModal, setAppModal, signOutClick, deleteAccountClick } =
+	const { openAppModal, setOpenAppModal, signOutClick, deleteAccountClick } =
 		useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
-			setAppModal(open ? AppModal.ACCOUNT_MANAGE : null);
+			setOpenAppModal(open ? appModal.ACCOUNT_MANAGE : null);
 		},
-		[setAppModal],
+		[setOpenAppModal],
 	);
 
 	return (
 		<Modal
 			heading="Manage your account"
-			open={appModal === AppModal.ACCOUNT_MANAGE}
+			open={openAppModal === appModal.ACCOUNT_MANAGE}
 			setOpen={setOpen}
 		>
 			<ModalContent>

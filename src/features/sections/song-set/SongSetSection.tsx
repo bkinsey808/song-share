@@ -13,10 +13,10 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 
@@ -28,23 +28,30 @@ export const SongSetSection = () => {
 		songLibrary,
 		songSetSubmit,
 		setIsSongSetUnsaved,
-		isSongSetUnsaved,
 		songSetNewClick,
 		setSongSetForm,
 		songSetDeleteClick,
 		songSetSongLoadClick,
+		activeSongId,
+		activeSongClick,
+		setActiveSongId,
 	} = useAppStore();
 
-	const defaultValues: SongSet = useMemo(
-		() => ({
-			songSetName: songSet?.songSetName ?? "",
-			sharer: songSet?.sharer ?? "",
-			songSetSongList: songSet?.songSetSongList ?? [],
-			songSetSongs: songSet?.songSetSongs ?? {},
-		}),
+	const defaultValues = useMemo(
+		() => {
+			const defaultSongSet: SongSet = {
+				songSetName: songSet?.songSetName ?? "",
+				sharer: songSet?.sharer ?? "",
+				songSetSongList: songSet?.songSetSongList ?? [],
+				songSetSongs: songSet?.songSetSongs ?? {},
+			};
+			return defaultSongSet;
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	);
+
+	console.log({ defaultValues, activeSongId });
 
 	const songIds = songSet.songSetSongList ?? [];
 
@@ -72,16 +79,17 @@ export const SongSetSection = () => {
 		<div suppressHydrationWarning={true}>
 			<SongSetDeleteConfirmModal />
 			<Form {...form}>
-				<div suppressHydrationWarning={true}>
-					isDirty: {isSongSetUnsaved.toString()}
-				</div>
-				<form onSubmit={songSetSubmit}>
+				<form
+					onSubmit={async (e) => {
+						console.log(e);
+						await songSetSubmit(e);
+					}}
+				>
 					<FormField
 						control={form.control}
 						name="songSetName"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Song Set name</FormLabel>
 								<FormControl>
 									<Input placeholder="Song Set Name" {...field} />
 								</FormControl>
@@ -90,24 +98,41 @@ export const SongSetSection = () => {
 						)}
 					/>
 
-					<Grid gridClassName="grid-cols-[3fr,2fr,1fr]">
-						<GridHeader>
-							<div>Song Name</div>
-							<div>Sharer</div>
-							<div>Options</div>
-						</GridHeader>
-						{songIds.map((songId) => (
-							<GridRow key={songId}>
-								<div>{songLibrary[songId].songName}</div>
-								<div>{songLibrary[songId].sharer}</div>
-								<div>
-									<Button onClick={songSetSongLoadClick({ songId, songSetId })}>
-										Load
-									</Button>
-								</div>
-							</GridRow>
-						))}
-					</Grid>
+					<div className="p-[1rem]">
+						<Grid gridClassName="grid-cols-[1.5rem,3fr,2fr,1fr]">
+							<GridHeader>
+								<div></div>
+								<div>Song Name</div>
+								<div>Sharer</div>
+								<div>Options</div>
+							</GridHeader>
+							<RadioGroup
+								name="activeSongId"
+								id="activeSongId"
+								value={activeSongId ?? ""}
+							>
+								{songIds.map((songId) => (
+									<GridRow key={songId}>
+										<RadioGroupItem
+											className="self-center"
+											id={songId}
+											value={songId}
+											onClick={activeSongClick(songId)}
+										/>
+										<div>{songLibrary[songId].songName}</div>
+										<div>{songLibrary[songId].sharer}</div>
+										<div>
+											<Button
+												onClick={songSetSongLoadClick({ songId, songSetId })}
+											>
+												Load
+											</Button>
+										</div>
+									</GridRow>
+								))}
+							</RadioGroup>
+						</Grid>
+					</div>
 
 					{isSignedIn ? (
 						<div className="flex gap-[0.5rem]">

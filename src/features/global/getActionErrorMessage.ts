@@ -1,6 +1,9 @@
-import { ActionResultType } from "../app-store/enums";
+import { actionResultType } from "../app-store/consts";
 
-export const getActionErrorMessage = (message: string) => ({
-	actionResultType: ActionResultType.ERROR as const,
-	message,
-});
+export const getActionErrorMessage = (message: string) => {
+	console.error(message);
+	return {
+		actionResultType: actionResultType.ERROR,
+		message,
+	};
+};

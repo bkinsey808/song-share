@@ -1,4 +1,4 @@
-import { ActionResultType } from "../app-store/enums";
+import { actionResultType } from "../app-store/consts";
 import { useAppStore } from "../app-store/useAppStore";
 import { deleteAccount } from "@/actions/deleteAccount";
 import { toast } from "@/components/ui/use-toast";
@@ -9,7 +9,7 @@ export const accountDeleteConfirmClick = (set: Set) => () => {
 		set({ deletingAccount: true });
 		const deleteAccountResult = await deleteAccount();
 
-		if (deleteAccountResult.actionResultType === ActionResultType.ERROR) {
+		if (deleteAccountResult.actionResultType === actionResultType.ERROR) {
 			set({
 				deletingAccount: false,
 			});
@@ -17,7 +17,7 @@ export const accountDeleteConfirmClick = (set: Set) => () => {
 				variant: "destructive",
 				title: "There was an error deleting your account",
 			});
-			useAppStore.getState().setAppModal(null);
+			useAppStore.getState().setOpenAppModal(null);
 
 			return;
 		}
@@ -27,6 +27,6 @@ export const accountDeleteConfirmClick = (set: Set) => () => {
 			deletingAccount: false,
 		});
 		toast({ title: "Your account has been deleted" });
-		useAppStore.getState().setAppModal(null);
+		useAppStore.getState().setOpenAppModal(null);
 	})();
 };

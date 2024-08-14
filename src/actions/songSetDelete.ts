@@ -1,18 +1,12 @@
-import {
-	collection,
-	deleteDoc,
-	doc,
-	getDoc,
-	updateDoc,
-} from "firebase/firestore";
+"use server";
+
+import { deleteDoc, updateDoc } from "firebase/firestore";
 
 import { extendSession } from "./extendSession";
-import { ActionResultType } from "@/features/app-store/enums";
-import { db } from "@/features/firebase/firebase";
-import { UserDocSchema } from "@/features/firebase/schemas";
+import { getSongSet } from "./getSongSet";
+import { getUserDoc } from "./getUserDoc";
+import { actionResultType } from "@/features/app-store/consts";
 import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
-import { serverParse } from "@/features/global/serverParse";
-import { SongSetSchema } from "@/features/sections/song-set/schemas";
 
 export const songSetDelete = async (songSetId: string) => {
 	try {
@@ -21,15 +15,10 @@ export const songSetDelete = async (songSetId: string) => {
 		}
 
 		const extendSessionResult = await extendSession();
-		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getActionErrorMessage("Session expired");
 		}
-
-    const sessionCookieData = extendSessionResult.sessionCookieData;
-
-		if (!sessionCookieData) {
-			return getActionErrorMessage("Session expired");
-		}
+		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const username = sessionCookieData.username;
 
@@ -37,45 +26,25 @@ export const songSetDelete = async (songSetId: string) => {
 			return getActionErrorMessage("Username not found");
 		}
 
-		const userDocRef = doc(db, "users", sessionCookieData.email);
-		const userDoc = await getDoc(userDocRef);
-		if (!userDoc.exists()) {
-			return getActionErrorMessage("User not found");
+		const userDocResult = await getUserDoc();
+		if (userDocResult.actionResultType === actionResultType.ERROR) {
+			return userDocResult;
 		}
+		const { userDoc, userDocRef } = userDocResult;
 
-		const userDocData = userDoc.data();
-		if (!userDocData) {
-			return getActionErrorMessage("User data not found");
-		}
-
-		const userDocResult = serverParse(UserDocSchema, userDocData);
-		if (!userDocResult.success) {
-			return getActionErrorMessage("User data is invalid");
-		}
-
-		const userDocSongSets = userDocResult.output.songSets;
+		const userDocSongSets = userDoc.songSets;
 
 		// first, confirm user owns the song
 		if (!userDocSongSets[songSetId]) {
 			return getActionErrorMessage("User does not own this song set");
 		}
 
-		const songSetsCollection = collection(db, "songSets");
-		const songSetDocRef = doc(songSetsCollection, songSetId);
-		const songSetSnapshot = await getDoc(songSetDocRef);
-
-		const songSetData = songSetSnapshot.data();
-		if (!songSetData) {
-			return getActionErrorMessage("Song set data not found");
+		const songSetResult = await getSongSet(songSetId);
+		if (songSetResult.actionResultType === actionResultType.ERROR) {
+			return songSetResult;
 		}
+		const { songSet, songSetDocRef } = songSetResult;
 
-		const songSetResult = serverParse(SongSetSchema, songSetData);
-		if (!songSetResult.success) {
-			console.log(songSetData);
-			return getActionErrorMessage("Song data is invalid");
-		}
-
-		const songSet = songSetResult.output;
 		if (songSet.sharer !== username) {
 			return getActionErrorMessage("User does not own this song");
 		}
@@ -91,7 +60,7 @@ export const songSetDelete = async (songSetId: string) => {
 		});
 
 		return {
-			actionResultType: ActionResultType.SUCCESS as const,
+			actionResultType: actionResultType.SUCCESS,
 		};
 	} catch (error) {
 		console.error({ error });

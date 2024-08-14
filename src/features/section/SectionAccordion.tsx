@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useRef } from "react";
 
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { useOpenSection } from "@/features/section/slice";
-import { SectionId } from "@/features/sections/enums";
+import { SectionId } from "@/features/sections/types";
 
 export const SectionAccordion = ({
 	title,

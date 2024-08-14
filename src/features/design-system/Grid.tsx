@@ -47,7 +47,11 @@ export const GridRow = ({
 
 	return (
 		<div
-			className={cn("grid grid-flow-col", gridClassName, className)}
+			className={cn(
+				"grid grid-flow-col items-baseline",
+				gridClassName,
+				className,
+			)}
 			{...props}
 		/>
 	);

@@ -3,7 +3,7 @@ import { FormEvent } from "react";
 import { Song } from "./types";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
-import { ActionResultType } from "@/features/app-store/enums";
+import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
@@ -41,7 +41,7 @@ export const songSubmit =
 			});
 
 			switch (result.actionResultType) {
-				case ActionResultType.ERROR:
+				case actionResultType.ERROR:
 					const keys = result.fieldErrors
 						? getKeys(result.fieldErrors)
 						: undefined;
@@ -55,13 +55,14 @@ export const songSubmit =
 							message,
 						});
 					});
+					console.log(result);
 					toast({
 						variant: "destructive",
 						title: "There was an error saving song",
 					});
 
 					break;
-				case ActionResultType.SUCCESS:
+				case actionResultType.SUCCESS:
 					const newSongId = result.songId;
 					const songLibrary = get().songLibrary;
 					const newSong: Song = {
@@ -72,9 +73,8 @@ export const songSubmit =
 					set({
 						songLibrary,
 						songId: newSongId,
-						...song,
+						song,
 					});
-					console.log("reset");
 					form.reset(song, { keepValues: true });
 					toast({ title: "Song details saved" });
 					break;
