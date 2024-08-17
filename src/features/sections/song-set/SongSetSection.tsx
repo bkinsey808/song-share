@@ -34,7 +34,6 @@ export const SongSetSection = () => {
 		songSetSongLoadClick,
 		activeSongId,
 		activeSongClick,
-		setActiveSongId,
 	} = useAppStore();
 
 	const defaultValues = useMemo(
@@ -50,8 +49,6 @@ export const SongSetSection = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	);
-
-	console.log({ defaultValues, activeSongId });
 
 	const songIds = songSet.songSetSongList ?? [];
 
@@ -79,12 +76,7 @@ export const SongSetSection = () => {
 		<div suppressHydrationWarning={true}>
 			<SongSetDeleteConfirmModal />
 			<Form {...form}>
-				<form
-					onSubmit={async (e) => {
-						console.log(e);
-						await songSetSubmit(e);
-					}}
-				>
+				<form onSubmit={songSetSubmit}>
 					<FormField
 						control={form.control}
 						name="songSetName"

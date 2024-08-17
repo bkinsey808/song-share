@@ -2,6 +2,7 @@ import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
+import { activeSongSetClick } from "./activeSongSetClick";
 import { songSetDeleteClick } from "./songSetDeleteClick";
 import { songSetDeleteConfirmClick } from "./songSetDeleteConfirmClick";
 import { songSetNewClick } from "./songSetNewClick";
@@ -34,6 +35,7 @@ export type SongSetSlice = {
 		songSetId: string | null;
 	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 	setActiveSongSetId: (activeSongSetId: string | null) => void;
+	activeSongSetClick: (songSetId: string) => () => Promise<void>;
 };
 
 type AppSongSetSlice = StateCreator<AppSlice, [], [], SongSetSlice>;
@@ -63,4 +65,5 @@ export const createSongSetSlice: AppSongSetSlice = (set, get) => ({
 	songSetSongLoadClick: songSetSongLoadClick(get, set),
 	setActiveSongSetId: (activeSongSetId: string | null) =>
 		set({ activeSongSetId }),
+	activeSongSetClick: activeSongSetClick(get),
 });
