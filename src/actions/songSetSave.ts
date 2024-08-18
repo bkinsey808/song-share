@@ -3,8 +3,8 @@
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { flatten } from "valibot";
 
-import { extendSession } from "./extendSession";
-import { getUserDoc } from "./getUserDoc";
+import { sessionExtend } from "./sessionExtend";
+import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
 import { UserDoc } from "@/features/firebase/types";
@@ -38,7 +38,7 @@ export const songSetSave = async ({
 			};
 		}
 
-		const extendSessionResult = await extendSession();
+		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
@@ -49,7 +49,7 @@ export const songSetSave = async ({
 			return getFormError("Username not found");
 		}
 
-		const userDocResult = await getUserDoc();
+		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
 			return getFormError("Failed to get user doc");
 		}

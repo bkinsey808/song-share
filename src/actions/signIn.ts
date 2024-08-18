@@ -3,14 +3,14 @@
 import { doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 
-import { getSong } from "./getSong";
-import { getSongSet } from "./getSongSet";
+import { songGet } from "./songGet";
+import { songSetGet } from "./songSetGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { signInResultType } from "@/features/auth/consts";
-import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
-import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
+import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
+import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
@@ -21,7 +21,7 @@ const songOrThrow = async (songId: string | null) => {
 		return null;
 	}
 
-	const songResult = await getSong(songId);
+	const songResult = await songGet(songId);
 	if (songResult.actionResultType === actionResultType.ERROR) {
 		throw new Error("Failed to get song");
 	}
@@ -34,7 +34,7 @@ const songSetOrThrow = async (songSetId: string | null) => {
 		return null;
 	}
 
-	const songSetResult = await getSongSet(songSetId);
+	const songSetResult = await songSetGet(songSetId);
 	if (songSetResult.actionResultType === actionResultType.ERROR) {
 		throw new Error("Failed to get song set");
 	}
@@ -75,10 +75,10 @@ export const signIn = async (email: string) => {
 			email,
 			...existingUserDocResult.output,
 			picture: existingUserDocResult.output.picture ?? null,
-			sessionWarningTimestamp: getSessionWarningTimestamp(),
+			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
-		const sessionToken = await encodeSessionToken(sessionCookieData);
+		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 

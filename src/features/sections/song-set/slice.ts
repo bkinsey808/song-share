@@ -2,7 +2,7 @@ import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
-import { activeSongSetClick } from "./activeSongSetClick";
+import { songSetActiveClick } from "./songSetActiveClick";
 import { songSetDeleteClick } from "./songSetDeleteClick";
 import { songSetDeleteConfirmClick } from "./songSetDeleteConfirmClick";
 import { songSetNewClick } from "./songSetNewClick";
@@ -65,5 +65,5 @@ export const createSongSetSlice: AppSongSetSlice = (set, get) => ({
 	songSetSongLoadClick: songSetSongLoadClick(get, set),
 	setActiveSongSetId: (activeSongSetId: string | null) =>
 		set({ activeSongSetId }),
-	activeSongSetClick: activeSongSetClick(get),
+	activeSongSetClick: songSetActiveClick(get),
 });

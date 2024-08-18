@@ -2,37 +2,37 @@
 
 import { doc, updateDoc } from "firebase/firestore";
 
-import { extendSession } from "./extendSession";
-import { getSongSet } from "./getSongSet";
-import { getUserDoc } from "./getUserDoc";
+import { sessionExtend } from "./sessionExtend";
+import { songSetGet } from "./songSetGet";
+import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSongSet } from "@/features/sections/song-set/types";
 
 export const songSetLoad = async (songSetId: string) => {
 	try {
-		const extendSessionResult = await extendSession();
+		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const { username } = sessionCookieData;
 		if (!username) {
-			return getActionErrorMessage("Username not found");
+			return actionErrorMessageGet("Username not found");
 		}
 
-		const songSetResult = await getSongSet(songSetId);
+		const songSetResult = await songSetGet(songSetId);
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Song set not found");
+			return actionErrorMessageGet("Song set not found");
 		}
 		const existingSongSet = songSetResult.songSet;
 
-		const userDocResult = await getUserDoc();
+		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Failed to get user doc");
+			return actionErrorMessageGet("Failed to get user doc");
 		}
 		const userDoc = userDocResult.userDoc;
 
@@ -58,6 +58,6 @@ export const songSetLoad = async (songSetId: string) => {
 		};
 	} catch (error) {
 		console.error(error);
-		return getActionErrorMessage("An error occurred");
+		return actionErrorMessageGet("An error occurred");
 	}
 };

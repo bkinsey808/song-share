@@ -2,7 +2,7 @@ import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
 import { getKeys } from "../global/getKeys";
 import { signInResultType } from "./consts";
-import { getSessionWarningTimestamp } from "./getSessionWarningTimestamp";
+import { sessionWarningTimestampGet } from "./sessionWarningTimestampGet";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
 import type { Get, Set } from "@/features/app-store/types";
@@ -36,7 +36,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 							picture: userCredential.user.photoURL ?? null,
 							username: null,
 							roles: [],
-							sessionWarningTimestamp: getSessionWarningTimestamp(),
+							sessionWarningTimestamp: sessionWarningTimestampGet(),
 						},
 					});
 					setOpenAppModal(appModal.REGISTER);
@@ -81,7 +81,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 							picture: signInResult.userData.picture,
 							username: signInResult.userData.username,
 							roles: signInResult.userData.roles,
-							sessionWarningTimestamp: getSessionWarningTimestamp(),
+							sessionWarningTimestamp: sessionWarningTimestampGet(),
 						},
 						songLibrary: newSongLibrary,
 						songSetLibrary: newSongSetLibrary,

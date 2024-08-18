@@ -10,7 +10,7 @@ import { RegisterModal } from "./RegisterModal";
 import { SessionExpireWarningModal } from "./SessionExpireWarningModal";
 import { SessionExpiredModal } from "./SessionExpiredModal";
 import { SESSION_POLLING_INTERVAL_SECONDS } from "./consts";
-import { getSessionCookieData } from "@/actions/getSessionCookieData";
+import { sessionCookieGet } from "@/actions/sessionCookieGet";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { appModal } from "@/features/modal/consts";
 
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	} = useAppStore();
 
 	const handleRefresh = useCallback(async () => {
-		const cookieResult = await getSessionCookieData();
+		const cookieResult = await sessionCookieGet();
 
 		if (cookieResult.actionResultType === actionResultType.ERROR) {
 			signOut();
@@ -55,12 +55,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 
-		const freshSessionCookieData = await getSessionCookieData();
+		const freshSessionCookieData = await sessionCookieGet();
 		if (!freshSessionCookieData) {
 			signOut();
 			setOpenAppModal(appModal.SESSION_EXPIRED);
 			return;
 		}
+
+		console.log(freshSessionCookieData);
 
 		// console.log(
 		// 	`old diff: ${(existingSessionWarningTimestamp - Date.now()) / 1000}`,

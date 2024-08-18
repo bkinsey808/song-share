@@ -3,21 +3,21 @@
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 
-import { getSessionCookieData } from "./getSessionCookieData";
+import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { getKeys } from "@/features/global/getKeys";
 import { serverParse } from "@/features/global/serverParse";
 
-export const deleteAccount = async () => {
+export const accountDelete = async () => {
 	try {
-		const cookieResult = await getSessionCookieData();
+		const cookieResult = await sessionCookieGet();
 
 		if (cookieResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 
 		const sessionCookieData = cookieResult.sessionCookieData;
@@ -28,13 +28,13 @@ export const deleteAccount = async () => {
 		const userDocumentData = userDocumentSnapshot.data();
 
 		if (!userDocumentData) {
-			return getActionErrorMessage("User does not exist");
+			return actionErrorMessageGet("User does not exist");
 		}
 
 		const userDoc = serverParse(UserDocSchema, userDocumentData);
 
 		if (!userDoc.success) {
-			return getActionErrorMessage("UserDoc data is missing or invalid");
+			return actionErrorMessageGet("UserDoc data is missing or invalid");
 		}
 
 		const songs = userDoc.output.songs;
@@ -49,7 +49,7 @@ export const deleteAccount = async () => {
 			(result) => result.status === "rejected",
 		);
 		if (failedSongDeletes.length > 0) {
-			return getActionErrorMessage("Failed to delete songs");
+			return actionErrorMessageGet("Failed to delete songs");
 		}
 
 		const songSets = userDoc.output.songSets;
@@ -66,11 +66,11 @@ export const deleteAccount = async () => {
 			(result) => result.status === "rejected",
 		);
 		if (failedSongSetsDeletes.length > 0) {
-			return getActionErrorMessage("Failed to delete song sets");
+			return actionErrorMessageGet("Failed to delete song sets");
 		}
 
 		if (username === null) {
-			return getActionErrorMessage("Username is not defined");
+			return actionErrorMessageGet("Username is not defined");
 		}
 
 		await deleteDoc(doc(db, "users", email));
@@ -81,6 +81,6 @@ export const deleteAccount = async () => {
 		return { actionResultType: actionResultType.SUCCESS };
 	} catch (error) {
 		console.error({ error });
-		return getActionErrorMessage("Error deleting account");
+		return actionErrorMessageGet("Error deleting account");
 	}
 };

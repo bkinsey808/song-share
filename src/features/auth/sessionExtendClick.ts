@@ -1,6 +1,6 @@
 import { actionResultType } from "../app-store/consts";
 import { useAppStore } from "../app-store/useAppStore";
-import { extendSession } from "@/actions/extendSession";
+import { sessionExtend } from "@/actions/sessionExtend";
 import type { Get, Set } from "@/features/app-store/types";
 
 export const sessionExtendClick = (get: Get, set: Set) => () => {
@@ -9,7 +9,7 @@ export const sessionExtendClick = (get: Get, set: Set) => () => {
 			set({
 				isSigningIn: true,
 			});
-			const result = await extendSession();
+			const result = await sessionExtend();
 
 			if (result.actionResultType === actionResultType.SUCCESS) {
 				const sessionCookieData = result.sessionCookieData;

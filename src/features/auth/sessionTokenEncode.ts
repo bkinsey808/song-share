@@ -5,7 +5,7 @@ import { SessionCookieData } from "./types";
 
 const sessionPrivateKey = process.env.SESSION_PRIVATE_KEY;
 
-export const encodeSessionToken = async (
+export const sessionTokenEncode = async (
 	sessionCookieData: SessionCookieData,
 ) => {
 	if (!sessionPrivateKey) {

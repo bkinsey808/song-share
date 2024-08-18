@@ -2,69 +2,69 @@
 
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 
-import { extendSession } from "./extendSession";
-import { getSong } from "./getSong";
+import { sessionExtend } from "./sessionExtend";
+import { songGet } from "./songGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
 
 export const songDelete = async (songId: string) => {
 	try {
 		if (!songId) {
-			return getActionErrorMessage("Song ID is required");
+			return actionErrorMessageGet("Song ID is required");
 		}
 
-		const extendSessionResult = await extendSession();
+		const extendSessionResult = await sessionExtend();
 
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		if (!sessionCookieData) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 
 		const username = sessionCookieData.username;
 
 		if (!username) {
-			return getActionErrorMessage("Username not found");
+			return actionErrorMessageGet("Username not found");
 		}
 
 		const userDocRef = doc(db, "users", sessionCookieData.email);
 		const userDoc = await getDoc(userDocRef);
 		if (!userDoc.exists()) {
-			return getActionErrorMessage("User not found");
+			return actionErrorMessageGet("User not found");
 		}
 
 		const userDocData = userDoc.data();
 		if (!userDocData) {
-			return getActionErrorMessage("User data not found");
+			return actionErrorMessageGet("User data not found");
 		}
 
 		const userDocResult = serverParse(UserDocSchema, userDocData);
 		if (!userDocResult.success) {
-			return getActionErrorMessage("User data is invalid");
+			return actionErrorMessageGet("User data is invalid");
 		}
 
 		const userDocSongs = userDocResult.output.songs;
 
 		// first, confirm user owns the song
 		if (!userDocSongs[songId]) {
-			return getActionErrorMessage("User does not own this song");
+			return actionErrorMessageGet("User does not own this song");
 		}
 
-		const songResult = await getSong(songId);
+		const songResult = await songGet(songId);
 		if (songResult.actionResultType === actionResultType.ERROR) {
 			return songResult;
 		}
 		const { song, songDocRef } = songResult;
 
 		if (song.sharer !== username) {
-			return getActionErrorMessage("User does not own this song");
+			return actionErrorMessageGet("User does not own this song");
 		}
 
 		// delete the song form the songs collection
@@ -82,6 +82,6 @@ export const songDelete = async (songId: string) => {
 		};
 	} catch (error) {
 		console.error({ error });
-		return getActionErrorMessage("Failed to delete song");
+		return actionErrorMessageGet("Failed to delete song");
 	}
 };

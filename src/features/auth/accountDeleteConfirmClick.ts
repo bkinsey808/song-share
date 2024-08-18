@@ -1,13 +1,13 @@
 import { actionResultType } from "../app-store/consts";
 import { useAppStore } from "../app-store/useAppStore";
-import { deleteAccount } from "@/actions/deleteAccount";
+import { accountDelete } from "@/actions/accountDelete";
 import { toast } from "@/components/ui/use-toast";
 import { Set } from "@/features/app-store/types";
 
 export const accountDeleteConfirmClick = (set: Set) => () => {
 	void (async () => {
 		set({ deletingAccount: true });
-		const deleteAccountResult = await deleteAccount();
+		const deleteAccountResult = await accountDelete();
 
 		if (deleteAccountResult.actionResultType === actionResultType.ERROR) {
 			set({

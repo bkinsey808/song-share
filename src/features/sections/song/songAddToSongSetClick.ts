@@ -3,7 +3,7 @@ import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 
-export const addSongToSongSetClick = (get: Get, set: Set) => async () => {
+export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 	set({ addingSongToSongSet: true });
 	const { songId, song, songSetId, sessionCookieData } = get();
 

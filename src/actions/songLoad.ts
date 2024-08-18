@@ -2,13 +2,13 @@
 
 import { doc, updateDoc } from "firebase/firestore";
 
-import { extendSession } from "./extendSession";
-import { getSong } from "./getSong";
-import { getSongSet } from "./getSongSet";
-import { getUserDoc } from "./getUserDoc";
+import { sessionExtend } from "./sessionExtend";
+import { songGet } from "./songGet";
+import { songSetGet } from "./songSetGet";
+import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSong } from "@/features/sections/song/types";
 
 export const songLoad = async ({
@@ -19,28 +19,28 @@ export const songLoad = async ({
 	songSetId?: string | null;
 }) => {
 	try {
-		const extendSessionResult = await extendSession();
+		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const username = sessionCookieData.username;
 		if (!username) {
-			return getActionErrorMessage("Username not found");
+			return actionErrorMessageGet("Username not found");
 		}
 
-		const songResult = await getSong(songId);
+		const songResult = await songGet(songId);
 		if (songResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Song not found");
+			return actionErrorMessageGet("Song not found");
 		}
 		const song = songResult.song;
 
-		const userDocResult = await getUserDoc();
+		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Failed to get user doc");
+			return actionErrorMessageGet("Failed to get user doc");
 		}
-		const userDoc = userDocResult.userDoc;
+		const { userDoc, userDocRef } = userDocResult;
 
 		const oldSlimSong = userDoc.songSets[songId];
 		const newSlimSong: SlimSong = {
@@ -53,13 +53,13 @@ export const songLoad = async ({
 		if (!slimSongsAreEqual) {
 			const songs = userDoc.songs;
 			songs[songId] = newSlimSong;
-			await updateDoc(doc(db, "users", username), { songId, songs });
+			await updateDoc(userDocRef, { songId, songs });
 		}
 
 		if (songSetId) {
-			const songSetResult = await getSongSet(songSetId);
+			const songSetResult = await songSetGet(songSetId);
 			if (songSetResult.actionResultType === actionResultType.ERROR) {
-				return getActionErrorMessage("Song set not found");
+				return actionErrorMessageGet("Song set not found");
 			}
 			const { songSet } = songSetResult;
 			const songSetSongs = songSet.songSetSongs;
@@ -79,6 +79,6 @@ export const songLoad = async ({
 		};
 	} catch (error) {
 		console.error(error);
-		return getActionErrorMessage("An error occurred");
+		return actionErrorMessageGet("An error occurred");
 	}
 };

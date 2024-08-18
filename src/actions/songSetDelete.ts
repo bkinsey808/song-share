@@ -2,31 +2,31 @@
 
 import { deleteDoc, updateDoc } from "firebase/firestore";
 
-import { extendSession } from "./extendSession";
-import { getSongSet } from "./getSongSet";
-import { getUserDoc } from "./getUserDoc";
+import { sessionExtend } from "./sessionExtend";
+import { songSetGet } from "./songSetGet";
+import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 export const songSetDelete = async (songSetId: string) => {
 	try {
 		if (!songSetId) {
-			return getActionErrorMessage("Song set id is required");
+			return actionErrorMessageGet("Song set id is required");
 		}
 
-		const extendSessionResult = await extendSession();
+		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
 		const username = sessionCookieData.username;
 
 		if (!username) {
-			return getActionErrorMessage("Username not found");
+			return actionErrorMessageGet("Username not found");
 		}
 
-		const userDocResult = await getUserDoc();
+		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
 			return userDocResult;
 		}
@@ -36,17 +36,17 @@ export const songSetDelete = async (songSetId: string) => {
 
 		// first, confirm user owns the song
 		if (!userDocSongSets[songSetId]) {
-			return getActionErrorMessage("User does not own this song set");
+			return actionErrorMessageGet("User does not own this song set");
 		}
 
-		const songSetResult = await getSongSet(songSetId);
+		const songSetResult = await songSetGet(songSetId);
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
 			return songSetResult;
 		}
 		const { songSet, songSetDocRef } = songSetResult;
 
 		if (songSet.sharer !== username) {
-			return getActionErrorMessage("User does not own this song");
+			return actionErrorMessageGet("User does not own this song");
 		}
 
 		// delete the song set from the song sets collection
@@ -64,6 +64,6 @@ export const songSetDelete = async (songSetId: string) => {
 		};
 	} catch (error) {
 		console.error({ error });
-		return getActionErrorMessage("Failed to delete song set");
+		return actionErrorMessageGet("Failed to delete song set");
 	}
 };

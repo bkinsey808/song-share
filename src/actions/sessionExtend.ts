@@ -2,26 +2,26 @@
 
 import { cookies } from "next/headers";
 
-import { getSessionCookieData } from "./getSessionCookieData";
+import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
-import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
+import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
+import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
-export const extendSession = async () => {
+export const sessionExtend = async () => {
 	try {
-		const cookieResult = await getSessionCookieData();
+		const cookieResult = await sessionCookieGet();
 
 		if (cookieResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 
 		const sessionCookieData = cookieResult.sessionCookieData;
 
-		const sessionWarningTimestamp = getSessionWarningTimestamp();
+		const sessionWarningTimestamp = sessionWarningTimestampGet();
 
 		// Extend the session
 		const newSessionCookieData: SessionCookieData = {
@@ -29,7 +29,7 @@ export const extendSession = async () => {
 			sessionWarningTimestamp,
 		};
 
-		const sessionToken = await encodeSessionToken(sessionCookieData);
+		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
@@ -38,6 +38,6 @@ export const extendSession = async () => {
 			sessionCookieData: newSessionCookieData,
 		};
 	} catch (error) {
-		return getActionErrorMessage("Error getting session");
+		return actionErrorMessageGet("Error getting session");
 	}
 };

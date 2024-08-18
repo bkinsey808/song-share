@@ -6,26 +6,26 @@ import { cookies } from "next/headers";
 
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { decodeSessionToken } from "@/features/auth/decodeSessionToken";
 import { SessionCookieDataSchema } from "@/features/auth/schemas";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { sessionTokenDecode } from "@/features/auth/sessionTokenDecode";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
-export const getSessionCookieData = async () => {
+export const sessionCookieGet = async () => {
 	try {
 		const sessionCookie = cookies().get(SESSION_COOKIE_NAME);
 
 		if (!sessionCookie) {
-			return getActionErrorMessage("No session cookie");
+			return actionErrorMessageGet("No session cookie");
 		}
 
 		const sessionToken = sessionCookie.value;
 
-		const payload = (await decodeSessionToken(sessionToken))?.payload;
+		const payload = (await sessionTokenDecode(sessionToken))?.payload;
 
 		const result = S.decodeUnknownEither(SessionCookieDataSchema)(payload);
 
 		if (Either.isLeft(result)) {
-			return getActionErrorMessage("Error decoding session token");
+			return actionErrorMessageGet("Error decoding session token");
 		}
 
 		return {
@@ -33,6 +33,6 @@ export const getSessionCookieData = async () => {
 			sessionCookieData: result.right,
 		};
 	} catch (error) {
-		return getActionErrorMessage("Error getting session cookie data");
+		return actionErrorMessageGet("Error getting session cookie data");
 	}
 };

@@ -2,9 +2,9 @@ import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
-import { activeSongClick } from "./activeSongClick";
-import { addSongToSongSetClick } from "./addSongToSongSetClick";
 import { showAddSongToSongSetButton } from "./showAddSongToSongSetButton";
+import { songActiveClick } from "./songActiveClick";
+import { songAddToSongSetClick } from "./songAddToSongSetClick";
 import { songDeleteClick } from "./songDeleteClick";
 import { songDeleteConfirmClick } from "./songDeleteConfirmClick";
 import { songNewClick } from "./songNewClick";
@@ -60,7 +60,7 @@ export const createSongSlice: AppSongSlice = (set, get) => ({
 	songDeleteConfirmClick: songDeleteConfirmClick(get, set),
 	showAddSongToSongSetButton: showAddSongToSongSetButton(get),
 	addingSongToSongSet: false,
-	addSongToSongSetClick: addSongToSongSetClick(get, set),
+	addSongToSongSetClick: songAddToSongSetClick(get, set),
 	setActiveSongId: (activeSongId: string | null) => set({ activeSongId }),
-	activeSongClick: activeSongClick(get),
+	activeSongClick: songActiveClick(get),
 });

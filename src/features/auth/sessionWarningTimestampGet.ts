@@ -7,6 +7,6 @@ import {
 // 	"warning seconds: ",
 // 	SESSION_TIMEOUT_SECONDS - SESSION_EXPIRE_WARNING_SECONDS,
 // );
-export const getSessionWarningTimestamp = () =>
+export const sessionWarningTimestampGet = () =>
 	Date.now() +
 	(SESSION_TIMEOUT_SECONDS - SESSION_EXPIRE_WARNING_SECONDS) * 1000;

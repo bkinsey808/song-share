@@ -7,10 +7,10 @@ import { flatten } from "valibot";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { registerFormFieldKey } from "@/features/auth/consts";
-import { encodeSessionToken } from "@/features/auth/encodeSessionToken";
-import { getSessionWarningTimestamp } from "@/features/auth/getSessionWarningTimestamp";
 import { RegistrationSchema } from "@/features/auth/schemas";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
+import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
+import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
 import { UserDoc } from "@/features/firebase/types";
@@ -65,7 +65,7 @@ export const register = async ({
 			email,
 			...userDoc,
 			picture: picture ?? null,
-			sessionWarningTimestamp: getSessionWarningTimestamp(),
+			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
 		await setDoc(doc(db, "users", email), userDoc);
@@ -73,7 +73,7 @@ export const register = async ({
 			email,
 		});
 
-		const sessionToken = await encodeSessionToken(sessionCookieData);
+		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 

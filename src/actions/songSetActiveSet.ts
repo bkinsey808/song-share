@@ -2,28 +2,28 @@
 
 import { doc, updateDoc } from "firebase/firestore";
 
-import { extendSession } from "./extendSession";
+import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebase";
-import { getActionErrorMessage } from "@/features/global/getActionErrorMessage";
+import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
-export const setActiveSong = async (songId: string | null) => {
+export const songSetActiveSet = async (songSetId: string | null) => {
 	try {
-		const extendSessionResult = await extendSession();
+		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
-			return getActionErrorMessage("Session expired");
+			return actionErrorMessageGet("Session expired");
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { email } = sessionCookieData;
 		if (!email) {
-			return getActionErrorMessage("Email not found");
+			return actionErrorMessageGet("Email not found");
 		}
 
 		const userDocRef = doc(db, "users", email);
-		await updateDoc(userDocRef, { activeSongId: songId });
+		await updateDoc(userDocRef, { activeSongSetId: songSetId });
 
 		return { actionResultType: actionResultType.SUCCESS };
 	} catch (error) {
-		return getActionErrorMessage("Error setting active song");
+		return actionErrorMessageGet("Error setting active song set");
 	}
 };

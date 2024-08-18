@@ -1,12 +1,12 @@
-import { setActiveSong } from "@/actions/setActiveSong";
+import { songActiveSet } from "@/actions/songActiveSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get } from "@/features/app-store/types";
 
-export const activeSongClick = (get: Get) => (songId: string) => async () => {
+export const songActiveClick = (get: Get) => (songId: string) => async () => {
 	const { setActiveSongId } = get();
 
-	const activeSongResult = await setActiveSong(songId);
+	const activeSongResult = await songActiveSet(songId);
 	if (activeSongResult.actionResultType === actionResultType.ERROR) {
 		toast({
 			variant: "destructive",
