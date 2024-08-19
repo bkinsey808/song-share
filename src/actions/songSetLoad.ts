@@ -6,7 +6,7 @@ import { sessionExtend } from "./sessionExtend";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { dbServer } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSongSet } from "@/features/sections/song-set/types";
 
@@ -49,7 +49,10 @@ export const songSetLoad = async (songSetId: string) => {
 		if (!slimSongsAreEqual) {
 			const songSets = userDoc.songSets;
 			songSets[songSetId] = newSlimSongSet;
-			await updateDoc(doc(db, "users", username), { songSetId, songSets });
+			await updateDoc(doc(dbServer, "users", username), {
+				songSetId,
+				songSets,
+			});
 		}
 
 		return {

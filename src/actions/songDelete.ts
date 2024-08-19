@@ -5,7 +5,7 @@ import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { dbServer } from "@/features/firebase/firebaseServer";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
@@ -34,7 +34,7 @@ export const songDelete = async (songId: string) => {
 			return actionErrorMessageGet("Username not found");
 		}
 
-		const userDocRef = doc(db, "users", sessionCookieData.email);
+		const userDocRef = doc(dbServer, "users", sessionCookieData.email);
 		const userDoc = await getDoc(userDocRef);
 		if (!userDoc.exists()) {
 			return actionErrorMessageGet("User not found");

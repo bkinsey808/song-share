@@ -1,13 +1,12 @@
 "use server";
 
-import { doc, updateDoc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
 
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSong } from "@/features/sections/song/types";
 
@@ -19,11 +18,11 @@ export const songLoad = async ({
 	songSetId?: string | null;
 }) => {
 	try {
-		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		const sessionExtendResult = await sessionExtend();
+		if (sessionExtendResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
-		const sessionCookieData = extendSessionResult.sessionCookieData;
+		const sessionCookieData = sessionExtendResult.sessionCookieData;
 
 		const username = sessionCookieData.username;
 		if (!username) {

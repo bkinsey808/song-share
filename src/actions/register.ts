@@ -12,7 +12,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
-import { db } from "@/features/firebase/firebase";
+import { dbServer } from "@/features/firebase/firebaseServer";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 
@@ -37,7 +37,7 @@ export const register = async ({
 		const username = registrationData[registerFormFieldKey.Username];
 
 		const existingUsernameDocumentSnapshot = await getDoc(
-			doc(db, "usernames", username),
+			doc(dbServer, "usernames", username),
 		);
 		if (existingUsernameDocumentSnapshot.exists()) {
 			return {
@@ -68,8 +68,8 @@ export const register = async ({
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
-		await setDoc(doc(db, "users", email), userDoc);
-		await setDoc(doc(db, "usernames", username), {
+		await setDoc(doc(dbServer, "users", email), userDoc);
+		await setDoc(doc(dbServer, "usernames", username), {
 			email,
 		});
 

@@ -12,7 +12,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
-import { db } from "@/features/firebase/firebase";
+import { dbServer } from "@/features/firebase/firebaseServer";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { serverParse } from "@/features/global/serverParse";
 
@@ -45,7 +45,7 @@ const songSetOrThrow = async (songSetId: string | null) => {
 export const signIn = async (email: string) => {
 	try {
 		const existingUserDoc =
-			email === null ? undefined : await getDoc(doc(db, "users", email));
+			email === null ? undefined : await getDoc(doc(dbServer, "users", email));
 
 		if (!existingUserDoc?.exists()) {
 			console.warn("No existing user");

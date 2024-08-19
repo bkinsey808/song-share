@@ -7,7 +7,7 @@ import { songGet } from "./songGet";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { dbServer } from "@/features/firebase/firebaseServer";
 import { UserDoc } from "@/features/firebase/types";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SongSet } from "@/features/sections/song-set/types";
@@ -112,9 +112,9 @@ export const songAddToSongSet = async ({
 			songSets: newUserSongSets,
 		};
 
-		await setDoc(doc(db, "songs", songId), newSongDocSong);
-		await setDoc(doc(db, "songSets", songSetId), newSongSet);
-		await setDoc(doc(db, "users", email), newUserDoc);
+		await setDoc(doc(dbServer, "songs", songId), newSongDocSong);
+		await setDoc(doc(dbServer, "songSets", songSetId), newSongSet);
+		await setDoc(doc(dbServer, "users", email), newUserDoc);
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

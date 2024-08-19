@@ -11,7 +11,10 @@ import { appModal } from "@/features/modal/consts";
 export const signInClick = (set: Set, get: Get) => () => {
 	void (async () => {
 		try {
+			console.log("before getAuth");
 			const auth = getAuth();
+			console.log("after getAuth");
+
 			set({
 				isSigningIn: true,
 			});
@@ -22,7 +25,11 @@ export const signInClick = (set: Set, get: Get) => () => {
 			if (!email) {
 				throw new Error("Email is not defined");
 			}
+
+			console.log("before signInResult");
 			const signInResult = await signIn(email);
+
+			console.log(signInResult);
 
 			const { setOpenAppModal, songLibrary, songSetLibrary } = get();
 

@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { dbServer } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 export const songSetActiveSet = async (songSetId: string | null) => {
@@ -19,7 +19,7 @@ export const songSetActiveSet = async (songSetId: string | null) => {
 			return actionErrorMessageGet("Email not found");
 		}
 
-		const userDocRef = doc(db, "users", email);
+		const userDocRef = doc(dbServer, "users", email);
 		await updateDoc(userDocRef, { activeSongSetId: songSetId });
 
 		return { actionResultType: actionResultType.SUCCESS };
