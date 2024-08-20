@@ -13,7 +13,10 @@ import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
-import { UserDocSchema } from "@/features/firebase/schemas";
+import {
+	PublicUserDocSchema,
+	UserDocSchema,
+} from "@/features/firebase/schemas";
 import { serverParse } from "@/features/global/serverParse";
 
 const songOrThrow = async (songId: string | null) => {
@@ -71,10 +74,38 @@ export const signIn = async (uid: string) => {
 			};
 		}
 
+		const existingPublicUserDoc =
+			uid === null ? undefined : await getDoc(doc(db, "publicUsers", uid));
+
+		if (!existingPublicUserDoc?.exists()) {
+			console.warn("No existing public user");
+
+			return { signInResultType: signInResultType.NEW };
+		}
+
+		const existingPublicUserDocData = existingPublicUserDoc.data();
+
+		const existingPublicUserDocResult = serverParse(
+			PublicUserDocSchema,
+			existingPublicUserDocData,
+		);
+
+		if (!existingPublicUserDocResult.success) {
+			console.error(
+				"PublicUserDoc data is invalid",
+				JSON.stringify(existingPublicUserDocResult.issues, null, 2),
+			);
+			return {
+				signInResultType: signInResultType.ERROR,
+				message: "PublicUserDoc data is invalid",
+			};
+		}
+
 		const sessionCookieData: SessionCookieData = {
 			uid,
 			...existingUserDocResult.output,
-			picture: existingUserDocResult.output.picture ?? null,
+			...existingPublicUserDocResult.output,
+			picture: existingPublicUserDocResult.output.picture ?? null,
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
@@ -82,14 +113,9 @@ export const signIn = async (uid: string) => {
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
-		const {
-			songId,
-			songSetId,
-			activeSongId,
-			activeSongSetId,
-			songs,
-			songSets,
-		} = existingUserDocResult.output;
+		const { songId, songSetId, songs, songSets } = existingUserDocResult.output;
+		const { activeSongId, activeSongSetId } =
+			existingPublicUserDocResult.output;
 
 		return {
 			signInResultType: signInResultType.EXISTING,

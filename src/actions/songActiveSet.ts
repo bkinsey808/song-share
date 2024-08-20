@@ -16,8 +16,8 @@ export const songActiveSet = async (songId: string | null) => {
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
-		const userDocRef = doc(db, "users", uid);
-		await updateDoc(userDocRef, { activeSongId: songId });
+		const publicUserDocRef = doc(db, "publicUsers", uid);
+		await updateDoc(publicUserDocRef, { activeSongId: songId });
 
 		return { actionResultType: actionResultType.SUCCESS };
 	} catch (error) {

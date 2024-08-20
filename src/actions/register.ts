@@ -13,7 +13,7 @@ import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
 import { db } from "@/features/firebase/firebase";
-import { UserDoc } from "@/features/firebase/types";
+import { PublicUserDoc, UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 
 export const register = async ({
@@ -53,25 +53,30 @@ export const register = async ({
 		const userDoc: UserDoc = {
 			...registrationData,
 			email,
-			picture: picture ?? null,
-			username,
 			songs: {},
 			songSets: {},
 			roles: [],
-			activeSongId: null,
-			activeSongSetId: null,
 			songId: null,
 			songSetId: null,
 		};
 
+		const publicUserDoc: PublicUserDoc = {
+			username,
+			picture: picture ?? null,
+			activeSongId: null,
+			activeSongSetId: null,
+		};
+
 		const sessionCookieData: SessionCookieData = {
 			...userDoc,
+			...publicUserDoc,
 			uid,
 			picture: picture ?? null,
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
 		await setDoc(doc(db, "users", uid), userDoc);
+		await setDoc(doc(db, "publicUsers", uid), publicUserDoc);
 		await setDoc(doc(db, "usernames", username), {
 			uid,
 		});
