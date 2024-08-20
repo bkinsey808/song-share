@@ -12,7 +12,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { serverParse } from "@/features/global/serverParse";
 
@@ -42,10 +42,10 @@ const songSetOrThrow = async (songSetId: string | null) => {
 	return songSetResult.songSet;
 };
 
-export const signIn = async (email: string) => {
+export const signIn = async (uid: string) => {
 	try {
 		const existingUserDoc =
-			email === null ? undefined : await getDoc(doc(dbServer, "users", email));
+			uid === null ? undefined : await getDoc(doc(db, "users", uid));
 
 		if (!existingUserDoc?.exists()) {
 			console.warn("No existing user");
@@ -72,7 +72,7 @@ export const signIn = async (email: string) => {
 		}
 
 		const sessionCookieData: SessionCookieData = {
-			email,
+			uid,
 			...existingUserDocResult.output,
 			picture: existingUserDocResult.output.picture ?? null,
 			sessionWarningTimestamp: sessionWarningTimestampGet(),

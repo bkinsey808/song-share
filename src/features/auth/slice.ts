@@ -9,7 +9,7 @@ import { RegistrationData, SessionCookieData } from "./types";
 import { signOut } from "@/actions/signOut";
 import { toast } from "@/components/ui/use-toast";
 import { AppSlice, useAppStore } from "@/features/app-store/useAppStore";
-import "@/features/firebase/firebaseServer";
+import "@/features/firebase/firebase";
 import { appModal } from "@/features/modal/consts";
 
 export type AuthSlice = {

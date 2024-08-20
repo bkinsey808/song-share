@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
@@ -18,12 +18,12 @@ export const userDocGet = async () => {
 		}
 
 		const sessionCookieData = cookieResult.sessionCookieData;
-		const email = sessionCookieData.email;
+		const uid = sessionCookieData.uid;
 
-		const userDocRef = doc(dbServer, "users", email);
+		const userDocRef = doc(db, "users", uid);
 		const userDocSnapshot = await getDoc(userDocRef);
 		if (!userDocSnapshot.exists()) {
-			return actionErrorMessageGet(`User not found: ${email}`);
+			return actionErrorMessageGet(`User not found: ${uid}`);
 		}
 
 		const userDocData = userDocSnapshot.data();

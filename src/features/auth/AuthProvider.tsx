@@ -12,7 +12,6 @@ import { SessionExpiredModal } from "./SessionExpiredModal";
 import { SESSION_POLLING_INTERVAL_SECONDS } from "./consts";
 import { sessionCookieGet } from "@/actions/sessionCookieGet";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import "@/features/firebase/firebaseClient";
 import { appModal } from "@/features/modal/consts";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -62,8 +61,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			setOpenAppModal(appModal.SESSION_EXPIRED);
 			return;
 		}
-
-		console.log(freshSessionCookieData);
 
 		// console.log(
 		// 	`old diff: ${(existingSessionWarningTimestamp - Date.now()) / 1000}`,

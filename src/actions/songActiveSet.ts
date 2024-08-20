@@ -4,7 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 export const songActiveSet = async (songId: string | null) => {
@@ -14,12 +14,9 @@ export const songActiveSet = async (songId: string | null) => {
 			return actionErrorMessageGet("Session expired");
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
-		const { email } = sessionCookieData;
-		if (!email) {
-			return actionErrorMessageGet("Email not found");
-		}
+		const { uid } = sessionCookieData;
 
-		const userDocRef = doc(dbServer, "users", email);
+		const userDocRef = doc(db, "users", uid);
 		await updateDoc(userDocRef, { activeSongId: songId });
 
 		return { actionResultType: actionResultType.SUCCESS };

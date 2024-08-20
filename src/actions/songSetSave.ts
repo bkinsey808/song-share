@@ -6,7 +6,7 @@ import { flatten } from "valibot";
 import { sessionExtend } from "./sessionExtend";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSetSchema } from "@/features/sections/song-set/schemas";
@@ -28,7 +28,6 @@ export const songSetSave = async ({
 	songSet: SongSet;
 	songSetId: string | null;
 }) => {
-	console.log("songSetSave");
 	try {
 		const result = serverParse(SongSetSchema, songSet);
 		if (!result.success) {
@@ -68,7 +67,7 @@ export const songSetSave = async ({
 		}
 
 		// second update the songSet in the songSets collection, or create it if it doesn't exist
-		const songSetsCollection = collection(dbServer, "songSets");
+		const songSetsCollection = collection(db, "songSets");
 		const songSetDocRef = songSetId
 			? doc(songSetsCollection, songSetId)
 			: doc(songSetsCollection);

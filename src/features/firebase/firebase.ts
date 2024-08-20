@@ -13,13 +13,12 @@ const firebaseConfig: FirebaseOptions = {
 	projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "",
 	storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "",
 	messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "",
-	appId: process.env.NEXT_PUBLIC_CLIENT_FIREBASE_APP_ID ?? "",
-	measurementId: process.env.NEXT_PUBLIC_CLIENT_FIREBASE_MEASUREMENT_ID ?? "",
+	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "",
+	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID ?? "",
 };
 
-console.log("client");
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get a reference to the service
-export const dbClient = getFirestore(firebaseApp);
+export const db = getFirestore(firebaseApp);

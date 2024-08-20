@@ -12,6 +12,7 @@ import { role } from "@/features/auth/consts";
 import { SlimSongSchema } from "@/features/sections/song/schemas";
 
 export const UserDocSchema = object({
+	email: string(),
 	username: string(),
 	picture: nullable(string()),
 	roles: array(venum(role)),

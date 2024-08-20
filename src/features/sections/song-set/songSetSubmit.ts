@@ -19,7 +19,6 @@ export const songSetSubmit =
 		}
 
 		return songSetForm.handleSubmit(async (songSet) => {
-			console.log("handle submit");
 			const sessionCookieData = useAppStore.getState().sessionCookieData;
 
 			if (!sessionCookieData) {

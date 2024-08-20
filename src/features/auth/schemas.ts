@@ -11,15 +11,12 @@ import {
 
 import { role } from "./consts";
 
-const shared = {
+export const SessionCookieDataSchema = S.Struct({
+	uid: S.String,
+	email: S.String,
 	username: S.Union(S.String, S.Null),
 	picture: S.Union(S.String, S.Null),
 	roles: S.Array(S.Literal(...Object.values(role))),
-};
-
-export const SessionCookieDataSchema = S.Struct({
-	email: S.String,
-	...shared,
 	sessionWarningTimestamp: S.Number,
 });
 

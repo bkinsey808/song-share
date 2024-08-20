@@ -4,7 +4,7 @@ import { collection, doc, getDoc } from "firebase/firestore";
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSetSchema } from "@/features/sections/song-set/schemas";
@@ -17,7 +17,7 @@ export const songSetGet = async (songSetId: string) => {
 			return actionErrorMessageGet("Session expired");
 		}
 
-		const songSetsCollection = collection(dbServer, "songSets");
+		const songSetsCollection = collection(db, "songSets");
 		const songSetDocRef = doc(songSetsCollection, songSetId);
 		const songSetDocSnapshot = await getDoc(songSetDocRef);
 		if (!songSetDocSnapshot.exists()) {

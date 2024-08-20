@@ -4,7 +4,6 @@ import { Header } from "@/features/layout/Header";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 
 export const PageContent = () => {
-	console.log("page content");
 	return (
 		<div className="@container flex h-screen flex-col lg:max-h-screen">
 			<Header />

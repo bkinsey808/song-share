@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { getKeys } from "@/features/global/getKeys";
@@ -21,10 +21,10 @@ export const accountDelete = async () => {
 		}
 
 		const sessionCookieData = cookieResult.sessionCookieData;
+		const { username, uid } = sessionCookieData;
 
-		const { username, email } = sessionCookieData;
-
-		const userDocumentSnapshot = await getDoc(doc(dbServer, "users", email));
+		const userDocRef = doc(db, "users", uid);
+		const userDocumentSnapshot = await getDoc(userDocRef);
 		const userDocumentData = userDocumentSnapshot.data();
 
 		if (!userDocumentData) {
@@ -40,7 +40,7 @@ export const accountDelete = async () => {
 		const songs = userDoc.output.songs;
 		const songIds = getKeys(songs);
 		const deleteSongPromises = songIds.map((songId) =>
-			deleteDoc(doc(dbServer, "songs", songId)),
+			deleteDoc(doc(db, "songs", songId)),
 		);
 		const songsDeleteResult = await Promise.allSettled(deleteSongPromises);
 
@@ -55,7 +55,7 @@ export const accountDelete = async () => {
 		const songSets = userDoc.output.songSets;
 		const songSetIds = getKeys(songSets);
 		const deleteSongSetPromises = songSetIds.map((songSetId) =>
-			deleteDoc(doc(dbServer, "songSets", songSetId)),
+			deleteDoc(doc(db, "songSets", songSetId)),
 		);
 		const songSetsDeleteResult = await Promise.allSettled(
 			deleteSongSetPromises,
@@ -73,8 +73,8 @@ export const accountDelete = async () => {
 			return actionErrorMessageGet("Username is not defined");
 		}
 
-		await deleteDoc(doc(dbServer, "users", email));
-		await deleteDoc(doc(dbServer, "usernames", username));
+		await deleteDoc(userDocRef);
+		await deleteDoc(doc(db, "usernames", username));
 
 		cookies().delete(SESSION_COOKIE_NAME);
 

@@ -12,15 +12,17 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 
 export const register = async ({
+	uid,
 	email,
 	picture,
 	registrationData,
 }: {
+	uid: string;
 	email: string;
 	picture: string | null;
 	registrationData: RegistrationData;
@@ -37,7 +39,7 @@ export const register = async ({
 		const username = registrationData[registerFormFieldKey.Username];
 
 		const existingUsernameDocumentSnapshot = await getDoc(
-			doc(dbServer, "usernames", username),
+			doc(db, "usernames", username),
 		);
 		if (existingUsernameDocumentSnapshot.exists()) {
 			return {
@@ -50,6 +52,7 @@ export const register = async ({
 
 		const userDoc: UserDoc = {
 			...registrationData,
+			email,
 			picture: picture ?? null,
 			username,
 			songs: {},
@@ -62,15 +65,15 @@ export const register = async ({
 		};
 
 		const sessionCookieData: SessionCookieData = {
-			email,
 			...userDoc,
+			uid,
 			picture: picture ?? null,
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
-		await setDoc(doc(dbServer, "users", email), userDoc);
-		await setDoc(doc(dbServer, "usernames", username), {
-			email,
+		await setDoc(doc(db, "users", uid), userDoc);
+		await setDoc(doc(db, "usernames", username), {
+			uid,
 		});
 
 		const sessionToken = await sessionTokenEncode(sessionCookieData);

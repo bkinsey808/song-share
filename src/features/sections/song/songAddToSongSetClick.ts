@@ -16,8 +16,6 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 			return;
 		}
 
-		console.log({ song });
-
 		const result = await songAddToSongSet({
 			songId,
 			song: {

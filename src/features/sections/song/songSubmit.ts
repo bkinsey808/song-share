@@ -55,7 +55,7 @@ export const songSubmit =
 							message,
 						});
 					});
-					console.log(result);
+
 					toast({
 						variant: "destructive",
 						title: "There was an error saving song",

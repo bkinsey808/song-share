@@ -6,7 +6,7 @@ import { flatten } from "valibot";
 import { sessionExtend } from "./sessionExtend";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { dbServer } from "@/features/firebase/firebaseServer";
+import { db } from "@/features/firebase/firebase";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
@@ -64,7 +64,7 @@ export const songSave = async ({
 		}
 
 		// second update the song in the songs collection, or create it if it doesn't exist
-		const songsCollection = collection(dbServer, "songs");
+		const songsCollection = collection(db, "songs");
 		const songDocRef = songId
 			? doc(songsCollection, songId)
 			: doc(songsCollection);

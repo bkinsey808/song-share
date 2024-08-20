@@ -31,6 +31,7 @@ export const registerSubmit =
 				}
 
 				const result = await register({
+					uid: sessionCookieData.uid,
 					email: sessionCookieData.email,
 					picture: sessionCookieData.picture,
 					registrationData,
