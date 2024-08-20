@@ -1,11 +1,11 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
-import { getKeys } from "../global/getKeys";
 import { signInResultType } from "./consts";
 import { sessionWarningTimestampGet } from "./sessionWarningTimestampGet";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
 import type { Get, Set } from "@/features/app-store/types";
+import { getKeys } from "@/features/global/getKeys";
 import { appModal } from "@/features/modal/consts";
 
 export const signInClick = (set: Set, get: Get) => () => {

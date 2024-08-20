@@ -1,8 +1,12 @@
 import { useCallback } from "react";
 
-import { useAppStore } from "../app-store/useAppStore";
-import { Modal, ModalContent, ModalFooter } from "../design-system/Modal";
 import { Button } from "@/components/ui/button";
+import { useAppStore } from "@/features/app-store/useAppStore";
+import {
+	Modal,
+	ModalContent,
+	ModalFooter,
+} from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
 export const SessionExpireWarningModal = () => {

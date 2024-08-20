@@ -1,19 +1,30 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import {
-	SongLibrarySlice,
-	createSongLibrarySlice,
-} from "../sections/song-library/slice";
-import {
-	SongSetLibrarySlice,
-	createSongSetLibrarySlice,
-} from "../sections/song-set-library/slice";
-import { SongSetSlice, createSongSetSlice } from "../sections/song-set/slice";
-import { SongSlice, createSongSlice } from "../sections/song/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
+import {
+	SongLibrarySlice,
+	createSongLibrarySlice,
+} from "@/features/sections/song-library/slice";
+import {
+	SongSetLibrarySlice,
+	createSongSetLibrarySlice,
+} from "@/features/sections/song-set-library/slice";
+import {
+	SongSetSlice,
+	createSongSetSlice,
+} from "@/features/sections/song-set/slice";
+import { SongSlice, createSongSlice } from "@/features/sections/song/slice";
+
+export const sliceResetFns = new Set<() => void>();
+
+export const resetAllSlices = () => {
+	sliceResetFns.forEach((resetFn) => {
+		resetFn();
+	});
+};
 
 export type AppSlice = ModalSlice &
 	SectionSlice &
@@ -47,6 +58,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSongSetSlice(...a),
 			...createSongLibrarySlice(...a),
 			...createSongSetLibrarySlice(...a),
+			// ...resetAllSlices(...a),
 		}),
 		{
 			name: "app-store",

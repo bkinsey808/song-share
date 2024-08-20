@@ -3,8 +3,6 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useForm } from "react-hook-form";
 
-import { useAppStore } from "../app-store/useAppStore";
-import { ModalContent, ModalFooter } from "../design-system/Modal";
 import { RegistrationSchema } from "./schemas";
 import { RegistrationData } from "./types";
 import { Button } from "@/components/ui/button";
@@ -19,6 +17,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAppStore } from "@/features/app-store/useAppStore";
+import { ModalContent, ModalFooter } from "@/features/design-system/Modal";
 
 const defaultValues: RegistrationData = {
 	username: "",

@@ -1,9 +1,9 @@
-import { generateSequences } from "../math/generateSequences";
 import { chordNumbersMatchPositionNumbers } from "./chordNumbersMatchPositionNumber";
 import { filterByMaxMuted } from "./filterByMaxMuted";
 import { getPositionNumbers } from "./getPositionNumbers";
 import { getPositionValuesForFret } from "./getPositionValuesForFret";
 import { Tuning } from "./types";
+import { generateSequences } from "@/features/math/generateSequences";
 
 export const getPositionsAtFret = ({
 	fret,

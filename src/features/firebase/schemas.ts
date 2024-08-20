@@ -7,8 +7,8 @@ import {
 	enum as venum,
 } from "valibot";
 
-import { SlimSongSetSchema } from "../sections/song-set/schemas";
 import { role } from "@/features/auth/consts";
+import { SlimSongSetSchema } from "@/features/sections/song-set/schemas";
 import { SlimSongSchema } from "@/features/sections/song/schemas";
 
 export const PublicUserDocSchema = object({

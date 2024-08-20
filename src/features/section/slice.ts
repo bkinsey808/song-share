@@ -3,15 +3,22 @@ import { StateCreator } from "zustand";
 import { AppSlice, useAppStore } from "@/features/app-store/useAppStore";
 import { SectionId } from "@/features/sections/types";
 
-export type SectionSlice = {
+type SectionSliceState = {
 	openSections: SectionId[];
+};
+
+export const sectionSliceInitialState: SectionSliceState = {
+	openSections: [],
+};
+
+export type SectionSlice = SectionSliceState & {
 	sectionToggle: (sectionId: SectionId) => void;
 };
 
 type AppSectionSlice = StateCreator<AppSlice, [], [], SectionSlice>;
 
 export const createSectionSlice: AppSectionSlice = (set, _get) => ({
-	openSections: [],
+	...sectionSliceInitialState,
 	sectionToggle: (sectionId: SectionId) => {
 		set((state) => {
 			const isOpen = state.openSections.includes(sectionId);

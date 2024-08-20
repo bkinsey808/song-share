@@ -1,4 +1,4 @@
-import { actionResultType } from "../app-store/consts";
+import { actionResultType } from "@/features/app-store/consts";
 
 export const actionErrorMessageGet = (message: string) => {
 	console.error(message);

@@ -9,22 +9,41 @@ import { songSetNewClick } from "./songSetNewClick";
 import { songSetSongLoadClick } from "./songSetSongLoadClick";
 import { songSetSubmit } from "./songSetSubmit";
 import { SongSet } from "./types";
-import { AppSlice } from "@/features/app-store/useAppStore";
+import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import { Nullable } from "@/features/global/types";
 
 export type AppSongSet = Nullable<SongSet>;
 
-export type SongSetSlice = {
+const songSet: AppSongSet = {
+	songSetName: null,
+	sharer: null,
+	songSetSongList: [],
+	songSetSongs: {},
+};
+
+type SongSetSliceState = {
 	songSetId: string | null;
 	activeSongSetId: string | null;
 	songSet: AppSongSet;
-	songSetSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
-	songSetNewClick: () => void;
 	isSongSetUnsaved: boolean;
-	setIsSongSetUnsaved: (unsavedSongSet: boolean) => void;
-	songSetDeleteClick: () => void;
 	deletingSongSet: boolean;
 	songSetForm: UseFormReturn<SongSet> | null;
+};
+
+const songSetSliceInitialState: SongSetSliceState = {
+	songSetId: null,
+	activeSongSetId: null,
+	songSet,
+	isSongSetUnsaved: false,
+	deletingSongSet: false,
+	songSetForm: null,
+};
+
+export type SongSetSlice = SongSetSliceState & {
+	songSetSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
+	songSetNewClick: () => void;
+	setIsSongSetUnsaved: (unsavedSongSet: boolean) => void;
+	songSetDeleteClick: () => void;
 	setSongSetForm: (songSetForm: UseFormReturn<SongSet>) => void;
 	songSetDeleteConfirmClick: () => Promise<void>;
 	songSetSongLoadClick: ({
@@ -40,30 +59,22 @@ export type SongSetSlice = {
 
 type AppSongSetSlice = StateCreator<AppSlice, [], [], SongSetSlice>;
 
-const songSet: AppSongSet = {
-	songSetName: null,
-	sharer: null,
-	songSetSongList: [],
-	songSetSongs: {},
+export const createSongSetSlice: AppSongSetSlice = (set, get) => {
+	sliceResetFns.add(() => set(songSetSliceInitialState));
+	return {
+		...songSetSliceInitialState,
+		songSetSubmit: songSetSubmit(get, set),
+		songSetNewClick: songSetNewClick(get, set),
+		isSongSetUnsaved: false,
+		setIsSongSetUnsaved: (unsavedSongSet) =>
+			set({ isSongSetUnsaved: unsavedSongSet }),
+		songSetDeleteClick: songSetDeleteClick(get),
+		setSongSetForm: (songSetForm) => set({ songSetForm }),
+		songSetDeleteConfirmClick: songSetDeleteConfirmClick(get, set),
+		songSetLoadClick: songSetSongLoadClick(get, set),
+		songSetSongLoadClick: songSetSongLoadClick(get, set),
+		setActiveSongSetId: (activeSongSetId: string | null) =>
+			set({ activeSongSetId }),
+		activeSongSetClick: songSetActiveClick(get),
+	};
 };
-
-export const createSongSetSlice: AppSongSetSlice = (set, get) => ({
-	songSetId: null,
-	activeSongSetId: null,
-	songSet,
-	songSetSubmit: songSetSubmit(get, set),
-	songSetNewClick: songSetNewClick(get, set),
-	isSongSetUnsaved: false,
-	setIsSongSetUnsaved: (unsavedSongSet) =>
-		set({ isSongSetUnsaved: unsavedSongSet }),
-	songSetDeleteClick: songSetDeleteClick(get),
-	deletingSongSet: false,
-	songSetForm: null,
-	setSongSetForm: (songSetForm) => set({ songSetForm }),
-	songSetDeleteConfirmClick: songSetDeleteConfirmClick(get, set),
-	songSetLoadClick: songSetSongLoadClick(get, set),
-	songSetSongLoadClick: songSetSongLoadClick(get, set),
-	setActiveSongSetId: (activeSongSetId: string | null) =>
-		set({ activeSongSetId }),
-	activeSongSetClick: songSetActiveClick(get),
-});

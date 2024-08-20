@@ -2,8 +2,8 @@
 
 import { useCallback } from "react";
 
-import { useAppStore } from "../app-store/useAppStore";
 import { Button } from "@/components/ui/button";
+import { useAppStore } from "@/features/app-store/useAppStore";
 import {
 	Modal,
 	ModalContent,
@@ -12,8 +12,13 @@ import {
 import { appModal } from "@/features/modal/consts";
 
 export const AccountManageModal = () => {
-	const { openAppModal, setOpenAppModal, signOutClick, deleteAccountClick } =
-		useAppStore();
+	const {
+		openAppModal,
+		setOpenAppModal,
+		signOutClick,
+		signOutAndClearLocalClick,
+		deleteAccountClick,
+	} = useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
@@ -30,6 +35,9 @@ export const AccountManageModal = () => {
 		>
 			<ModalContent>
 				<Button onClick={signOutClick}>Sign Out</Button>
+				<Button onClick={signOutAndClearLocalClick}>
+					Sign Out and Clear Local
+				</Button>
 
 				<Button variant="destructive" onClick={deleteAccountClick}>
 					Delete Account

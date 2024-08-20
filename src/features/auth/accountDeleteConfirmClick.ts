@@ -1,8 +1,8 @@
-import { actionResultType } from "../app-store/consts";
-import { useAppStore } from "../app-store/useAppStore";
 import { accountDelete } from "@/actions/accountDelete";
 import { toast } from "@/components/ui/use-toast";
+import { actionResultType } from "@/features/app-store/consts";
 import { Set } from "@/features/app-store/types";
+import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const accountDeleteConfirmClick = (set: Set) => () => {
 	void (async () => {

@@ -1,7 +1,7 @@
-import { actionResultType } from "../app-store/consts";
-import { useAppStore } from "../app-store/useAppStore";
 import { sessionExtend } from "@/actions/sessionExtend";
+import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
+import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const sessionExtendClick = (get: Get, set: Set) => () => {
 	void (async () => {

@@ -2,9 +2,9 @@
 
 import { useCallback } from "react";
 
-import { Modal } from "../design-system/Modal";
 import { RegisterForm } from "./RegisterForm";
 import { useAppStore } from "@/features/app-store/useAppStore";
+import { Modal } from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
 export const RegisterModal = () => {

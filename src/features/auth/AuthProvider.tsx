@@ -2,8 +2,6 @@
 
 import { ReactNode, useCallback, useEffect } from "react";
 
-import { actionResultType } from "../app-store/consts";
-import { useInterval } from "../global/useInterval";
 import { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
 import { AccountManageModal } from "./AccountManageModal";
 import { RegisterModal } from "./RegisterModal";
@@ -11,7 +9,9 @@ import { SessionExpireWarningModal } from "./SessionExpireWarningModal";
 import { SessionExpiredModal } from "./SessionExpiredModal";
 import { SESSION_POLLING_INTERVAL_SECONDS } from "./consts";
 import { sessionCookieGet } from "@/actions/sessionCookieGet";
+import { actionResultType } from "@/features/app-store/consts";
 import { useAppStore } from "@/features/app-store/useAppStore";
+import { useInterval } from "@/features/global/useInterval";
 import { appModal } from "@/features/modal/consts";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

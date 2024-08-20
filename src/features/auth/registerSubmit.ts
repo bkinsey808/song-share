@@ -1,12 +1,12 @@
 import { UseFormReturn } from "react-hook-form";
 
-import { actionResultType } from "../app-store/consts";
-import { Get, Set } from "../app-store/types";
-import { useAppStore } from "../app-store/useAppStore";
-import { getKeys } from "../global/getKeys";
 import { RegistrationData } from "./types";
 import { register } from "@/actions/register";
 import { toast } from "@/components/ui/use-toast";
+import { actionResultType } from "@/features/app-store/consts";
+import { Get, Set } from "@/features/app-store/types";
+import { useAppStore } from "@/features/app-store/useAppStore";
+import { getKeys } from "@/features/global/getKeys";
 
 export const registerSubmit =
 	(get: Get, set: Set) =>
