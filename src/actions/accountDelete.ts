@@ -1,16 +1,15 @@
 "use server";
 
-import { deleteDoc, doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc } from "firebase/firestore";
 import { cookies } from "next/headers";
 
 import { sessionCookieGet } from "./sessionCookieGet";
+import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { db } from "@/features/firebase/firebase";
-import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { getKeys } from "@/features/global/getKeys";
-import { serverParse } from "@/features/global/serverParse";
 
 export const accountDelete = async () => {
 	try {
@@ -21,23 +20,15 @@ export const accountDelete = async () => {
 		}
 
 		const sessionCookieData = cookieResult.sessionCookieData;
-		const { username, uid } = sessionCookieData;
+		const { username } = sessionCookieData;
 
-		const userDocRef = doc(db, "users", uid);
-		const userDocumentSnapshot = await getDoc(userDocRef);
-		const userDocumentData = userDocumentSnapshot.data();
-
-		if (!userDocumentData) {
-			return actionErrorMessageGet("User does not exist");
+		const userDocResult = await userDocGet();
+		if (userDocResult.actionResultType === actionResultType.ERROR) {
+			return actionErrorMessageGet("Error getting user doc");
 		}
+		const { userDoc, userDocRef } = userDocResult;
 
-		const userDoc = serverParse(UserDocSchema, userDocumentData);
-
-		if (!userDoc.success) {
-			return actionErrorMessageGet("UserDoc data is missing or invalid");
-		}
-
-		const songs = userDoc.output.songs;
+		const songs = userDoc.songs;
 		const songIds = getKeys(songs);
 		const deleteSongPromises = songIds.map((songId) =>
 			deleteDoc(doc(db, "songs", songId)),
@@ -52,7 +43,7 @@ export const accountDelete = async () => {
 			return actionErrorMessageGet("Failed to delete songs");
 		}
 
-		const songSets = userDoc.output.songSets;
+		const songSets = userDoc.songSets;
 		const songSetIds = getKeys(songSets);
 		const deleteSongSetPromises = songSetIds.map((songSetId) =>
 			deleteDoc(doc(db, "songSets", songSetId)),
