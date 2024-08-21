@@ -52,15 +52,15 @@ const songSetOrThrow = async (songSetId: string | null) => {
 
 export const signIn = async (uid: string) => {
 	try {
-		const existingUserDoc = await db.collection("users").doc(uid).get();
+		const existingUserSnapshot = await db.collection("users").doc(uid).get();
 
-		if (!existingUserDoc.exists) {
+		if (!existingUserSnapshot.exists) {
 			console.warn("No existing user");
 
 			return { signInResultType: signInResultType.NEW };
 		}
 
-		const existingUserDocData = existingUserDoc.data();
+		const existingUserDocData = existingUserSnapshot.data();
 
 		const existingUserDocResult = serverParse(
 			UserDocSchema,
@@ -78,18 +78,18 @@ export const signIn = async (uid: string) => {
 			};
 		}
 
-		const existingPublicUserDoc = await db
+		const existingPublicUserSnapshot = await db
 			.collection("publicUsers")
 			.doc(uid)
 			.get();
 
-		if (!existingUserDoc.exists) {
+		if (!existingUserSnapshot.exists) {
 			console.warn("No existing user");
 
 			return { signInResultType: signInResultType.NEW };
 		}
 
-		const existingPublicUserDocData = existingPublicUserDoc.data();
+		const existingPublicUserDocData = existingPublicUserSnapshot.data();
 
 		const existingPublicUserDocResult = serverParse(
 			PublicUserDocSchema,
@@ -122,8 +122,6 @@ export const signIn = async (uid: string) => {
 		const { songId, songSetId, songs, songSets } = existingUserDocResult.output;
 		const { activeSongId, activeSongSetId } =
 			existingPublicUserDocResult.output;
-
-		console.log("existing: ", existingUserDocResult.output);
 
 		return {
 			signInResultType: signInResultType.EXISTING,

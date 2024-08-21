@@ -11,9 +11,7 @@ import { appModal } from "@/features/modal/consts";
 export const signInClick = (set: Set, get: Get) => () => {
 	void (async () => {
 		try {
-			console.log("before get auth");
 			const auth = getAuth();
-			console.log("after get auth");
 
 			set({
 				isSigningIn: true,
@@ -21,7 +19,6 @@ export const signInClick = (set: Set, get: Get) => () => {
 			const provider = new GoogleAuthProvider();
 
 			const userCredential = await signInWithPopup(auth, provider);
-			console.log("got credential");
 			const { email, uid } = userCredential.user;
 			if (!email) {
 				throw new Error("Email is not defined");
@@ -35,11 +32,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 				songSetForm,
 			} = get();
 
-			console.log("before sign in");
-
 			const signInResult = await signIn(uid);
-
-			console.log("after sign in");
 
 			switch (signInResult.signInResultType) {
 				case signInResultType.NEW:

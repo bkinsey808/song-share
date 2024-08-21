@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import {
+	UserLibrarySlice,
+	createUserLibrarySlice,
+} from "../sections/user-library/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
@@ -32,7 +36,8 @@ export type AppSlice = ModalSlice &
 	SongSlice &
 	SongSetSlice &
 	SongLibrarySlice &
-	SongSetLibrarySlice;
+	SongSetLibrarySlice &
+	UserLibrarySlice;
 
 /** for security, these shall not be stored in localStorage */
 const omittedKeys: (keyof AppSlice)[] = [
@@ -58,7 +63,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSongSetSlice(...a),
 			...createSongLibrarySlice(...a),
 			...createSongSetLibrarySlice(...a),
-			// ...resetAllSlices(...a),
+			...createUserLibrarySlice(...a),
 		}),
 		{
 			name: "app-store",

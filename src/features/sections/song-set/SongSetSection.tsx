@@ -34,6 +34,7 @@ export const SongSetSection = () => {
 		songSetSongLoadClick,
 		activeSongId,
 		activeSongClick,
+		usernameGet,
 	} = useAppStore();
 
 	const defaultValues = useMemo(
@@ -112,7 +113,7 @@ export const SongSetSection = () => {
 											onClick={activeSongClick(songId)}
 										/>
 										<div>{songLibrary[songId].songName}</div>
-										<div>{songLibrary[songId].sharer}</div>
+										<div>{usernameGet(songLibrary[songId].sharer)}</div>
 										<div>
 											<Button
 												onClick={songSetSongLoadClick({ songId, songSetId })}

@@ -12,6 +12,7 @@ export const SongSetLibrarySection = () => {
 		songSetLoadClick,
 		activeSongSetId,
 		activeSongSetClick,
+		usernameGet,
 	} = useAppStore();
 	const songSetIds = getKeys(songSetLibrary);
 
@@ -38,7 +39,7 @@ export const SongSetLibrarySection = () => {
 								onClick={activeSongSetClick(songSetId)}
 							/>
 							<div>{songSetLibrary[songSetId].songSetName}</div>
-							<div>{songSetLibrary[songSetId].sharer}</div>
+							<div>{usernameGet(songSetLibrary[songSetId].sharer)}</div>
 							<div>
 								<Button onClick={songSetLoadClick(songSetId)}>Load</Button>
 							</div>

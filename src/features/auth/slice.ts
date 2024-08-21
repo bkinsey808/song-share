@@ -8,6 +8,7 @@ import { signInClick } from "./signInClick";
 import { signOutAndClearLocalClick } from "./signOutAndClearLocalClick";
 import { signOutClick } from "./signOutClick";
 import { RegistrationData, SessionCookieData } from "./types";
+import { usernameGet } from "./usernameGet";
 import {
 	AppSlice,
 	sliceResetFns,
@@ -50,6 +51,7 @@ export type AuthSlice = AuthSliceState & {
 		form: UseFormReturn<RegistrationData>,
 	) => (e: React.FormEvent<HTMLFormElement>) => void;
 	sessionExtendClick: () => void;
+	usernameGet: (uid: string) => string;
 };
 
 export const createAuthSlice: AppAuthSlice = (set, get) => {
@@ -62,19 +64,23 @@ export const createAuthSlice: AppAuthSlice = (set, get) => {
 		},
 		signOut: () => {
 			set({ sessionCookieData: null, isSignedIn: false });
-			useAppStore.getState().setOpenAppModal(null);
+			const { setOpenAppModal } = get();
+			setOpenAppModal(null);
 		},
 		signInClick: signInClick(set, get),
 		accountManageClick: () => {
-			useAppStore.getState().setOpenAppModal(appModal.ACCOUNT_MANAGE);
+			const { setOpenAppModal } = get();
+			setOpenAppModal(appModal.ACCOUNT_MANAGE);
 		},
 		signOutClick: signOutClick(get),
 		signOutAndClearLocalClick: signOutAndClearLocalClick(get),
 		deleteAccountClick: () => {
-			useAppStore.getState().setOpenAppModal(appModal.ACCOUNT_DELETE_CONFIRM);
+			const { setOpenAppModal } = get();
+			setOpenAppModal(appModal.ACCOUNT_DELETE_CONFIRM);
 		},
 		accountDeleteConfirmClick: accountDeleteConfirmClick(set),
 		registerSubmit: registerSubmit(get, set),
 		sessionExtendClick: sessionExtendClick(get, set),
+		usernameGet: usernameGet(get),
 	};
 };
