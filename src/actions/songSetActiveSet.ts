@@ -1,11 +1,15 @@
 "use server";
 
-import { doc, updateDoc } from "firebase/firestore";
-
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const songSetActiveSet = async (songSetId: string | null) => {
 	try {
@@ -16,8 +20,10 @@ export const songSetActiveSet = async (songSetId: string | null) => {
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
-		const publicUserDocRef = doc(db, "publicUsers", uid);
-		await updateDoc(publicUserDocRef, { activeSongSetId: songSetId });
+		await db
+			.collection("publicUsers")
+			.doc(uid)
+			.update({ activeSongSetId: songSetId });
 
 		return { actionResultType: actionResultType.SUCCESS };
 	} catch (error) {

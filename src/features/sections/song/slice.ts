@@ -17,7 +17,7 @@ export type AppSong = Nullable<Song>;
 
 type SongSliceState = {
 	activeSongId: string | null;
-	song: AppSong;
+	song: AppSong | null;
 	isSongUnsaved: boolean;
 	deletingSong: boolean;
 	addingSongToSongSet: boolean;
@@ -27,14 +27,6 @@ type SongSliceState = {
 
 type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
 
-const song: AppSong = {
-	songName: null,
-	lyrics: null,
-	translation: null,
-	credits: null,
-	sharer: null,
-};
-
 const songSliceInitialState: SongSliceState = {
 	songId: null,
 	activeSongId: null,
@@ -42,7 +34,7 @@ const songSliceInitialState: SongSliceState = {
 	songForm: null,
 	addingSongToSongSet: false,
 	isSongUnsaved: false,
-	song,
+	song: null,
 };
 
 export type SongSlice = SongSliceState & {

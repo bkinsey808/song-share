@@ -1,6 +1,5 @@
 "use server";
 
-import { doc, getDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 
 import { songGet } from "./songGet";
@@ -12,12 +11,18 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import {
 	PublicUserDocSchema,
 	UserDocSchema,
 } from "@/features/firebase/schemas";
 import { serverParse } from "@/features/global/serverParse";
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 const songOrThrow = async (songId: string | null) => {
 	if (!songId) {
@@ -47,10 +52,9 @@ const songSetOrThrow = async (songSetId: string | null) => {
 
 export const signIn = async (uid: string) => {
 	try {
-		const existingUserDoc =
-			uid === null ? undefined : await getDoc(doc(db, "users", uid));
+		const existingUserDoc = await db.collection("users").doc(uid).get();
 
-		if (!existingUserDoc?.exists()) {
+		if (!existingUserDoc.exists) {
 			console.warn("No existing user");
 
 			return { signInResultType: signInResultType.NEW };
@@ -74,11 +78,13 @@ export const signIn = async (uid: string) => {
 			};
 		}
 
-		const existingPublicUserDoc =
-			uid === null ? undefined : await getDoc(doc(db, "publicUsers", uid));
+		const existingPublicUserDoc = await db
+			.collection("publicUsers")
+			.doc(uid)
+			.get();
 
-		if (!existingPublicUserDoc?.exists()) {
-			console.warn("No existing public user");
+		if (!existingUserDoc.exists) {
+			console.warn("No existing user");
 
 			return { signInResultType: signInResultType.NEW };
 		}
@@ -116,6 +122,8 @@ export const signIn = async (uid: string) => {
 		const { songId, songSetId, songs, songSets } = existingUserDocResult.output;
 		const { activeSongId, activeSongSetId } =
 			existingPublicUserDocResult.output;
+
+		console.log("existing: ", existingUserDocResult.output);
 
 		return {
 			signInResultType: signInResultType.EXISTING,

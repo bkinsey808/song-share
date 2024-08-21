@@ -1,12 +1,17 @@
 "use server";
 
-import { deleteDoc, updateDoc } from "firebase/firestore";
-
 import { sessionExtend } from "./sessionExtend";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const songSetDelete = async (songSetId: string) => {
 	try {
@@ -20,7 +25,7 @@ export const songSetDelete = async (songSetId: string) => {
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
-		const username = sessionCookieData.username;
+		const { username, uid } = sessionCookieData;
 
 		if (!username) {
 			return actionErrorMessageGet("Username not found");
@@ -30,7 +35,7 @@ export const songSetDelete = async (songSetId: string) => {
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
 			return userDocResult;
 		}
-		const { userDoc, userDocRef } = userDocResult;
+		const { userDoc } = userDocResult;
 
 		const userDocSongSets = userDoc.songSets;
 
@@ -43,19 +48,19 @@ export const songSetDelete = async (songSetId: string) => {
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
 			return songSetResult;
 		}
-		const { songSet, songSetDocRef } = songSetResult;
+		const { songSet } = songSetResult;
 
-		if (songSet.sharer !== username) {
+		if (songSet.sharer !== uid) {
 			return actionErrorMessageGet("User does not own this song");
 		}
 
 		// delete the song set from the song sets collection
-		await deleteDoc(songSetDocRef);
+		await db.collection("songSets").doc(songSetId).delete();
 
 		delete userDocSongSets[songSetId];
 
 		// update user doc songs with the deleted song removed
-		await updateDoc(userDocRef, {
+		await db.collection("users").doc(uid).update({
 			songSets: userDocSongSets,
 		});
 

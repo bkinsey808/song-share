@@ -1,13 +1,17 @@
 "use server";
 
-import { doc, getDoc } from "firebase/firestore";
-
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 export const userDocGet = async () => {
 	try {
@@ -20,13 +24,12 @@ export const userDocGet = async () => {
 		const sessionCookieData = cookieResult.sessionCookieData;
 		const uid = sessionCookieData.uid;
 
-		const userDocRef = doc(db, "users", uid);
-		const userDocSnapshot = await getDoc(userDocRef);
-		if (!userDocSnapshot.exists()) {
-			return actionErrorMessageGet(`User not found: ${uid}`);
+		const userDocSnapshot = await db.collection("users").doc(uid).get();
+		if (!userDocSnapshot.exists) {
+			return actionErrorMessageGet("User not found");
 		}
-
 		const userDocData = userDocSnapshot.data();
+
 		if (!userDocData) {
 			return actionErrorMessageGet("User data not found");
 		}
@@ -38,7 +41,7 @@ export const userDocGet = async () => {
 
 		const userDoc = userDocResult.output;
 
-		return { actionResultType: actionResultType.SUCCESS, userDoc, userDocRef };
+		return { actionResultType: actionResultType.SUCCESS, userDoc };
 	} catch (error) {
 		return actionErrorMessageGet("Error getting user doc");
 	}

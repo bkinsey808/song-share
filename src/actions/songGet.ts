@@ -1,13 +1,17 @@
 "use server";
 
-import { collection, doc, getDoc } from "firebase/firestore";
-
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const songGet = async (songId: string) => {
 	try {
@@ -16,17 +20,11 @@ export const songGet = async (songId: string) => {
 			return actionErrorMessageGet("Session expired");
 		}
 
-		const songsCollection = collection(db, "songs");
-		const songDocRef = doc(songsCollection, songId);
-		const songDocSnapshot = await getDoc(songDocRef);
-		if (!songDocSnapshot.exists()) {
+		const songDoc = await db.collection("songs").doc(songId).get();
+		if (!songDoc.exists) {
 			return actionErrorMessageGet("Song not found");
 		}
-
-		const songData = songDocSnapshot.data();
-		if (!songData) {
-			return actionErrorMessageGet("Song data not found");
-		}
+		const songData = songDoc.data();
 
 		const songParseResult = serverParse(SongSchema, songData);
 		if (!songParseResult.success) {
@@ -36,7 +34,7 @@ export const songGet = async (songId: string) => {
 
 		const song = songParseResult.output;
 
-		return { actionResultType: actionResultType.SUCCESS, song, songDocRef };
+		return { actionResultType: actionResultType.SUCCESS, song };
 	} catch (error) {
 		return actionErrorMessageGet("Error getting song");
 	}

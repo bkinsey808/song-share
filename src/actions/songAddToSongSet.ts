@@ -1,17 +1,21 @@
 "use server";
 
-import { doc, setDoc } from "firebase/firestore";
-
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { UserDoc } from "@/features/firebase/types";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SongSet } from "@/features/sections/song-set/types";
 import { Song } from "@/features/sections/song/types";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const songAddToSongSet = async ({
 	songId,
@@ -112,9 +116,9 @@ export const songAddToSongSet = async ({
 			songSets: newUserSongSets,
 		};
 
-		await setDoc(doc(db, "songs", songId), newSongDocSong);
-		await setDoc(doc(db, "songSets", songSetId), newSongSet);
-		await setDoc(doc(db, "users", uid), newUserDoc);
+		await db.collection("songs").doc(songId).set(newSongDocSong);
+		await db.collection("songSets").doc(songSetId).set(newSongSet);
+		await db.collection("users").doc(uid).set(newUserDoc);
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

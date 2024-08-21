@@ -1,14 +1,18 @@
 "use server";
 
-import { doc, updateDoc } from "firebase/firestore";
-
 import { sessionExtend } from "./sessionExtend";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSongSet } from "@/features/sections/song-set/types";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const songSetLoad = async (songSetId: string) => {
 	try {
@@ -19,10 +23,7 @@ export const songSetLoad = async (songSetId: string) => {
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
-		const { username } = sessionCookieData;
-		if (!username) {
-			return actionErrorMessageGet("Username not found");
-		}
+		const { uid } = sessionCookieData;
 
 		const songSetResult = await songSetGet(songSetId);
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
@@ -34,22 +35,22 @@ export const songSetLoad = async (songSetId: string) => {
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Failed to get user doc");
 		}
-		const userDoc = userDocResult.userDoc;
+		const { userDoc } = userDocResult;
 
 		const oldSlimSongSet = userDoc.songSets[songSetId];
 
 		const newSlimSongSet: SlimSongSet = {
 			songSetName: existingSongSet.songSetName,
-			sharer: username,
+			sharer: uid,
 		};
 
 		const slimSongsAreEqual =
 			JSON.stringify(oldSlimSongSet) === JSON.stringify(newSlimSongSet);
 
-		if (!slimSongsAreEqual) {
+		if (!slimSongsAreEqual || userDoc.songSetId !== songSetId) {
 			const songSets = userDoc.songSets;
 			songSets[songSetId] = newSlimSongSet;
-			await updateDoc(doc(db, "users", username), {
+			await db.collection("users").doc(uid).update({
 				songSetId,
 				songSets,
 			});

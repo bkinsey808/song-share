@@ -14,17 +14,10 @@ import { Nullable } from "@/features/global/types";
 
 export type AppSongSet = Nullable<SongSet>;
 
-const songSet: AppSongSet = {
-	songSetName: null,
-	sharer: null,
-	songSetSongList: [],
-	songSetSongs: {},
-};
-
 type SongSetSliceState = {
 	songSetId: string | null;
 	activeSongSetId: string | null;
-	songSet: AppSongSet;
+	songSet: AppSongSet | null;
 	isSongSetUnsaved: boolean;
 	deletingSongSet: boolean;
 	songSetForm: UseFormReturn<SongSet> | null;
@@ -33,7 +26,7 @@ type SongSetSliceState = {
 const songSetSliceInitialState: SongSetSliceState = {
 	songSetId: null,
 	activeSongSetId: null,
-	songSet,
+	songSet: null,
 	isSongSetUnsaved: false,
 	deletingSongSet: false,
 	songSetForm: null,

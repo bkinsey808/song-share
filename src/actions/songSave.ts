@@ -1,16 +1,22 @@
 "use server";
 
-import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { flatten } from "valibot";
 
 import { sessionExtend } from "./sessionExtend";
+import { songGet } from "./songGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
 import type { SlimSong, Song } from "@/features/sections/song/types";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 const getFormError = (formError: string) => {
 	console.error(formError);
@@ -21,6 +27,27 @@ const getFormError = (formError: string) => {
 	};
 };
 
+const saveOrCreateSong = async (
+	songId: string | null,
+	uid: string,
+	song: Song,
+) => {
+	if (songId) {
+		const songResult = await songGet(songId);
+		if (songResult.actionResultType === actionResultType.ERROR) {
+			throw new Error("Song not found");
+		}
+		if (songResult.song.sharer !== uid) {
+			throw new Error("User does not own this song");
+		}
+		await db.collection("songs").doc(songId).set(song);
+		return songId;
+	}
+	const result = await db.collection("songs").add(song);
+	songId = result.id;
+	return songId;
+};
+
 export const songSave = async ({
 	song,
 	songId,
@@ -29,11 +56,11 @@ export const songSave = async ({
 	songId: string | null;
 }) => {
 	try {
-		const result = serverParse(SongSchema, song);
-		if (!result.success) {
+		const songParseResult = serverParse(SongSchema, song);
+		if (!songParseResult.success) {
 			return {
 				actionResultType: actionResultType.ERROR,
-				fieldErrors: flatten<typeof SongSchema>(result.issues).nested,
+				fieldErrors: flatten<typeof SongSchema>(songParseResult.issues).nested,
 			};
 		}
 
@@ -44,71 +71,40 @@ export const songSave = async ({
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
-		const username = sessionCookieData.username;
-
-		if (!username) {
-			return getFormError("Username not found");
-		}
+		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
 			return getFormError("Failed to get user doc");
 		}
-		const { userDoc, userDocRef } = userDocResult;
+		const { userDoc } = userDocResult;
 
+		// confirm user owns the song
 		const userDocSongs = userDoc.songs;
-
-		// first, confirm user owns the song
 		if (songId && !userDocSongs[songId]) {
 			return getFormError("User does not own this song");
 		}
 
-		// second update the song in the songs collection, or create it if it doesn't exist
-		const songsCollection = collection(db, "songs");
-		const songDocRef = songId
-			? doc(songsCollection, songId)
-			: doc(songsCollection);
+		const newSongId = await saveOrCreateSong(songId, uid, song);
 
-		const songSnapshot = await getDoc(songDocRef);
-		const songData = songSnapshot.data();
-		if (!songData && songId) {
-			return getFormError("Song data not found");
-		}
-
-		if (songData) {
-			const songResult = serverParse(SongSchema, songData);
-			if (!songResult.success) {
-				console.warn(songData);
-				return getFormError("Song data is invalid");
-			}
-
-			const songLibrarySong = songResult.output;
-			if (songId && songLibrarySong.sharer !== username) {
-				return getFormError("User does not own this song");
-			}
-		}
-
-		await setDoc(songDocRef, {
-			...song,
-			sharer: username,
-		});
-
-		const newSongId = songDocRef.id;
 		const slimSong: SlimSong = {
 			songName: song.songName,
-			sharer: username,
+			sharer: uid,
 		};
 
-		// third, update the slimSong in the userDoc
+		// update the slimSong in the userDoc
 		const newSongs: UserDoc["songs"] = {
 			...userDocSongs,
 			[songId ?? newSongId]: slimSong,
 		};
 
-		await updateDoc(userDocRef, {
-			songId,
-			songs: newSongs,
-		});
+		await db
+			.collection("users")
+			.doc(uid)
+			.update({
+				songId: songId ?? newSongId,
+				songs: newSongs,
+			});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

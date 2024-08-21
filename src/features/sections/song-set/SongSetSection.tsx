@@ -50,7 +50,7 @@ export const SongSetSection = () => {
 		[],
 	);
 
-	const songIds = songSet.songSetSongList ?? [];
+	const songIds = songSet?.songSetSongList ?? [];
 
 	const form = useForm<SongSet>({
 		resolver: valibotResolver(SongSetSchema),

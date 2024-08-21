@@ -33,6 +33,7 @@ yarn-error.log*
 
 # firebaes
 .firebase
+serviceAccountKey.json
 
 # typescript
 *.tsbuildinfo

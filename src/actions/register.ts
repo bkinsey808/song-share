@@ -1,6 +1,5 @@
 "use server";
 
-import { doc, getDoc, setDoc } from "firebase/firestore";
 import { cookies } from "next/headers";
 import { flatten } from "valibot";
 
@@ -12,9 +11,15 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
-import { db } from "@/features/firebase/firebase";
+import { db } from "@/features/firebase/firebaseServer";
 import { PublicUserDoc, UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const register = async ({
 	uid,
@@ -38,10 +43,11 @@ export const register = async ({
 
 		const username = registrationData[registerFormFieldKey.Username];
 
-		const existingUsernameDocumentSnapshot = await getDoc(
-			doc(db, "usernames", username),
-		);
-		if (existingUsernameDocumentSnapshot.exists()) {
+		const usernameSnapshot = await db
+			.collection("usernames")
+			.doc(username)
+			.get();
+		if (usernameSnapshot.exists) {
 			return {
 				actionResultType: actionResultType.ERROR,
 				fieldErrors: {
@@ -75,11 +81,9 @@ export const register = async ({
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
-		await setDoc(doc(db, "users", uid), userDoc);
-		await setDoc(doc(db, "publicUsers", uid), publicUserDoc);
-		await setDoc(doc(db, "usernames", username), {
-			uid,
-		});
+		await db.collection("users").doc(uid).set(userDoc);
+		await db.collection("publicUsers").doc(uid).set(publicUserDoc);
+		await db.collection("usernames").doc(username).set({ uid });
 
 		const sessionToken = await sessionTokenEncode(sessionCookieData);
 

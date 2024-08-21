@@ -1,14 +1,19 @@
 "use server";
 
-import { updateDoc } from "firebase/firestore";
-
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSong } from "@/features/sections/song/types";
+
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 export const songLoad = async ({
 	songId,
@@ -24,10 +29,7 @@ export const songLoad = async ({
 		}
 		const sessionCookieData = sessionExtendResult.sessionCookieData;
 
-		const username = sessionCookieData.username;
-		if (!username) {
-			return actionErrorMessageGet("Username not found");
-		}
+		const { uid } = sessionCookieData;
 
 		const songResult = await songGet(songId);
 		if (songResult.actionResultType === actionResultType.ERROR) {
@@ -39,20 +41,23 @@ export const songLoad = async ({
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Failed to get user doc");
 		}
-		const { userDoc, userDocRef } = userDocResult;
+		const { userDoc } = userDocResult;
 
 		const oldSlimSong = userDoc.songSets[songId];
 		const newSlimSong: SlimSong = {
 			songName: song.songName,
-			sharer: username,
+			sharer: uid,
 		};
 		const slimSongsAreEqual =
 			JSON.stringify(oldSlimSong) === JSON.stringify(newSlimSong);
 
-		if (!slimSongsAreEqual) {
+		if (!slimSongsAreEqual || userDoc.songId !== songId) {
 			const songs = userDoc.songs;
 			songs[songId] = newSlimSong;
-			await updateDoc(userDocRef, { songId, songs });
+			await db.collection("users").doc(uid).update({
+				songId,
+				songs,
+			});
 		}
 
 		if (songSetId) {
