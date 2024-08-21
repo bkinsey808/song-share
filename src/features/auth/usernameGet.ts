@@ -8,5 +8,5 @@ export const usernameGet = (get: Get) => (uid: string) => {
 	}
 
 	const user = userLibrary[uid];
-	return user?.username ?? uid;
+	return user?.username ?? "";
 };
