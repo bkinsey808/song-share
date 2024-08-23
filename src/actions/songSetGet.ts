@@ -2,6 +2,7 @@
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
@@ -21,7 +22,10 @@ export const songSetGet = async (songSetId: string) => {
 			return actionErrorMessageGet("Session expired");
 		}
 
-		const songSetDoc = await db.collection("songSets").doc(songSetId).get();
+		const songSetDoc = await db
+			.collection(collection.SONG_SETS)
+			.doc(songSetId)
+			.get();
 		if (!songSetDoc.exists) {
 			return actionErrorMessageGet("Song set not found");
 		}

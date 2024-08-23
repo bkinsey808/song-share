@@ -48,6 +48,7 @@ export type SongSlice = SongSliceState & {
 	addSongToSongSetClick: () => Promise<void>;
 	setActiveSongId: (activeSongId: string | null) => void;
 	activeSongClick: (songId: string) => () => Promise<void>;
+	setSong: (song: AppSong) => void;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -64,5 +65,6 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		addSongToSongSetClick: songAddToSongSetClick(get, set),
 		setActiveSongId: (activeSongId: string | null) => set({ activeSongId }),
 		activeSongClick: songActiveClick(get),
+		setSong: (song) => set({ song }),
 	};
 };

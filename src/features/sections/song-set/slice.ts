@@ -48,6 +48,7 @@ export type SongSetSlice = SongSetSliceState & {
 	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 	setActiveSongSetId: (activeSongSetId: string | null) => void;
 	activeSongSetClick: (songSetId: string) => () => Promise<void>;
+	setSongSet: (songSet: AppSongSet) => void;
 };
 
 type AppSongSetSlice = StateCreator<AppSlice, [], [], SongSetSlice>;
@@ -69,5 +70,6 @@ export const createSongSetSlice: AppSongSetSlice = (set, get) => {
 		setActiveSongSetId: (activeSongSetId: string | null) =>
 			set({ activeSongSetId }),
 		activeSongSetClick: songSetActiveClick(get),
+		setSongSet: (songSet) => set({ songSet }),
 	};
 };

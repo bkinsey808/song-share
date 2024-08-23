@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { FollowingSlice, createFollowingSlice } from "../following/slice";
 import {
 	UserLibrarySlice,
 	createUserLibrarySlice,
@@ -37,7 +38,8 @@ export type AppSlice = ModalSlice &
 	SongSetSlice &
 	SongLibrarySlice &
 	SongSetLibrarySlice &
-	UserLibrarySlice;
+	UserLibrarySlice &
+	FollowingSlice;
 
 /** for security, these shall not be stored in localStorage */
 const omittedKeys: (keyof AppSlice)[] = [
@@ -64,6 +66,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSongLibrarySlice(...a),
 			...createSongSetLibrarySlice(...a),
 			...createUserLibrarySlice(...a),
+			...createFollowingSlice(...a),
 		}),
 		{
 			name: "app-store",

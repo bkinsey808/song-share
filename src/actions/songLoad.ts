@@ -5,6 +5,7 @@ import { songGet } from "./songGet";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SlimSong } from "@/features/sections/song/types";
@@ -54,7 +55,7 @@ export const songLoad = async ({
 		if (!slimSongsAreEqual || userDoc.songId !== songId) {
 			const songs = userDoc.songs;
 			songs[songId] = newSlimSong;
-			await db.collection("users").doc(uid).update({
+			await db.collection(collection.USERS).doc(uid).update({
 				songId,
 				songs,
 			});

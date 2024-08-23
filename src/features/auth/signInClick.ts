@@ -30,6 +30,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 				songSetLibrary,
 				songForm,
 				songSetForm,
+				fuid,
 			} = get();
 
 			const signInResult = await signIn(uid);
@@ -101,6 +102,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 						activeSongSetId: signInResult.activeSongSetId,
 						song: signInResult.song,
 						songSet: signInResult.songSet,
+						fuid: uid === fuid ? null : uid,
 					});
 
 					if (signInResult.song) {

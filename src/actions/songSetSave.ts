@@ -6,6 +6,7 @@ import { sessionExtend } from "./sessionExtend";
 import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
@@ -40,10 +41,10 @@ const saveOrCreateSongSet = async (
 		if (songSetResult.songSet.sharer !== uid) {
 			throw new Error("User does not own this song set");
 		}
-		await db.collection("songs").doc(songSetId).set(songSet);
+		await db.collection(collection.SONGS).doc(songSetId).set(songSet);
 		return songSetId;
 	}
-	const result = await db.collection("songSets").add(songSet);
+	const result = await db.collection(collection.SONG_SETS).add(songSet);
 	songSetId = result.id;
 	return songSetId;
 };
@@ -97,7 +98,7 @@ export const songSetSave = async ({
 			[songSetId ?? newSongSetId]: slimSongSet,
 		};
 
-		await db.collection("users").doc(uid).update({
+		await db.collection(collection.USERS).doc(uid).update({
 			songSetId,
 			songSets: newSongSets,
 		});

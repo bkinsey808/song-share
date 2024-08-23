@@ -6,6 +6,7 @@ import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
@@ -40,10 +41,10 @@ const saveOrCreateSong = async (
 		if (songResult.song.sharer !== uid) {
 			throw new Error("User does not own this song");
 		}
-		await db.collection("songs").doc(songId).set(song);
+		await db.collection(collection.SONGS).doc(songId).set(song);
 		return songId;
 	}
-	const result = await db.collection("songs").add(song);
+	const result = await db.collection(collection.SONGS).add(song);
 	songId = result.id;
 	return songId;
 };
@@ -99,7 +100,7 @@ export const songSave = async ({
 		};
 
 		await db
-			.collection("users")
+			.collection(collection.USERS)
 			.doc(uid)
 			.update({
 				songId: songId ?? newSongId,

@@ -6,6 +6,7 @@ import { sessionCookieGet } from "./sessionCookieGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { getKeys } from "@/features/global/getKeys";
@@ -35,9 +36,9 @@ export const accountDelete = async () => {
 
 		const songs = userDoc.songs;
 		const songIds = getKeys(songs);
-		const deleteSongPromises = songIds.map((songId) => {
-			db.collection("songs").doc(songId).delete();
-		});
+		const deleteSongPromises = songIds.map((songId) =>
+			db.collection(collection.SONGS).doc(songId).delete(),
+		);
 		const songsDeleteResult = await Promise.allSettled(deleteSongPromises);
 
 		// check to see if any of the song deletes failed
@@ -50,9 +51,9 @@ export const accountDelete = async () => {
 
 		const songSets = userDoc.songSets;
 		const songSetIds = getKeys(songSets);
-		const deleteSongSetPromises = songSetIds.map((songSetId) => {
-			db.collection("songSets").doc(songSetId).delete();
-		});
+		const deleteSongSetPromises = songSetIds.map((songSetId) =>
+			db.collection(collection.SONG_SETS).doc(songSetId).delete(),
+		);
 		const songSetsDeleteResult = await Promise.allSettled(
 			deleteSongSetPromises,
 		);
@@ -69,9 +70,9 @@ export const accountDelete = async () => {
 			return actionErrorMessageGet("Username is not defined");
 		}
 
-		await db.collection("users").doc(uid).delete();
-		await db.collection("publicUsers").doc(uid).delete();
-		await db.collection("userNames").doc(username).delete();
+		await db.collection(collection.USERS).doc(uid).delete();
+		await db.collection(collection.PUBLIC_USERS).doc(uid).delete();
+		await db.collection(collection.USER_NAMES).doc(username).delete();
 
 		cookies().delete(SESSION_COOKIE_NAME);
 

@@ -4,6 +4,7 @@ import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -49,12 +50,12 @@ export const songDelete = async (songId: string) => {
 		}
 
 		// delete the song form the songs collection
-		await db.collection("songs").doc(songId).delete();
+		await db.collection(collection.SONGS).doc(songId).delete();
 
 		delete userDocSongs[songId];
 
 		// update user doc songs with the deleted song removed
-		await db.collection("users").doc(uid).update({
+		await db.collection(collection.USERS).doc(uid).update({
 			songs: userDocSongs,
 		});
 

@@ -2,6 +2,7 @@
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
@@ -24,7 +25,10 @@ export const userDocGet = async () => {
 		const sessionCookieData = cookieResult.sessionCookieData;
 		const uid = sessionCookieData.uid;
 
-		const userDocSnapshot = await db.collection("users").doc(uid).get();
+		const userDocSnapshot = await db
+			.collection(collection.USERS)
+			.doc(uid)
+			.get();
 		if (!userDocSnapshot.exists) {
 			return actionErrorMessageGet("User not found");
 		}

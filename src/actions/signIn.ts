@@ -11,6 +11,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import {
 	PublicUserDocSchema,
@@ -52,7 +53,10 @@ const songSetOrThrow = async (songSetId: string | null) => {
 
 export const signIn = async (uid: string) => {
 	try {
-		const existingUserSnapshot = await db.collection("users").doc(uid).get();
+		const existingUserSnapshot = await db
+			.collection(collection.USERS)
+			.doc(uid)
+			.get();
 
 		if (!existingUserSnapshot.exists) {
 			console.warn("No existing user");
@@ -79,7 +83,7 @@ export const signIn = async (uid: string) => {
 		}
 
 		const existingPublicUserSnapshot = await db
-			.collection("publicUsers")
+			.collection(collection.PUBLIC_USERS)
 			.doc(uid)
 			.get();
 

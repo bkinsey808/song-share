@@ -2,6 +2,7 @@
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -21,7 +22,7 @@ export const songActiveSet = async (songId: string | null) => {
 		const { uid } = sessionCookieData;
 
 		await db
-			.collection("publicUsers")
+			.collection(collection.PUBLIC_USERS)
 			.doc(uid)
 			.update({ activeSongId: songId });
 

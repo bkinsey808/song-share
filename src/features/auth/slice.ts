@@ -9,12 +9,8 @@ import { signOutAndClearLocalClick } from "./signOutAndClearLocalClick";
 import { signOutClick } from "./signOutClick";
 import { RegistrationData, SessionCookieData } from "./types";
 import { usernameGet } from "./usernameGet";
-import {
-	AppSlice,
-	sliceResetFns,
-	useAppStore,
-} from "@/features/app-store/useAppStore";
-import "@/features/firebase/firebase";
+import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
+import "@/features/firebase/firebaseClient";
 import { appModal } from "@/features/modal/consts";
 
 type AuthSliceState = {
@@ -35,8 +31,6 @@ const authSliceInitialState: AuthSliceState = {
 	isSigningIn: false,
 };
 
-type AppAuthSlice = StateCreator<AppSlice, [], [], AuthSlice>;
-
 export type AuthSlice = AuthSliceState & {
 	setLastSignInCheck: (lastSignInCheck: number) => void;
 	signIn: (sessionCookieData: SessionCookieData) => void;
@@ -53,6 +47,8 @@ export type AuthSlice = AuthSliceState & {
 	sessionExtendClick: () => void;
 	usernameGet: (uid: string) => string;
 };
+
+type AppAuthSlice = StateCreator<AppSlice, [], [], AuthSlice>;
 
 export const createAuthSlice: AppAuthSlice = (set, get) => {
 	sliceResetFns.add(() => set(authSliceInitialState));
@@ -72,7 +68,7 @@ export const createAuthSlice: AppAuthSlice = (set, get) => {
 			const { setOpenAppModal } = get();
 			setOpenAppModal(appModal.ACCOUNT_MANAGE);
 		},
-		signOutClick: signOutClick(get),
+		signOutClick: signOutClick(get, set),
 		signOutAndClearLocalClick: signOutAndClearLocalClick(get),
 		deleteAccountClick: () => {
 			const { setOpenAppModal } = get();
