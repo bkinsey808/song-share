@@ -1,6 +1,5 @@
 "use server";
 
-import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -16,17 +15,12 @@ import { SongSetSchema } from "@/features/sections/song-set/schemas";
 
 export const songSetGet = async (songSetId: string) => {
 	try {
-		const cookieResult = await sessionCookieGet();
-
-		if (cookieResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("Session expired");
-		}
-
 		const songSetDoc = await db
 			.collection(collection.SONG_SETS)
 			.doc(songSetId)
 			.get();
 		if (!songSetDoc.exists) {
+			console.warn("Song set not found");
 			return actionErrorMessageGet("Song set not found");
 		}
 		const songSetData = songSetDoc.data();

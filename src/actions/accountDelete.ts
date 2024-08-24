@@ -27,6 +27,9 @@ export const accountDelete = async () => {
 
 		const sessionCookieData = cookieResult.sessionCookieData;
 		const { uid, username } = sessionCookieData;
+		if (!username) {
+			return actionErrorMessageGet("Username is not defined");
+		}
 
 		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
@@ -64,10 +67,6 @@ export const accountDelete = async () => {
 		);
 		if (failedSongSetsDeletes.length > 0) {
 			return actionErrorMessageGet("Failed to delete song sets");
-		}
-
-		if (username === null) {
-			return actionErrorMessageGet("Username is not defined");
 		}
 
 		await db.collection(collection.USERS).doc(uid).delete();

@@ -9,8 +9,17 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
 		deletingSongSet: true,
 	});
-	const username = useAppStore.getState().sessionCookieData?.username;
-	const { songSetForm, songSetLibrary, songSetId } = get();
+	const {
+		songSetForm,
+		songSetLibrary,
+		songSetId,
+		sessionCookieData,
+		setOpenAppModal,
+	} = get();
+	const uid = sessionCookieData?.uid;
+	if (!uid) {
+		console.error("no uid");
+	}
 	if (!songSetForm) {
 		console.error("no form");
 		return;
@@ -20,7 +29,7 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 			variant: "destructive",
 			title: "No song set selected",
 		});
-		useAppStore.getState().setOpenAppModal(null);
+		setOpenAppModal(null);
 		return;
 	}
 	const result = await songSetDelete(songSetId);
@@ -29,13 +38,13 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 			variant: "destructive",
 			title: "There was an error deleting the song set",
 		});
-		useAppStore.getState().setOpenAppModal(null);
+		setOpenAppModal(null);
 		return;
 	}
 	delete songSetLibrary[songSetId];
 	const songSet: SongSet = {
 		songSetName: "",
-		sharer: username ?? "",
+		sharer: uid ?? "",
 		songSetSongList: [],
 		songSetSongs: {},
 	};
@@ -46,5 +55,5 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		deletingSongSet: false,
 	});
 	songSetForm.reset(songSet);
-	useAppStore.getState().setOpenAppModal(null);
+	setOpenAppModal(null);
 };

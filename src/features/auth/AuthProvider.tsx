@@ -16,6 +16,7 @@ import { appModal } from "@/features/modal/consts";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const {
+		openAppModal,
 		setOpenAppModal,
 		signIn,
 		isSignedIn,
@@ -52,6 +53,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			Date.now() - lastSignInCheck <
 			SESSION_POLLING_INTERVAL_SECONDS * 1000
 		) {
+			if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
+				setOpenAppModal(null);
+			}
 			return;
 		}
 
@@ -71,6 +75,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 			return;
 		}
 
+		if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
+			setOpenAppModal(null);
+		}
+
 		setLastSignInCheck(Date.now());
 	}, [
 		lastSignInCheck,
@@ -78,6 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		signOut,
 		setOpenAppModal,
 		existingSessionWarningTimestamp,
+		openAppModal,
 	]);
 
 	useInterval(
@@ -86,6 +95,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		},
 		isSignedIn ? SESSION_POLLING_INTERVAL_SECONDS * 1000 : null,
 	);
+
+	useEffect(() => {
+		if (!isSignedIn && openAppModal === appModal.SESSION_EXPIRE_WARNING) {
+			setOpenAppModal(null);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isSignedIn, setOpenAppModal]);
 
 	return (
 		<>

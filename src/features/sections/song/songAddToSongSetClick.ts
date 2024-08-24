@@ -6,6 +6,7 @@ import { Get, Set } from "@/features/app-store/types";
 export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 	set({ addingSongToSongSet: true });
 	const { songId, song, songSetId, sessionCookieData } = get();
+	const uid = sessionCookieData?.uid;
 
 	try {
 		if (!songId || !song || !songSetId) {
@@ -20,7 +21,7 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 			songId,
 			song: {
 				songName: song.songName ?? "",
-				sharer: song.sharer ?? sessionCookieData?.username ?? "",
+				sharer: song.sharer ?? uid ?? "",
 				credits: song.credits ?? "",
 				lyrics: song.lyrics ?? "",
 				translation: song.translation ?? "",

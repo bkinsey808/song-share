@@ -26,11 +26,7 @@ export const songSetDelete = async (songSetId: string) => {
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
-		const { username, uid } = sessionCookieData;
-
-		if (!username) {
-			return actionErrorMessageGet("Username not found");
-		}
+		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {

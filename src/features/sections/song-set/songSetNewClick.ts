@@ -1,12 +1,15 @@
 import { SongSet } from "./types";
 import { Get, Set } from "@/features/app-store/types";
-import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const songSetNewClick = (get: Get, set: Set) => () => {
-	const username = useAppStore.getState().sessionCookieData?.username;
-	const form = get().songSetForm;
+	const { sessionCookieData, songSetForm } = get();
+	const uid = sessionCookieData?.uid;
+	if (!uid) {
+		console.error("no uid");
+		return;
+	}
 
-	if (!form) {
+	if (!songSetForm) {
 		console.error("no form");
 		return;
 	}
@@ -15,7 +18,7 @@ export const songSetNewClick = (get: Get, set: Set) => () => {
 		songSetId: null,
 		songSet: {
 			songSetName: null,
-			sharer: username ?? null,
+			sharer: uid,
 			songSetSongList: [],
 			songSetSongs: {},
 		},
@@ -23,10 +26,10 @@ export const songSetNewClick = (get: Get, set: Set) => () => {
 
 	const songSet: SongSet = {
 		songSetName: "",
-		sharer: username ?? "",
+		sharer: uid,
 		songSetSongList: [],
 		songSetSongs: {},
 	};
 
-	form.reset(songSet);
+	songSetForm.reset(songSet);
 };

@@ -98,7 +98,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 						songSetLibrary: newSongSetLibrary,
 						songId: signInResult.songId,
 						songSetId: signInResult.songSetId,
-						activeSongId: signInResult.activeSongId,
+						songActiveId: signInResult.activeSongId,
 						activeSongSetId: signInResult.activeSongSetId,
 						song: signInResult.song,
 						songSet: signInResult.songSet,

@@ -27,7 +27,6 @@ export const songAddToSongSet = async ({
 	song: Song;
 	songSetId: string;
 }) => {
-	console.log({ song });
 	try {
 		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
@@ -35,10 +34,7 @@ export const songAddToSongSet = async ({
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 
-		const { username, uid } = sessionCookieData;
-		if (!username) {
-			return actionErrorMessageGet("Username not found");
-		}
+		const { uid } = sessionCookieData;
 
 		const songResult = await songGet(songId);
 		if (songResult.actionResultType === actionResultType.ERROR) {
@@ -67,6 +63,8 @@ export const songAddToSongSet = async ({
 		const newSongSetSongs: SongSet["songSetSongs"] = {
 			...songSetSongs,
 			[songId]: {
+				songName: song.songName, // duplicated field for faster access
+				sharer: existingSong.sharer, // duplicated field for faster access
 				songKey: "",
 			},
 		};

@@ -16,7 +16,7 @@ import { Nullable } from "@/features/global/types";
 export type AppSong = Nullable<Song>;
 
 type SongSliceState = {
-	activeSongId: string | null;
+	songActiveId: string | null;
 	song: AppSong | null;
 	isSongUnsaved: boolean;
 	deletingSong: boolean;
@@ -29,7 +29,7 @@ type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
 
 const songSliceInitialState: SongSliceState = {
 	songId: null,
-	activeSongId: null,
+	songActiveId: null,
 	deletingSong: false,
 	songForm: null,
 	addingSongToSongSet: false,
@@ -47,8 +47,9 @@ export type SongSlice = SongSliceState & {
 	showAddSongToSongSetButton: () => boolean;
 	addSongToSongSetClick: () => Promise<void>;
 	setActiveSongId: (activeSongId: string | null) => void;
-	activeSongClick: (songId: string) => () => Promise<void>;
+	songActiveClick: (songId: string) => () => Promise<void>;
 	setSong: (song: AppSong) => void;
+	songFormIsDisabled: () => boolean;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -63,8 +64,17 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		songDeleteConfirmClick: songDeleteConfirmClick(get, set),
 		showAddSongToSongSetButton: showAddSongToSongSetButton(get),
 		addSongToSongSetClick: songAddToSongSetClick(get, set),
-		setActiveSongId: (activeSongId: string | null) => set({ activeSongId }),
-		activeSongClick: songActiveClick(get),
+		setActiveSongId: (activeSongId: string | null) =>
+			set({ songActiveId: activeSongId }),
+		songActiveClick: songActiveClick(get),
 		setSong: (song) => set({ song }),
+		songFormIsDisabled: () => {
+			const { songForm, sessionCookieData, song } = get();
+			console.log(song?.sharer);
+			if (sessionCookieData?.uid !== song?.sharer && !!song?.sharer) {
+				return true;
+			}
+			return songForm?.formState.isSubmitting ?? false;
+		},
 	};
 };

@@ -14,6 +14,8 @@ export const SlimSongSetSchema = object({
 });
 
 export const SongSetSongSchema = object({
+	songName: string(),
+	sharer: string(),
 	songKey: string(),
 });
 

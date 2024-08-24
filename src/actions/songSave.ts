@@ -33,12 +33,18 @@ const saveOrCreateSong = async (
 	uid: string,
 	song: Song,
 ) => {
+	if (song.sharer && song.sharer !== uid) {
+		throw new Error("User does not own this song");
+	}
+	if (!song.sharer) {
+		song.sharer = uid;
+	}
 	if (songId) {
 		const songResult = await songGet(songId);
 		if (songResult.actionResultType === actionResultType.ERROR) {
 			throw new Error("Song not found");
 		}
-		if (songResult.song.sharer !== uid) {
+		if (!!songResult.song.sharer && songResult.song.sharer !== uid) {
 			throw new Error("User does not own this song");
 		}
 		await db.collection(collection.SONGS).doc(songId).set(song);

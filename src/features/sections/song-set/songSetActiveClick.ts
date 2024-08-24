@@ -5,7 +5,10 @@ import { Get } from "@/features/app-store/types";
 
 export const songSetActiveClick =
 	(get: Get) => (songSetId: string) => async () => {
-		const { setActiveSongSetId } = get();
+		const { setActiveSongSetId, fuid } = get();
+		if (fuid) {
+			return;
+		}
 
 		const activeSongSetResult = await songSetActiveSet(songSetId);
 		if (activeSongSetResult.actionResultType === actionResultType.ERROR) {

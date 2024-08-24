@@ -29,13 +29,7 @@ export const songSetSubmit =
 				return;
 			}
 
-			const username = sessionCookieData.username;
-			if (!username) {
-				songSetForm.setError("root", {
-					message: "Username is null",
-				});
-				return;
-			}
+			const { uid } = sessionCookieData;
 
 			const songSaveResult = await songSetSave({
 				songSet,
@@ -67,7 +61,7 @@ export const songSetSubmit =
 					const newSongSetId = songSaveResult.songSetId;
 					const newSongSetLibrarySongSet: SongSet = {
 						...songSet,
-						sharer: username,
+						sharer: uid,
 					};
 					songSetLibrary[newSongSetId] = newSongSetLibrarySongSet;
 					set({

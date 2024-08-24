@@ -32,9 +32,10 @@ export const SongSetSection = () => {
 		setSongSetForm,
 		songSetDeleteClick,
 		songSetSongLoadClick,
-		activeSongId,
-		activeSongClick,
+		songActiveId,
+		songActiveClick,
 		usernameGet,
+		fuid,
 	} = useAppStore();
 
 	const defaultValues = useMemo(
@@ -102,18 +103,27 @@ export const SongSetSection = () => {
 							<RadioGroup
 								name="activeSongId"
 								id="activeSongId"
-								value={activeSongId ?? ""}
+								value={songActiveId ?? ""}
 							>
 								{songIds.map((songId) => (
 									<GridRow key={songId}>
 										<RadioGroupItem
 											className="self-center"
 											id={songId}
+											disabled={!!fuid}
 											value={songId}
-											onClick={activeSongClick(songId)}
+											onClick={songActiveClick(songId)}
 										/>
-										<div>{songLibrary[songId].songName}</div>
-										<div>{usernameGet(songLibrary[songId].sharer)}</div>
+										<div>
+											{songSet?.songSetSongs?.[songId]?.songName ??
+												songLibrary[songId]?.songName}
+										</div>
+										<div>
+											{usernameGet(
+												songSet?.songSetSongs?.[songId]?.sharer ??
+													songLibrary[songId]?.sharer,
+											)}
+										</div>
 										<div>
 											<Button
 												onClick={songSetSongLoadClick({ songId, songSetId })}
