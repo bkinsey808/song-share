@@ -11,19 +11,19 @@ export const instrumentTuningMap = instrumentNames.reduce(
 		const instrumentTuningNames: string[] = getKeys(instrument);
 
 		const dataListMap = instrumentTuningNames.reduce(
-			(acc, instrumentTuningName) => {
+			(innerAcc, instrumentTuningName) => {
 				const tuning: string[] =
 					instrument[instrumentTuningName as keyof typeof instrument];
 
 				if (!Array.isArray(tuning)) {
-					return acc;
+					return innerAcc;
 				}
 				const tuningString = tuning.join(" ");
 
 				const key = `${instrumentName} - ${instrumentTuningName} [${tuningString}]`;
 
 				return {
-					...acc,
+					...innerAcc,
 					[key]: {
 						instrument: instrumentName,
 						instrumentTuningName,

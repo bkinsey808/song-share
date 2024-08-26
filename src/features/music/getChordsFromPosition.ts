@@ -33,21 +33,27 @@ export const getChordsFromPosition = ({
 			const rawNoteNumbers = noteNumbers
 				.slice(course)
 				.concat(noteNumbers.slice(0, course))
-				.filter((noteNumber): noteNumber is number => noteNumber !== "x");
+				.filter(
+					(innerNoteNumber): innerNoteNumber is number =>
+						innerNoteNumber !== "x",
+				);
 
 			const initialRawNoteNumber = rawNoteNumbers[0];
 
 			const chordSpelling = Array.from(
 				new Set(
 					rawNoteNumbers
-						.map((noteNumber) => (noteNumber - initialRawNoteNumber + 12) % 12)
+						.map(
+							(innerNoteNumber) =>
+								(innerNoteNumber - initialRawNoteNumber + 12) % 12,
+						)
 						.slice(1),
 				),
 			)
-				.filter((noteNumber) => noteNumber !== 0)
+				.filter((innerNoteNumber) => innerNoteNumber !== 0)
 				.sort((a, b) => a - b)
-				.map((noteNumber) => degrees[noteNumber])
-				.filter((noteNumber) => noteNumber !== "1");
+				.map((innerNoteNumber) => degrees[innerNoteNumber])
+				.filter((innerNoteNumber) => innerNoteNumber !== "1");
 
 			const sci = getSciBySpelling(chordSpelling);
 

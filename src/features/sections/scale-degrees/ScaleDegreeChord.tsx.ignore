@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { getChords } from "./getChords";
+import { getChords } from "./getChords.ts.ignore";
 import { DashboardStateKey } from "@/app/d/enums";
 import { AppState } from "@/app/d/types";
 import { useDashboardState } from "@/app/d/useDashboardState";

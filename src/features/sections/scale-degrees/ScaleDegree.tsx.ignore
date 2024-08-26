@@ -1,7 +1,7 @@
 "use client";
 
 import { ScaleDegreeChord } from "./ScaleDegreeChord";
-import { getChords } from "./getChords";
+import { getChords } from "./getChords.ts.ignore";
 import { DashboardStateKey } from "@/app/d/enums";
 import { useDashboardState } from "@/app/d/useDashboardState";
 import { romanNumerals } from "@/features/music/romanNumerals";

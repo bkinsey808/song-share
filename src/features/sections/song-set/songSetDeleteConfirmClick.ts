@@ -3,7 +3,6 @@ import { songSetDelete } from "@/actions/songSetDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
-import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({

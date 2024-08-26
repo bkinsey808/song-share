@@ -4,6 +4,7 @@ import type { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const sessionExtendClick = (get: Get, set: Set) => () => {
+	const { signInClick } = useAppStore();
 	void (async () => {
 		try {
 			set({
@@ -26,6 +27,7 @@ export const sessionExtendClick = (get: Get, set: Set) => () => {
 				useAppStore.getState().setOpenAppModal(null);
 			} else {
 				console.error(result);
+				signInClick();
 			}
 		} catch (error) {
 			get().signOut();

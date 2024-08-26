@@ -1,7 +1,7 @@
 "use client";
 
-import { FretboardCell } from "./FretboardCell";
-import { FretboardControls } from "./FretboardControls";
+import { FretboardCell } from "./FretboardCell.tsx.ignore";
+import { FretboardControls } from "./FretboardControls.tsx.ignore";
 import { DashboardStateKey } from "@/app/d/enums";
 import { useDashboardState } from "@/app/d/useDashboardState";
 import { range } from "@/features/math/range";

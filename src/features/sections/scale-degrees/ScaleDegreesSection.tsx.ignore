@@ -1,6 +1,6 @@
 "use client";
 
-import { ScaleDegree } from "./ScaleDegree";
+import { ScaleDegree } from "./ScaleDegree.tsx.ignore";
 import { DashboardStateKey } from "@/app/d/enums";
 import { useDashboardState } from "@/app/d/useDashboardState";
 import { getRomanNumerals } from "@/features/music/getRomanNumerals";

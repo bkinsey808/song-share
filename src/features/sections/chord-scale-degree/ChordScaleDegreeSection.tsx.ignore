@@ -1,4 +1,4 @@
-import { ChordScaleDegree } from "./ChordScaleDegree";
+import { ChordScaleDegree } from "./ChordScaleDegree.tsx.ignore";
 import { range } from "@/features/math/range";
 
 export const ChordScaleDegreeSection = () => {

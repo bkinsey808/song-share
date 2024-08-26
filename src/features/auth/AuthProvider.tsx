@@ -97,11 +97,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	);
 
 	useEffect(() => {
-		if (!isSignedIn && openAppModal === appModal.SESSION_EXPIRE_WARNING) {
+		if (
+			(!sessionCookieData || !isSignedIn) &&
+			openAppModal === appModal.SESSION_EXPIRE_WARNING
+		) {
 			setOpenAppModal(null);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isSignedIn, setOpenAppModal]);
+	}, [sessionCookieData, isSignedIn, setOpenAppModal]);
 
 	return (
 		<>

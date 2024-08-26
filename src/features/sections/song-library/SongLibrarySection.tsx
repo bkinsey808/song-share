@@ -6,8 +6,7 @@ import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibrarySection = () => {
-	const { songLibrary, usernameGet, songLoadClick, sessionCookieData } =
-		useAppStore();
+	const { songLibrary, usernameGet, songLoadClick } = useAppStore();
 	const songIds = getKeys(songLibrary);
 
 	return (

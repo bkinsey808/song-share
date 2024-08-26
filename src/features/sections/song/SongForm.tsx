@@ -4,11 +4,14 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { KeySection } from "../key/KeySection";
-import { KeyTitle } from "../key/KeyTitle";
-import { ScaleSection } from "../scale/ScaleSection";
-import { ScaleTitle } from "../scale/ScaleTitle";
+import { CreditsTitle } from "./CreditsTitle";
+import { LyricsTitle } from "./LyricsTitle";
+// import { KeySection } from "../key/KeySection.tsx.ignore";
+// import { KeyTitle } from "../key/KeyTitle.tsx.ignore";
+// import { ScaleSection } from "../scale/ScaleSection.tsx.ignore";
+// import { ScaleTitle } from "../scale/ScaleTitle.tsx.ignore";
 import { SongDeleteConfirmModal } from "./SongDeleteConfirmModal";
+import { TranslationTitle } from "./TranslationTitle";
 import { SongSchema } from "./schemas";
 import { Song } from "./types";
 import { Button } from "@/components/ui/button";
@@ -44,7 +47,7 @@ export const SongForm = () => {
 	const defaultValues: Song = useMemo(
 		() => ({
 			songName: song?.songName ?? "",
-			lyrics: song?.songName ?? "",
+			lyrics: song?.lyrics ?? "",
 			translation: song?.translation ?? "",
 			credits: song?.credits ?? "",
 			sharer: song?.sharer ?? "",
@@ -92,7 +95,10 @@ export const SongForm = () => {
 						)}
 					/>
 
-					<SectionAccordion sectionId={sectionId.CREDITS} title="Credits">
+					<SectionAccordion
+						sectionId={sectionId.CREDITS}
+						title={<CreditsTitle />}
+					>
 						<FormField
 							name="credits"
 							control={form.control}
@@ -108,7 +114,7 @@ export const SongForm = () => {
 						/>
 					</SectionAccordion>
 
-					<SectionAccordion sectionId={sectionId.LYICS} title="Lyrics">
+					<SectionAccordion sectionId={sectionId.LYICS} title={<LyricsTitle />}>
 						<FormField
 							name="lyrics"
 							control={form.control}
@@ -126,7 +132,7 @@ export const SongForm = () => {
 
 					<SectionAccordion
 						sectionId={sectionId.TRANSLATION}
-						title="Translation"
+						title={<TranslationTitle />}
 					>
 						<FormField
 							name="translation"

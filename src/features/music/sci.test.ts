@@ -1,4 +1,4 @@
-import * as sci from "./sci.json";
+// import * as sci from "./sci.json";
 
 describe("sci", () => {
 	it("matches the snapshot", () => {

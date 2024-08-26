@@ -70,7 +70,6 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		setSong: (song) => set({ song }),
 		songFormIsDisabled: () => {
 			const { songForm, sessionCookieData, song } = get();
-			console.log(song?.sharer);
 			if (sessionCookieData?.uid !== song?.sharer && !!song?.sharer) {
 				return true;
 			}

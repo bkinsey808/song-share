@@ -21,7 +21,7 @@ export type UserLibrarySlice = UserLibrarySliceState & {
 
 type AppUserLibrarySlice = StateCreator<AppSlice, [], [], UserLibrarySlice>;
 
-export const createUserLibrarySlice: AppUserLibrarySlice = (set, get) => {
+export const createUserLibrarySlice: AppUserLibrarySlice = (set, _get) => {
 	sliceResetFns.add(() => set(userLibrarySliceInitialState));
 	return {
 		...userLibrarySliceInitialState,

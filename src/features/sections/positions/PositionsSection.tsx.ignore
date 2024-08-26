@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 
-import { Position } from "./Position";
+import { Position } from "./Position.tsx.ignore";
 import { DashboardStateKey } from "@/app/d/enums";
 import { useDashboardState } from "@/app/d/useDashboardState";
 import { getPositions } from "@/features/music/getPositions";

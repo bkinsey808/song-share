@@ -25,11 +25,11 @@ export const Header = () => {
 			className="flex justify-between bg-[gray] p-[0.5rem] text-[hsl(var(--background))] [&[data-following='true']]:bg-[green]"
 		>
 			<span className="flex gap-[1rem]">
-				<h1 className="text-4xl font-bold">Song Share</h1>
+				<h1 className="font-bold">Song Share</h1>
 				{fuid ? (
-					<span className="mt-[0.4rem] flex gap-[1rem] text-2xl">
+					<span className="flex gap-[1rem]">
 						<span>Following: {usernameGet(fuid)}</span>
-						<Button>Stop Following</Button>
+						{/* <Button>Stop Following</Button> */}
 					</span>
 				) : null}
 			</span>
