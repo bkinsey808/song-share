@@ -39,12 +39,14 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		lyrics: "",
 		translation: "",
 		sharer: uid ?? "",
+		songSetIds: [],
 	};
 	set({
 		songId: null,
 		song,
 		songLibrary,
 		deletingSong: false,
+		songIds: result.songIds,
 	});
 	songForm.reset(song);
 	setOpenAppModal(null);

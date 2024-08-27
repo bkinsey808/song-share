@@ -51,6 +51,7 @@ export const SongForm = () => {
 			translation: song?.translation ?? "",
 			credits: song?.credits ?? "",
 			sharer: song?.sharer ?? "",
+			songSetIds: song?.songSetIds ?? [],
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],

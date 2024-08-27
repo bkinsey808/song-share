@@ -8,10 +8,9 @@ import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
-import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSetSchema } from "@/features/sections/song-set/schemas";
-import type { SlimSongSet, SongSet } from "@/features/sections/song-set/types";
+import type { SongSet } from "@/features/sections/song-set/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -33,6 +32,12 @@ const saveOrCreateSongSet = async (
 	uid: string,
 	songSet: SongSet,
 ) => {
+	if (songSet.sharer && songSet.sharer !== uid) {
+		throw new Error("User does not own this song set");
+	}
+	if (!songSet.sharer) {
+		songSet.sharer = uid;
+	}
 	if (songSetId) {
 		const songSetResult = await songSetGet(songSetId);
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
@@ -70,7 +75,6 @@ export const songSetSave = async ({
 			return getFormError("Session expired");
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
-
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
@@ -79,33 +83,34 @@ export const songSetSave = async ({
 		}
 		const { userDoc } = userDocResult;
 
-		// confirm user owns the songSet
-		const userDocSongSets = userDoc.songSets;
-		if (songSetId && !userDocSongSets[songSetId]) {
-			return getFormError("User does not own this song set");
+		if (songSetId) {
+			const songSetResult = await songSetGet(songSetId);
+			if (songSetResult.actionResultType === actionResultType.ERROR) {
+				return getFormError("Song set not found");
+			}
+			if (
+				!!songSetResult.songSet.sharer &&
+				songSetResult.songSet.sharer !== uid
+			) {
+				return getFormError("User does not own this song set");
+			}
 		}
 
 		const newSongSetId = await saveOrCreateSongSet(songSetId, uid, songSet);
+		const newSongSetIds = songSetId
+			? userDoc.songSetIds
+			: [...userDoc.songSetIds, newSongSetId];
 
-		const slimSongSet: SlimSongSet = {
-			songSetName: songSet.songSetName,
-			sharer: uid,
-		};
-
-		// third, update the slimSongSet in the userDoc
-		const newSongSets: UserDoc["songSets"] = {
-			...userDocSongSets,
-			[songSetId ?? newSongSetId]: slimSongSet,
-		};
-
-		await db.collection(collection.USERS).doc(uid).update({
-			songSetId,
-			songSets: newSongSets,
-		});
+		if (!songSetId) {
+			await db.collection(collection.USERS).doc(uid).update({
+				songSetIds: newSongSetIds,
+			});
+		}
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
 			songSetId: songSetId ?? newSongSetId,
+			songSetIds: newSongSetIds,
 		};
 	} catch (error) {
 		console.error({ error });

@@ -5,11 +5,10 @@ import { Get, Set } from "@/features/app-store/types";
 
 export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 	set({ addingSongToSongSet: true });
-	const { songId, song, songSetId, sessionCookieData } = get();
-	const uid = sessionCookieData?.uid;
+	const { songId, songSetId } = get();
 
 	try {
-		if (!songId || !song || !songSetId) {
+		if (!songId || !songSetId) {
 			toast({
 				variant: "destructive",
 				title: "Cannot add song to song set",
@@ -19,13 +18,6 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 
 		const result = await songAddToSongSet({
 			songId,
-			song: {
-				songName: song.songName ?? "",
-				sharer: song.sharer ?? uid ?? "",
-				credits: song.credits ?? "",
-				lyrics: song.lyrics ?? "",
-				translation: song.translation ?? "",
-			},
 			songSetId,
 		});
 
@@ -37,17 +29,9 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 			return;
 		}
 
-		const newSongSet = result.songSet;
+		const { song, songSet } = result;
 
-		if (!newSongSet) {
-			toast({
-				variant: "destructive",
-				title: "There was an error adding song to song set",
-			});
-			return;
-		}
-
-		set({ songSet: newSongSet });
+		set({ song, songSet });
 	} catch (error) {
 		toast({
 			variant: "destructive",

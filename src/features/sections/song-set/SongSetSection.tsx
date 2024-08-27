@@ -31,11 +31,12 @@ export const SongSetSection = () => {
 		songSetNewClick,
 		setSongSetForm,
 		songSetDeleteClick,
-		songSetSongLoadClick,
+		songRemoveClick,
 		songActiveId,
 		songActiveClick,
 		usernameGet,
 		fuid,
+		songLoadClick,
 	} = useAppStore();
 
 	const defaultValues = useMemo(
@@ -43,8 +44,7 @@ export const SongSetSection = () => {
 			const defaultSongSet: SongSet = {
 				songSetName: songSet?.songSetName ?? "",
 				sharer: songSet?.sharer ?? "",
-				songSetSongList: songSet?.songSetSongList ?? [],
-				songSetSongs: songSet?.songSetSongs ?? {},
+				songIds: songSet?.songIds ?? [],
 			};
 			return defaultSongSet;
 		},
@@ -52,7 +52,7 @@ export const SongSetSection = () => {
 		[],
 	);
 
-	const songIds = songSet?.songSetSongList ?? [];
+	const songIds = songSet?.songIds ?? [];
 
 	const form = useForm<SongSet>({
 		resolver: valibotResolver(SongSetSchema),
@@ -105,34 +105,29 @@ export const SongSetSection = () => {
 								id="activeSongId"
 								value={songActiveId ?? ""}
 							>
-								{songIds.map((songId) => (
-									<GridRow key={songId}>
-										<RadioGroupItem
-											className="self-center"
-											id={songId}
-											disabled={!!fuid}
-											value={songId}
-											onClick={songActiveClick(songId)}
-										/>
-										<div>
-											{songSet?.songSetSongs?.[songId]?.songName ??
-												songLibrary[songId]?.songName}
-										</div>
-										<div>
-											{usernameGet(
-												songSet?.songSetSongs?.[songId]?.sharer ??
-													songLibrary[songId]?.sharer,
-											)}
-										</div>
-										<div>
-											<Button
-												onClick={songSetSongLoadClick({ songId, songSetId })}
-											>
-												Load
-											</Button>
-										</div>
-									</GridRow>
-								))}
+								{songSetId &&
+									songIds.map((songId) => (
+										<GridRow key={songId}>
+											<RadioGroupItem
+												className="self-center"
+												id={songId}
+												disabled={!!fuid}
+												value={songId}
+												onClick={songActiveClick(songId)}
+											/>
+											<div>{songLibrary[songId]?.songName}</div>
+											<div>{usernameGet(songLibrary[songId]?.sharer)}</div>
+											<div className="flex gap-[0.5rem]">
+												<Button onClick={songLoadClick(songId)}>Load</Button>
+												<Button
+													variant="destructive"
+													onClick={songRemoveClick({ songId, songSetId })}
+												>
+													Remove
+												</Button>
+											</div>
+										</GridRow>
+									))}
 							</RadioGroup>
 						</Grid>
 					</div>

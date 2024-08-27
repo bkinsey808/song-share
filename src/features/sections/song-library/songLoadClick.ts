@@ -1,6 +1,5 @@
 import { MouseEventHandler } from "react";
 
-import { SongLibrary } from "./types";
 import { songLoad } from "@/actions/songLoad";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -12,17 +11,12 @@ export const songLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { isSongUnsaved, songForm } = get();
+		const { isSongUnsaved } = get();
 		if (isSongUnsaved) {
 			toast({
 				variant: "destructive",
 				title: "Please save your current song before loading a new one",
 			});
-			return;
-		}
-
-		if (!songForm) {
-			console.error("no form");
 			return;
 		}
 
@@ -36,22 +30,12 @@ export const songLoadClick =
 			return;
 		}
 
-		const song = result.song;
-
-		const oldSongLibrary = get().songLibrary;
-		const newSongLibrary: SongLibrary = {
-			...oldSongLibrary,
-			[songId]: song,
-		};
+		const { songIds } = result;
 
 		set({
-			...song,
+			songIds,
 			songId,
-			songLibrary: newSongLibrary,
-			song,
 		});
-
-		songForm.reset(song);
 
 		toast({
 			title: "Song loaded",

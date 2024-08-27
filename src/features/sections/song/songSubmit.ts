@@ -10,6 +10,7 @@ import { getKeys } from "@/features/global/getKeys";
 
 export const songSubmit =
 	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		const form = get().songForm;
 		if (!form) {
 			console.error("no form");
@@ -29,18 +30,18 @@ export const songSubmit =
 			const uid = sessionCookieData.uid;
 
 			const originalSongId = get().songId;
-			const result = await songSave({
+			const songSaveResult = await songSave({
 				song,
 				songId: originalSongId,
 			});
 
-			switch (result.actionResultType) {
+			switch (songSaveResult.actionResultType) {
 				case actionResultType.ERROR:
-					const keys = result.fieldErrors
-						? getKeys(result.fieldErrors)
+					const keys = songSaveResult.fieldErrors
+						? getKeys(songSaveResult.fieldErrors)
 						: undefined;
 					keys?.forEach((key) => {
-						const message = result.fieldErrors?.[key]?.[0];
+						const message = songSaveResult.fieldErrors?.[key]?.[0];
 						if (!message) {
 							return;
 						}
@@ -57,7 +58,7 @@ export const songSubmit =
 
 					break;
 				case actionResultType.SUCCESS:
-					const newSongId = result.songId;
+					const newSongId = songSaveResult.songId;
 					const songLibrary = get().songLibrary;
 					const newSong: Song = {
 						...song,
@@ -68,10 +69,11 @@ export const songSubmit =
 						songLibrary,
 						songId: newSongId,
 						song,
+						songIds: songSaveResult.songIds,
 					});
 					form.reset(song, { keepValues: true });
 					toast({ title: "Song details saved" });
 					break;
 			}
-		})(e);
+		})();
 	};

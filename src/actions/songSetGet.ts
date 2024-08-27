@@ -27,6 +27,7 @@ export const songSetGet = async (songSetId: string) => {
 
 		const songSetParseResult = serverParse(SongSetSchema, songSetData);
 		if (!songSetParseResult.success) {
+			console.warn("Song data invalid");
 			return actionErrorMessageGet("Song data invalid");
 		}
 
@@ -37,6 +38,7 @@ export const songSetGet = async (songSetId: string) => {
 			songSet,
 		};
 	} catch (error) {
+		console.warn("Error getting song set");
 		return actionErrorMessageGet("Error getting song set");
 	}
 };

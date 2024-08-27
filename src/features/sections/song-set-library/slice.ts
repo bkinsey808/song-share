@@ -6,10 +6,12 @@ import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import { SongSet } from "@/features/sections/song-set/types";
 
 type SongSetLibrarySliceState = {
+	songSetIds: string[];
 	songSetLibrary: Record<string, SongSet>;
 };
 
 const songSetLibrarySliceInitialState: SongSetLibrarySliceState = {
+	songSetIds: [],
 	songSetLibrary: {},
 };
 

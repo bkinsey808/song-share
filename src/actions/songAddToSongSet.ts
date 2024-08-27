@@ -3,11 +3,9 @@
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { songSetGet } from "./songSetGet";
-import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
-import { UserDoc } from "@/features/firebase/types";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { SongSet } from "@/features/sections/song-set/types";
 import { Song } from "@/features/sections/song/types";
@@ -20,11 +18,9 @@ import { Song } from "@/features/sections/song/types";
 
 export const songAddToSongSet = async ({
 	songId,
-	song,
 	songSetId,
 }: {
 	songId: string;
-	song: Song;
 	songSetId: string;
 }) => {
 	try {
@@ -32,8 +28,8 @@ export const songAddToSongSet = async ({
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
-		const sessionCookieData = extendSessionResult.sessionCookieData;
 
+		const { sessionCookieData } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
 		const songResult = await songGet(songId);
@@ -48,79 +44,35 @@ export const songAddToSongSet = async ({
 		}
 		const existingSongSet = songSetResult.songSet;
 
-		const songSetSongList = existingSongSet.songSetSongList;
-		if (!songSetSongList) {
-			return actionErrorMessageGet("Song set song list not found");
+		if (existingSongSet.sharer !== uid) {
+			return actionErrorMessageGet(
+				"You are not authorized to add to this song",
+			);
 		}
 
-		const newSongSetSongList = [...songSetSongList, songId];
-
-		const songSetSongs = existingSongSet.songSetSongs;
-		if (!songSetSongs) {
-			return actionErrorMessageGet("Song set songs not found");
-		}
-
-		const newSongSetSongs: SongSet["songSetSongs"] = {
-			...songSetSongs,
-			[songId]: {
-				songName: song.songName, // duplicated field for faster access
-				sharer: existingSong.sharer, // duplicated field for faster access
-				songKey: "",
-			},
-		};
-
+		const songSetSongIds = existingSongSet.songIds;
 		const newSongSet: SongSet = {
 			...existingSongSet,
-			songSetSongList: newSongSetSongList,
-			songSetSongs: newSongSetSongs,
+			songIds: songSetSongIds ? [...songSetSongIds, songId] : [songId],
 		};
 
-		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("User doc not found");
-		}
-		const existinguserDoc = userDocResult.userDoc;
-
-		const userSongSets = existinguserDoc.songSets;
-		if (!userSongSets) {
-			return actionErrorMessageGet("User song sets not found");
-		}
-
-		// update songDocSong
-		const newSongDocSong: Song = {
+		const newSong: Song = {
 			...existingSong,
-			...song,
-			sharer: existingSong.sharer,
+			songSetIds: existingSong.songSetIds
+				? [...existingSong.songSetIds, songSetId]
+				: [songSetId],
 		};
 
-		const newUserDocSongs: UserDoc["songs"] = {
-			...existinguserDoc.songs,
-			[songId]: {
-				songName: song.songName,
-				sharer: existingSong.sharer,
-			},
-		};
-
-		const newUserSongSets: UserDoc["songSets"] = {
-			...userSongSets,
-			[songSetId]: {
-				songSetName: existingSongSet.songSetName,
-				sharer: existingSongSet.sharer,
-			},
-		};
-
-		const newUserDoc = {
-			...existinguserDoc,
-			songs: newUserDocSongs,
-			songSets: newUserSongSets,
-		};
-
-		await db.collection(collection.SONGS).doc(songId).set(newSongDocSong);
-		await db.collection(collection.SONG_SETS).doc(songSetId).set(newSongSet);
-		await db.collection(collection.USERS).doc(uid).set(newUserDoc);
+		await db.collection(collection.SONGS).doc(songId).update({
+			songSetIds: newSong.songSetIds,
+		});
+		await db.collection(collection.SONG_SETS).doc(songSetId).update({
+			songIds: newSongSet.songIds,
+		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
+			song: newSong,
 			songSet: newSongSet,
 		};
 	} catch (error) {

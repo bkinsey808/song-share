@@ -14,22 +14,16 @@ export const songSetNewClick = (get: Get, set: Set) => () => {
 		return;
 	}
 
-	set({
-		songSetId: null,
-		songSet: {
-			songSetName: null,
-			sharer: uid,
-			songSetSongList: [],
-			songSetSongs: {},
-		},
-	});
-
 	const songSet: SongSet = {
 		songSetName: "",
 		sharer: uid,
-		songSetSongList: [],
-		songSetSongs: {},
+		songIds: [],
 	};
+
+	set({
+		songSetId: null,
+		songSet,
+	});
 
 	songSetForm.reset(songSet);
 };

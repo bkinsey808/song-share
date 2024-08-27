@@ -10,7 +10,7 @@ export const SongSetLibrarySection = () => {
 	const {
 		songSetLibrary,
 		songSetLoadClick,
-		activeSongSetId,
+		songSetActiveId,
 		activeSongSetClick,
 		usernameGet,
 	} = useAppStore();
@@ -28,7 +28,7 @@ export const SongSetLibrarySection = () => {
 				<RadioGroup
 					name="activeSongId"
 					id="activeSongId"
-					value={activeSongSetId ?? ""}
+					value={songSetActiveId ?? ""}
 				>
 					{songSetIds.map((songSetId) => (
 						<GridRow key={songSetId}>

@@ -36,11 +36,11 @@ export const SECTIONS: Sections = {
 	},
 };
 
-const leftSections: SectionId[] = [
-	sectionId.SONG_SET_LIBRARY,
-	sectionId.SONG_SET,
-];
+const leftSections: SectionId[] = [sectionId.SONG, sectionId.SONG_SET];
 // const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
-const rightSections: SectionId[] = [sectionId.SONG_LIBRARY, sectionId.SONG];
+const rightSections: SectionId[] = [
+	sectionId.SONG_LIBRARY,
+	sectionId.SONG_SET_LIBRARY,
+];
 
 export const pageColumns = [leftSections, rightSections];

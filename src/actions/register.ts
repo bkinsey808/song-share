@@ -60,8 +60,8 @@ export const register = async ({
 		const userDoc: UserDoc = {
 			...registrationData,
 			email,
-			songs: {},
-			songSets: {},
+			songIds: [],
+			songSetIds: [],
 			roles: [],
 			songId: null,
 			songSetId: null,

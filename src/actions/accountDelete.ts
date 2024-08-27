@@ -9,7 +9,6 @@ import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
-import { getKeys } from "@/features/global/getKeys";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -37,32 +36,31 @@ export const accountDelete = async () => {
 		}
 		const { userDoc } = userDocResult;
 
-		const songs = userDoc.songs;
-		const songIds = getKeys(songs);
+		const songIds = userDoc.songIds;
 		const deleteSongPromises = songIds.map((songId) =>
 			db.collection(collection.SONGS).doc(songId).delete(),
 		);
-		const songsDeleteResult = await Promise.allSettled(deleteSongPromises);
+		const promiseSongsAllSettledResult =
+			await Promise.allSettled(deleteSongPromises);
 
 		// check to see if any of the song deletes failed
-		const failedSongDeletes = songsDeleteResult.filter(
+		const failedSongDeletes = promiseSongsAllSettledResult.filter(
 			(result) => result.status === "rejected",
 		);
 		if (failedSongDeletes.length > 0) {
 			return actionErrorMessageGet("Failed to delete songs");
 		}
 
-		const songSets = userDoc.songSets;
-		const songSetIds = getKeys(songSets);
+		const songSetIds = userDoc.songSetIds;
 		const deleteSongSetPromises = songSetIds.map((songSetId) =>
 			db.collection(collection.SONG_SETS).doc(songSetId).delete(),
 		);
-		const songSetsDeleteResult = await Promise.allSettled(
+		const promiseSongSetsAllSettledResult = await Promise.allSettled(
 			deleteSongSetPromises,
 		);
 
 		// check to see if any of the song deletes failed
-		const failedSongSetsDeletes = songSetsDeleteResult.filter(
+		const failedSongSetsDeletes = promiseSongSetsAllSettledResult.filter(
 			(result) => result.status === "rejected",
 		);
 		if (failedSongSetsDeletes.length > 0) {

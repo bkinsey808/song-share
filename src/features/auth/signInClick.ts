@@ -5,7 +5,6 @@ import { sessionWarningTimestampGet } from "./sessionWarningTimestampGet";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
 import type { Get, Set } from "@/features/app-store/types";
-import { getKeys } from "@/features/global/getKeys";
 import { appModal } from "@/features/modal/consts";
 
 export const signInClick = (set: Set, get: Get) => () => {
@@ -24,14 +23,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 				throw new Error("Email is not defined");
 			}
 
-			const {
-				setOpenAppModal,
-				songLibrary,
-				songSetLibrary,
-				songForm,
-				songSetForm,
-				fuid,
-			} = get();
+			const { setOpenAppModal, fuid, songIds, songSetIds } = get();
 
 			const signInResult = await signIn(uid);
 
@@ -53,35 +45,6 @@ export const signInClick = (set: Set, get: Get) => () => {
 
 					break;
 				case signInResultType.EXISTING:
-					// Add to the existing song library
-					const userDocSongs = signInResult.songs;
-					const userDocSongIds = getKeys(userDocSongs);
-					const newSongLibrary = userDocSongIds.reduce((acc, songId) => {
-						const existingSong = songLibrary[songId];
-						const slimSong = userDocSongs[songId];
-						acc[songId] = {
-							...existingSong,
-							...slimSong,
-						};
-						return acc;
-					}, songLibrary);
-
-					// Add to the existing song set library
-					const userDocSongSets = signInResult.songSets;
-					const userDocSongSetIds = getKeys(userDocSongSets);
-					const newSongSetLibrary = userDocSongSetIds.reduce(
-						(acc, songSetId) => {
-							const existingSongSet = songSetLibrary[songSetId];
-							const slimSongSet = userDocSongSets[songSetId];
-							acc[songSetId] = {
-								...existingSongSet,
-								...slimSongSet,
-							};
-							return acc;
-						},
-						songSetLibrary,
-					);
-
 					set({
 						isSignedIn: true,
 						isSigningIn: false,
@@ -94,24 +57,16 @@ export const signInClick = (set: Set, get: Get) => () => {
 							roles: signInResult.userData.roles,
 							sessionWarningTimestamp: sessionWarningTimestampGet(),
 						},
-						songLibrary: newSongLibrary,
-						songSetLibrary: newSongSetLibrary,
+						songIds: Array.from(new Set([...signInResult.songIds, ...songIds])),
+						songSetIds: Array.from(
+							new Set([...signInResult.songSetIds, ...songSetIds]),
+						),
 						songId: signInResult.songId,
 						songSetId: signInResult.songSetId,
 						songActiveId: signInResult.activeSongId,
-						activeSongSetId: signInResult.activeSongSetId,
-						song: signInResult.song,
-						songSet: signInResult.songSet,
+						songSetActiveId: signInResult.activeSongSetId,
 						fuid: uid === fuid ? null : uid,
 					});
-
-					if (signInResult.song) {
-						songForm?.reset(signInResult.song);
-					}
-
-					if (signInResult.songSet) {
-						songSetForm?.reset(signInResult.songSet);
-					}
 
 					setOpenAppModal(null);
 					toast({ title: "Welcome back!" });

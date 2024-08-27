@@ -2,9 +2,6 @@
 
 import { cookies } from "next/headers";
 
-import { songGet } from "./songGet";
-import { songSetGet } from "./songSetGet";
-import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { signInResultType } from "@/features/auth/consts";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
@@ -24,32 +21,6 @@ import { serverParse } from "@/features/global/serverParse";
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-
-const songOrThrow = async (songId: string | null) => {
-	if (!songId) {
-		return null;
-	}
-
-	const songResult = await songGet(songId);
-	if (songResult.actionResultType === actionResultType.ERROR) {
-		throw new Error("Failed to get song");
-	}
-
-	return songResult.song;
-};
-
-const songSetOrThrow = async (songSetId: string | null) => {
-	if (!songSetId) {
-		return null;
-	}
-
-	const songSetResult = await songSetGet(songSetId);
-	if (songSetResult.actionResultType === actionResultType.ERROR) {
-		throw new Error("Failed to get song set");
-	}
-
-	return songSetResult.songSet;
-};
 
 export const signIn = async (uid: string) => {
 	try {
@@ -123,21 +94,20 @@ export const signIn = async (uid: string) => {
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
-		const { songId, songSetId, songs, songSets } = existingUserDocResult.output;
+		const { songId, songSetId, songIds, songSetIds } =
+			existingUserDocResult.output;
 		const { activeSongId, activeSongSetId } =
 			existingPublicUserDocResult.output;
 
 		return {
 			signInResultType: signInResultType.EXISTING,
 			userData: sessionCookieData,
-			songs,
-			songSets,
+			songIds,
+			songSetIds,
 			songId,
 			songSetId,
 			activeSongId,
 			activeSongSetId,
-			song: await songOrThrow(songId),
-			songSet: await songSetOrThrow(songSetId),
 		};
 	} catch (error) {
 		console.error({ error });

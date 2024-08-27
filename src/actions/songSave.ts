@@ -8,10 +8,9 @@ import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
-import { UserDoc } from "@/features/firebase/types";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
-import type { SlimSong, Song } from "@/features/sections/song/types";
+import type { Song } from "@/features/sections/song/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -77,7 +76,6 @@ export const songSave = async ({
 		}
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
-
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
@@ -86,36 +84,31 @@ export const songSave = async ({
 		}
 		const { userDoc } = userDocResult;
 
-		// confirm user owns the song
-		const userDocSongs = userDoc.songs;
-		if (songId && !userDocSongs[songId]) {
-			return getFormError("User does not own this song");
+		if (songId) {
+			const songResult = await songGet(songId);
+			if (songResult.actionResultType === actionResultType.ERROR) {
+				return getFormError("Song not found");
+			}
+			if (!!songResult.song.sharer && songResult.song.sharer !== uid) {
+				return getFormError("User does not own this song");
+			}
 		}
 
 		const newSongId = await saveOrCreateSong(songId, uid, song);
+		const newSongIds = songId
+			? userDoc.songIds
+			: [...userDoc.songIds, newSongId];
 
-		const slimSong: SlimSong = {
-			songName: song.songName,
-			sharer: uid,
-		};
-
-		// update the slimSong in the userDoc
-		const newSongs: UserDoc["songs"] = {
-			...userDocSongs,
-			[songId ?? newSongId]: slimSong,
-		};
-
-		await db
-			.collection(collection.USERS)
-			.doc(uid)
-			.update({
-				songId: songId ?? newSongId,
-				songs: newSongs,
+		if (!songId) {
+			await db.collection(collection.USERS).doc(uid).update({
+				songIds: newSongIds,
 			});
+		}
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
 			songId: songId ?? newSongId,
+			songIds: newSongIds,
 		};
 	} catch (error) {
 		console.error({ error });

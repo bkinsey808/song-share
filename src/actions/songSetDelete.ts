@@ -34,12 +34,8 @@ export const songSetDelete = async (songSetId: string) => {
 		}
 		const { userDoc } = userDocResult;
 
-		const userDocSongSets = userDoc.songSets;
-
-		// first, confirm user owns the song
-		if (!userDocSongSets[songSetId]) {
-			return actionErrorMessageGet("User does not own this song set");
-		}
+		const { songSetIds } = userDoc;
+		const newSongSetIds = songSetIds.filter((id) => id !== songSetId);
 
 		const songSetResult = await songSetGet(songSetId);
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
@@ -54,15 +50,14 @@ export const songSetDelete = async (songSetId: string) => {
 		// delete the song set from the song sets collection
 		await db.collection(collection.SONG_SETS).doc(songSetId).delete();
 
-		delete userDocSongSets[songSetId];
-
 		// update user doc songs with the deleted song removed
 		await db.collection(collection.USERS).doc(uid).update({
-			songSets: userDocSongSets,
+			songSetIds: newSongSetIds,
 		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
+			songSetIds: newSongSetIds,
 		};
 	} catch (error) {
 		console.error({ error });

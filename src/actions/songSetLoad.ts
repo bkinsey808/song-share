@@ -7,7 +7,6 @@ import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
-import { SlimSongSet } from "@/features/sections/song-set/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -23,14 +22,12 @@ export const songSetLoad = async (songSetId: string) => {
 		}
 
 		const sessionCookieData = extendSessionResult.sessionCookieData;
-
 		const { uid } = sessionCookieData;
 
 		const songSetResult = await songSetGet(songSetId);
 		if (songSetResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Song set not found");
 		}
-		const existingSongSet = songSetResult.songSet;
 
 		const userDocResult = await userDocGet();
 		if (userDocResult.actionResultType === actionResultType.ERROR) {
@@ -38,28 +35,17 @@ export const songSetLoad = async (songSetId: string) => {
 		}
 		const { userDoc } = userDocResult;
 
-		const oldSlimSongSet = userDoc.songSets[songSetId];
+		const newSongSetIds = userDoc.songSetIds
+			? [...userDoc.songSetIds, songSetId]
+			: [songSetId];
 
-		const newSlimSongSet: SlimSongSet = {
-			songSetName: existingSongSet.songSetName,
-			sharer: uid,
-		};
-
-		const slimSongsAreEqual =
-			JSON.stringify(oldSlimSongSet) === JSON.stringify(newSlimSongSet);
-
-		if (!slimSongsAreEqual || userDoc.songSetId !== songSetId) {
-			const songSets = userDoc.songSets;
-			songSets[songSetId] = newSlimSongSet;
-			await db.collection(collection.USERS).doc(uid).update({
-				songSetId,
-				songSets,
-			});
-		}
+		await db.collection(collection.USERS).doc(uid).update({
+			songSetIds: newSongSetIds,
+		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
-			songSet: existingSongSet,
+			songSetIds: newSongSetIds,
 		};
 	} catch (error) {
 		console.error(error);

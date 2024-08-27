@@ -6,10 +6,10 @@ export const showAddSongToSongSetButton = (get: Get) => () => {
 		return false;
 	}
 
-	const songSetSongList = songSet.songSetSongList;
-	if (!songSetSongList) {
+	const songIds = songSet.songIds;
+	if (!songIds) {
 		return false;
 	}
 
-	return !songSetSongList.includes(songId);
+	return !songIds.includes(songId);
 };

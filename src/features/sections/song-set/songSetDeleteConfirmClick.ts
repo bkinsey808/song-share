@@ -44,14 +44,14 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	const songSet: SongSet = {
 		songSetName: "",
 		sharer: uid ?? "",
-		songSetSongList: [],
-		songSetSongs: {},
+		songIds: [],
 	};
 	set({
 		songSetId: null,
 		songSet,
 		songSetLibrary,
 		deletingSongSet: false,
+		songSetIds: result.songSetIds,
 	});
 	songSetForm.reset(songSet);
 	setOpenAppModal(null);

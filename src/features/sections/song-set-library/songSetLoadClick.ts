@@ -11,7 +11,7 @@ export const songSetLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { isSongSetUnsaved, songSetLibrary, songSetForm } = get();
+		const { isSongSetUnsaved } = get();
 		if (isSongSetUnsaved) {
 			toast({
 				variant: "destructive",
@@ -20,12 +20,8 @@ export const songSetLoadClick =
 			return;
 		}
 
-		if (!songSetForm) {
-			console.error("no form");
-			return;
-		}
-
 		const result = await songSetLoad(songSetId);
+
 		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
@@ -34,20 +30,12 @@ export const songSetLoadClick =
 			return;
 		}
 
-		const songSet = result.songSet;
-
-		const newSongSetLibrary = {
-			...songSetLibrary,
-			[songSetId]: songSet,
-		};
+		const { songSetIds } = result;
 
 		set({
-			songSet,
+			songSetIds,
 			songSetId,
-			songSetLibrary: newSongSetLibrary,
 		});
-
-		songSetForm.reset(songSet);
 
 		toast({
 			title: "Song Set loaded",
