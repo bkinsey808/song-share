@@ -2,6 +2,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { Get, Set } from "@/features/app-store/types";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { SongSchema } from "@/features/sections/song/schemas";
@@ -24,7 +25,7 @@ export const songLibraryUpdate = (get: Get, set: Set) => () => {
 
 	songIdsToSubscribe.forEach((subscribeSongId) => {
 		const unsubscribeFn = onSnapshot(
-			doc(db, "songs", subscribeSongId),
+			doc(db, collection.SONGS, subscribeSongId),
 			(songSnapshot) => {
 				if (!songSnapshot.exists) {
 					console.warn(`Song ${subscribeSongId} does not exist`);

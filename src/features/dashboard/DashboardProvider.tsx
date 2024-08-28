@@ -5,8 +5,14 @@ import { ReactNode, useEffect } from "react";
 import { useAppStore } from "../app-store/useAppStore";
 
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
-	const { fuid, setFuid, songIds, songSetIds, songLibraryUpdate } =
-		useAppStore();
+	const {
+		fuid,
+		setFuid,
+		songIds,
+		songSetIds,
+		songLibraryUpdate,
+		songSetLibraryUpdate,
+	} = useAppStore();
 
 	useEffect(() => {
 		setFuid(null);
@@ -15,6 +21,10 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		songLibraryUpdate();
 	}, [songIds, songLibraryUpdate]);
+
+	useEffect(() => {
+		songSetLibraryUpdate();
+	}, [songSetIds, songSetLibraryUpdate]);
 
 	return <>{children}</>;
 };
