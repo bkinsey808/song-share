@@ -14,16 +14,18 @@ import { serverParse } from "@/features/global/serverParse";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-export const userPublicDocGet = async () => {
+export const userPublicDocGet = async (uid?: string) => {
 	try {
-		const cookieResult = await sessionCookieGet();
+		if (!uid) {
+			const cookieResult = await sessionCookieGet();
 
-		if (cookieResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("Session expired");
+			if (cookieResult.actionResultType === actionResultType.ERROR) {
+				return actionErrorMessageGet("Session expired");
+			}
+
+			const sessionCookieData = cookieResult.sessionCookieData;
+			uid = sessionCookieData.uid;
 		}
-
-		const sessionCookieData = cookieResult.sessionCookieData;
-		const uid = sessionCookieData.uid;
 
 		const userPublicDocSnapshot = await db
 			.collection(collection.USERS_PUBLIC)

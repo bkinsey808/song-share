@@ -20,7 +20,7 @@ import { SessionCookieData } from "@/features/auth/types";
 
 export const signIn = async (uid: string) => {
 	try {
-		const existingUserDocResult = await userDocGet();
+		const existingUserDocResult = await userDocGet(uid);
 		if (existingUserDocResult.actionResultType === actionResultType.ERROR) {
 			return {
 				signInResultType: signInResultType.NEW,
@@ -28,7 +28,7 @@ export const signIn = async (uid: string) => {
 		}
 		const existingUserDoc = existingUserDocResult.userDoc;
 
-		const existingUserPublicResult = await userPublicDocGet();
+		const existingUserPublicResult = await userPublicDocGet(uid);
 		if (existingUserPublicResult.actionResultType === actionResultType.ERROR) {
 			return {
 				signInResultType: signInResultType.ERROR,
