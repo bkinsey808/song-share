@@ -63,8 +63,8 @@ export const signInClick = (set: Set, get: Get) => () => {
 						),
 						songId: signInResult.songId,
 						songSetId: signInResult.songSetId,
-						songActiveId: signInResult.activeSongId,
-						songSetActiveId: signInResult.activeSongSetId,
+						songActiveId: signInResult.songActiveId,
+						songSetActiveId: signInResult.songSetActiveId,
 						fuid: uid === fuid ? null : uid,
 					});
 

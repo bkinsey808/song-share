@@ -101,8 +101,8 @@ export const SongSetSection = () => {
 								<div>Options</div>
 							</GridHeader>
 							<RadioGroup
-								name="activeSongId"
-								id="activeSongId"
+								name="songActiveId"
+								id="songActiveId"
 								value={songActiveId ?? ""}
 							>
 								{songSetId &&
@@ -113,7 +113,7 @@ export const SongSetSection = () => {
 												id={songId}
 												disabled={!!fuid}
 												value={songId}
-												onClick={songActiveClick(songId)}
+												onClick={songActiveClick({ songId, songSetId })}
 											/>
 											<div>{songLibrary[songId]?.songName}</div>
 											<div>{usernameGet(songLibrary[songId]?.sharer)}</div>

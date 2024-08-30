@@ -1,3 +1,4 @@
+import { Unsubscribe } from "firebase/auth";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
@@ -8,6 +9,8 @@ import { signInClick } from "./signInClick";
 import { signOutAndClearLocalClick } from "./signOutAndClearLocalClick";
 import { signOutClick } from "./signOutClick";
 import { RegistrationData, SessionCookieData } from "./types";
+import { userUnsubscribe } from "./userUnsubscribe";
+import { userUpdate } from "./userUpdate";
 import { usernameGet } from "./usernameGet";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import "@/features/firebase/firebaseClient";
@@ -20,6 +23,8 @@ type AuthSliceState = {
 	isSigningIn: boolean;
 	registerError: null | string;
 	deletingAccount: boolean;
+	userUnsubscribeFn: Unsubscribe | null;
+	userPublicUnsubscribeFn: Unsubscribe | null;
 };
 
 const authSliceInitialState: AuthSliceState = {
@@ -29,6 +34,8 @@ const authSliceInitialState: AuthSliceState = {
 	registerError: null,
 	lastSignInCheck: 0,
 	isSigningIn: false,
+	userUnsubscribeFn: null,
+	userPublicUnsubscribeFn: null,
 };
 
 export type AuthSlice = AuthSliceState & {
@@ -46,6 +53,8 @@ export type AuthSlice = AuthSliceState & {
 	) => (e: React.FormEvent<HTMLFormElement>) => void;
 	sessionExtendClick: () => void;
 	usernameGet: (uid: string) => string;
+	userUpdate: (uid: string) => void;
+	userUnsubscribe: () => void;
 };
 
 type AppAuthSlice = StateCreator<AppSlice, [], [], AuthSlice>;
@@ -78,5 +87,7 @@ export const createAuthSlice: AppAuthSlice = (set, get) => {
 		registerSubmit: registerSubmit(get, set),
 		sessionExtendClick: sessionExtendClick(get, set),
 		usernameGet: usernameGet(get),
+		userUpdate: userUpdate(get, set),
+		userUnsubscribe: userUnsubscribe(get, set),
 	};
 };

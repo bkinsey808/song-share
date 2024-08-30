@@ -1,0 +1,83 @@
+import { doc, onSnapshot } from "firebase/firestore";
+import { safeParse } from "valibot";
+
+import { collection } from "../firebase/consts";
+import { db } from "../firebase/firebaseClient";
+import { UserDocSchema, UserPublicDocSchema } from "../firebase/schemas";
+import { Get, Set } from "@/features/app-store/types";
+
+export const userUpdate = (get: Get, set: Set) => (uid: string) => {
+	const userUnsubscribeFn = onSnapshot(
+		doc(db, collection.USERS, uid),
+		(userSnapshot) => {
+			if (!userSnapshot.exists) {
+				console.warn(`User ${uid} does not exist`);
+				return;
+			}
+			const userData = userSnapshot.data();
+			if (!userData) {
+				console.warn(`No data found for user ${uid}`);
+				return;
+			}
+			const userParseResult = safeParse(UserDocSchema, userData);
+			if (!userParseResult.success) {
+				console.warn(`Invalid data for user ${uid}`);
+				return;
+			}
+			const { songIds, songSetIds, songId, songSetId, email, roles } =
+				userParseResult.output;
+			const { sessionCookieData } = get();
+			if (!sessionCookieData) {
+				console.warn("No session cookie data found");
+				return;
+			}
+			const newSessionCookieData = { ...sessionCookieData, email, roles };
+			set({
+				songIds,
+				songSetIds,
+				songId,
+				songSetId,
+				sessionCookieData: newSessionCookieData,
+			});
+		},
+	);
+
+	const userPublicUnsubscribeFn = onSnapshot(
+		doc(db, collection.USERS_PUBLIC, uid),
+		(userPublicSnapshot) => {
+			console.log("update user public");
+			if (!userPublicSnapshot.exists) {
+				console.warn(`User public ${uid} does not exist`);
+				return;
+			}
+			const userPublicData = userPublicSnapshot.data();
+			if (!userPublicData) {
+				console.warn(`No data found for user public ${uid}`);
+				return;
+			}
+			const userPublicParseResult = safeParse(
+				UserPublicDocSchema,
+				userPublicData,
+			);
+			if (!userPublicParseResult.success) {
+				console.warn(`Invalid data for user public ${uid}`);
+				return;
+			}
+			const { picture, songActiveId, songSetActiveId, username } =
+				userPublicParseResult.output;
+			const { sessionCookieData } = get();
+			if (!sessionCookieData) {
+				console.warn("No session cookie data found");
+				return;
+			}
+			const newSessionCookieData = { ...sessionCookieData, picture, username };
+			set({
+				songActiveId,
+				songSetActiveId,
+				sessionCookieData: newSessionCookieData,
+			});
+		},
+	);
+
+	set({ userUnsubscribeFn, userPublicUnsubscribeFn });
+};

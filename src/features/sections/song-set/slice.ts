@@ -7,6 +7,7 @@ import { songRemoveClick } from "./songRemoveClick";
 import { songSetActiveClick } from "./songSetActiveClick";
 import { songSetDeleteClick } from "./songSetDeleteClick";
 import { songSetDeleteConfirmClick } from "./songSetDeleteConfirmClick";
+import { songSetLibraryUnsubscribe } from "./songSetLibraryUnsubscribe";
 import { songSetNewClick } from "./songSetNewClick";
 import { songSetSubmit } from "./songSetSubmit";
 import { SongSet } from "./types";
@@ -40,8 +41,7 @@ export type SongSetSlice = SongSetSliceState & {
 	songSetDeleteClick: () => void;
 	setSongSetForm: (songSetForm: UseFormReturn<SongSet>) => void;
 	songSetDeleteConfirmClick: () => Promise<void>;
-	setActiveSongSetId: (activeSongSetId: string | null) => void;
-	activeSongSetClick: (songSetId: string) => () => Promise<void>;
+	songSetActiveClick: (songSetId: string) => () => Promise<void>;
 	setSongSet: (songSet: AppSongSet) => void;
 	songRemoveClick: ({
 		songId,
@@ -50,6 +50,7 @@ export type SongSetSlice = SongSetSliceState & {
 		songId: string;
 		songSetId: string;
 	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
+	songSetLibraryUnsubscribe: () => void;
 };
 
 type AppSongSetSlice = StateCreator<AppSlice, [], [], SongSetSlice>;
@@ -67,10 +68,9 @@ export const createSongSetSlice: AppSongSetSlice = (set, get) => {
 		setSongSetForm: (songSetForm) => set({ songSetForm }),
 		songSetDeleteConfirmClick: songSetDeleteConfirmClick(get, set),
 		songSetLoadClick: songSetLoadClick(get, set),
-		setActiveSongSetId: (activeSongSetId: string | null) =>
-			set({ songSetActiveId: activeSongSetId }),
-		activeSongSetClick: songSetActiveClick(get),
+		songSetActiveClick: songSetActiveClick(get, set),
 		setSongSet: (songSet) => set({ songSet }),
 		songRemoveClick: songRemoveClick(get, set),
+		songSetLibraryUnsubscribe: songSetLibraryUnsubscribe(get),
 	};
 };

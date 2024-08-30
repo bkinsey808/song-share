@@ -1,6 +1,6 @@
 import { InferOutput } from "valibot";
 
-import { PublicUserDocSchema, UserDocSchema } from "./schemas";
+import { UserDocSchema, UserPublicDocSchema } from "./schemas";
 
 export type UserDoc = InferOutput<typeof UserDocSchema>;
-export type PublicUserDoc = InferOutput<typeof PublicUserDocSchema>;
+export type UserPublicDoc = InferOutput<typeof UserPublicDocSchema>;

@@ -35,11 +35,12 @@ export const songLoad = async ({ songId }: { songId: string }) => {
 		const { userDoc } = userDocResult;
 
 		const newSongIds = userDoc.songIds
-			? [...userDoc.songIds, songId]
+			? Array.from(new Set([...userDoc.songIds, songId]))
 			: [songId];
 
 		await db.collection(collection.USERS).doc(uid).update({
 			songIds: newSongIds,
+			songId,
 		});
 
 		return {

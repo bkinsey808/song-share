@@ -8,13 +8,7 @@ import { getKeys } from "@/features/global/getKeys";
 import { SongSetSchema } from "@/features/sections/song-set/schemas";
 
 export const songSetLibraryUpdate = (get: Get, set: Set) => () => {
-	const {
-		songSetIds,
-		songSetUnsubscribeFns,
-		songSetLibrary,
-		songSetForm,
-		songSetId,
-	} = get();
+	const { songSetIds, songSetUnsubscribeFns, songSetLibrary } = get();
 	const songSetSubscriptionsSongIds = getKeys(songSetUnsubscribeFns);
 	const songSetIdsToUnsubscribe = songSetSubscriptionsSongIds.filter(
 		(unsubscribeSongSetId) => !songSetIds.includes(unsubscribeSongSetId),
@@ -23,6 +17,11 @@ export const songSetLibraryUpdate = (get: Get, set: Set) => () => {
 		songSetUnsubscribeFns[unsubscribeSongSetId]();
 		delete songSetUnsubscribeFns[unsubscribeSongSetId];
 		delete songSetLibrary[unsubscribeSongSetId];
+
+		const { songSetId } = get();
+		if (songSetId === unsubscribeSongSetId) {
+			set({ songSetId: null, songSet: null });
+		}
 	});
 
 	const songSetIdsToSubscribe = songSetIds.filter(
@@ -49,7 +48,10 @@ export const songSetLibraryUpdate = (get: Get, set: Set) => () => {
 					return;
 				}
 				const songSet = songSetParseResult.output;
+
 				songSetLibrary[subscribeSongSetId] = songSet;
+				const { songSetId, songSetForm } = get();
+
 				if (songSetId === subscribeSongSetId) {
 					set({ songSet });
 					songSetForm?.reset?.(songSet);

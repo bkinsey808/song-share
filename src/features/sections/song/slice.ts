@@ -23,6 +23,7 @@ type SongSliceState = {
 	addingSongToSongSet: boolean;
 	songId: string | null;
 	songForm: UseFormReturn<Song> | null;
+	songFormIsDisabled: boolean;
 };
 
 type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
@@ -35,6 +36,7 @@ const songSliceInitialState: SongSliceState = {
 	addingSongToSongSet: false,
 	isSongUnsaved: false,
 	song: null,
+	songFormIsDisabled: false,
 };
 
 export type SongSlice = SongSliceState & {
@@ -46,10 +48,14 @@ export type SongSlice = SongSliceState & {
 	songDeleteConfirmClick: () => Promise<void>;
 	showAddSongToSongSetButton: () => boolean;
 	addSongToSongSetClick: () => Promise<void>;
-	setActiveSongId: (activeSongId: string | null) => void;
-	songActiveClick: (songId: string) => () => Promise<void>;
+	songActiveClick: ({
+		songId,
+		songSetId,
+	}: {
+		songId: string;
+		songSetId: string;
+	}) => () => Promise<void>;
 	setSong: (song: AppSong) => void;
-	songFormIsDisabled: () => boolean;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -64,16 +70,7 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		songDeleteConfirmClick: songDeleteConfirmClick(get, set),
 		showAddSongToSongSetButton: showAddSongToSongSetButton(get),
 		addSongToSongSetClick: songAddToSongSetClick(get, set),
-		setActiveSongId: (activeSongId: string | null) =>
-			set({ songActiveId: activeSongId }),
 		songActiveClick: songActiveClick(get),
 		setSong: (song) => set({ song }),
-		songFormIsDisabled: () => {
-			const { songForm, sessionCookieData, song } = get();
-			if (sessionCookieData?.uid !== song?.sharer && !!song?.sharer) {
-				return true;
-			}
-			return songForm?.formState.isSubmitting ?? false;
-		},
 	};
 };

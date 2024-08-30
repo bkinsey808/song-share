@@ -1,6 +1,8 @@
 "use server";
 
 import { sessionExtend } from "./sessionExtend";
+import { songSetGet } from "./songSetGet";
+import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -21,12 +23,48 @@ export const songSetActiveSet = async (songSetId: string | null) => {
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
-		await db
-			.collection(collection.PUBLIC_USERS)
-			.doc(uid)
-			.update({ activeSongSetId: songSetId });
+		const userPublicGetResult = await userPublicDocGet();
+		if (userPublicGetResult.actionResultType === actionResultType.ERROR) {
+			return actionErrorMessageGet("Public user not found");
+		}
+		const { userPublicDoc } = userPublicGetResult;
+		const { songActiveId } = userPublicDoc;
 
-		return { actionResultType: actionResultType.SUCCESS };
+		if (songSetId) {
+			const songSetResult = await songSetGet(songSetId);
+			if (songSetResult.actionResultType === actionResultType.ERROR) {
+				return actionErrorMessageGet("Song set not found");
+			}
+			const songSet = songSetResult.songSet;
+			const { songIds } = songSet;
+
+			if (
+				songIds.length > 0 &&
+				(!songActiveId || (songActiveId && !songIds.includes(songActiveId)))
+			) {
+				await db
+					.collection(collection.USERS_PUBLIC)
+					.doc(uid)
+					.update({ songSetActiveId: songSetId, songActiveId: songIds[0] });
+			} else {
+				await db
+					.collection(collection.USERS_PUBLIC)
+					.doc(uid)
+					.update({ songSetActiveId: songSetId });
+			}
+
+			return {
+				actionResultType: actionResultType.SUCCESS,
+				songActiveId,
+			};
+		}
+
+		await db
+			.collection(collection.USERS_PUBLIC)
+			.doc(uid)
+			.update({ songSetActiveId: songSetId });
+
+		return { actionResultType: actionResultType.SUCCESS, songActiveId: null };
 	} catch (error) {
 		return actionErrorMessageGet("Error setting active song set");
 	}

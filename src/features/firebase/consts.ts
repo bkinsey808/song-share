@@ -3,6 +3,6 @@ export const collection = {
 	SONG_SETS: "songSets",
 	USER_NAMES: "userNames",
 	USERS: "users",
-	PUBLIC_USERS: "publicUsers",
+	USERS_PUBLIC: "usersPublic",
 	FOLLOWING: "following",
 };

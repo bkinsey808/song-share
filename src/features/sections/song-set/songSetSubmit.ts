@@ -1,6 +1,5 @@
 import { FormEvent } from "react";
 
-import { SongSet } from "./types";
 import { songSetSave } from "@/actions/songSetSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -9,9 +8,9 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSetSubmit =
-	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
+	(get: Get, _set: Set) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songSetForm, songSetId, songSetLibrary } = get();
+		const { songSetForm, songSetId } = get();
 
 		if (!songSetForm) {
 			console.error("no form");
@@ -28,8 +27,6 @@ export const songSetSubmit =
 				});
 				return;
 			}
-
-			const { uid } = sessionCookieData;
 
 			const songSaveResult = await songSetSave({
 				songSet,
@@ -58,18 +55,6 @@ export const songSetSubmit =
 
 					break;
 				case actionResultType.SUCCESS:
-					const newSongSetId = songSaveResult.songSetId;
-					const newSongSetLibrarySongSet: SongSet = {
-						...songSet,
-						sharer: uid,
-					};
-					songSetLibrary[newSongSetId] = newSongSetLibrarySongSet;
-					set({
-						songSetLibrary,
-						songSetId: newSongSetId,
-						songSet,
-					});
-					songSetForm.reset(songSet, { keepValues: true });
 					toast({ title: "Song Set details saved" });
 					break;
 			}

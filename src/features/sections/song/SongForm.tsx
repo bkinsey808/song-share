@@ -74,7 +74,9 @@ export const SongForm = () => {
 
 	// set song form
 	useEffect(() => {
-		setSongForm(form);
+		if (form) {
+			setSongForm(form);
+		}
 	}, [form, setSongForm]);
 
 	return (
@@ -85,7 +87,7 @@ export const SongForm = () => {
 					<FormField
 						name="songName"
 						control={form.control}
-						disabled={songFormIsDisabled()}
+						disabled={songFormIsDisabled}
 						render={({ field }) => (
 							<FormItem>
 								<FormControl>
@@ -103,7 +105,7 @@ export const SongForm = () => {
 						<FormField
 							name="credits"
 							control={form.control}
-							disabled={songFormIsDisabled()}
+							disabled={songFormIsDisabled}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -119,7 +121,7 @@ export const SongForm = () => {
 						<FormField
 							name="lyrics"
 							control={form.control}
-							disabled={songFormIsDisabled()}
+							disabled={songFormIsDisabled}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -138,7 +140,7 @@ export const SongForm = () => {
 						<FormField
 							name="translation"
 							control={form.control}
-							disabled={songFormIsDisabled()}
+							disabled={songFormIsDisabled}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
@@ -152,7 +154,7 @@ export const SongForm = () => {
 
 					{isSignedIn ? (
 						<div className="flex gap-[0.5rem]">
-							<Button type="submit" disabled={songFormIsDisabled()}>
+							<Button type="submit" disabled={songFormIsDisabled}>
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}

@@ -2,7 +2,7 @@
 
 import { ReactNode, useEffect } from "react";
 
-import { useAppStore } from "../app-store/useAppStore";
+import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 	const {
@@ -12,7 +12,14 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 		songSetIds,
 		songLibraryUpdate,
 		songSetLibraryUpdate,
+		songLibraryUnsubscribe,
+		songSetLibraryUnsubscribe,
+		userUpdate,
+		userUnsubscribe,
+		sessionCookieData,
 	} = useAppStore();
+
+	const uid = sessionCookieData?.uid;
 
 	useEffect(() => {
 		setFuid(null);
@@ -20,11 +27,21 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		songLibraryUpdate();
-	}, [songIds, songLibraryUpdate]);
+		return songLibraryUnsubscribe;
+	}, [songIds, songLibraryUpdate, songLibraryUnsubscribe]);
 
 	useEffect(() => {
 		songSetLibraryUpdate();
-	}, [songSetIds, songSetLibraryUpdate]);
+		return songSetLibraryUnsubscribe;
+	}, [songSetIds, songSetLibraryUpdate, songSetLibraryUnsubscribe]);
+
+	useEffect(() => {
+		if (!uid) {
+			return;
+		}
+		userUpdate(uid);
+		return userUnsubscribe;
+	}, [userUpdate, userUnsubscribe, uid]);
 
 	return <>{children}</>;
 };

@@ -1,23 +1,21 @@
 import { songSetActiveSet } from "@/actions/songSetActiveSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get } from "@/features/app-store/types";
+import { Get, Set } from "@/features/app-store/types";
 
 export const songSetActiveClick =
-	(get: Get) => (songSetId: string) => async () => {
-		const { setActiveSongSetId, fuid } = get();
+	(get: Get, _set: Set) => (songSetId: string) => async () => {
+		const { fuid } = get();
 		if (fuid) {
 			return;
 		}
 
-		const activeSongSetResult = await songSetActiveSet(songSetId);
-		if (activeSongSetResult.actionResultType === actionResultType.ERROR) {
+		const songSetActiveResult = await songSetActiveSet(songSetId);
+		if (songSetActiveResult.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: "There was an error setting the active song set",
 			});
 			return;
 		}
-
-		setActiveSongSetId(songSetId);
 	};

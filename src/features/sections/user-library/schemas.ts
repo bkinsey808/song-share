@@ -1,8 +1,5 @@
-import { object, record, string } from "valibot";
+import { record, string } from "valibot";
 
-export const UserSchema = object({
-	username: string(),
-	picture: string(),
-});
+import { UserPublicDocSchema } from "@/features/firebase/schemas";
 
-export const UserLibrarySchema = record(string(), UserSchema);
+export const UserLibrarySchema = record(string(), UserPublicDocSchema);

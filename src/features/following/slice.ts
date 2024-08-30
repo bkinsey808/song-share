@@ -1,10 +1,10 @@
 import { StateCreator } from "zustand";
 
 import { AppSlice, sliceResetFns } from "../app-store/useAppStore";
-import { PublicUserDoc } from "../firebase/types";
+import { UserPublicDoc } from "../firebase/types";
 
 type FollowingSliceState = {
-	following: PublicUserDoc | null;
+	following: UserPublicDoc | null;
 	fuid: string | null;
 };
 
@@ -14,7 +14,7 @@ const followingSliceInitialState: FollowingSliceState = {
 };
 
 export type FollowingSlice = FollowingSliceState & {
-	setFollowing: (following: PublicUserDoc | null) => void;
+	setFollowing: (following: UserPublicDoc | null) => void;
 	setFuid: (fuid: string | null) => void;
 };
 

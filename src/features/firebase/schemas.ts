@@ -2,11 +2,11 @@ import { array, nullable, object, string, enum as venum } from "valibot";
 
 import { role } from "@/features/auth/consts";
 
-export const PublicUserDocSchema = object({
+export const UserPublicDocSchema = object({
 	username: string(),
 	picture: nullable(string()),
-	activeSongId: nullable(string()),
-	activeSongSetId: nullable(string()),
+	songActiveId: nullable(string()),
+	songSetActiveId: nullable(string()),
 });
 
 export const UserDocSchema = object({

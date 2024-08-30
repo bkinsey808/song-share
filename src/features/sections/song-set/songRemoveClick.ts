@@ -6,7 +6,7 @@ import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
 
 export const songRemoveClick =
-	(_get: Get, set: Set) =>
+	(get: Get, set: Set) =>
 	({ songId, songSetId }: { songId: string; songSetId: string }) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
@@ -21,11 +21,23 @@ export const songRemoveClick =
 			return;
 		}
 
-		const { songSet } = songRemoveResult;
+		const { songSet, song } = songRemoveResult;
+
+		const songLibrary = get().songLibrary;
+		songLibrary[songId] = song;
 
 		set({
 			songSet,
+			songLibrary,
 		});
+
+		const currentSongId = get().songId;
+
+		if (currentSongId === songId) {
+			set({ song });
+			const songForm = get().songForm;
+			songForm?.reset?.(song);
+		}
 
 		toast({
 			title: "Song removed",

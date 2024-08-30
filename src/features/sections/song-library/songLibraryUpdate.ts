@@ -8,7 +8,7 @@ import { getKeys } from "@/features/global/getKeys";
 import { SongSchema } from "@/features/sections/song/schemas";
 
 export const songLibraryUpdate = (get: Get, set: Set) => () => {
-	const { songIds, songUnsubscribeFns, songLibrary, songForm, songId } = get();
+	const { songIds, songUnsubscribeFns, songLibrary } = get();
 	const songSubscriptionsSongIds = getKeys(songUnsubscribeFns);
 	const songIdsToUnsubscribe = songSubscriptionsSongIds.filter(
 		(unsubscribeSongId) => !songIds.includes(unsubscribeSongId),
@@ -17,6 +17,11 @@ export const songLibraryUpdate = (get: Get, set: Set) => () => {
 		songUnsubscribeFns[unsubscribeSongId]();
 		delete songUnsubscribeFns[unsubscribeSongId];
 		delete songLibrary[unsubscribeSongId];
+
+		const { songId } = get();
+		if (songId === unsubscribeSongId) {
+			set({ songId: null, song: null });
+		}
 	});
 
 	const songIdsToSubscribe = songIds.filter(
@@ -42,10 +47,13 @@ export const songLibraryUpdate = (get: Get, set: Set) => () => {
 					return;
 				}
 				const song = songParseResult.output;
+				const { songId, songForm } = get();
+
 				songLibrary[subscribeSongId] = song;
+
 				if (songId === subscribeSongId) {
-					set({ song });
 					songForm?.reset?.(song);
+					set({ song, songFormIsDisabled: false });
 				}
 			},
 		);

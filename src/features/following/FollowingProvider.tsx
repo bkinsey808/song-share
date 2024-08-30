@@ -10,7 +10,7 @@ import { SongSchema } from "../sections/song/schemas";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseClient";
-import { PublicUserDocSchema } from "@/features/firebase/schemas";
+import { UserPublicDocSchema } from "@/features/firebase/schemas";
 
 export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 	const params = useParams();
@@ -30,19 +30,19 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 
 		setFuid(fuid);
 
-		const publicUserUnsubscribe = onSnapshot(
-			doc(db, collection.PUBLIC_USERS, fuid),
-			(publicUserSnapshot) => {
-				if (!publicUserSnapshot.exists) {
-					console.warn("publicUsers document does not exist!");
+		const userPublicUnsubscribe = onSnapshot(
+			doc(db, collection.USERS_PUBLIC, fuid),
+			(userPublicSnapshot) => {
+				if (!userPublicSnapshot.exists) {
+					console.warn("users public document does not exist!");
 					return;
 				}
-				const followingData = publicUserSnapshot.data();
+				const followingData = userPublicSnapshot.data();
 				if (!followingData) {
-					console.warn("No publicUsers data found");
+					console.warn("No users public data found");
 					return;
 				}
-				const followingResult = safeParse(PublicUserDocSchema, followingData);
+				const followingResult = safeParse(UserPublicDocSchema, followingData);
 				if (!followingResult.success) {
 					console.warn("Invalid data");
 					return;
@@ -50,9 +50,9 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 				const following = followingResult.output;
 				setFollowing(following);
 
-				if (following.activeSongId) {
+				if (following.songActiveId) {
 					const songUnsubscribe = onSnapshot(
-						doc(db, collection.SONGS, following.activeSongId),
+						doc(db, collection.SONGS, following.songActiveId),
 						(songSnapshot) => {
 							if (!songSnapshot.exists) {
 								console.warn("Song does not exist");
@@ -77,9 +77,9 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 					unsubscribeFns.push(songUnsubscribe);
 				}
 
-				if (following.activeSongSetId) {
+				if (following.songSetActiveId) {
 					const songSetUnsubscribe = onSnapshot(
-						doc(db, collection.SONG_SETS, following.activeSongSetId),
+						doc(db, collection.SONG_SETS, following.songSetActiveId),
 						(songSetSnapshot) => {
 							if (!songSetSnapshot.exists) {
 								console.warn("Song set does not exist");
@@ -106,7 +106,7 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 			},
 		);
 
-		unsubscribeFns.push(publicUserUnsubscribe);
+		unsubscribeFns.push(userPublicUnsubscribe);
 
 		return () => {
 			unsubscribeFns.forEach((fn) => fn());

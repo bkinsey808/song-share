@@ -20,7 +20,6 @@ export const songSetLoad = async (songSetId: string) => {
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
-
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
@@ -36,11 +35,12 @@ export const songSetLoad = async (songSetId: string) => {
 		const { userDoc } = userDocResult;
 
 		const newSongSetIds = userDoc.songSetIds
-			? [...userDoc.songSetIds, songSetId]
+			? Array.from(new Set([...userDoc.songSetIds, songSetId]))
 			: [songSetId];
 
 		await db.collection(collection.USERS).doc(uid).update({
 			songSetIds: newSongSetIds,
+			songSetId,
 		});
 
 		return {

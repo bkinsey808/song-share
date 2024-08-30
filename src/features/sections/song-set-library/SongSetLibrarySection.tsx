@@ -11,7 +11,7 @@ export const SongSetLibrarySection = () => {
 		songSetLibrary,
 		songSetLoadClick,
 		songSetActiveId,
-		activeSongSetClick,
+		songSetActiveClick,
 		usernameGet,
 	} = useAppStore();
 	const songSetIds = getKeys(songSetLibrary);
@@ -26,8 +26,8 @@ export const SongSetLibrarySection = () => {
 					<div>Options</div>
 				</GridHeader>
 				<RadioGroup
-					name="activeSongId"
-					id="activeSongId"
+					name="songSetActiveId"
+					id="songSetActiveId"
 					value={songSetActiveId ?? ""}
 				>
 					{songSetIds.map((songSetId) => (
@@ -36,7 +36,7 @@ export const SongSetLibrarySection = () => {
 								className="self-center"
 								id={songSetId}
 								value={songSetId}
-								onClick={activeSongSetClick(songSetId)}
+								onClick={songSetActiveClick(songSetId)}
 							/>
 							<div>{songSetLibrary[songSetId].songSetName}</div>
 							<div>{usernameGet(songSetLibrary[songSetId].sharer)}</div>

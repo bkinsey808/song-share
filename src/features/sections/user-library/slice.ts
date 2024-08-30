@@ -1,12 +1,12 @@
 import { MouseEventHandler } from "react";
 import { StateCreator } from "zustand";
 
-import { User } from "./types";
 import { userLoadClick } from "./userLoadClick";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
+import { UserPublicDoc } from "@/features/firebase/types";
 
 type UserLibrarySliceState = {
-	userLibrary: Record<string, User>;
+	userLibrary: Record<string, UserPublicDoc>;
 };
 
 const userLibrarySliceInitialState: UserLibrarySliceState = {
