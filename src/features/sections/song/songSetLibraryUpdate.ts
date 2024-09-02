@@ -48,7 +48,6 @@ export const songSetLibraryUpdate = (get: Get, set: Set) => () => {
 					return;
 				}
 				const songSet = songSetParseResult.output;
-
 				songSetLibrary[subscribeSongSetId] = songSet;
 				const { songSetId, songSetForm } = get();
 
@@ -56,6 +55,9 @@ export const songSetLibraryUpdate = (get: Get, set: Set) => () => {
 					set({ songSet });
 					songSetForm?.reset?.(songSet);
 				}
+			},
+			(error) => {
+				console.error("Error getting song set:", error);
 			},
 		);
 		songSetUnsubscribeFns[subscribeSongSetId] = unsubscribeFn;

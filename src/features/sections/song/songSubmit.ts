@@ -11,13 +11,15 @@ export const songSubmit =
 	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { songForm } = get();
+
 		if (!songForm) {
 			console.error("no form");
 			return;
 		}
+
 		return songForm.handleSubmit(async (song) => {
 			set({ songFormIsDisabled: true });
-			const sessionCookieData = useAppStore.getState().sessionCookieData;
+			const { sessionCookieData } = useAppStore.getState();
 
 			if (!sessionCookieData) {
 				toast({
@@ -27,10 +29,10 @@ export const songSubmit =
 				return;
 			}
 
-			const originalSongId = get().songId;
+			const { songId } = get();
 			const songSaveResult = await songSave({
 				song,
-				songId: originalSongId,
+				songId,
 			});
 
 			switch (songSaveResult.actionResultType) {
@@ -56,7 +58,6 @@ export const songSubmit =
 
 					break;
 				case actionResultType.SUCCESS:
-					console.log("SUCCESS");
 					toast({ title: "Song details saved" });
 					break;
 			}

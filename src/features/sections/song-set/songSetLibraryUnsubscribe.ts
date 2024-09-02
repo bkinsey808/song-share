@@ -1,9 +1,11 @@
 import { Get } from "@/features/app-store/types";
-import { getValues } from "@/features/global/getKeys";
+import { getKeys } from "@/features/global/getKeys";
 
 export const songSetLibraryUnsubscribe = (get: Get) => () => {
 	const { songSetUnsubscribeFns } = get();
-	getValues(songSetUnsubscribeFns).forEach((unsubscribeFn) => {
+	const songSetIds = getKeys(songSetUnsubscribeFns);
+	songSetIds.forEach((songSetId) => {
+		const unsubscribeFn = songSetUnsubscribeFns[songSetId];
 		unsubscribeFn();
 	});
 };

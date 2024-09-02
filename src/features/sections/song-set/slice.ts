@@ -23,6 +23,7 @@ type SongSetSliceState = {
 	isSongSetUnsaved: boolean;
 	deletingSongSet: boolean;
 	songSetForm: UseFormReturn<SongSet> | null;
+	songSetFormIsDisabled: boolean;
 };
 
 const songSetSliceInitialState: SongSetSliceState = {
@@ -32,6 +33,7 @@ const songSetSliceInitialState: SongSetSliceState = {
 	isSongSetUnsaved: false,
 	deletingSongSet: false,
 	songSetForm: null,
+	songSetFormIsDisabled: false,
 };
 
 export type SongSetSlice = SongSetSliceState & {
@@ -51,6 +53,7 @@ export type SongSetSlice = SongSetSliceState & {
 		songSetId: string;
 	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 	songSetLibraryUnsubscribe: () => void;
+	songSetFormDisabledSet: (disabled: boolean) => void;
 };
 
 type AppSongSetSlice = StateCreator<AppSlice, [], [], SongSetSlice>;
@@ -72,5 +75,6 @@ export const createSongSetSlice: AppSongSetSlice = (set, get) => {
 		setSongSet: (songSet) => set({ songSet }),
 		songRemoveClick: songRemoveClick(get, set),
 		songSetLibraryUnsubscribe: songSetLibraryUnsubscribe(get),
+		songSetFormDisabledSet: (disabled) => set({ songFormIsDisabled: disabled }),
 	};
 };

@@ -18,9 +18,10 @@ export const songLibraryUpdate = (get: Get, set: Set) => () => {
 		delete songUnsubscribeFns[unsubscribeSongId];
 		delete songLibrary[unsubscribeSongId];
 
-		const { songId } = get();
+		const { songId, songForm } = get();
 		if (songId === unsubscribeSongId) {
 			set({ songId: null, song: null });
+			songForm?.reset?.({});
 		}
 	});
 

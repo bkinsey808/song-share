@@ -56,6 +56,7 @@ export type SongSlice = SongSliceState & {
 		songSetId: string;
 	}) => () => Promise<void>;
 	setSong: (song: AppSong) => void;
+	songFormDisabledSet: (disabled: boolean) => void;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -72,5 +73,6 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		addSongToSongSetClick: songAddToSongSetClick(get, set),
 		songActiveClick: songActiveClick(get),
 		setSong: (song) => set({ song }),
+		songFormDisabledSet: (disabled) => set({ songFormIsDisabled: disabled }),
 	};
 };

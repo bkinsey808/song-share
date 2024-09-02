@@ -53,6 +53,8 @@ const omittedKeys: (keyof AppSlice)[] = [
 	"addingSongToSongSet",
 	"deletingSong",
 	"deletingSongSet",
+	"songUnsubscribeFns",
+	"songSetUnsubscribeFns",
 ];
 
 export const useAppStore = create<AppSlice>()(

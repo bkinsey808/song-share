@@ -46,7 +46,7 @@ const saveOrCreateSongSet = async (
 		if (songSetResult.songSet.sharer !== uid) {
 			throw new Error("User does not own this song set");
 		}
-		await db.collection(collection.SONGS).doc(songSetId).set(songSet);
+		await db.collection(collection.SONG_SETS).doc(songSetId).set(songSet);
 		return songSetId;
 	}
 	const result = await db.collection(collection.SONG_SETS).add(songSet);
@@ -74,7 +74,7 @@ export const songSetSave = async ({
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
-		const sessionCookieData = extendSessionResult.sessionCookieData;
+		const { sessionCookieData } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();

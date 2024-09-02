@@ -27,13 +27,21 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 
 	useEffect(() => {
 		songLibraryUpdate();
-		return songLibraryUnsubscribe;
-	}, [songIds, songLibraryUpdate, songLibraryUnsubscribe]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [songIds]);
 
 	useEffect(() => {
 		songSetLibraryUpdate();
-		return songSetLibraryUnsubscribe;
-	}, [songSetIds, songSetLibraryUpdate, songSetLibraryUnsubscribe]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [songSetIds]);
+
+	useEffect(() => {
+		return () => {
+			songLibraryUnsubscribe();
+			songSetLibraryUnsubscribe();
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		if (!uid) {

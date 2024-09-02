@@ -42,6 +42,7 @@ export const SongForm = () => {
 		addingSongToSongSet,
 		addSongToSongSetClick,
 		songFormIsDisabled,
+		songFormDisabledSet: songFormSetDisabled,
 	} = useAppStore();
 
 	const defaultValues: Song = useMemo(
@@ -76,8 +77,9 @@ export const SongForm = () => {
 	useEffect(() => {
 		if (form) {
 			setSongForm(form);
+			songFormSetDisabled(false);
 		}
-	}, [form, setSongForm]);
+	}, [form, setSongForm, songFormSetDisabled]);
 
 	return (
 		<div suppressHydrationWarning={true}>
@@ -87,11 +89,14 @@ export const SongForm = () => {
 					<FormField
 						name="songName"
 						control={form.control}
-						disabled={songFormIsDisabled}
 						render={({ field }) => (
 							<FormItem>
 								<FormControl>
-									<Input placeholder="Song Name" {...field} />
+									<Input
+										placeholder="Song Name"
+										{...field}
+										disabled={songFormIsDisabled}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -105,11 +110,14 @@ export const SongForm = () => {
 						<FormField
 							name="credits"
 							control={form.control}
-							disabled={songFormIsDisabled}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Textarea autoResize={true} {...field} />
+										<Textarea
+											autoResize={true}
+											{...field}
+											disabled={songFormIsDisabled}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -121,11 +129,14 @@ export const SongForm = () => {
 						<FormField
 							name="lyrics"
 							control={form.control}
-							disabled={songFormIsDisabled}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Textarea autoResize={true} {...field} />
+										<Textarea
+											autoResize={true}
+											{...field}
+											disabled={songFormIsDisabled}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -140,11 +151,14 @@ export const SongForm = () => {
 						<FormField
 							name="translation"
 							control={form.control}
-							disabled={songFormIsDisabled}
 							render={({ field }) => (
 								<FormItem>
 									<FormControl>
-										<Textarea autoResize={true} {...field} />
+										<Textarea
+											autoResize={true}
+											{...field}
+											disabled={songFormIsDisabled}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

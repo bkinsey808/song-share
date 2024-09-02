@@ -8,9 +8,9 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSetSubmit =
-	(get: Get, _set: Set) => (e: FormEvent<HTMLFormElement>) => {
+	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songSetForm, songSetId } = get();
+		const { songSetForm } = get();
 
 		if (!songSetForm) {
 			console.error("no form");
@@ -18,7 +18,8 @@ export const songSetSubmit =
 		}
 
 		return songSetForm.handleSubmit(async (songSet) => {
-			const sessionCookieData = useAppStore.getState().sessionCookieData;
+			set({ songSetFormIsDisabled: true });
+			const { sessionCookieData } = useAppStore.getState();
 
 			if (!sessionCookieData) {
 				toast({
@@ -28,6 +29,7 @@ export const songSetSubmit =
 				return;
 			}
 
+			const { songSetId } = get();
 			const songSaveResult = await songSetSave({
 				songSet,
 				songSetId,

@@ -75,7 +75,7 @@ export const songSave = async ({
 			return getFormError("Session expired");
 		}
 
-		const sessionCookieData = extendSessionResult.sessionCookieData;
+		const { sessionCookieData } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
