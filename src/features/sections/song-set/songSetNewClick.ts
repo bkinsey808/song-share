@@ -25,5 +25,6 @@ export const songSetNewClick = (get: Get, set: Set) => () => {
 		songSet,
 	});
 
+	songSetForm.setFocus("songSetName");
 	songSetForm.reset(songSet);
 };

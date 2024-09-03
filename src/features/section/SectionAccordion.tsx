@@ -32,7 +32,7 @@ export const SectionAccordion = ({
 			id={sectionId}
 			ref={detailsRef}
 			data-open={isOpen}
-			className="my-[0.2rem] rounded border border-current p-[0.2rem]"
+			className="my-[0.2rem] rounded border p-[0.2rem] [&:has(:focus-visible)]:border-current"
 		>
 			<summary
 				className="mb-[0.25rem] flex cursor-pointer flex-row flex-nowrap gap-[0.5rem]"
