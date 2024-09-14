@@ -66,6 +66,6 @@ export const playlistActiveSet = async (playlistId: string | null) => {
 
 		return { actionResultType: actionResultType.SUCCESS, songActiveId: null };
 	} catch (error) {
-		return actionErrorMessageGet("Error setting active song set");
+		return actionErrorMessageGet("Error setting active playlist");
 	}
 };

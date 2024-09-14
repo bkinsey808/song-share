@@ -39,12 +39,12 @@ export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
 				}
 				const playlistData = playlistSnapshot.data();
 				if (!playlistData) {
-					console.warn(`No data found for song set ${subscribePlaylistId}`);
+					console.warn(`No data found for playlist ${subscribePlaylistId}`);
 					return;
 				}
 				const playlistParseResult = safeParse(PlaylistSchema, playlistData);
 				if (!playlistParseResult.success) {
-					console.warn(`Invalid data for song set ${subscribePlaylistId}`);
+					console.warn(`Invalid data for playlist ${subscribePlaylistId}`);
 					return;
 				}
 				const playlist = playlistParseResult.output;
@@ -57,7 +57,7 @@ export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
 				}
 			},
 			(error) => {
-				console.error("Error getting song set:", error);
+				console.error("Error getting playlist:", error);
 			},
 		);
 		playlistUnsubscribeFns[subscribePlaylistId] = unsubscribeFn;

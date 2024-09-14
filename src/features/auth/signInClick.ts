@@ -59,12 +59,12 @@ export const signInClick = (set: Set, get: Get) => () => {
 						},
 						songIds: Array.from(new Set([...signInResult.songIds, ...songIds])),
 						playlistIds: Array.from(
-							new Set([...signInResult.playlistIds, ...playlistIds]),
+							new Set([...(signInResult?.playlistIds ?? []), ...playlistIds]),
 						),
 						songId: signInResult.songId,
-						playlistId: signInResult.playlistId,
+						playlistId: signInResult.playlistId ?? null,
 						songActiveId: signInResult.songActiveId,
-						playlistActiveId: signInResult.playlistActiveId,
+						playlistActiveId: signInResult.playlistActiveId ?? null,
 						fuid: uid === fuid ? null : uid,
 					});
 

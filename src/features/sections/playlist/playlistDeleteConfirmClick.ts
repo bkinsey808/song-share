@@ -26,7 +26,7 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	if (!playlistId) {
 		toast({
 			variant: "destructive",
-			title: "No song set selected",
+			title: "No playlist selected",
 		});
 		setOpenAppModal(null);
 		return;
@@ -35,7 +35,7 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	if (result.actionResultType === actionResultType.ERROR) {
 		toast({
 			variant: "destructive",
-			title: "There was an error deleting the song set",
+			title: "There was an error deleting the playlist",
 		});
 		setOpenAppModal(null);
 		return;

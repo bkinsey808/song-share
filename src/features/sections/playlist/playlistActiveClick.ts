@@ -14,7 +14,7 @@ export const playlistActiveClick =
 		if (playlistActiveResult.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
-				title: "There was an error setting the active song set",
+				title: "There was an error setting the active playlist",
 			});
 			return;
 		}

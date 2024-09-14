@@ -35,7 +35,9 @@ export const playlistDelete = async (playlistId: string) => {
 		const { userDoc } = userDocResult;
 
 		const { playlistIds } = userDoc;
-		const newPlaylistIds = playlistIds.filter((id) => id !== playlistId);
+		const newPlaylistIds = (playlistIds ?? []).filter(
+			(id) => id !== playlistId,
+		);
 
 		const playlistResult = await playlistGet(playlistId);
 		if (playlistResult.actionResultType === actionResultType.ERROR) {
@@ -47,7 +49,7 @@ export const playlistDelete = async (playlistId: string) => {
 			return actionErrorMessageGet("User does not own this song");
 		}
 
-		// delete the song set from the song sets collection
+		// delete the playlist from the playlists collection
 		await db.collection(collection.SONG_SETS).doc(playlistId).delete();
 
 		// update user doc songs with the deleted song removed
@@ -61,6 +63,6 @@ export const playlistDelete = async (playlistId: string) => {
 		};
 	} catch (error) {
 		console.error({ error });
-		return actionErrorMessageGet("Failed to delete song set");
+		return actionErrorMessageGet("Failed to delete playlist");
 	}
 };

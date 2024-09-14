@@ -52,7 +52,7 @@ export const accountDelete = async () => {
 		}
 
 		const playlistIds = userDoc.playlistIds;
-		const deletePlaylistPromises = playlistIds.map((playlistId) =>
+		const deletePlaylistPromises = (playlistIds ?? []).map((playlistId) =>
 			db.collection(collection.SONG_SETS).doc(playlistId).delete(),
 		);
 		const promisePlaylistsAllSettledResult = await Promise.allSettled(
@@ -64,7 +64,7 @@ export const accountDelete = async () => {
 			(result) => result.status === "rejected",
 		);
 		if (failedPlaylistsDeletes.length > 0) {
-			return actionErrorMessageGet("Failed to delete song sets");
+			return actionErrorMessageGet("Failed to delete playlists");
 		}
 
 		await db.collection(collection.USERS).doc(uid).delete();

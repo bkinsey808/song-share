@@ -38,7 +38,7 @@ export const playlistGet = async (playlistId: string) => {
 			playlist,
 		};
 	} catch (error) {
-		console.warn("Error getting song set");
-		return actionErrorMessageGet("Error getting song set");
+		console.warn("Error getting playlist");
+		return actionErrorMessageGet("Error getting playlist");
 	}
 };

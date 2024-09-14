@@ -33,7 +33,7 @@ const saveOrCreatePlaylist = async (
 	playlist: Playlist,
 ) => {
 	if (playlist.sharer && playlist.sharer !== uid) {
-		throw new Error("User does not own this song set");
+		throw new Error("User does not own this playlist");
 	}
 	if (!playlist.sharer) {
 		playlist.sharer = uid;
@@ -44,7 +44,7 @@ const saveOrCreatePlaylist = async (
 			throw new Error("Song set not found");
 		}
 		if (playlistResult.playlist.sharer !== uid) {
-			throw new Error("User does not own this song set");
+			throw new Error("User does not own this playlist");
 		}
 		await db.collection(collection.SONG_SETS).doc(playlistId).set(playlist);
 		return playlistId;
@@ -92,14 +92,14 @@ export const playlistSave = async ({
 				!!playlistResult.playlist.sharer &&
 				playlistResult.playlist.sharer !== uid
 			) {
-				return getFormError("User does not own this song set");
+				return getFormError("User does not own this playlist");
 			}
 		}
 
 		const newPlaylistId = await saveOrCreatePlaylist(playlistId, uid, playlist);
 		const newPlaylistIds = playlistId
 			? userDoc.playlistIds
-			: Array.from(new Set([...userDoc.playlistIds, newPlaylistId]));
+			: Array.from(new Set([...(userDoc.playlistIds ?? []), newPlaylistId]));
 
 		if (!playlistId) {
 			await db.collection(collection.USERS).doc(uid).update({
@@ -113,6 +113,6 @@ export const playlistSave = async ({
 		};
 	} catch (error) {
 		console.error({ error });
-		return getFormError("Failed to save song set");
+		return getFormError("Failed to save playlist");
 	}
 };

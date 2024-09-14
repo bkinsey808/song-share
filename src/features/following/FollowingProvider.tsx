@@ -87,12 +87,12 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 							}
 							const playlistData = playlistSnapshot.data();
 							if (!playlistData) {
-								console.warn("No song set data found");
+								console.warn("No playlist data found");
 								return;
 							}
 							const playlistResult = safeParse(PlaylistSchema, playlistData);
 							if (!playlistResult.success) {
-								console.warn("Invalid song set data");
+								console.warn("Invalid playlist data");
 								return;
 							}
 							const playlist = playlistResult.output;

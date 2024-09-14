@@ -11,7 +11,7 @@ export const songAddToPlaylistClick = (get: Get, set: Set) => async () => {
 		if (!songId || !playlistId) {
 			toast({
 				variant: "destructive",
-				title: "Cannot add song to song set",
+				title: "Cannot add song to playlist",
 			});
 			return;
 		}
@@ -24,7 +24,7 @@ export const songAddToPlaylistClick = (get: Get, set: Set) => async () => {
 		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
-				title: "There was an error adding song to song set",
+				title: "There was an error adding song to playlist",
 			});
 			return;
 		}
@@ -35,7 +35,7 @@ export const songAddToPlaylistClick = (get: Get, set: Set) => async () => {
 	} catch (error) {
 		toast({
 			variant: "destructive",
-			title: "There was an error adding song to song set",
+			title: "There was an error adding song to playlist",
 		});
 	}
 

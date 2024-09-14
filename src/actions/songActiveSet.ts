@@ -60,12 +60,12 @@ export const songActiveSet = async ({
 
 			const playlistParseResult = safeParse(PlaylistSchema, playlist);
 			if (!playlistParseResult.success) {
-				return actionErrorMessageGet("Invalid song set data");
+				return actionErrorMessageGet("Invalid playlist data");
 			}
 			const playlistData = playlistParseResult.output;
 			const { songIds } = playlistData;
 			if (songId && !songIds.includes(songId)) {
-				return actionErrorMessageGet("Song not in song set");
+				return actionErrorMessageGet("Song not in playlist");
 			}
 		}
 

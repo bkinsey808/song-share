@@ -52,7 +52,7 @@ export const playlistSubmit =
 					});
 					toast({
 						variant: "destructive",
-						title: "There was an error saving song set",
+						title: "There was an error saving playlist",
 					});
 
 					break;

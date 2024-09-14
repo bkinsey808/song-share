@@ -42,6 +42,7 @@ export const userDocGet = async (uid?: string) => {
 
 		const userDocResult = serverParse(UserDocSchema, userDocData);
 		if (!userDocResult.success) {
+			console.log(userDocData);
 			return actionErrorMessageGet("User data invalid");
 		}
 

@@ -76,6 +76,6 @@ export const songAddToPlaylist = async ({
 			playlist: newPlaylist,
 		};
 	} catch (error) {
-		return actionErrorMessageGet("Failed to add song to song set");
+		return actionErrorMessageGet("Failed to add song to playlist");
 	}
 };

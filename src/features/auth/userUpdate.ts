@@ -34,9 +34,9 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 			const newSessionCookieData = { ...sessionCookieData, email, roles };
 			set({
 				songIds,
-				playlistIds,
+				playlistIds: playlistIds ?? [],
 				songId,
-				playlistId,
+				playlistId: playlistId ?? null,
 				sessionCookieData: newSessionCookieData,
 			});
 		},
@@ -73,7 +73,7 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 			const newSessionCookieData = { ...sessionCookieData, picture, username };
 			set({
 				songActiveId,
-				playlistActiveId,
+				playlistActiveId: playlistActiveId ?? null,
 				sessionCookieData: newSessionCookieData,
 			});
 		},

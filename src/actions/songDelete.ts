@@ -52,7 +52,7 @@ export const songDelete = async (songId: string) => {
 			(result) => result.status === "rejected",
 		);
 		if (failedPlaylistDeletes.length > 0) {
-			return actionErrorMessageGet("Failed to delete song sets");
+			return actionErrorMessageGet("Failed to delete playlists");
 		}
 
 		// delete the song form the songs collection

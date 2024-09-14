@@ -64,7 +64,7 @@ export const PlaylistSection = () => {
 		setIsPlaylistUnsaved(form.formState.isDirty);
 	}, [form.formState.isDirty, setIsPlaylistUnsaved]);
 
-	// handle load song set from song set library
+	// handle load playlist from playlist library
 	useEffect(() => {
 		form.reset(defaultValues);
 	}, [form, defaultValues]);

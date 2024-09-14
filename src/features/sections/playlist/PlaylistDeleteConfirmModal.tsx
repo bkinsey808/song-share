@@ -34,7 +34,7 @@ export const PlaylistDeleteConfirmModal = () => {
 		>
 			<ModalContent>
 				<p>
-					Are you sure you want to delete this song set? This cannot be undone.
+					Are you sure you want to delete this playlist? This cannot be undone.
 				</p>
 			</ModalContent>
 
