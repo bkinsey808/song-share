@@ -2,14 +2,14 @@
 
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const SongSetTitle = () => {
-	const { songSet } = useAppStore();
+export const PlaylistTitle = () => {
+	const { playlist } = useAppStore();
 
 	return (
 		<div>
-			<span>Song Set{songSet?.songSetName ? `: ` : null}</span>
+			<span>Playlist{playlist?.playlistName ? `: ` : null}</span>
 			<span className="overflow-hidden text-ellipsis text-nowrap">
-				{songSet?.songSetName}
+				{playlist?.playlistName}
 			</span>
 		</div>
 	);

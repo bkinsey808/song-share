@@ -7,7 +7,7 @@ import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
-import { SongSetSchema } from "@/features/sections/song-set/schemas";
+import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -17,10 +17,10 @@ import { SongSetSchema } from "@/features/sections/song-set/schemas";
 
 export const songActiveSet = async ({
 	songId,
-	songSetId,
+	playlistId,
 }: {
 	songId: string | null;
-	songSetId: string | null;
+	playlistId: string | null;
 }) => {
 	try {
 		const extendSessionResult = await sessionExtend();
@@ -43,27 +43,27 @@ export const songActiveSet = async ({
 			return actionErrorMessageGet("Public user not found");
 		}
 
-		if (songSetId) {
-			const songSetResult = await db
+		if (playlistId) {
+			const playlistResult = await db
 				.collection(collection.SONG_SETS)
-				.doc(songSetId)
+				.doc(playlistId)
 				.get();
 
-			if (!songSetResult.exists) {
+			if (!playlistResult.exists) {
 				return actionErrorMessageGet("Song set not found");
 			}
 
-			const songSet = songSetResult.data();
-			if (!songSet) {
+			const playlist = playlistResult.data();
+			if (!playlist) {
 				return actionErrorMessageGet("Song set not found");
 			}
 
-			const songSetParseResult = safeParse(SongSetSchema, songSet);
-			if (!songSetParseResult.success) {
+			const playlistParseResult = safeParse(PlaylistSchema, playlist);
+			if (!playlistParseResult.success) {
 				return actionErrorMessageGet("Invalid song set data");
 			}
-			const songSetData = songSetParseResult.output;
-			const { songIds } = songSetData;
+			const playlistData = playlistParseResult.output;
+			const { songIds } = playlistData;
 			if (songId && !songIds.includes(songId)) {
 				return actionErrorMessageGet("Song not in song set");
 			}
@@ -72,7 +72,7 @@ export const songActiveSet = async ({
 		await db
 			.collection(collection.USERS_PUBLIC)
 			.doc(uid)
-			.update({ songActiveId: songId, songSetActiveId: songSetId });
+			.update({ songActiveId: songId, playlistActiveId: playlistId });
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

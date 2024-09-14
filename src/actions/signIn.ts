@@ -49,18 +49,18 @@ export const signIn = async (uid: string) => {
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
-		const { songId, songSetId, songIds, songSetIds } = existingUserDoc;
-		const { songActiveId, songSetActiveId } = existingUserPublicDoc;
+		const { songId, playlistId, songIds, playlistIds } = existingUserDoc;
+		const { songActiveId, playlistActiveId } = existingUserPublicDoc;
 
 		return {
 			signInResultType: signInResultType.EXISTING,
 			userData: sessionCookieData,
 			songIds,
-			songSetIds,
+			playlistIds,
 			songId,
-			songSetId,
+			playlistId,
 			songActiveId,
-			songSetActiveId,
+			playlistActiveId,
 		};
 	} catch (error) {
 		console.error({ error });

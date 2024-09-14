@@ -1,7 +1,7 @@
 "use server";
 
+import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
-import { songSetGet } from "./songSetGet";
 import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
@@ -14,7 +14,7 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songSetActiveSet = async (songSetId: string | null) => {
+export const playlistActiveSet = async (playlistId: string | null) => {
 	try {
 		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
@@ -30,13 +30,13 @@ export const songSetActiveSet = async (songSetId: string | null) => {
 		const { userPublicDoc } = userPublicGetResult;
 		const { songActiveId } = userPublicDoc;
 
-		if (songSetId) {
-			const songSetResult = await songSetGet(songSetId);
-			if (songSetResult.actionResultType === actionResultType.ERROR) {
+		if (playlistId) {
+			const playlistResult = await playlistGet(playlistId);
+			if (playlistResult.actionResultType === actionResultType.ERROR) {
 				return actionErrorMessageGet("Song set not found");
 			}
-			const songSet = songSetResult.songSet;
-			const { songIds } = songSet;
+			const playlist = playlistResult.playlist;
+			const { songIds } = playlist;
 
 			if (
 				songIds.length > 0 &&
@@ -45,12 +45,12 @@ export const songSetActiveSet = async (songSetId: string | null) => {
 				await db
 					.collection(collection.USERS_PUBLIC)
 					.doc(uid)
-					.update({ songSetActiveId: songSetId, songActiveId: songIds[0] });
+					.update({ playlistActiveId: playlistId, songActiveId: songIds[0] });
 			} else {
 				await db
 					.collection(collection.USERS_PUBLIC)
 					.doc(uid)
-					.update({ songSetActiveId: songSetId });
+					.update({ playlistActiveId: playlistId });
 			}
 
 			return {
@@ -62,7 +62,7 @@ export const songSetActiveSet = async (songSetId: string | null) => {
 		await db
 			.collection(collection.USERS_PUBLIC)
 			.doc(uid)
-			.update({ songSetActiveId: songSetId });
+			.update({ playlistActiveId: playlistId });
 
 		return { actionResultType: actionResultType.SUCCESS, songActiveId: null };
 	} catch (error) {

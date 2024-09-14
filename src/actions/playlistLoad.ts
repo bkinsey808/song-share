@@ -1,7 +1,7 @@
 "use server";
 
+import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
-import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
@@ -14,7 +14,7 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songSetLoad = async (songSetId: string) => {
+export const playlistLoad = async (playlistId: string) => {
 	try {
 		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
@@ -23,8 +23,8 @@ export const songSetLoad = async (songSetId: string) => {
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
-		const songSetResult = await songSetGet(songSetId);
-		if (songSetResult.actionResultType === actionResultType.ERROR) {
+		const playlistResult = await playlistGet(playlistId);
+		if (playlistResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Song set not found");
 		}
 
@@ -34,18 +34,18 @@ export const songSetLoad = async (songSetId: string) => {
 		}
 		const { userDoc } = userDocResult;
 
-		const newSongSetIds = userDoc.songSetIds
-			? Array.from(new Set([...userDoc.songSetIds, songSetId]))
-			: [songSetId];
+		const newPlaylistIds = userDoc.playlistIds
+			? Array.from(new Set([...userDoc.playlistIds, playlistId]))
+			: [playlistId];
 
 		await db.collection(collection.USERS).doc(uid).update({
-			songSetIds: newSongSetIds,
-			songSetId,
+			playlistIds: newPlaylistIds,
+			playlistId,
 		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
-			songSetIds: newSongSetIds,
+			playlistIds: newPlaylistIds,
 		};
 	} catch (error) {
 		console.error(error);

@@ -1,17 +1,17 @@
-import { SongSet } from "./types";
-import { songSetDelete } from "@/actions/songSetDelete";
+import { Playlist } from "./types";
+import { playlistDelete } from "@/actions/playlistDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 
-export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
+export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
-		deletingSongSet: true,
+		deletingPlaylist: true,
 	});
 	const {
-		songSetForm,
-		songSetLibrary,
-		songSetId,
+		playlistForm,
+		playlistLibrary,
+		playlistId,
 		sessionCookieData,
 		setOpenAppModal,
 	} = get();
@@ -19,11 +19,11 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	if (!uid) {
 		console.error("no uid");
 	}
-	if (!songSetForm) {
+	if (!playlistForm) {
 		console.error("no form");
 		return;
 	}
-	if (!songSetId) {
+	if (!playlistId) {
 		toast({
 			variant: "destructive",
 			title: "No song set selected",
@@ -31,7 +31,7 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
-	const result = await songSetDelete(songSetId);
+	const result = await playlistDelete(playlistId);
 	if (result.actionResultType === actionResultType.ERROR) {
 		toast({
 			variant: "destructive",
@@ -40,19 +40,19 @@ export const songSetDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
-	delete songSetLibrary[songSetId];
-	const songSet: SongSet = {
-		songSetName: "",
+	delete playlistLibrary[playlistId];
+	const playlist: Playlist = {
+		playlistName: "",
 		sharer: uid ?? "",
 		songIds: [],
 	};
 	set({
-		songSetId: null,
-		songSet,
-		songSetLibrary,
-		deletingSongSet: false,
-		songSetIds: result.songSetIds,
+		playlistId: null,
+		playlist,
+		playlistLibrary,
+		deletingPlaylist: false,
+		playlistIds: result.playlistIds,
 	});
-	songSetForm.reset(songSet);
+	playlistForm.reset(playlist);
 	setOpenAppModal(null);
 };

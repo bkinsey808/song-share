@@ -38,9 +38,9 @@ export const SongForm = () => {
 		songNewClick,
 		setSongForm,
 		songDeleteClick,
-		showAddSongToSongSetButton,
-		addingSongToSongSet,
-		addSongToSongSetClick,
+		showAddSongToPlaylistButton,
+		addingSongToPlaylist,
+		addSongToPlaylistClick,
 		songFormIsDisabled,
 		songFormDisabledSet,
 	} = useAppStore();
@@ -52,7 +52,7 @@ export const SongForm = () => {
 			translation: song?.translation ?? "",
 			credits: song?.credits ?? "",
 			sharer: song?.sharer ?? "",
-			songSetIds: song?.songSetIds ?? [],
+			playlistIds: song?.playlistIds ?? [],
 		}),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
@@ -172,12 +172,12 @@ export const SongForm = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
-							{showAddSongToSongSetButton() ? (
+							{showAddSongToPlaylistButton() ? (
 								<Button
-									disabled={addingSongToSongSet}
-									onClick={addSongToSongSetClick}
+									disabled={addingSongToPlaylist}
+									onClick={addSongToPlaylistClick}
 								>
-									Add to Song Set
+									Add to Playlist
 								</Button>
 							) : null}
 							<Button onClick={songNewClick}>New</Button>

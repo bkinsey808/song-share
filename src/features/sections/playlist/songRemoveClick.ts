@@ -7,11 +7,11 @@ import type { Get, Set } from "@/features/app-store/types";
 
 export const songRemoveClick =
 	(get: Get, set: Set) =>
-	({ songId, songSetId }: { songId: string; songSetId: string }) =>
+	({ songId, playlistId }: { songId: string; playlistId: string }) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const songRemoveResult = await songRemove({ songId, songSetId });
+		const songRemoveResult = await songRemove({ songId, playlistId });
 
 		if (songRemoveResult.actionResultType === actionResultType.ERROR) {
 			toast({
@@ -21,13 +21,13 @@ export const songRemoveClick =
 			return;
 		}
 
-		const { songSet, song } = songRemoveResult;
+		const { playlist, song } = songRemoveResult;
 
 		const songLibrary = get().songLibrary;
 		songLibrary[songId] = song;
 
 		set({
-			songSet,
+			playlist,
 			songLibrary,
 		});
 

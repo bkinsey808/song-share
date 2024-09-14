@@ -51,19 +51,19 @@ export const accountDelete = async () => {
 			return actionErrorMessageGet("Failed to delete songs");
 		}
 
-		const songSetIds = userDoc.songSetIds;
-		const deleteSongSetPromises = songSetIds.map((songSetId) =>
-			db.collection(collection.SONG_SETS).doc(songSetId).delete(),
+		const playlistIds = userDoc.playlistIds;
+		const deletePlaylistPromises = playlistIds.map((playlistId) =>
+			db.collection(collection.SONG_SETS).doc(playlistId).delete(),
 		);
-		const promiseSongSetsAllSettledResult = await Promise.allSettled(
-			deleteSongSetPromises,
+		const promisePlaylistsAllSettledResult = await Promise.allSettled(
+			deletePlaylistPromises,
 		);
 
 		// check to see if any of the song deletes failed
-		const failedSongSetsDeletes = promiseSongSetsAllSettledResult.filter(
+		const failedPlaylistsDeletes = promisePlaylistsAllSettledResult.filter(
 			(result) => result.status === "rejected",
 		);
-		if (failedSongSetsDeletes.length > 0) {
+		if (failedPlaylistsDeletes.length > 0) {
 			return actionErrorMessageGet("Failed to delete song sets");
 		}
 

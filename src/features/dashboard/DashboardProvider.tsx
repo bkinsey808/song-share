@@ -9,11 +9,11 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 		fuid,
 		setFuid,
 		songIds,
-		songSetIds,
+		playlistIds,
 		songLibraryUpdate,
-		songSetLibraryUpdate,
+		playlistLibraryUpdate,
 		songLibraryUnsubscribe,
-		songSetLibraryUnsubscribe,
+		playlistLibraryUnsubscribe,
 		userUpdate,
 		userUnsubscribe,
 		sessionCookieData,
@@ -31,14 +31,14 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 	}, [songIds]);
 
 	useEffect(() => {
-		songSetLibraryUpdate();
+		playlistLibraryUpdate();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [songSetIds]);
+	}, [playlistIds]);
 
 	useEffect(() => {
 		return () => {
 			songLibraryUnsubscribe();
-			songSetLibraryUnsubscribe();
+			playlistLibraryUnsubscribe();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

@@ -5,14 +5,14 @@ import { Get } from "@/features/app-store/types";
 
 export const songActiveClick =
 	(get: Get) =>
-	({ songId, songSetId }: { songId: string; songSetId: string }) =>
+	({ songId, playlistId }: { songId: string; playlistId: string }) =>
 	async () => {
 		const { fuid } = get();
 		if (fuid) {
 			return;
 		}
 
-		const activeSongResult = await songActiveSet({ songId, songSetId });
+		const activeSongResult = await songActiveSet({ songId, playlistId });
 		if (activeSongResult.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",

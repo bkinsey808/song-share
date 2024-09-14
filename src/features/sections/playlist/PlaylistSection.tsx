@@ -4,9 +4,9 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { SongSetDeleteConfirmModal } from "./SongSetDeleteConfirmModal";
-import { SongSetSchema } from "./schemas";
-import { SongSet } from "./types";
+import { PlaylistDeleteConfirmModal } from "./PlaylistDeleteConfirmModal";
+import { PlaylistSchema } from "./schemas";
+import { Playlist } from "./types";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -20,17 +20,17 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 
-export const SongSetSection = () => {
+export const PlaylistSection = () => {
 	const { isSignedIn } = useAppStore();
 	const {
-		songSetId,
-		songSet,
+		playlistId,
+		playlist,
 		songLibrary,
-		songSetSubmit,
-		setIsSongSetUnsaved,
-		songSetNewClick,
-		setSongSetForm,
-		songSetDeleteClick,
+		playlistSubmit,
+		setIsPlaylistUnsaved,
+		playlistNewClick,
+		setPlaylistForm,
+		playlistDeleteClick,
 		songRemoveClick,
 		songActiveId,
 		songActiveClick,
@@ -41,28 +41,28 @@ export const SongSetSection = () => {
 
 	const defaultValues = useMemo(
 		() => {
-			const defaultSongSet: SongSet = {
-				songSetName: songSet?.songSetName ?? "",
-				sharer: songSet?.sharer ?? "",
-				songIds: songSet?.songIds ?? [],
+			const defaultPlaylist: Playlist = {
+				playlistName: playlist?.playlistName ?? "",
+				sharer: playlist?.sharer ?? "",
+				songIds: playlist?.songIds ?? [],
 			};
-			return defaultSongSet;
+			return defaultPlaylist;
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	);
 
-	const songIds = songSet?.songIds ?? [];
+	const songIds = playlist?.songIds ?? [];
 
-	const form = useForm<SongSet>({
-		resolver: valibotResolver(SongSetSchema),
+	const form = useForm<Playlist>({
+		resolver: valibotResolver(PlaylistSchema),
 		defaultValues,
 	});
 
-	// keep unsavedSongSet in sync with form state
+	// keep unsavedPlaylist in sync with form state
 	useEffect(() => {
-		setIsSongSetUnsaved(form.formState.isDirty);
-	}, [form.formState.isDirty, setIsSongSetUnsaved]);
+		setIsPlaylistUnsaved(form.formState.isDirty);
+	}, [form.formState.isDirty, setIsPlaylistUnsaved]);
 
 	// handle load song set from song set library
 	useEffect(() => {
@@ -71,21 +71,21 @@ export const SongSetSection = () => {
 
 	// set song form
 	useEffect(() => {
-		setSongSetForm(form);
-	}, [form, setSongSetForm]);
+		setPlaylistForm(form);
+	}, [form, setPlaylistForm]);
 
 	return (
 		<div suppressHydrationWarning={true}>
-			<SongSetDeleteConfirmModal />
+			<PlaylistDeleteConfirmModal />
 			<Form {...form}>
-				<form onSubmit={songSetSubmit}>
+				<form onSubmit={playlistSubmit}>
 					<FormField
 						control={form.control}
-						name="songSetName"
+						name="playlistName"
 						render={({ field }) => (
 							<FormItem>
 								<FormControl>
-									<Input placeholder="Song Set Name" {...field} />
+									<Input placeholder="Playlist Name" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -105,7 +105,7 @@ export const SongSetSection = () => {
 								id="songActiveId"
 								value={songActiveId ?? ""}
 							>
-								{songSetId &&
+								{playlistId &&
 									songIds.map((songId) => (
 										<GridRow key={songId}>
 											<RadioGroupItem
@@ -113,7 +113,7 @@ export const SongSetSection = () => {
 												id={songId}
 												disabled={!!fuid}
 												value={songId}
-												onClick={songActiveClick({ songId, songSetId })}
+												onClick={songActiveClick({ songId, playlistId })}
 											/>
 											<div>{songLibrary[songId]?.songName}</div>
 											<div>{usernameGet(songLibrary[songId]?.sharer)}</div>
@@ -121,7 +121,7 @@ export const SongSetSection = () => {
 												<Button onClick={songLoadClick(songId)}>Load</Button>
 												<Button
 													variant="destructive"
-													onClick={songRemoveClick({ songId, songSetId })}
+													onClick={songRemoveClick({ songId, playlistId })}
 												>
 													Remove
 												</Button>
@@ -137,10 +137,10 @@ export const SongSetSection = () => {
 							<Button type="submit" disabled={form.formState.isSubmitting}>
 								Save
 							</Button>
-							{songSetId ? <Button>Save As...</Button> : null}
-							<Button onClick={songSetNewClick}>New</Button>
-							{songSetId ? (
-								<Button variant="destructive" onClick={songSetDeleteClick}>
+							{playlistId ? <Button>Save As...</Button> : null}
+							<Button onClick={playlistNewClick}>New</Button>
+							{playlistId ? (
+								<Button variant="destructive" onClick={playlistDeleteClick}>
 									Delete
 								</Button>
 							) : null}

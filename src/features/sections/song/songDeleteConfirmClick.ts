@@ -39,7 +39,7 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		lyrics: "",
 		translation: "",
 		sharer: uid ?? "",
-		songSetIds: [],
+		playlistIds: [],
 	};
 	set({
 		songId: null,

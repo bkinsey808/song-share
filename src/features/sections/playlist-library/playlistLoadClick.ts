@@ -1,26 +1,26 @@
 import { MouseEventHandler } from "react";
 
-import { songSetLoad } from "@/actions/songSetLoad";
+import { playlistLoad } from "@/actions/playlistLoad";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
 
-export const songSetLoadClick =
+export const playlistLoadClick =
 	(get: Get, set: Set) =>
-	(songSetId: string) =>
+	(playlistId: string) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { isSongSetUnsaved } = get();
-		if (isSongSetUnsaved) {
+		const { isPlaylistUnsaved } = get();
+		if (isPlaylistUnsaved) {
 			toast({
 				variant: "destructive",
-				title: "Please save your current Song Set before loading a new one",
+				title: "Please save your current Playlist before loading a new one",
 			});
 			return;
 		}
 
-		const result = await songSetLoad(songSetId);
+		const result = await playlistLoad(playlistId);
 
 		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
@@ -30,19 +30,19 @@ export const songSetLoadClick =
 			return;
 		}
 
-		const { songSetIds } = result;
+		const { playlistIds } = result;
 
-		const { songSetLibrary, songSetForm } = get();
-		const songSet = songSetLibrary[songSetId];
-		songSetForm?.reset?.(songSet);
+		const { playlistLibrary, playlistForm } = get();
+		const playlist = playlistLibrary[playlistId];
+		playlistForm?.reset?.(playlist);
 
 		set({
-			songSet,
-			songSetIds,
-			songSetId,
+			playlist,
+			playlistIds,
+			playlistId,
 		});
 
 		toast({
-			title: "Song Set loaded",
+			title: "Playlist loaded",
 		});
 	};

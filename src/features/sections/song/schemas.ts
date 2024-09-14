@@ -15,5 +15,5 @@ export const SongSchema = object({
 	translation: string(),
 	credits: string(),
 	sharer: string(),
-	songSetIds: array(string()),
+	playlistIds: array(string()),
 });

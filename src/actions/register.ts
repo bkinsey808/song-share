@@ -61,17 +61,17 @@ export const register = async ({
 			...registrationData,
 			email,
 			songIds: [],
-			songSetIds: [],
+			playlistIds: [],
 			roles: [],
 			songId: null,
-			songSetId: null,
+			playlistId: null,
 		};
 
 		const userPublicDoc: UserPublicDoc = {
 			username,
 			picture: picture ?? null,
 			songActiveId: null,
-			songSetActiveId: null,
+			playlistActiveId: null,
 		};
 
 		const sessionCookieData: SessionCookieData = {

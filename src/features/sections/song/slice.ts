@@ -2,9 +2,9 @@ import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
-import { showAddSongToSongSetButton } from "./showAddSongToSongSetButton";
+import { showAddSongToPlaylistButton } from "./showAddSongToPlaylistButton";
 import { songActiveClick } from "./songActiveClick";
-import { songAddToSongSetClick } from "./songAddToSongSetClick";
+import { songAddToPlaylistClick } from "./songAddToPlaylistClick";
 import { songDeleteClick } from "./songDeleteClick";
 import { songDeleteConfirmClick } from "./songDeleteConfirmClick";
 import { songNewClick } from "./songNewClick";
@@ -20,7 +20,7 @@ type SongSliceState = {
 	song: AppSong | null;
 	isSongUnsaved: boolean;
 	deletingSong: boolean;
-	addingSongToSongSet: boolean;
+	addingSongToPlaylist: boolean;
 	songId: string | null;
 	songForm: UseFormReturn<Song> | null;
 	songFormIsDisabled: boolean;
@@ -33,7 +33,7 @@ const songSliceInitialState: SongSliceState = {
 	songActiveId: null,
 	deletingSong: false,
 	songForm: null,
-	addingSongToSongSet: false,
+	addingSongToPlaylist: false,
 	isSongUnsaved: false,
 	song: null,
 	songFormIsDisabled: false,
@@ -46,14 +46,14 @@ export type SongSlice = SongSliceState & {
 	songDeleteClick: () => void;
 	setSongForm: (songForm: UseFormReturn<Song>) => void;
 	songDeleteConfirmClick: () => Promise<void>;
-	showAddSongToSongSetButton: () => boolean;
-	addSongToSongSetClick: () => Promise<void>;
+	showAddSongToPlaylistButton: () => boolean;
+	addSongToPlaylistClick: () => Promise<void>;
 	songActiveClick: ({
 		songId,
-		songSetId,
+		playlistId,
 	}: {
 		songId: string;
-		songSetId: string;
+		playlistId: string;
 	}) => () => Promise<void>;
 	setSong: (song: AppSong) => void;
 	songFormDisabledSet: (disabled: boolean) => void;
@@ -69,8 +69,8 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		songDeleteClick: songDeleteClick(get),
 		setSongForm: (songForm) => set({ songForm }),
 		songDeleteConfirmClick: songDeleteConfirmClick(get, set),
-		showAddSongToSongSetButton: showAddSongToSongSetButton(get),
-		addSongToSongSetClick: songAddToSongSetClick(get, set),
+		showAddSongToPlaylistButton: showAddSongToPlaylistButton(get),
+		addSongToPlaylistClick: songAddToPlaylistClick(get, set),
 		songActiveClick: songActiveClick(get),
 		setSong: (song) => set({ song }),
 		songFormDisabledSet: (disabled) => set({ songFormIsDisabled: disabled }),

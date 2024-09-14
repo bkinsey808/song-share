@@ -1,24 +1,24 @@
 import { FormEvent } from "react";
 
-import { songSetSave } from "@/actions/songSetSave";
+import { playlistSave } from "@/actions/playlistSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const songSetSubmit =
+export const playlistSubmit =
 	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songSetForm } = get();
+		const { playlistForm } = get();
 
-		if (!songSetForm) {
+		if (!playlistForm) {
 			console.error("no form");
 			return;
 		}
 
-		return songSetForm.handleSubmit(async (songSet) => {
-			set({ songSetFormIsDisabled: true });
+		return playlistForm.handleSubmit(async (playlist) => {
+			set({ playlistFormIsDisabled: true });
 			const { sessionCookieData } = useAppStore.getState();
 
 			if (!sessionCookieData) {
@@ -29,10 +29,10 @@ export const songSetSubmit =
 				return;
 			}
 
-			const { songSetId } = get();
-			const songSaveResult = await songSetSave({
-				songSet,
-				songSetId,
+			const { playlistId } = get();
+			const songSaveResult = await playlistSave({
+				playlist,
+				playlistId,
 			});
 
 			switch (songSaveResult.actionResultType) {
@@ -45,7 +45,7 @@ export const songSetSubmit =
 						if (!message) {
 							return;
 						}
-						songSetForm.setError(key, {
+						playlistForm.setError(key, {
 							type: "manual",
 							message,
 						});
@@ -57,7 +57,7 @@ export const songSetSubmit =
 
 					break;
 				case actionResultType.SUCCESS:
-					toast({ title: "Song Set details saved" });
+					toast({ title: "Playlist details saved" });
 					break;
 			}
 		})(e);

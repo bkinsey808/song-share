@@ -5,7 +5,7 @@ import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
-import { SongSetSchema } from "@/features/sections/song-set/schemas";
+import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -13,29 +13,29 @@ import { SongSetSchema } from "@/features/sections/song-set/schemas";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songSetGet = async (songSetId: string) => {
+export const playlistGet = async (playlistId: string) => {
 	try {
-		const songSetDoc = await db
+		const playlistDoc = await db
 			.collection(collection.SONG_SETS)
-			.doc(songSetId)
+			.doc(playlistId)
 			.get();
-		if (!songSetDoc.exists) {
+		if (!playlistDoc.exists) {
 			console.warn("Song set not found");
 			return actionErrorMessageGet("Song set not found");
 		}
-		const songSetData = songSetDoc.data();
+		const playlistData = playlistDoc.data();
 
-		const songSetParseResult = serverParse(SongSetSchema, songSetData);
-		if (!songSetParseResult.success) {
+		const playlistParseResult = serverParse(PlaylistSchema, playlistData);
+		if (!playlistParseResult.success) {
 			console.warn("Song data invalid");
 			return actionErrorMessageGet("Song data invalid");
 		}
 
-		const songSet = songSetParseResult.output;
+		const playlist = playlistParseResult.output;
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
-			songSet,
+			playlist,
 		};
 	} catch (error) {
 		console.warn("Error getting song set");

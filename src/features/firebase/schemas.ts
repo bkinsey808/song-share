@@ -6,14 +6,14 @@ export const UserPublicDocSchema = object({
 	username: string(),
 	picture: nullable(string()),
 	songActiveId: nullable(string()),
-	songSetActiveId: nullable(string()),
+	playlistActiveId: nullable(string()),
 });
 
 export const UserDocSchema = object({
 	email: string(),
 	roles: array(venum(role)),
 	songIds: array(string()),
-	songSetIds: array(string()),
+	playlistIds: array(string()),
 	songId: nullable(string()),
-	songSetId: nullable(string()),
+	playlistId: nullable(string()),
 });

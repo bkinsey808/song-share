@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 import { safeParse } from "valibot";
 
-import { SongSetSchema } from "../sections/song-set/schemas";
+import { PlaylistSchema } from "../sections/playlist/schemas";
 import { SongSchema } from "../sections/song/schemas";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { collection } from "@/features/firebase/consts";
@@ -15,7 +15,7 @@ import { UserPublicDocSchema } from "@/features/firebase/schemas";
 export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 	const params = useParams();
 	const fuid = params.fuid;
-	const { setFuid, setFollowing, setSong, setSongSet } = useAppStore();
+	const { setFuid, setFollowing, setSong, setPlaylist } = useAppStore();
 
 	useEffect(() => {
 		const unsubscribeFns: Unsubscribe[] = [];
@@ -77,31 +77,31 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 					unsubscribeFns.push(songUnsubscribe);
 				}
 
-				if (following.songSetActiveId) {
-					const songSetUnsubscribe = onSnapshot(
-						doc(db, collection.SONG_SETS, following.songSetActiveId),
-						(songSetSnapshot) => {
-							if (!songSetSnapshot.exists) {
+				if (following.playlistActiveId) {
+					const playlistUnsubscribe = onSnapshot(
+						doc(db, collection.SONG_SETS, following.playlistActiveId),
+						(playlistSnapshot) => {
+							if (!playlistSnapshot.exists) {
 								console.warn("Song set does not exist");
 								return;
 							}
-							const songSetData = songSetSnapshot.data();
-							if (!songSetData) {
+							const playlistData = playlistSnapshot.data();
+							if (!playlistData) {
 								console.warn("No song set data found");
 								return;
 							}
-							const songSetResult = safeParse(SongSetSchema, songSetData);
-							if (!songSetResult.success) {
+							const playlistResult = safeParse(PlaylistSchema, playlistData);
+							if (!playlistResult.success) {
 								console.warn("Invalid song set data");
 								return;
 							}
-							const songSet = songSetResult.output;
-							setSongSet(songSet);
-							const songSetForm = useAppStore.getState().songSetForm;
-							songSetForm?.reset?.(songSet);
+							const playlist = playlistResult.output;
+							setPlaylist(playlist);
+							const playlistForm = useAppStore.getState().playlistForm;
+							playlistForm?.reset?.(playlist);
 						},
 					);
-					unsubscribeFns.push(songSetUnsubscribe);
+					unsubscribeFns.push(playlistUnsubscribe);
 				}
 			},
 		);
@@ -113,7 +113,7 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 			setFuid(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fuid, setFuid, setFollowing, setSong, setSongSet]);
+	}, [fuid, setFuid, setFollowing, setSong, setPlaylist]);
 
 	return <>{children}</>;
 };

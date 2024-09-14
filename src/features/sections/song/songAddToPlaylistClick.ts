@@ -1,14 +1,14 @@
-import { songAddToSongSet } from "@/actions/songAddToSongSet";
+import { songAddToPlaylist } from "@/actions/songAddToPlaylist";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 
-export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
-	set({ addingSongToSongSet: true });
-	const { songId, songSetId } = get();
+export const songAddToPlaylistClick = (get: Get, set: Set) => async () => {
+	set({ addingSongToPlaylist: true });
+	const { songId, playlistId } = get();
 
 	try {
-		if (!songId || !songSetId) {
+		if (!songId || !playlistId) {
 			toast({
 				variant: "destructive",
 				title: "Cannot add song to song set",
@@ -16,9 +16,9 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 			return;
 		}
 
-		const result = await songAddToSongSet({
+		const result = await songAddToPlaylist({
 			songId,
-			songSetId,
+			playlistId,
 		});
 
 		if (result.actionResultType === actionResultType.ERROR) {
@@ -29,9 +29,9 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 			return;
 		}
 
-		const { song, songSet } = result;
+		const { song, playlist } = result;
 
-		set({ song, songSet });
+		set({ song, playlist });
 	} catch (error) {
 		toast({
 			variant: "destructive",
@@ -39,5 +39,5 @@ export const songAddToSongSetClick = (get: Get, set: Set) => async () => {
 		});
 	}
 
-	set({ addingSongToSongSet: false });
+	set({ addingSongToPlaylist: false });
 };

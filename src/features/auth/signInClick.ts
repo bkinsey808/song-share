@@ -23,7 +23,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 				throw new Error("Email is not defined");
 			}
 
-			const { setOpenAppModal, fuid, songIds, songSetIds } = get();
+			const { setOpenAppModal, fuid, songIds, playlistIds } = get();
 
 			const signInResult = await signIn(uid);
 
@@ -58,13 +58,13 @@ export const signInClick = (set: Set, get: Get) => () => {
 							sessionWarningTimestamp: sessionWarningTimestampGet(),
 						},
 						songIds: Array.from(new Set([...signInResult.songIds, ...songIds])),
-						songSetIds: Array.from(
-							new Set([...signInResult.songSetIds, ...songSetIds]),
+						playlistIds: Array.from(
+							new Set([...signInResult.playlistIds, ...playlistIds]),
 						),
 						songId: signInResult.songId,
-						songSetId: signInResult.songSetId,
+						playlistId: signInResult.playlistId,
 						songActiveId: signInResult.songActiveId,
-						songSetActiveId: signInResult.songSetActiveId,
+						playlistActiveId: signInResult.playlistActiveId,
 						fuid: uid === fuid ? null : uid,
 					});
 

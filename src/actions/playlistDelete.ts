@@ -1,7 +1,7 @@
 "use server";
 
+import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
-import { songSetGet } from "./songSetGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
@@ -14,9 +14,9 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songSetDelete = async (songSetId: string) => {
+export const playlistDelete = async (playlistId: string) => {
 	try {
-		if (!songSetId) {
+		if (!playlistId) {
 			return actionErrorMessageGet("Song set id is required");
 		}
 
@@ -34,30 +34,30 @@ export const songSetDelete = async (songSetId: string) => {
 		}
 		const { userDoc } = userDocResult;
 
-		const { songSetIds } = userDoc;
-		const newSongSetIds = songSetIds.filter((id) => id !== songSetId);
+		const { playlistIds } = userDoc;
+		const newPlaylistIds = playlistIds.filter((id) => id !== playlistId);
 
-		const songSetResult = await songSetGet(songSetId);
-		if (songSetResult.actionResultType === actionResultType.ERROR) {
-			return songSetResult;
+		const playlistResult = await playlistGet(playlistId);
+		if (playlistResult.actionResultType === actionResultType.ERROR) {
+			return playlistResult;
 		}
-		const { songSet } = songSetResult;
+		const { playlist } = playlistResult;
 
-		if (songSet.sharer !== uid) {
+		if (playlist.sharer !== uid) {
 			return actionErrorMessageGet("User does not own this song");
 		}
 
 		// delete the song set from the song sets collection
-		await db.collection(collection.SONG_SETS).doc(songSetId).delete();
+		await db.collection(collection.SONG_SETS).doc(playlistId).delete();
 
 		// update user doc songs with the deleted song removed
 		await db.collection(collection.USERS).doc(uid).update({
-			songSetIds: newSongSetIds,
+			playlistIds: newPlaylistIds,
 		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
-			songSetIds: newSongSetIds,
+			playlistIds: newPlaylistIds,
 		};
 	} catch (error) {
 		console.error({ error });

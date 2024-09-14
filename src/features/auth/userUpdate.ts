@@ -24,7 +24,7 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				console.warn(`Invalid data for user ${uid}`);
 				return;
 			}
-			const { songIds, songSetIds, songId, songSetId, email, roles } =
+			const { songIds, playlistIds, songId, playlistId, email, roles } =
 				userParseResult.output;
 			const { sessionCookieData } = get();
 			if (!sessionCookieData) {
@@ -34,9 +34,9 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 			const newSessionCookieData = { ...sessionCookieData, email, roles };
 			set({
 				songIds,
-				songSetIds,
+				playlistIds,
 				songId,
-				songSetId,
+				playlistId,
 				sessionCookieData: newSessionCookieData,
 			});
 		},
@@ -63,7 +63,7 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				console.warn(`Invalid data for user public ${uid}`);
 				return;
 			}
-			const { picture, songActiveId, songSetActiveId, username } =
+			const { picture, songActiveId, playlistActiveId, username } =
 				userPublicParseResult.output;
 			const { sessionCookieData } = get();
 			if (!sessionCookieData) {
@@ -73,7 +73,7 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 			const newSessionCookieData = { ...sessionCookieData, picture, username };
 			set({
 				songActiveId,
-				songSetActiveId,
+				playlistActiveId,
 				sessionCookieData: newSessionCookieData,
 			});
 		},

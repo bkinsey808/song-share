@@ -43,15 +43,15 @@ export const songDelete = async (songId: string) => {
 			return actionErrorMessageGet("User does not own this song");
 		}
 
-		const songSetIds = song.songSetIds;
-		const deleteSongSetPromises = songSetIds.map((songSetId) =>
-			db.collection(collection.SONG_SETS).doc(songSetId).delete(),
+		const playlistIds = song.playlistIds;
+		const deletePlaylistPromises = playlistIds.map((playlistId) =>
+			db.collection(collection.SONG_SETS).doc(playlistId).delete(),
 		);
-		const promiseResult = await Promise.allSettled(deleteSongSetPromises);
-		const failedSongSetDeletes = promiseResult.filter(
+		const promiseResult = await Promise.allSettled(deletePlaylistPromises);
+		const failedPlaylistDeletes = promiseResult.filter(
 			(result) => result.status === "rejected",
 		);
-		if (failedSongSetDeletes.length > 0) {
+		if (failedPlaylistDeletes.length > 0) {
 			return actionErrorMessageGet("Failed to delete song sets");
 		}
 

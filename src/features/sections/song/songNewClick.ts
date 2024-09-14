@@ -20,7 +20,7 @@ export const songNewClick = (get: Get, set: Set) => () => {
 		lyrics: "",
 		translation: "",
 		sharer: uid,
-		songSetIds: [],
+		playlistIds: [],
 	};
 
 	set({

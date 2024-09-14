@@ -1,13 +1,13 @@
 "use server";
 
+import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
-import { songSetGet } from "./songSetGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
-import { SongSet } from "@/features/sections/song-set/types";
+import { Playlist } from "@/features/sections/playlist/types";
 import { Song } from "@/features/sections/song/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -16,12 +16,12 @@ import { Song } from "@/features/sections/song/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songAddToSongSet = async ({
+export const songAddToPlaylist = async ({
 	songId,
-	songSetId,
+	playlistId,
 }: {
 	songId: string;
-	songSetId: string;
+	playlistId: string;
 }) => {
 	try {
 		const extendSessionResult = await sessionExtend();
@@ -38,42 +38,42 @@ export const songAddToSongSet = async ({
 		}
 		const existingSong = songResult.song;
 
-		const songSetResult = await songSetGet(songSetId);
-		if (songSetResult.actionResultType === actionResultType.ERROR) {
+		const playlistResult = await playlistGet(playlistId);
+		if (playlistResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Song set not found");
 		}
-		const existingSongSet = songSetResult.songSet;
+		const existingPlaylist = playlistResult.playlist;
 
-		if (existingSongSet.sharer !== uid) {
+		if (existingPlaylist.sharer !== uid) {
 			return actionErrorMessageGet(
 				"You are not authorized to add to this song",
 			);
 		}
 
-		const songSetSongIds = existingSongSet.songIds;
-		const newSongSet: SongSet = {
-			...existingSongSet,
-			songIds: songSetSongIds ? [...songSetSongIds, songId] : [songId],
+		const playlistSongIds = existingPlaylist.songIds;
+		const newPlaylist: Playlist = {
+			...existingPlaylist,
+			songIds: playlistSongIds ? [...playlistSongIds, songId] : [songId],
 		};
 
 		const newSong: Song = {
 			...existingSong,
-			songSetIds: existingSong.songSetIds
-				? [...existingSong.songSetIds, songSetId]
-				: [songSetId],
+			playlistIds: existingSong.playlistIds
+				? [...existingSong.playlistIds, playlistId]
+				: [playlistId],
 		};
 
 		await db.collection(collection.SONGS).doc(songId).update({
-			songSetIds: newSong.songSetIds,
+			playlistIds: newSong.playlistIds,
 		});
-		await db.collection(collection.SONG_SETS).doc(songSetId).update({
-			songIds: newSongSet.songIds,
+		await db.collection(collection.SONG_SETS).doc(playlistId).update({
+			songIds: newPlaylist.songIds,
 		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
 			song: newSong,
-			songSet: newSongSet,
+			playlist: newPlaylist,
 		};
 	} catch (error) {
 		return actionErrorMessageGet("Failed to add song to song set");

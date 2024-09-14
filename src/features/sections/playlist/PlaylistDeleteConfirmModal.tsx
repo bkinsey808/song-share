@@ -11,12 +11,12 @@ import {
 } from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
-export const SongSetDeleteConfirmModal = () => {
+export const PlaylistDeleteConfirmModal = () => {
 	const {
 		openAppModal,
 		setOpenAppModal,
-		deletingSongSet,
-		songSetDeleteConfirmClick,
+		deletingPlaylist,
+		playlistDeleteConfirmClick,
 	} = useAppStore();
 
 	const setOpen = useCallback(
@@ -28,7 +28,7 @@ export const SongSetDeleteConfirmModal = () => {
 
 	return (
 		<Modal
-			heading="Confirm Delete Song Set"
+			heading="Confirm Delete Playlist"
 			open={openAppModal === appModal.SONG_SET_DELETE_CONFIRM}
 			setOpen={setOpen}
 		>
@@ -41,10 +41,10 @@ export const SongSetDeleteConfirmModal = () => {
 			<ModalFooter>
 				<Button
 					variant="destructive"
-					disabled={deletingSongSet}
-					onClick={songSetDeleteConfirmClick}
+					disabled={deletingPlaylist}
+					onClick={playlistDeleteConfirmClick}
 				>
-					Delete Song Set
+					Delete Playlist
 				</Button>
 
 				<Button

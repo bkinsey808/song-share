@@ -2,13 +2,13 @@
 
 import { safeParse } from "valibot";
 
+import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
-import { songSetGet } from "./songSetGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
-import { SongSet } from "@/features/sections/song-set/types";
+import { Playlist } from "@/features/sections/playlist/types";
 import { SongSchema } from "@/features/sections/song/schemas";
 import { Song } from "@/features/sections/song/types";
 
@@ -20,10 +20,10 @@ import { Song } from "@/features/sections/song/types";
 
 export const songRemove = async ({
 	songId,
-	songSetId,
+	playlistId,
 }: {
 	songId: string;
-	songSetId: string;
+	playlistId: string;
 }) => {
 	try {
 		const sessionExtendResult = await sessionExtend();
@@ -32,25 +32,25 @@ export const songRemove = async ({
 		}
 		const { uid } = sessionExtendResult.sessionCookieData;
 
-		const songSetResult = await songSetGet(songSetId);
-		if (songSetResult.actionResultType === actionResultType.ERROR) {
+		const playlistResult = await playlistGet(playlistId);
+		if (playlistResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Song set not found");
 		}
 
-		const { songSet } = songSetResult;
-		if (songSet.sharer !== uid) {
+		const { playlist } = playlistResult;
+		if (playlist.sharer !== uid) {
 			return actionErrorMessageGet(
 				"You are not authorized to remove this song",
 			);
 		}
 
-		const newSongIds = songSet.songIds.filter((id) => id !== songId);
-		const newSongSet: SongSet = {
-			...songSet,
+		const newSongIds = playlist.songIds.filter((id) => id !== songId);
+		const newPlaylist: Playlist = {
+			...playlist,
 			songIds: newSongIds,
 		};
 
-		await db.collection(collection.SONG_SETS).doc(songSetId).update({
+		await db.collection(collection.SONG_SETS).doc(playlistId).update({
 			songIds: newSongIds,
 		});
 
@@ -67,18 +67,18 @@ export const songRemove = async ({
 			return actionErrorMessageGet("Invalid data for song");
 		}
 		const song = songParseResult.output;
-		const newSongSetIds = song.songSetIds.filter((id) => id !== songSetId);
+		const newPlaylistIds = song.playlistIds.filter((id) => id !== playlistId);
 		const newSong: Song = {
 			...song,
-			songSetIds: newSongSetIds,
+			playlistIds: newPlaylistIds,
 		};
 		await db.collection(collection.SONGS).doc(songId).update({
-			songSetIds: newSongSetIds,
+			playlistIds: newPlaylistIds,
 		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
-			songSet: newSongSet,
+			playlist: newPlaylist,
 			song: newSong,
 		};
 	} catch (error) {
