@@ -1,3 +1,4 @@
+import { QRSection } from "../sections/qr/QRSection";
 import { sectionId } from "@/features/sections/consts";
 import { SongLibrarySection } from "@/features/sections/song-library/SongLibrarySection";
 import { SongLibraryTitle } from "@/features/sections/song-library/SongLibraryTitle";
@@ -34,6 +35,10 @@ export const SECTIONS: Sections = {
 		title: SongLibraryTitle,
 		section: SongLibrarySection,
 	},
+	[sectionId.QR]: {
+		title: "QR",
+		section: QRSection,
+	},
 };
 
 const leftSections: SectionId[] = [sectionId.SONG, sectionId.SONG_SET];
@@ -41,6 +46,7 @@ const leftSections: SectionId[] = [sectionId.SONG, sectionId.SONG_SET];
 const rightSections: SectionId[] = [
 	sectionId.SONG_LIBRARY,
 	sectionId.SONG_SET_LIBRARY,
+	sectionId.QR,
 ];
 
 export const pageColumns = [leftSections, rightSections];

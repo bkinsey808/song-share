@@ -42,7 +42,7 @@ export const SongForm = () => {
 		addingSongToSongSet,
 		addSongToSongSetClick,
 		songFormIsDisabled,
-		songFormDisabledSet: songFormSetDisabled,
+		songFormDisabledSet,
 	} = useAppStore();
 
 	const defaultValues: Song = useMemo(
@@ -77,9 +77,9 @@ export const SongForm = () => {
 	useEffect(() => {
 		if (form) {
 			setSongForm(form);
-			songFormSetDisabled(false);
+			songFormDisabledSet(false);
 		}
-	}, [form, setSongForm, songFormSetDisabled]);
+	}, [form, setSongForm, songFormDisabledSet]);
 
 	return (
 		<div suppressHydrationWarning={true}>

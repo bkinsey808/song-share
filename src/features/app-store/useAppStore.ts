@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { FollowingSlice, createFollowingSlice } from "../following/slice";
+import { QRSlice, createQRSlice } from "../sections/qr/slice";
 import {
 	UserLibrarySlice,
 	createUserLibrarySlice,
@@ -39,7 +40,8 @@ export type AppSlice = ModalSlice &
 	SongLibrarySlice &
 	SongSetLibrarySlice &
 	UserLibrarySlice &
-	FollowingSlice;
+	FollowingSlice &
+	QRSlice;
 
 /** for security, these shall not be stored in localStorage */
 const omittedKeys: (keyof AppSlice)[] = [
@@ -69,6 +71,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSongSetLibrarySlice(...a),
 			...createUserLibrarySlice(...a),
 			...createFollowingSlice(...a),
+			...createQRSlice(...a),
 		}),
 		{
 			name: "app-store",
