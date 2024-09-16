@@ -4,14 +4,11 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 
-import { CreditsTitle } from "./CreditsTitle";
-import { LyricsTitle } from "./LyricsTitle";
 // import { KeySection } from "../key/KeySection.tsx.ignore";
 // import { KeyTitle } from "../key/KeyTitle.tsx.ignore";
 // import { ScaleSection } from "../scale/ScaleSection.tsx.ignore";
 // import { ScaleTitle } from "../scale/ScaleTitle.tsx.ignore";
 import { SongDeleteConfirmModal } from "./SongDeleteConfirmModal";
-import { TranslationTitle } from "./TranslationTitle";
 import { SongSchema } from "./schemas";
 import { Song } from "./types";
 import { Button } from "@/components/ui/button";
@@ -104,28 +101,10 @@ export const SongForm = () => {
 					/>
 
 					<SectionAccordion
-						sectionId={sectionId.CREDITS}
-						title={<CreditsTitle />}
+						sectionId={sectionId.LYICS}
+						title={song?.lyrics}
+						buttonLabel="Lyrics"
 					>
-						<FormField
-							name="credits"
-							control={form.control}
-							render={({ field }) => (
-								<FormItem>
-									<FormControl>
-										<Textarea
-											autoResize={true}
-											{...field}
-											disabled={songFormIsDisabled}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-					</SectionAccordion>
-
-					<SectionAccordion sectionId={sectionId.LYICS} title={<LyricsTitle />}>
 						<FormField
 							name="lyrics"
 							control={form.control}
@@ -146,10 +125,34 @@ export const SongForm = () => {
 
 					<SectionAccordion
 						sectionId={sectionId.TRANSLATION}
-						title={<TranslationTitle />}
+						title={song?.translation}
+						buttonLabel="Translation"
 					>
 						<FormField
 							name="translation"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Textarea
+											autoResize={true}
+											{...field}
+											disabled={songFormIsDisabled}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</SectionAccordion>
+
+					<SectionAccordion
+						sectionId={sectionId.CREDITS}
+						title={song?.credits}
+						buttonLabel="Credits"
+					>
+						<FormField
+							name="credits"
 							control={form.control}
 							render={({ field }) => (
 								<FormItem>

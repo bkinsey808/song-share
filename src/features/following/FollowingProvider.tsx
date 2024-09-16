@@ -15,7 +15,8 @@ import { UserPublicDocSchema } from "@/features/firebase/schemas";
 export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 	const params = useParams();
 	const fuid = params.fuid;
-	const { setFuid, setFollowing, setSong, setPlaylist } = useAppStore();
+	const { setFuid, setFollowing, setSong, playlistSet, playlistIdSet } =
+		useAppStore();
 
 	useEffect(() => {
 		const unsubscribeFns: Unsubscribe[] = [];
@@ -96,7 +97,8 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 								return;
 							}
 							const playlist = playlistResult.output;
-							setPlaylist(playlist);
+							playlistSet(playlist);
+							playlistIdSet(following.playlistActiveId ?? null);
 							const playlistForm = useAppStore.getState().playlistForm;
 							playlistForm?.reset?.(playlist);
 						},
@@ -113,7 +115,7 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 			setFuid(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fuid, setFuid, setFollowing, setSong, setPlaylist]);
+	}, [fuid, setFuid, setFollowing, setSong, playlistSet]);
 
 	return <>{children}</>;
 };

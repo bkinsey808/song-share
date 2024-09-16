@@ -27,9 +27,9 @@ export const PlaylistSection = () => {
 		playlist,
 		songLibrary,
 		playlistSubmit,
-		setIsPlaylistUnsaved,
+		playlistIsUnsavedSet,
 		playlistNewClick,
-		setPlaylistForm,
+		playlistFormSet,
 		playlistDeleteClick,
 		songRemoveClick,
 		songActiveId,
@@ -61,8 +61,8 @@ export const PlaylistSection = () => {
 
 	// keep unsavedPlaylist in sync with form state
 	useEffect(() => {
-		setIsPlaylistUnsaved(form.formState.isDirty);
-	}, [form.formState.isDirty, setIsPlaylistUnsaved]);
+		playlistIsUnsavedSet(form.formState.isDirty);
+	}, [form.formState.isDirty, playlistIsUnsavedSet]);
 
 	// handle load playlist from playlist library
 	useEffect(() => {
@@ -71,8 +71,8 @@ export const PlaylistSection = () => {
 
 	// set song form
 	useEffect(() => {
-		setPlaylistForm(form);
-	}, [form, setPlaylistForm]);
+		playlistFormSet(form);
+	}, [form, playlistFormSet]);
 
 	return (
 		<div suppressHydrationWarning={true}>

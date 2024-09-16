@@ -39,12 +39,13 @@ const playlistSliceInitialState: PlaylistSliceState = {
 export type PlaylistSlice = PlaylistSliceState & {
 	playlistSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
 	playlistNewClick: () => void;
-	setIsPlaylistUnsaved: (unsavedPlaylist: boolean) => void;
+	playlistIsUnsavedSet: (unsavedPlaylist: boolean) => void;
 	playlistDeleteClick: () => void;
-	setPlaylistForm: (playlistForm: UseFormReturn<Playlist>) => void;
+	playlistFormSet: (playlistForm: UseFormReturn<Playlist>) => void;
 	playlistDeleteConfirmClick: () => Promise<void>;
 	playlistActiveClick: (playlistId: string) => () => Promise<void>;
-	setPlaylist: (playlist: AppPlaylist) => void;
+	playlistSet: (playlist: AppPlaylist) => void;
+	playlistIdSet: (playlistId: string | null) => void;
 	songRemoveClick: ({
 		songId,
 		playlistId,
@@ -65,14 +66,15 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 		playlistSubmit: playlistSubmit(get, set),
 		playlistNewClick: playlistNewClick(get, set),
 		isPlaylistUnsaved: false,
-		setIsPlaylistUnsaved: (unsavedPlaylist) =>
+		playlistIsUnsavedSet: (unsavedPlaylist) =>
 			set({ isPlaylistUnsaved: unsavedPlaylist }),
 		playlistDeleteClick: playlistDeleteClick(get),
-		setPlaylistForm: (playlistForm) => set({ playlistForm }),
+		playlistFormSet: (playlistForm) => set({ playlistForm }),
 		playlistDeleteConfirmClick: playlistDeleteConfirmClick(get, set),
 		playlistLoadClick: playlistLoadClick(get, set),
 		playlistActiveClick: playlistActiveClick(get, set),
-		setPlaylist: (playlist) => set({ playlist }),
+		playlistSet: (playlist) => set({ playlist }),
+		playlistIdSet: (playlistId) => set({ playlistId }),
 		songRemoveClick: songRemoveClick(get, set),
 		playlistLibraryUnsubscribe: playlistLibraryUnsubscribe(get),
 		playlistFormDisabledSet: (disabled) =>

@@ -11,6 +11,7 @@ export const DashboardPageContent = () => {
 					{pageColumn.map((sectionId) => {
 						const Title = SECTIONS[sectionId]?.title;
 						const Section = SECTIONS[sectionId]?.section;
+						const buttonLabel = SECTIONS[sectionId]?.buttonLabel;
 
 						if (!Title || !Section) {
 							return null;
@@ -21,6 +22,7 @@ export const DashboardPageContent = () => {
 								key={sectionId}
 								sectionId={sectionId}
 								title={typeof Title === "string" ? Title : <Title />}
+								buttonLabel={buttonLabel}
 							>
 								<Section />
 							</SectionAccordion>

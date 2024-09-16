@@ -6,11 +6,8 @@ export const PlaylistTitle = () => {
 	const { playlist } = useAppStore();
 
 	return (
-		<div>
-			<span>Playlist{playlist?.playlistName ? `: ` : null}</span>
-			<span className="overflow-hidden text-ellipsis text-nowrap">
+		<span>
 				{playlist?.playlistName}
-			</span>
-		</div>
+		</span>
 	);
 };

@@ -21,6 +21,7 @@ export const DashboardPageContent = () => {
 								key={sectionId}
 								sectionId={sectionId}
 								title={typeof Title === "string" ? Title : <Title />}
+								buttonLabel={SECTIONS[sectionId]?.buttonLabel}
 							>
 								<Section />
 							</SectionAccordion>

@@ -2,16 +2,19 @@
 
 import { ReactNode, useEffect, useRef } from "react";
 
+import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { useOpenSection } from "@/features/section/slice";
 import { SectionId } from "@/features/sections/types";
 
 export const SectionAccordion = ({
 	title,
+	buttonLabel,
 	sectionId,
 	children,
 }: {
 	title: ReactNode;
+	buttonLabel?: ReactNode;
 	sectionId: SectionId;
 	children: ReactNode;
 }) => {
@@ -35,7 +38,7 @@ export const SectionAccordion = ({
 			className="my-[0.2rem] rounded border p-[0.2rem] [&:has(:focus-visible)]:border-current"
 		>
 			<summary
-				className="mb-[0.25rem] flex cursor-pointer flex-row flex-nowrap gap-[0.5rem]"
+				className="w-cursor-pointer mb-[0.25rem] flex flex-row flex-nowrap gap-[0.5rem] overflow-hidden text-nowrap"
 				onClick={(e) => {
 					e.preventDefault();
 					sectionToggle(sectionId);
@@ -45,12 +48,17 @@ export const SectionAccordion = ({
 					}
 				}}
 			>
-				<div>
-					<div className="transition-all [[data-open='true']>summary>div>&]:rotate-90">
+				<Button className="flex">
+					<div className="transition-all [[data-open='true']>summary>button>&]:rotate-90">
 						▶
 					</div>
+					<div>
+						{isOpen ? "Close" : "Open"} {buttonLabel}
+					</div>
+				</Button>
+				<div className="flex-grow overflow-hidden overflow-ellipsis">
+					{title}
 				</div>
-				{title}
 			</summary>
 			{children}
 		</details>

@@ -8,44 +8,41 @@ import { SongLibrarySection } from "@/features/sections/song-library/SongLibrary
 import { SongLibraryTitle } from "@/features/sections/song-library/SongLibraryTitle";
 import { SongSection } from "@/features/sections/song/SongSection";
 import { SongTitle } from "@/features/sections/song/SongTitle";
-import { SectionId } from "@/features/sections/types";
-
-type DashboardComponent = () => JSX.Element;
-type Sections = Partial<
-	Record<
-		SectionId,
-		{ title: DashboardComponent | string; section: DashboardComponent }
-	>
->;
+import { SectionId, Sections } from "@/features/sections/types";
 
 export const SECTIONS: Sections = {
-	[sectionId.SONG_SET]: {
+	[sectionId.PLAYLIST]: {
 		title: PlaylistTitle,
 		section: PlaylistSection,
+		buttonLabel: "Playlist",
 	},
-	[sectionId.SONG_SET_LIBRARY]: {
+	[sectionId.PLAYLIST_LIBRARY]: {
 		title: PlaylistLibraryTitle,
 		section: PlaylistLibrarySection,
+		buttonLabel: "Playlist Library",
 	},
 	[sectionId.SONG]: {
 		title: SongTitle,
 		section: SongSection,
+		buttonLabel: "Song",
 	},
 	[sectionId.SONG_LIBRARY]: {
 		title: SongLibraryTitle,
 		section: SongLibrarySection,
+		buttonLabel: "Song Library",
 	},
 	[sectionId.QR]: {
 		title: "QR",
 		section: QRSection,
+		buttonLabel: "QR",
 	},
 };
 
-const leftSections: SectionId[] = [sectionId.SONG_SET, sectionId.SONG];
+const leftSections: SectionId[] = [sectionId.PLAYLIST, sectionId.SONG];
 // const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
 const rightSections: SectionId[] = [
 	sectionId.SONG_LIBRARY,
-	sectionId.SONG_SET_LIBRARY,
+	sectionId.PLAYLIST_LIBRARY,
 	sectionId.QR,
 ];
 
