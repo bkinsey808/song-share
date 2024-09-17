@@ -8,11 +8,8 @@ export const PlaylistLibraryTitle = () => {
 	const numberOfPlaylists = getKeys(playlistLibrary).length;
 
 	return (
-		<>
-			<div>Playlist Library{numberOfPlaylists ? `: ` : null}</div>
-			<div className="overflow-hidden text-ellipsis text-nowrap">
-				({numberOfPlaylists})
-			</div>
-		</>
+		<span>
+			{numberOfPlaylists} playlist{numberOfPlaylists === 1 ? "" : "s"}
+		</span>
 	);
 };

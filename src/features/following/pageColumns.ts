@@ -38,7 +38,7 @@ export const SECTIONS: Sections = {
 	},
 };
 
-const leftSections: SectionId[] = [sectionId.PLAYLIST, sectionId.SONG];
+const leftSections: SectionId[] = [sectionId.SONG, sectionId.PLAYLIST];
 // const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
 const rightSections: SectionId[] = [
 	sectionId.SONG_LIBRARY,

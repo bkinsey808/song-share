@@ -10,11 +10,13 @@ import { SectionId } from "@/features/sections/types";
 export const SectionAccordion = ({
 	title,
 	buttonLabel,
+	buttonVariant,
 	sectionId,
 	children,
 }: {
 	title: ReactNode;
 	buttonLabel?: ReactNode;
+	buttonVariant?: Parameters<typeof Button>[0]["variant"];
 	sectionId: SectionId;
 	children: ReactNode;
 }) => {
@@ -48,7 +50,7 @@ export const SectionAccordion = ({
 					}
 				}}
 			>
-				<Button className="flex">
+				<Button className="flex" variant={buttonVariant}>
 					<div className="transition-all [[data-open='true']>summary>button>&]:rotate-90">
 						▶
 					</div>

@@ -104,6 +104,7 @@ export const SongForm = () => {
 						sectionId={sectionId.LYICS}
 						title={song?.lyrics}
 						buttonLabel="Lyrics"
+						buttonVariant="secondary"
 					>
 						<FormField
 							name="lyrics"
@@ -127,6 +128,7 @@ export const SongForm = () => {
 						sectionId={sectionId.TRANSLATION}
 						title={song?.translation}
 						buttonLabel="Translation"
+						buttonVariant="secondary"
 					>
 						<FormField
 							name="translation"
@@ -150,6 +152,7 @@ export const SongForm = () => {
 						sectionId={sectionId.CREDITS}
 						title={song?.credits}
 						buttonLabel="Credits"
+						buttonVariant="secondary"
 					>
 						<FormField
 							name="credits"

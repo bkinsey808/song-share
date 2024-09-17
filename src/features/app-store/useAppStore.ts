@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 import { FollowingSlice, createFollowingSlice } from "../following/slice";
-import { QRSlice, createQRSlice } from "../sections/qr/slice";
 import {
 	UserLibrarySlice,
 	createUserLibrarySlice,
@@ -18,6 +17,7 @@ import {
 	PlaylistSlice,
 	createPlaylistSlice,
 } from "@/features/sections/playlist/slice";
+import { QRSlice, createQRSlice } from "@/features/sections/qr/slice";
 import {
 	SongLibrarySlice,
 	createSongLibrarySlice,
