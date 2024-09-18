@@ -2,6 +2,7 @@ import { Unsubscribe } from "firebase/firestore";
 import { MouseEventHandler } from "react";
 import { StateCreator } from "zustand";
 
+import { songLibraryAddSongIds } from "./songLibraryAddSongIds";
 import { songLibraryUnsubscribe } from "./songLibraryUnsubscribe";
 import { songLibraryUpdate } from "./songLibraryUpdate";
 import { songLoadClick } from "./songLoadClick";
@@ -26,6 +27,7 @@ export type SongLibrarySlice = SongLibrarySliceState & {
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 	songLibraryUpdate: () => void;
 	songLibraryUnsubscribe: () => void;
+	songLibraryAddSongIds: (songIds: string[]) => void;
 };
 
 type AppSongLibrarySlice = StateCreator<AppSlice, [], [], SongLibrarySlice>;
@@ -37,5 +39,6 @@ export const createSongLibrarySlice: AppSongLibrarySlice = (set, get) => {
 		songLoadClick: songLoadClick(get, set),
 		songLibraryUpdate: songLibraryUpdate(get, set),
 		songLibraryUnsubscribe: songLibraryUnsubscribe(get),
+		songLibraryAddSongIds: songLibraryAddSongIds(get, set),
 	};
 };

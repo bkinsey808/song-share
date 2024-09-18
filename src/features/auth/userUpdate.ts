@@ -1,10 +1,13 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
-import { collection } from "../firebase/consts";
-import { db } from "../firebase/firebaseClient";
-import { UserDocSchema, UserPublicDocSchema } from "../firebase/schemas";
 import { Get, Set } from "@/features/app-store/types";
+import { collection } from "@/features/firebase/consts";
+import { db } from "@/features/firebase/firebaseClient";
+import {
+	UserDocSchema,
+	UserPublicDocSchema,
+} from "@/features/firebase/schemas";
 
 export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 	const userUnsubscribeFn = onSnapshot(

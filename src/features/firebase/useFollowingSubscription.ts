@@ -49,6 +49,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 				setFollowing(following);
 
 				if (following.songActiveId) {
+					if (following.playlistActiveId) {
+						useAppStore
+							.getState()
+							.playlistLibraryAddPlaylistIds([following.playlistActiveId]);
+					}
 					const songUnsubscribe = onSnapshot(
 						doc(db, collection.SONGS, following.songActiveId),
 						(songSnapshot) => {
@@ -98,6 +103,8 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							playlistIdSet(following.playlistActiveId ?? null);
 							const playlistForm = useAppStore.getState().playlistForm;
 							playlistForm?.reset?.(playlist);
+							const songIds = playlist.songIds;
+							useAppStore.getState().songLibraryAddSongIds(songIds);
 						},
 					);
 					unsubscribeFns.push(playlistUnsubscribe);

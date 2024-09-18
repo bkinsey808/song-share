@@ -3,8 +3,8 @@
 import { ReactNode, useEffect } from "react";
 
 import { useAppStore } from "@/features/app-store/useAppStore";
+import { useUserSubscription } from "@/features/auth/useUserSubscription";
 import { useLibrarySubscription } from "@/features/firebase/useLibrarySubscription";
-import { useUserSubscription } from "@/features/firebase/useUserSubscription";
 
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 	const { fuid, setFuid } = useAppStore();
