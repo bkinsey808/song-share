@@ -12,17 +12,15 @@ export const PlaylistLibrarySection = () => {
 		playlistLoadClick,
 		playlistActiveId,
 		playlistActiveClick,
-		usernameGet,
 	} = useAppStore();
 	const playlistIds = getKeys(playlistLibrary);
 
 	return (
 		<section data-title="Playlist Library Section" className="p-[1rem]">
-			<Grid gridClassName="grid-cols-[1.5rem,3fr,2fr,1fr]">
+			<Grid gridClassName="grid-cols-[1.5rem,3fr,1fr]">
 				<GridHeader>
 					<div></div>
 					<div>Playlist Name</div>
-					<div>Sharer</div>
 					<div>Options</div>
 				</GridHeader>
 				<RadioGroup
@@ -39,7 +37,6 @@ export const PlaylistLibrarySection = () => {
 								onClick={playlistActiveClick(playlistId)}
 							/>
 							<div>{playlistLibrary[playlistId].playlistName}</div>
-							<div>{usernameGet(playlistLibrary[playlistId].sharer)}</div>
 							<div>
 								<Button onClick={playlistLoadClick(playlistId)}>Load</Button>
 							</div>

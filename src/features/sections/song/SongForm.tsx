@@ -79,7 +79,7 @@ export const SongForm = () => {
 	}, [form, setSongForm, songFormDisabledSet]);
 
 	return (
-		<div suppressHydrationWarning={true}>
+		<div>
 			<SongDeleteConfirmModal />
 			<Form {...form}>
 				<form onSubmit={songSubmit}>

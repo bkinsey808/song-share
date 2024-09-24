@@ -1,7 +1,8 @@
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const SongFollowing = () => {
-	const { song } = useAppStore();
+	const { songId, songLibrary } = useAppStore();
+	const song = songId ? songLibrary[songId] : undefined;
 	const { credits, lyrics, translation } = song ?? {};
 
 	return (

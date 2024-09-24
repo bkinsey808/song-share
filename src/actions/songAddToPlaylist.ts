@@ -53,13 +53,15 @@ export const songAddToPlaylist = async ({
 		const playlistSongIds = existingPlaylist.songIds;
 		const newPlaylist: Playlist = {
 			...existingPlaylist,
-			songIds: playlistSongIds ? [...playlistSongIds, songId] : [songId],
+			songIds: playlistSongIds
+				? Array.from(new Set([...playlistSongIds, songId]))
+				: [songId],
 		};
 
 		const newSong: Song = {
 			...existingSong,
 			playlistIds: existingSong.playlistIds
-				? [...existingSong.playlistIds, playlistId]
+				? Array.from(new Set([...existingSong.playlistIds, playlistId]))
 				: [playlistId],
 		};
 

@@ -7,5 +7,9 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 export const SongSection = () => {
 	const { fuid } = useAppStore();
 
-	return <>{fuid ? <SongFollowing /> : <SongForm />}</>;
+	return (
+		<section data-title="Song Section">
+			{fuid ? <SongFollowing /> : <SongForm />}
+		</section>
+	);
 };

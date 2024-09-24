@@ -34,7 +34,6 @@ export const PlaylistForm = () => {
 		songRemoveClick,
 		songActiveId,
 		songActiveClick,
-		usernameGet,
 		fuid,
 		songLoadClick,
 	} = useAppStore();
@@ -52,7 +51,7 @@ export const PlaylistForm = () => {
 		[],
 	);
 
-	const songIds = playlist?.songIds ?? [];
+	const songIds = Array.from(new Set(playlist?.songIds)) ?? [];
 
 	const form = useForm<Playlist>({
 		resolver: valibotResolver(PlaylistSchema),
@@ -93,11 +92,10 @@ export const PlaylistForm = () => {
 					/>
 
 					<div className="p-[1rem]">
-						<Grid gridClassName="grid-cols-[1.5rem,3fr,2fr,1fr]">
+						<Grid gridClassName="grid-cols-[1.5rem,2fr,1fr]">
 							<GridHeader>
 								<div></div>
 								<div>Song Name</div>
-								<div>Sharer</div>
 								<div>Options</div>
 							</GridHeader>
 							<RadioGroup
@@ -116,7 +114,6 @@ export const PlaylistForm = () => {
 												onClick={songActiveClick({ songId, playlistId })}
 											/>
 											<div>{songLibrary[songId]?.songName}</div>
-											<div>{usernameGet(songLibrary[songId]?.sharer)}</div>
 											<div className="flex gap-[0.5rem]">
 												<Button onClick={songLoadClick(songId)}>Load</Button>
 												<Button
