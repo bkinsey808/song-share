@@ -33,19 +33,21 @@ export const playlistActiveSet = async (playlistId: string | null) => {
 		if (playlistId) {
 			const playlistResult = await playlistGet(playlistId);
 			if (playlistResult.actionResultType === actionResultType.ERROR) {
-				return actionErrorMessageGet("Song set not found");
+				return actionErrorMessageGet("Playlist not found");
 			}
 			const playlist = playlistResult.playlist;
-			const { songIds } = playlist;
+			const { songs } = playlist;
 
 			if (
-				songIds.length > 0 &&
-				(!songActiveId || (songActiveId && !songIds.includes(songActiveId)))
+				songs.length > 0 &&
+				(!songActiveId ||
+					(songActiveId &&
+						!songs.find(({ songId }) => songId === songActiveId)))
 			) {
-				await db
-					.collection(collection.USERS_PUBLIC)
-					.doc(uid)
-					.update({ playlistActiveId: playlistId, songActiveId: songIds[0] });
+				await db.collection(collection.USERS_PUBLIC).doc(uid).update({
+					playlistActiveId: playlistId,
+					songActiveId: songs[0].songId,
+				});
 			} else {
 				await db
 					.collection(collection.USERS_PUBLIC)

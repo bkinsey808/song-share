@@ -40,7 +40,7 @@ export const songAddToPlaylist = async ({
 
 		const playlistResult = await playlistGet(playlistId);
 		if (playlistResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("Song set not found");
+			return actionErrorMessageGet("Playlist not found");
 		}
 		const existingPlaylist = playlistResult.playlist;
 
@@ -50,12 +50,10 @@ export const songAddToPlaylist = async ({
 			);
 		}
 
-		const playlistSongIds = existingPlaylist.songIds;
+		const playlistSongs = existingPlaylist.songs;
 		const newPlaylist: Playlist = {
 			...existingPlaylist,
-			songIds: playlistSongIds
-				? Array.from(new Set([...playlistSongIds, songId]))
-				: [songId],
+			songs: playlistSongs ? [...playlistSongs, { songId }] : [{ songId }],
 		};
 
 		const newSong: Song = {
@@ -69,7 +67,7 @@ export const songAddToPlaylist = async ({
 			playlistIds: newSong.playlistIds,
 		});
 		await db.collection(collection.SONG_SETS).doc(playlistId).update({
-			songIds: newPlaylist.songIds,
+			songs: newPlaylist.songs,
 		});
 
 		return {

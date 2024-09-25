@@ -1,8 +1,9 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 
 import { PlaylistDeleteConfirmModal } from "./PlaylistDeleteConfirmModal";
 import { PlaylistSchema } from "./schemas";
@@ -17,6 +18,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+	Sortable,
+	SortableDragHandle,
+	SortableItem,
+} from "@/components/ui/sortable";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 
@@ -43,7 +49,7 @@ export const PlaylistForm = () => {
 			const defaultPlaylist: Playlist = {
 				playlistName: playlist?.playlistName ?? "",
 				sharer: playlist?.sharer ?? "",
-				songIds: playlist?.songIds ?? [],
+				songs: playlist?.songs ?? [],
 			};
 			return defaultPlaylist;
 		},
@@ -51,11 +57,16 @@ export const PlaylistForm = () => {
 		[],
 	);
 
-	const songIds = Array.from(new Set(playlist?.songIds)) ?? [];
+	const songs = playlist?.songs;
 
 	const form = useForm<Playlist>({
 		resolver: valibotResolver(PlaylistSchema),
 		defaultValues,
+	});
+
+	const { fields, append, move, remove } = useFieldArray({
+		control: form.control,
+		name: "songs",
 	});
 
 	// keep unsavedPlaylist in sync with form state
@@ -103,28 +114,68 @@ export const PlaylistForm = () => {
 								id="songActiveId"
 								value={songActiveId ?? ""}
 							>
-								{playlistId &&
-									songIds.map((songId) => (
-										<GridRow key={songId}>
-											<RadioGroupItem
-												className="self-center"
-												id={songId}
-												disabled={!!fuid}
-												value={songId}
-												onClick={songActiveClick({ songId, playlistId })}
-											/>
-											<div>{songLibrary[songId]?.songName}</div>
-											<div className="flex gap-[0.5rem]">
-												<Button onClick={songLoadClick(songId)}>Load</Button>
-												<Button
-													variant="destructive"
-													onClick={songRemoveClick({ songId, playlistId })}
-												>
-													Remove
-												</Button>
-											</div>
-										</GridRow>
-									))}
+								<Sortable
+									value={fields}
+									onMove={({ activeIndex, overIndex }) =>
+										move(activeIndex, overIndex)
+									}
+									overlay={
+										<div className="grid grid-cols-[1.5rem,2fr,1fr] gap-[0.5rem]">
+											<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
+											<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
+											<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
+										</div>
+									}
+								>
+									{playlistId &&
+										fields.map((field, index) => {
+											const songId = field.songId;
+											return (
+												<SortableItem key={field.id} value={field.id} asChild>
+													<GridRow key={songId}>
+														<div className="align-center grid justify-center">
+															<RadioGroupItem
+																className="self-center"
+																id={songId}
+																disabled={!!fuid}
+																value={songId}
+																onClick={songActiveClick({
+																	songId,
+																	playlistId,
+																})}
+															/>
+														</div>
+														<div>{songLibrary[songId]?.songName}</div>
+														<div className="flex gap-[0.5rem]">
+															<SortableDragHandle
+																variant="outline"
+																size="icon"
+																className="size-8 shrink-0"
+															>
+																<DragHandleDots2Icon
+																	className="size-4"
+																	aria-hidden="true"
+																/>
+															</SortableDragHandle>
+
+															<Button onClick={songLoadClick(songId)}>
+																Load
+															</Button>
+															<Button
+																variant="destructive"
+																onClick={songRemoveClick({
+																	songId,
+																	playlistId,
+																})}
+															>
+																Remove
+															</Button>
+														</div>
+													</GridRow>
+												</SortableItem>
+											);
+										})}
+								</Sortable>
 							</RadioGroup>
 						</Grid>
 					</div>

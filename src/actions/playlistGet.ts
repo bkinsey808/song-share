@@ -20,8 +20,8 @@ export const playlistGet = async (playlistId: string) => {
 			.doc(playlistId)
 			.get();
 		if (!playlistDoc.exists) {
-			console.warn("Song set not found");
-			return actionErrorMessageGet("Song set not found");
+			console.warn("Playlist not found");
+			return actionErrorMessageGet("Playlist not found");
 		}
 		const playlistData = playlistDoc.data();
 

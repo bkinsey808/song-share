@@ -34,7 +34,7 @@ export const songRemove = async ({
 
 		const playlistResult = await playlistGet(playlistId);
 		if (playlistResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("Song set not found");
+			return actionErrorMessageGet("Playlist not found");
 		}
 
 		const { playlist } = playlistResult;
@@ -44,14 +44,14 @@ export const songRemove = async ({
 			);
 		}
 
-		const newSongIds = playlist.songIds.filter((id) => id !== songId);
+		const newSongs = playlist.songs.filter((song) => song.songId !== songId);
 		const newPlaylist: Playlist = {
 			...playlist,
-			songIds: newSongIds,
+			songs: newSongs,
 		};
 
 		await db.collection(collection.SONG_SETS).doc(playlistId).update({
-			songIds: newSongIds,
+			songs: newSongs,
 		});
 
 		const songResult = await db.collection(collection.SONGS).doc(songId).get();

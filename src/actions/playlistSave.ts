@@ -35,13 +35,15 @@ const saveOrCreatePlaylist = async (
 	if (playlist.sharer && playlist.sharer !== uid) {
 		throw new Error("User does not own this playlist");
 	}
+
 	if (!playlist.sharer) {
 		playlist.sharer = uid;
 	}
+
 	if (playlistId) {
 		const playlistResult = await playlistGet(playlistId);
 		if (playlistResult.actionResultType === actionResultType.ERROR) {
-			throw new Error("Song set not found");
+			throw new Error("Playlist not found");
 		}
 		if (playlistResult.playlist.sharer !== uid) {
 			throw new Error("User does not own this playlist");
@@ -49,6 +51,7 @@ const saveOrCreatePlaylist = async (
 		await db.collection(collection.SONG_SETS).doc(playlistId).set(playlist);
 		return playlistId;
 	}
+
 	const result = await db.collection(collection.SONG_SETS).add(playlist);
 	playlistId = result.id;
 	return playlistId;
@@ -86,7 +89,7 @@ export const playlistSave = async ({
 		if (playlistId) {
 			const playlistResult = await playlistGet(playlistId);
 			if (playlistResult.actionResultType === actionResultType.ERROR) {
-				return getFormError("Song set not found");
+				return getFormError("Playlist not found");
 			}
 			if (
 				!!playlistResult.playlist.sharer &&

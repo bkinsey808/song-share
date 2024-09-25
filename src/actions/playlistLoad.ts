@@ -25,7 +25,7 @@ export const playlistLoad = async (playlistId: string) => {
 
 		const playlistResult = await playlistGet(playlistId);
 		if (playlistResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("Song set not found");
+			return actionErrorMessageGet("Playlist not found");
 		}
 
 		const userDocResult = await userDocGet();

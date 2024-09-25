@@ -44,7 +44,7 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	const playlist: Playlist = {
 		playlistName: "",
 		sharer: uid ?? "",
-		songIds: [],
+		songs: [],
 	};
 	set({
 		playlistId: null,

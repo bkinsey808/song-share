@@ -12,5 +12,10 @@ export const PlaylistSchema = object({
 		minLength(3, "Playlist Name must be at least 3 characters"),
 	),
 	sharer: string(),
-	songIds: array(string()),
+	// songIds: array(string()),
+	songs: array(
+		object({
+			songId: string(),
+		}),
+	),
 });

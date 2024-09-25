@@ -1,4 +1,10 @@
-import { ButtonHTMLAttributes, createContext, useContext } from "react";
+import {
+	ButtonHTMLAttributes,
+	HTMLAttributes,
+	createContext,
+	forwardRef,
+	useContext,
+} from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -30,7 +36,7 @@ export const GridHeader = ({
 	return (
 		<div
 			className={cn(
-				"mb-[0.5rem] grid grid-flow-col border-b border-[currentColor] font-bold",
+				"mb-[0.5rem] grid grid-flow-col gap-[0.5rem] border-b border-[currentColor] font-bold",
 				gridClassName,
 				className,
 			)}
@@ -39,20 +45,22 @@ export const GridHeader = ({
 	);
 };
 
-export const GridRow = ({
-	className,
-	...props
-}: ButtonHTMLAttributes<HTMLDivElement>) => {
+export const GridRow = forwardRef<
+	HTMLDivElement,
+	HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
 	const { gridClassName } = useContext(GridContext);
 
 	return (
 		<div
+			ref={ref}
 			className={cn(
-				"grid grid-flow-col items-baseline",
+				"grid grid-flow-col items-baseline gap-[0.5rem]",
 				gridClassName,
 				className,
 			)}
 			{...props}
 		/>
 	);
-};
+});
+GridRow.displayName = "GridRow";

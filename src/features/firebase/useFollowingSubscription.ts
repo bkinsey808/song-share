@@ -85,7 +85,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 						doc(db, collection.SONG_SETS, following.playlistActiveId),
 						(playlistSnapshot) => {
 							if (!playlistSnapshot.exists) {
-								console.warn("Song set does not exist");
+								console.warn("Playlist does not exist");
 								return;
 							}
 							const playlistData = playlistSnapshot.data();
@@ -103,7 +103,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							playlistIdSet(following.playlistActiveId ?? null);
 							const playlistForm = useAppStore.getState().playlistForm;
 							playlistForm?.reset?.(playlist);
-							const songIds = playlist.songIds;
+							const songIds = playlist.songs.map(({ songId }) => songId);
 							useAppStore.getState().songLibraryAddSongIds(songIds);
 						},
 					);

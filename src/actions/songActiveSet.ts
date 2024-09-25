@@ -50,12 +50,12 @@ export const songActiveSet = async ({
 				.get();
 
 			if (!playlistResult.exists) {
-				return actionErrorMessageGet("Song set not found");
+				return actionErrorMessageGet("Playlist not found");
 			}
 
 			const playlist = playlistResult.data();
 			if (!playlist) {
-				return actionErrorMessageGet("Song set not found");
+				return actionErrorMessageGet("Playlist not found");
 			}
 
 			const playlistParseResult = safeParse(PlaylistSchema, playlist);
@@ -63,8 +63,8 @@ export const songActiveSet = async ({
 				return actionErrorMessageGet("Invalid playlist data");
 			}
 			const playlistData = playlistParseResult.output;
-			const { songIds } = playlistData;
-			if (songId && !songIds.includes(songId)) {
+			const { songs } = playlistData;
+			if (songId && !songs.find((song) => song.songId === songId)) {
 				return actionErrorMessageGet("Song not in playlist");
 			}
 		}

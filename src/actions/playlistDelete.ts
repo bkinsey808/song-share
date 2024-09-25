@@ -17,7 +17,7 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 export const playlistDelete = async (playlistId: string) => {
 	try {
 		if (!playlistId) {
-			return actionErrorMessageGet("Song set id is required");
+			return actionErrorMessageGet("Playlist id is required");
 		}
 
 		const extendSessionResult = await sessionExtend();

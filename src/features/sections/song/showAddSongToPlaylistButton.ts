@@ -6,10 +6,10 @@ export const showAddSongToPlaylistButton = (get: Get) => () => {
 		return false;
 	}
 
-	const songIds = playlist.songIds;
-	if (!songIds) {
+	const songs = playlist.songs;
+	if (!songs) {
 		return false;
 	}
 
-	return !songIds.includes(songId);
+	return !songs.find((song) => song.songId === songId);
 };

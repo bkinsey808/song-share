@@ -17,7 +17,7 @@ export const playlistNewClick = (get: Get, set: Set) => () => {
 	const playlist: Playlist = {
 		playlistName: "",
 		sharer: uid,
-		songIds: [],
+		songs: [],
 	};
 
 	set({

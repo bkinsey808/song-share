@@ -34,7 +34,7 @@ export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
 			doc(db, collection.SONG_SETS, subscribePlaylistId),
 			(playlistSnapshot) => {
 				if (!playlistSnapshot.exists) {
-					console.warn(`Song set ${subscribePlaylistId} does not exist`);
+					console.warn(`Playlist ${subscribePlaylistId} does not exist`);
 					return;
 				}
 				const playlistData = playlistSnapshot.data();

@@ -3,15 +3,15 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 export const PlaylistFollowing = () => {
 	const { playlistId, songLibrary, playlistLibrary } = useAppStore();
 	const playlist = playlistId ? playlistLibrary[playlistId] : undefined;
-	const songIds = playlist?.songIds ?? [];
+	const songs = playlist?.songs ?? [];
 
 	return (
 		<div className="flex flex-col gap-[1rem]">
-			{songIds.length > 0 ? (
+			{songs.length > 0 ? (
 				<div>
 					<h2 className="border-b border-[currentColor] font-bold">Songs</h2>
 					<ul>
-						{songIds.map((songId) => (
+						{songs.map(({ songId }) => (
 							<li key={songId}>{songLibrary[songId]?.songName}</li>
 						))}
 					</ul>
