@@ -31,7 +31,7 @@ export const SongForm = () => {
 		songId,
 		song,
 		songSubmit,
-		setIsSongUnsaved,
+		songIsUnsavedSet,
 		songNewClick,
 		setSongForm,
 		songDeleteClick,
@@ -62,8 +62,8 @@ export const SongForm = () => {
 
 	// keep unsavedSong in sync with form state
 	useEffect(() => {
-		setIsSongUnsaved(form.formState.isDirty);
-	}, [form.formState.isDirty, setIsSongUnsaved]);
+		songIsUnsavedSet(form.formState.isDirty);
+	}, [form.formState.isDirty, songIsUnsavedSet]);
 
 	// handle load song from song library
 	useEffect(() => {

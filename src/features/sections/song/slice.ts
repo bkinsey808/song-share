@@ -42,12 +42,12 @@ const songSliceInitialState: SongSliceState = {
 export type SongSlice = SongSliceState & {
 	songSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
 	songNewClick: () => void;
-	setIsSongUnsaved: (unsavedSong: boolean) => void;
+	songIsUnsavedSet: (unsavedSong: boolean) => void;
 	songDeleteClick: () => void;
 	setSongForm: (songForm: UseFormReturn<Song>) => void;
 	songDeleteConfirmClick: () => Promise<void>;
 	showAddSongToPlaylistButton: () => boolean;
-	addSongToPlaylistClick: () => Promise<void>;
+	addSongToPlaylistClick: () => void;
 	songActiveClick: ({
 		songId,
 		playlistId,
@@ -65,7 +65,7 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		...songSliceInitialState,
 		songSubmit: songSubmit(get, set),
 		songNewClick: songNewClick(get, set),
-		setIsSongUnsaved: (unsavedSong) => set({ isSongUnsaved: unsavedSong }),
+		songIsUnsavedSet: (unsavedSong) => set({ isSongUnsaved: unsavedSong }),
 		songDeleteClick: songDeleteClick(get),
 		setSongForm: (songForm) => set({ songForm }),
 		songDeleteConfirmClick: songDeleteConfirmClick(get, set),

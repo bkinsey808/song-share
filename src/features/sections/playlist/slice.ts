@@ -19,7 +19,7 @@ type PlaylistSliceState = {
 	playlistId: string | null;
 	playlistActiveId: string | null;
 	playlist: AppPlaylist | null;
-	isPlaylistUnsaved: boolean;
+	playlistIsUnsaved: boolean;
 	deletingPlaylist: boolean;
 	playlistForm: UseFormReturn<Playlist> | null;
 	playlistFormIsDisabled: boolean;
@@ -29,7 +29,7 @@ const playlistSliceInitialState: PlaylistSliceState = {
 	playlistId: null,
 	playlistActiveId: null,
 	playlist: null,
-	isPlaylistUnsaved: false,
+	playlistIsUnsaved: false,
 	deletingPlaylist: false,
 	playlistForm: null,
 	playlistFormIsDisabled: false,
@@ -57,9 +57,9 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 		...playlistSliceInitialState,
 		playlistSubmit: playlistSubmit(get, set),
 		playlistNewClick: playlistNewClick(get, set),
-		isPlaylistUnsaved: false,
+		playlistIsUnsaved: false,
 		playlistIsUnsavedSet: (unsavedPlaylist) =>
-			set({ isPlaylistUnsaved: unsavedPlaylist }),
+			set({ playlistIsUnsaved: unsavedPlaylist }),
 		playlistDeleteClick: playlistDeleteClick(get),
 		playlistFormSet: (playlistForm) => set({ playlistForm }),
 		playlistDeleteConfirmClick: playlistDeleteConfirmClick(get, set),

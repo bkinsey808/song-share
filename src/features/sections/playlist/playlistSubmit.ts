@@ -29,11 +29,12 @@ export const playlistSubmit =
 				return;
 			}
 
-			const { playlistId } = get();
+			const { playlistId, playlistIsUnsavedSet } = get();
 			const songSaveResult = await playlistSave({
 				playlist,
 				playlistId,
 			});
+			playlistIsUnsavedSet(false);
 
 			switch (songSaveResult.actionResultType) {
 				case actionResultType.ERROR:

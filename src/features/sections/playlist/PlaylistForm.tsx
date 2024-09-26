@@ -33,6 +33,7 @@ export const PlaylistForm = () => {
 		playlist,
 		songLibrary,
 		playlistSubmit,
+		playlistIsUnsaved,
 		playlistIsUnsavedSet,
 		playlistNewClick,
 		playlistFormSet,
@@ -84,6 +85,7 @@ export const PlaylistForm = () => {
 	return (
 		<div>
 			<PlaylistDeleteConfirmModal />
+			Saved? {playlistIsUnsaved ? "No" : "Yes"}
 			<Form {...form}>
 				<form onSubmit={playlistSubmit}>
 					<FormField

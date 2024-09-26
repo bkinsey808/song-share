@@ -11,8 +11,8 @@ export const playlistLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { isPlaylistUnsaved } = get();
-		if (isPlaylistUnsaved) {
+		const { playlistIsUnsaved } = get();
+		if (playlistIsUnsaved) {
 			toast({
 				variant: "destructive",
 				title: "Please save your current Playlist before loading a new one",

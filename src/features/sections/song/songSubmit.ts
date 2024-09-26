@@ -29,11 +29,12 @@ export const songSubmit =
 				return;
 			}
 
-			const { songId } = get();
+			const { songId, songIsUnsavedSet } = get();
 			const songSaveResult = await songSave({
 				song,
 				songId,
 			});
+			songIsUnsavedSet(false);
 
 			switch (songSaveResult.actionResultType) {
 				case actionResultType.ERROR:
