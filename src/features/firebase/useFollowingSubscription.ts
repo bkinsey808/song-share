@@ -12,8 +12,15 @@ import { db } from "@/features/firebase/firebaseClient";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
 
 export const useFollowingSubscription = (fuid: string | string[]) => {
-	const { setFuid, setFollowing, setSong, playlistSet, playlistIdSet } =
-		useAppStore();
+	const {
+		setFuid,
+		setFollowing,
+		setSong,
+		setSongId,
+		setActiveSongId,
+		playlistSet,
+		playlistIdSet,
+	} = useAppStore();
 
 	useEffect(() => {
 		const unsubscribeFns: Unsubscribe[] = [];
@@ -73,7 +80,9 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							}
 							const song = songResult.output;
 							setSong(song);
-							const songForm = useAppStore.getState().songForm;
+							setSongId(following.songActiveId);
+							setActiveSongId(following.songActiveId);
+							const { songForm } = useAppStore.getState();
 							songForm?.reset?.(song);
 						},
 					);

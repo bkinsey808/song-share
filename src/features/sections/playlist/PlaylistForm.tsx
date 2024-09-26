@@ -62,7 +62,7 @@ export const PlaylistForm = () => {
 		defaultValues,
 	});
 
-	const { fields, append, move, remove } = useFieldArray({
+	const { fields, move, remove } = useFieldArray({
 		control: form.control,
 		name: "songs",
 	});

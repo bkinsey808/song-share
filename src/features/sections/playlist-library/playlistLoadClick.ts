@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 
-import { playlistLoad } from "@/actions/playlistLoad";
+import { playlistIdSet } from "@/actions/playlistIdSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
@@ -11,7 +11,7 @@ export const playlistLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { playlistIsUnsaved } = get();
+		const { playlistIsUnsaved, isSignedIn } = get();
 		if (playlistIsUnsaved) {
 			toast({
 				variant: "destructive",
@@ -20,17 +20,17 @@ export const playlistLoadClick =
 			return;
 		}
 
-		const result = await playlistLoad(playlistId);
+		if (isSignedIn) {
+			const result = await playlistIdSet(playlistId);
 
-		if (result.actionResultType === actionResultType.ERROR) {
-			toast({
-				variant: "destructive",
-				title: result.message,
-			});
-			return;
+			if (result.actionResultType === actionResultType.ERROR) {
+				toast({
+					variant: "destructive",
+					title: result.message,
+				});
+				return;
+			}
 		}
-
-		const { playlistIds } = result;
 
 		const { playlistLibrary, playlistForm } = get();
 		const playlist = playlistLibrary[playlistId];
@@ -38,7 +38,6 @@ export const playlistLoadClick =
 
 		set({
 			playlist,
-			playlistIds,
 			playlistId,
 		});
 

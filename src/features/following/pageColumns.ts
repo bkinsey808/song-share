@@ -38,10 +38,10 @@ export const SECTIONS: Sections = {
 	},
 };
 
-const leftSections: SectionId[] = [sectionId.SONG, sectionId.PLAYLIST];
+const leftSections: SectionId[] = [sectionId.SONG, sectionId.SONG_LIBRARY];
 // const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];
 const rightSections: SectionId[] = [
-	sectionId.SONG_LIBRARY,
+	sectionId.PLAYLIST,
 	sectionId.PLAYLIST_LIBRARY,
 	sectionId.QR,
 ];

@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 
-import { songLoad } from "@/actions/songLoad";
+import { songIdSet } from "@/actions/songIdSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import type { Get, Set } from "@/features/app-store/types";
@@ -11,7 +11,7 @@ export const songLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { isSongUnsaved } = get();
+		const { isSongUnsaved, isSignedIn } = get();
 		if (isSongUnsaved) {
 			toast({
 				variant: "destructive",
@@ -20,17 +20,17 @@ export const songLoadClick =
 			return;
 		}
 
-		const result = await songLoad({ songId });
+		if (isSignedIn) {
+			const result = await songIdSet({ songId });
 
-		if (result.actionResultType === actionResultType.ERROR) {
-			toast({
-				variant: "destructive",
-				title: result.message,
-			});
-			return;
+			if (result.actionResultType === actionResultType.ERROR) {
+				toast({
+					variant: "destructive",
+					title: result.message,
+				});
+				return;
+			}
 		}
-
-		const { songIds } = result;
 
 		const { songLibrary, songForm } = get();
 		const song = songLibrary[songId];
@@ -38,7 +38,6 @@ export const songLoadClick =
 
 		set({
 			song,
-			songIds,
 			songId,
 		});
 
