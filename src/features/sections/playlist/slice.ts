@@ -1,4 +1,4 @@
-import { FormEvent, MouseEventHandler } from "react";
+import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
@@ -9,7 +9,6 @@ import { playlistDeleteConfirmClick } from "./playlistDeleteConfirmClick";
 import { playlistLibraryUnsubscribe } from "./playlistLibraryUnsubscribe";
 import { playlistNewClick } from "./playlistNewClick";
 import { playlistSubmit } from "./playlistSubmit";
-import { songRemoveClick } from "./songRemoveClick";
 import { Playlist } from "./types";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import { Nullable } from "@/features/global/types";
@@ -46,13 +45,6 @@ export type PlaylistSlice = PlaylistSliceState & {
 	playlistActiveClick: (playlistId: string) => () => Promise<void>;
 	playlistSet: (playlist: AppPlaylist) => void;
 	playlistIdSet: (playlistId: string | null) => void;
-	songRemoveClick: ({
-		songId,
-		playlistId,
-	}: {
-		songId: string;
-		playlistId: string;
-	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 	playlistLibraryUnsubscribe: () => void;
 	playlistFormDisabledSet: (disabled: boolean) => void;
 };
@@ -75,7 +67,6 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 		playlistActiveClick: playlistActiveClick(get, set),
 		playlistSet: (playlist) => set({ playlist }),
 		playlistIdSet: (playlistId) => set({ playlistId }),
-		songRemoveClick: songRemoveClick(get, set),
 		playlistLibraryUnsubscribe: playlistLibraryUnsubscribe(get),
 		playlistFormDisabledSet: (disabled) =>
 			set({ songFormIsDisabled: disabled }),

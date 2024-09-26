@@ -1,9 +1,9 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import { useEffect, useMemo } from "react";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 import { PlaylistDeleteConfirmModal } from "./PlaylistDeleteConfirmModal";
 import { PlaylistSchema } from "./schemas";
@@ -37,7 +37,6 @@ export const PlaylistForm = () => {
 		playlistNewClick,
 		playlistFormSet,
 		playlistDeleteClick,
-		songRemoveClick,
 		songActiveId,
 		songActiveClick,
 		fuid,
@@ -56,8 +55,6 @@ export const PlaylistForm = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	);
-
-	const songs = playlist?.songs;
 
 	const form = useForm<Playlist>({
 		resolver: valibotResolver(PlaylistSchema),
@@ -103,7 +100,7 @@ export const PlaylistForm = () => {
 					/>
 
 					<div className="p-[1rem]">
-						<Grid gridClassName="grid-cols-[1.5rem,2fr,1fr]">
+						<Grid gridClassName="grid-cols-[1.5rem,2fr,5rem]">
 							<GridHeader>
 								<div></div>
 								<div>Song Name</div>
@@ -120,10 +117,10 @@ export const PlaylistForm = () => {
 										move(activeIndex, overIndex)
 									}
 									overlay={
-										<div className="grid grid-cols-[1.5rem,2fr,1fr] gap-[0.5rem]">
+										<div className="grid grid-cols-[1.5rem,2fr,5rem] gap-[0.5rem]">
 											<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
 											<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
-											<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
+											<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
 										</div>
 									}
 								>
@@ -145,12 +142,22 @@ export const PlaylistForm = () => {
 																})}
 															/>
 														</div>
-														<div>{songLibrary[songId]?.songName}</div>
+														<div className="">
+															<Button
+																variant="outline"
+																className="min-h-[2rem] w-full justify-start"
+																onClick={songLoadClick(songId)}
+																title="Load song"
+															>
+																{songLibrary[songId]?.songName}
+															</Button>
+														</div>
 														<div className="flex gap-[0.5rem]">
 															<SortableDragHandle
 																variant="outline"
 																size="icon"
 																className="size-8 shrink-0"
+																title="Drag to reorder"
 															>
 																<DragHandleDots2Icon
 																	className="size-4"
@@ -158,17 +165,15 @@ export const PlaylistForm = () => {
 																/>
 															</SortableDragHandle>
 
-															<Button onClick={songLoadClick(songId)}>
-																Load
-															</Button>
 															<Button
-																variant="destructive"
-																onClick={songRemoveClick({
-																	songId,
-																	playlistId,
-																})}
+																variant="outline"
+																onClick={() => remove(index)}
+																title="Remove song from playlist"
 															>
-																Remove
+																<TrashIcon
+																	className="size-4 text-destructive"
+																	aria-hidden="true"
+																/>
 															</Button>
 														</div>
 													</GridRow>
