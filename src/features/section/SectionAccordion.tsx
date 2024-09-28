@@ -54,7 +54,7 @@ export const SectionAccordion = ({
 					<div className="transition-all [[data-open='true']>summary>button>&]:rotate-90">
 						▶
 					</div>
-					<div>
+					<div className="flex flex-nowrap gap-[0.5rem]">
 						{isOpen ? "Close" : "Open"} {buttonLabel}
 					</div>
 				</Button>

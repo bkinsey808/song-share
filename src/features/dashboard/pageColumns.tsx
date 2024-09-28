@@ -1,3 +1,4 @@
+import { PlaylistIcon } from "../design-system/PlaylistIcon";
 import { QRSection } from "../sections/qr/QRSection";
 import { sectionId } from "@/features/sections/consts";
 import { PlaylistLibrarySection } from "@/features/sections/playlist-library/PlaylistLibrarySection";
@@ -14,12 +15,26 @@ export const SECTIONS: Sections = {
 	[sectionId.PLAYLIST]: {
 		title: PlaylistTitle,
 		section: PlaylistSection,
-		buttonLabel: "Playlist",
+		buttonLabel: () => (
+			<span className="flex flex-nowrap">
+				<span className="mr-[0.2rem] mt-[0.2rem]">
+					<PlaylistIcon />
+				</span>
+				Playlist
+			</span>
+		),
 	},
 	[sectionId.PLAYLIST_LIBRARY]: {
 		title: PlaylistLibraryTitle,
 		section: PlaylistLibrarySection,
-		buttonLabel: "Playlist Library",
+		buttonLabel: () => (
+			<span className="flex flex-nowrap">
+				<span className="mr-[0.2rem] mt-[0.2rem]">
+					<PlaylistIcon />
+				</span>
+				Playlist Library
+			</span>
+		),
 	},
 	[sectionId.SONG]: {
 		title: SongTitle,

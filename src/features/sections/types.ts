@@ -9,7 +9,7 @@ export type Sections = Partial<
 		{
 			title: Component | string;
 			section: Component;
-			buttonLabel: string;
+			buttonLabel: string | Component;
 		}
 	>
 >;
