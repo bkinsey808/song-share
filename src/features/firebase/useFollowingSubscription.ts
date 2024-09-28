@@ -82,8 +82,12 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							setSong(song);
 							setSongId(following.songActiveId);
 							setActiveSongId(following.songActiveId);
-							const { songForm } = useAppStore.getState();
+							const { songForm, songLibraryAddSongIds } =
+								useAppStore.getState();
 							songForm?.reset?.(song);
+							if (following.songActiveId) {
+								songLibraryAddSongIds([following.songActiveId]);
+							}
 						},
 					);
 					unsubscribeFns.push(songUnsubscribe);

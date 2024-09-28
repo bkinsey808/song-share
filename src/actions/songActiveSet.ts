@@ -20,7 +20,7 @@ export const songActiveSet = async ({
 	playlistId,
 }: {
 	songId: string | null;
-	playlistId: string | null;
+	playlistId?: string | null | undefined;
 }) => {
 	try {
 		const extendSessionResult = await sessionExtend();
@@ -72,7 +72,10 @@ export const songActiveSet = async ({
 		await db
 			.collection(collection.USERS_PUBLIC)
 			.doc(uid)
-			.update({ songActiveId: songId, playlistActiveId: playlistId });
+			.update({
+				songActiveId: songId,
+				...(playlistId ? { playlistActiveId: playlistId } : {}),
+			});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

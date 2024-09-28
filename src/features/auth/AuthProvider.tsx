@@ -39,8 +39,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		signIn(cookieResult.sessionCookieData);
 	}, [setOpenAppModal, signIn, signOut]);
 
-	const existingSessionWarningTimestamp =
-		sessionCookieData?.sessionWarningTimestamp ?? 0;
+	// const existingSessionWarningTimestamp =
+	// 	sessionCookieData?.sessionWarningTimestamp ?? 0;
 
 	// handle refresh
 	useEffect(() => {
@@ -70,10 +70,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		// 	`old diff: ${(existingSessionWarningTimestamp - Date.now()) / 1000}`,
 		// );
 
-		if (existingSessionWarningTimestamp < Date.now()) {
-			setOpenAppModal(appModal.SESSION_EXPIRE_WARNING);
-			return;
-		}
+		// if (existingSessionWarningTimestamp < Date.now()) {
+		// 	setOpenAppModal(appModal.SESSION_EXPIRE_WARNING);
+		// 	return;
+		// }
 
 		if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
 			setOpenAppModal(null);
@@ -85,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setLastSignInCheck,
 		signOut,
 		setOpenAppModal,
-		existingSessionWarningTimestamp,
+		// existingSessionWarningTimestamp,
 		openAppModal,
 	]);
 

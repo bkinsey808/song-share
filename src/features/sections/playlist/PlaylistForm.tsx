@@ -101,7 +101,7 @@ export const PlaylistForm = () => {
 						)}
 					/>
 
-					<div className="p-[1rem]">
+					<div>
 						<Grid gridClassName="grid-cols-[1.5rem,2fr,5rem]">
 							<GridHeader>
 								<div></div>
@@ -144,7 +144,7 @@ export const PlaylistForm = () => {
 																})}
 															/>
 														</div>
-														<div className="">
+														<div>
 															<Button
 																variant="outline"
 																className="min-h-[2rem] w-full justify-start"

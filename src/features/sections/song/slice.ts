@@ -53,7 +53,7 @@ export type SongSlice = SongSliceState & {
 		playlistId,
 	}: {
 		songId: string;
-		playlistId: string;
+		playlistId?: string | undefined;
 	}) => () => Promise<void>;
 	setSong: (song: AppSong) => void;
 	setSongId: (songId: string | null) => void;

@@ -8,16 +8,21 @@ export const useAutoResizeTextarea = (
 
 	React.useImperativeHandle(ref, () => textAreaRef.current!);
 
+	const textAreaValue = textAreaRef.current?.value;
+	const textAreaEl = textAreaRef?.current;
+
+	const updateTextareaHeight = React.useCallback(() => {
+		if (textAreaEl && autoResize) {
+			textAreaEl.style.height = "auto";
+			textAreaEl.style.height = textAreaEl?.scrollHeight + 2 + "px";
+		}
+	}, [autoResize, textAreaEl]);
+
 	React.useEffect(() => {
-		const textAreaEl = textAreaRef?.current;
+		updateTextareaHeight();
+	}, [textAreaValue, updateTextareaHeight]);
 
-		const updateTextareaHeight = () => {
-			if (textAreaEl && autoResize) {
-				textAreaEl.style.height = "auto";
-				textAreaEl.style.height = textAreaEl?.scrollHeight + 2 + "px";
-			}
-		};
-
+	React.useEffect(() => {
 		updateTextareaHeight();
 
 		textAreaEl?.addEventListener("input", updateTextareaHeight);
