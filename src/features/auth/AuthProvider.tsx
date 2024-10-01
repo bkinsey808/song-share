@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		}
 
 		const freshSessionCookieData = await sessionCookieGet();
+		console.log({ freshSessionCookieData });
 		if (!freshSessionCookieData) {
 			signOut();
 			setOpenAppModal(appModal.SESSION_EXPIRED);

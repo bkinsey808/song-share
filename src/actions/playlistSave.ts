@@ -48,7 +48,7 @@ const saveOrCreatePlaylist = async (
 		if (playlistResult.playlist.sharer !== uid) {
 			throw new Error("User does not own this playlist");
 		}
-		await db.collection(collection.SONG_SETS).doc(playlistId).set(playlist);
+		await db.collection(collection.SONG_SETS).doc(playlistId).update(playlist);
 		return playlistId;
 	}
 

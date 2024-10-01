@@ -8,3 +8,4 @@
 - [ ] scrollbar styling
 - [ ] song playlists
 - [ ] calendar
+- [ ] save at point of adding to playlist
