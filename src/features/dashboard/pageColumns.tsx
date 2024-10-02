@@ -1,5 +1,6 @@
 import { QRSection } from "../sections/qr/QRSection";
 import { sectionId } from "@/features/sections/consts";
+import { LogSection } from "@/features/sections/log/LogSection";
 import { PlaylistLibraryButtonLabel } from "@/features/sections/playlist-library/PlaylistLibraryButtonLabel";
 import { PlaylistLibrarySection } from "@/features/sections/playlist-library/PlaylistLibrarySection";
 import { PlaylistLibraryTitle } from "@/features/sections/playlist-library/PlaylistLibraryTitle";
@@ -35,6 +36,11 @@ export const SECTIONS: Sections = {
 		section: SongLibrarySection,
 		buttonLabel: SongLibraryButtonLabel,
 	},
+	[sectionId.LOG]: {
+		title: "Log",
+		section: LogSection,
+		buttonLabel: "Log",
+	},
 	[sectionId.QR]: {
 		title: "QR",
 		section: QRSection,
@@ -47,6 +53,7 @@ const leftSections: SectionId[] = [sectionId.SONG, sectionId.SONG_LIBRARY];
 const rightSections: SectionId[] = [
 	sectionId.PLAYLIST,
 	sectionId.PLAYLIST_LIBRARY,
+	sectionId.LOG,
 	sectionId.QR,
 ];
 

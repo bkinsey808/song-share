@@ -6,5 +6,6 @@ export const sectionId = {
 	TRANSLATION: "TRANSLATION",
 	CREDITS: "CREDITS",
 	LYICS: "LYICS",
+	LOG: "LOG",
 	QR: "QR",
 } as const;
