@@ -23,7 +23,6 @@ type SongSliceState = {
 	addingSongToPlaylist: boolean;
 	songId: string | null;
 	songForm: UseFormReturn<Song> | null;
-	songFormIsDisabled: boolean;
 };
 
 type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
@@ -36,7 +35,6 @@ const songSliceInitialState: SongSliceState = {
 	addingSongToPlaylist: false,
 	isSongUnsaved: false,
 	song: null,
-	songFormIsDisabled: false,
 };
 
 export type SongSlice = SongSliceState & {
@@ -58,7 +56,6 @@ export type SongSlice = SongSliceState & {
 	setSong: (song: AppSong) => void;
 	setSongId: (songId: string | null) => void;
 	setActiveSongId: (songId: string | null) => void;
-	songFormDisabledSet: (disabled: boolean) => void;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -77,6 +74,5 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		setSong: (song) => set({ song }),
 		setSongId: (songId) => set({ songId }),
 		setActiveSongId: (songId) => set({ songActiveId: songId }),
-		songFormDisabledSet: (disabled) => set({ songFormIsDisabled: disabled }),
 	};
 };

@@ -1,9 +1,15 @@
-import { SECTIONS, pageColumns } from "./pageColumns";
+"use client";
+
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { PageColumn } from "@/features/layout/PageColumn";
 import PageContent from "@/features/layout/PageContent";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
+import { SECTIONS } from "@/features/sections/consts";
 
 export const DashboardPageContent = () => {
+	const { getDashboardSections } = useAppStore();
+	const pageColumns = getDashboardSections();
+
 	return (
 		<PageContent>
 			{pageColumns.map((pageColumn, columnIndex) => (

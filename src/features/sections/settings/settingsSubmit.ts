@@ -1,23 +1,23 @@
 import { FormEvent } from "react";
 
-import { songSave } from "@/actions/songSave";
+import { settingsSave } from "@/actions/settingsSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const songSubmit =
-	(get: Get, _set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+export const settingsSubmit =
+	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songForm } = get();
+		const { settingsForm } = get();
 
-		if (!songForm) {
+		if (!settingsForm) {
 			console.error("no form");
 			return;
 		}
 
-		return songForm.handleSubmit(async (song) => {
+		return settingsForm.handleSubmit(async (settings) => {
 			const { sessionCookieData } = useAppStore.getState();
 
 			if (!sessionCookieData) {
@@ -28,24 +28,19 @@ export const songSubmit =
 				return;
 			}
 
-			const { songId, songIsUnsavedSet } = get();
-			const songSaveResult = await songSave({
-				song,
-				songId,
-			});
-			songIsUnsavedSet(false);
+			const settingsSaveResult = await settingsSave({ settings });
 
-			switch (songSaveResult.actionResultType) {
+			switch (settingsSaveResult.actionResultType) {
 				case actionResultType.ERROR:
-					const keys = songSaveResult.fieldErrors
-						? getKeys(songSaveResult.fieldErrors)
+					const keys = settingsSaveResult.fieldErrors
+						? getKeys(settingsSaveResult.fieldErrors)
 						: undefined;
 					keys?.forEach((key) => {
-						const message = songSaveResult.fieldErrors?.[key]?.[0];
+						const message = settingsSaveResult.fieldErrors?.[key]?.[0];
 						if (!message) {
 							return;
 						}
-						songForm.setError(key, {
+						settingsForm.setError(key, {
 							type: "manual",
 							message,
 						});
@@ -53,12 +48,13 @@ export const songSubmit =
 
 					toast({
 						variant: "destructive",
-						title: "There was an error saving song",
+						title: "There was an error saving settings",
 					});
 
 					break;
 				case actionResultType.SUCCESS:
-					toast({ title: "Song details saved" });
+					set({ timeZone: settingsSaveResult.timeZone ?? null });
+					toast({ title: "Settings saved" });
 					break;
 			}
 		})();

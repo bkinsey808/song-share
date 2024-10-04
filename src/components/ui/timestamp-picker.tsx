@@ -1,28 +1,35 @@
-import React, { ComponentProps } from 'react';
-import { Timestamp } from 'firebase/firestore';
-import { DateTimePicker } from './datetime-picker';
+import { fromZonedTime, toZonedTime } from "date-fns-tz";
+import { Timestamp } from "firebase/firestore";
+import React, { ComponentProps } from "react";
 
-interface TimestampPickerProps extends Omit<ComponentProps<typeof DateTimePicker>, 'value' | 'onChange'> {
-  value: Timestamp | undefined;
-  onChange: (timestamp: Timestamp | undefined) => void;
-}
+import { DateTimePicker } from "./datetime-picker";
 
-const TimestampPicker: React.FC<TimestampPickerProps> = ({ value, onChange, ...props }) => {
-  const handleChange = (date: Date | undefined) => {
-    if (date) {
-      onChange(Timestamp.fromDate(date));
-    } else {
-      onChange(undefined);
-    }
-  };
+type TimestampPickerProps = {
+	value: Timestamp | undefined;
+	onChange: (timestamp: Timestamp | undefined) => void;
+	timezone: string; // Add timezone prop
+} & Omit<ComponentProps<typeof DateTimePicker>, "value" | "onChange">;
 
-  return (
-    <DateTimePicker
-      value={value ? value.toDate() : undefined}
-      onChange={handleChange}
-      {...props}
-    />
-  );
+const TimestampPicker: React.FC<TimestampPickerProps> = ({
+	value,
+	onChange,
+	timezone,
+	...props
+}) => {
+	const handleChange = (date: Date | undefined) => {
+		if (date) {
+			const utcDate = fromZonedTime(date, timezone);
+			onChange(Timestamp.fromDate(utcDate));
+		} else {
+			onChange(undefined);
+		}
+	};
+
+	const zonedValue = value ? toZonedTime(value.toDate(), timezone) : undefined;
+
+	return (
+		<DateTimePicker value={zonedValue} onChange={handleChange} {...props} />
+	);
 };
 
 export default TimestampPicker;

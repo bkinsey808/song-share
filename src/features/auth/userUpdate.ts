@@ -27,9 +27,16 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				console.warn(`Invalid data for user ${uid}`);
 				return;
 			}
-			const { songIds, playlistIds, songId, playlistId, email, roles } =
-				userParseResult.output;
-			const { sessionCookieData } = get();
+			const {
+				songIds,
+				playlistIds,
+				songId,
+				playlistId,
+				email,
+				roles,
+				timeZone,
+			} = userParseResult.output;
+			const { sessionCookieData, settingsForm } = get();
 			if (!sessionCookieData) {
 				console.warn("No session cookie data found");
 				return;
@@ -41,7 +48,9 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				songId,
 				playlistId: playlistId ?? null,
 				sessionCookieData: newSessionCookieData,
+				timeZone: timeZone ?? null,
 			});
+			settingsForm?.reset({ timeZone, useSystemTimeZone: !timeZone });
 		},
 	);
 

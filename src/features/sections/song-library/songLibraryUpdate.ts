@@ -54,7 +54,6 @@ export const songLibraryUpdate = (get: Get, set: Set) => () => {
 
 				if (songId === subscribeSongId) {
 					songForm?.reset?.(song);
-					set({ song, songFormIsDisabled: false });
 				}
 			},
 		);

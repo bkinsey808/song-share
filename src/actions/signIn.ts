@@ -49,7 +49,8 @@ export const signIn = async (uid: string) => {
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
-		const { songId, playlistId, songIds, playlistIds } = existingUserDoc;
+		const { songId, playlistId, songIds, playlistIds, timeZone } =
+			existingUserDoc;
 		const { songActiveId, playlistActiveId } = existingUserPublicDoc;
 
 		return {
@@ -61,6 +62,7 @@ export const signIn = async (uid: string) => {
 			playlistId,
 			songActiveId,
 			playlistActiveId,
+			timeZone,
 		};
 	} catch (error) {
 		console.error({ error });

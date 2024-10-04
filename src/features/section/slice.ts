@@ -1,5 +1,6 @@
 import { StateCreator } from "zustand";
 
+import { getDashboardSections } from "../dashboard/getDashboardSectionts";
 import { AppSlice, useAppStore } from "@/features/app-store/useAppStore";
 import { SectionId } from "@/features/sections/types";
 
@@ -13,12 +14,14 @@ export const sectionSliceInitialState: SectionSliceState = {
 
 export type SectionSlice = SectionSliceState & {
 	sectionToggle: (sectionId: SectionId) => void;
+	getDashboardSections: () => SectionId[][];
 };
 
 type AppSectionSlice = StateCreator<AppSlice, [], [], SectionSlice>;
 
-export const createSectionSlice: AppSectionSlice = (set, _get) => ({
+export const createSectionSlice: AppSectionSlice = (set, get) => ({
 	...sectionSliceInitialState,
+	getDashboardSections: getDashboardSections(get),
 	sectionToggle: (sectionId: SectionId) => {
 		set((state) => {
 			const isOpen = state.openSections.includes(sectionId);

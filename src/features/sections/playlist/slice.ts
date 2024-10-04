@@ -46,7 +46,6 @@ export type PlaylistSlice = PlaylistSliceState & {
 	playlistSet: (playlist: AppPlaylist) => void;
 	playlistIdSet: (playlistId: string | null) => void;
 	playlistLibraryUnsubscribe: () => void;
-	playlistFormDisabledSet: (disabled: boolean) => void;
 };
 
 type AppPlaylistSlice = StateCreator<AppSlice, [], [], PlaylistSlice>;
@@ -68,7 +67,5 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 		playlistSet: (playlist) => set({ playlist }),
 		playlistIdSet: (playlistId) => set({ playlistId }),
 		playlistLibraryUnsubscribe: playlistLibraryUnsubscribe(get),
-		playlistFormDisabledSet: (disabled) =>
-			set({ songFormIsDisabled: disabled }),
 	};
 };

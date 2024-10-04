@@ -38,8 +38,6 @@ export const SongForm = () => {
 		showAddSongToPlaylistButton,
 		addingSongToPlaylist,
 		addSongToPlaylistClick,
-		songFormIsDisabled,
-		songFormDisabledSet,
 	} = useAppStore();
 
 	const defaultValues: Song = useMemo(
@@ -74,9 +72,8 @@ export const SongForm = () => {
 	useEffect(() => {
 		if (form) {
 			setSongForm(form);
-			songFormDisabledSet(false);
 		}
-	}, [form, setSongForm, songFormDisabledSet]);
+	}, [form, setSongForm]);
 
 	return (
 		<div>
@@ -92,7 +89,7 @@ export const SongForm = () => {
 									<Input
 										placeholder="Song Name"
 										{...field}
-										disabled={songFormIsDisabled}
+										disabled={form.formState.isSubmitting}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -115,7 +112,7 @@ export const SongForm = () => {
 										<Textarea
 											autoResize={true}
 											{...field}
-											disabled={songFormIsDisabled}
+											disabled={form.formState.isSubmitting}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -139,7 +136,7 @@ export const SongForm = () => {
 										<Textarea
 											autoResize={true}
 											{...field}
-											disabled={songFormIsDisabled}
+											disabled={form.formState.isSubmitting}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -163,7 +160,7 @@ export const SongForm = () => {
 										<Textarea
 											autoResize={true}
 											{...field}
-											disabled={songFormIsDisabled}
+											disabled={form.formState.isSubmitting}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -174,7 +171,7 @@ export const SongForm = () => {
 
 					{isSignedIn ? (
 						<div className="flex gap-[0.5rem]">
-							<Button type="submit" disabled={songFormIsDisabled}>
+							<Button type="submit" disabled={form.formState.isSubmitting}>
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}

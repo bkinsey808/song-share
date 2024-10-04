@@ -25,6 +25,7 @@ type AuthSliceState = {
 	deletingAccount: boolean;
 	userUnsubscribeFn: Unsubscribe | null;
 	userPublicUnsubscribeFn: Unsubscribe | null;
+	timeZone: string | null;
 };
 
 const authSliceInitialState: AuthSliceState = {
@@ -36,6 +37,7 @@ const authSliceInitialState: AuthSliceState = {
 	isSigningIn: false,
 	userUnsubscribeFn: null,
 	userPublicUnsubscribeFn: null,
+	timeZone: null,
 };
 
 export type AuthSlice = AuthSliceState & {

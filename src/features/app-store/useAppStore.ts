@@ -19,6 +19,10 @@ import {
 } from "@/features/sections/playlist/slice";
 import { QRSlice, createQRSlice } from "@/features/sections/qr/slice";
 import {
+	SettingsSlice,
+	createSettingsSlice,
+} from "@/features/sections/settings/slice";
+import {
 	SongLibrarySlice,
 	createSongLibrarySlice,
 } from "@/features/sections/song-library/slice";
@@ -35,6 +39,7 @@ export const resetAllSlices = () => {
 export type AppSlice = ModalSlice &
 	SectionSlice &
 	AuthSlice &
+	SettingsSlice &
 	SongSlice &
 	PlaylistSlice &
 	SongLibrarySlice &
@@ -71,6 +76,7 @@ export const useAppStore = create<AppSlice>()(
 			...createPlaylistLibrarySlice(...a),
 			...createUserLibrarySlice(...a),
 			...createFollowingSlice(...a),
+			...createSettingsSlice(...a),
 			...createQRSlice(...a),
 		}),
 		{

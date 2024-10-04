@@ -23,4 +23,5 @@ export const UserDocSchema = object({
 	playlistIds: optional(nullable(array(string()))),
 	songId: nullable(string()),
 	playlistId: optional(nullable(string())),
+	timeZone: optional(string()),
 });
