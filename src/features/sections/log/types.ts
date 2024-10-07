@@ -1,5 +1,7 @@
 import { InferOutput } from "valibot";
 
-import { LogSchema } from "./schemas";
+import { LogFormSchema, LogSchema } from "./schemas";
 
 export type Log = InferOutput<typeof LogSchema>;
+
+export type LogForm = InferOutput<typeof LogFormSchema>;

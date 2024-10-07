@@ -1,9 +1,14 @@
 import { object, string } from "valibot";
 
-import { FirestoreTimestampSchema } from "@/features/firebase/timestampValidator";
-
 export const LogSchema = object({
 	songId: string(),
 	notes: string(),
-	date: FirestoreTimestampSchema,
+	date: string(),
+});
+
+export const LogFormSchema = object({
+	logId: string(),
+	songId: string(),
+	notes: string(),
+	date: string(),
 });

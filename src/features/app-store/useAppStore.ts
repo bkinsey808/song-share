@@ -9,6 +9,7 @@ import {
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
+import { LogSlice, createLogSlice } from "@/features/sections/log/slice";
 import {
 	PlaylistLibrarySlice,
 	createPlaylistLibrarySlice,
@@ -46,6 +47,7 @@ export type AppSlice = ModalSlice &
 	PlaylistLibrarySlice &
 	UserLibrarySlice &
 	FollowingSlice &
+	LogSlice &
 	QRSlice;
 
 /** for security, these shall not be stored in localStorage */
@@ -58,10 +60,11 @@ const omittedKeys: (keyof AppSlice)[] = [
 	"isSigningIn",
 	"openAppModal",
 	"addingSongToPlaylist",
-	"deletingSong",
-	"deletingPlaylist",
 	"songUnsubscribeFns",
 	"playlistUnsubscribeFns",
+	"logDeletingIs",
+	"songDeletingIs",
+	"playlistDeletingIs",
 ];
 
 export const useAppStore = create<AppSlice>()(
@@ -77,6 +80,7 @@ export const useAppStore = create<AppSlice>()(
 			...createUserLibrarySlice(...a),
 			...createFollowingSlice(...a),
 			...createSettingsSlice(...a),
+			...createLogSlice(...a),
 			...createQRSlice(...a),
 		}),
 		{

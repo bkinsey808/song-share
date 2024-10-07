@@ -1,3 +1,4 @@
+import { LogTitle } from "./log/LogTitle";
 import { LogSection } from "@/features/sections/log/LogSection";
 import { PlaylistLibraryButtonLabel } from "@/features/sections/playlist-library/PlaylistLibraryButtonLabel";
 import { PlaylistLibrarySection } from "@/features/sections/playlist-library/PlaylistLibrarySection";
@@ -50,7 +51,7 @@ export const SECTIONS: Sections = {
 		buttonLabel: SongLibraryButtonLabel,
 	},
 	[sectionId.LOG]: {
-		title: "Log",
+		title: LogTitle,
 		section: LogSection,
 		buttonLabel: "Log",
 	},

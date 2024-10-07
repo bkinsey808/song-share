@@ -19,7 +19,7 @@ type SongSliceState = {
 	songActiveId: string | null;
 	song: AppSong | null;
 	isSongUnsaved: boolean;
-	deletingSong: boolean;
+	songDeletingIs: boolean;
 	addingSongToPlaylist: boolean;
 	songId: string | null;
 	songForm: UseFormReturn<Song> | null;
@@ -30,7 +30,7 @@ type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
 const songSliceInitialState: SongSliceState = {
 	songId: null,
 	songActiveId: null,
-	deletingSong: false,
+	songDeletingIs: false,
 	songForm: null,
 	addingSongToPlaylist: false,
 	isSongUnsaved: false,

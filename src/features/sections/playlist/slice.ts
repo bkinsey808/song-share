@@ -20,7 +20,7 @@ type PlaylistSliceState = {
 	playlistActiveId: string | null;
 	playlist: AppPlaylist | null;
 	playlistIsUnsaved: boolean;
-	deletingPlaylist: boolean;
+	playlistDeletingIs: boolean;
 	playlistForm: UseFormReturn<Playlist> | null;
 	playlistFormIsDisabled: boolean;
 };
@@ -30,7 +30,7 @@ const playlistSliceInitialState: PlaylistSliceState = {
 	playlistActiveId: null,
 	playlist: null,
 	playlistIsUnsaved: false,
-	deletingPlaylist: false,
+	playlistDeletingIs: false,
 	playlistForm: null,
 	playlistFormIsDisabled: false,
 };

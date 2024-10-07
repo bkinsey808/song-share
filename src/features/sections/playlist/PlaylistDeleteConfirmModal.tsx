@@ -15,7 +15,7 @@ export const PlaylistDeleteConfirmModal = () => {
 	const {
 		openAppModal,
 		setOpenAppModal,
-		deletingPlaylist,
+		playlistDeletingIs,
 		playlistDeleteConfirmClick,
 	} = useAppStore();
 
@@ -41,7 +41,7 @@ export const PlaylistDeleteConfirmModal = () => {
 			<ModalFooter>
 				<Button
 					variant="destructive"
-					disabled={deletingPlaylist}
+					disabled={playlistDeletingIs}
 					onClick={playlistDeleteConfirmClick}
 				>
 					Delete Playlist

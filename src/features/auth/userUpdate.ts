@@ -35,6 +35,8 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				email,
 				roles,
 				timeZone,
+				logIds,
+				logs,
 			} = userParseResult.output;
 			const { sessionCookieData, settingsForm } = get();
 			if (!sessionCookieData) {
@@ -49,6 +51,8 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				playlistId: playlistId ?? null,
 				sessionCookieData: newSessionCookieData,
 				timeZone: timeZone ?? null,
+				logIds: logIds ?? [],
+				logs: logs ?? {},
 			});
 			settingsForm?.reset({ timeZone, useSystemTimeZone: !timeZone });
 		},

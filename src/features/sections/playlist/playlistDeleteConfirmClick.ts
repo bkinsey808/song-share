@@ -6,7 +6,7 @@ import { Get, Set } from "@/features/app-store/types";
 
 export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
-		deletingPlaylist: true,
+		playlistDeletingIs: true,
 	});
 	const {
 		playlistForm,
@@ -50,7 +50,7 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		playlistId: null,
 		playlist,
 		playlistLibrary,
-		deletingPlaylist: false,
+		playlistDeletingIs: false,
 		playlistIds: result.playlistIds,
 	});
 	playlistForm.reset(playlist);
