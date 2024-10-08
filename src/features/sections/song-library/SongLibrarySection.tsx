@@ -7,8 +7,14 @@ import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibrarySection = () => {
-	const { songLibrary, songLoadClick, songActiveId, songActiveClick, fuid } =
-		useAppStore();
+	const {
+		songLibrary,
+		songLoadClick,
+		songActiveId,
+		songNameGet,
+		songActiveClick,
+		fuid,
+	} = useAppStore();
 	const songIds = getKeys(songLibrary);
 
 	return (
@@ -45,7 +51,7 @@ export const SongLibrarySection = () => {
 									onClick={songLoadClick(songId)}
 									title="Load song"
 								>
-									{songLibrary[songId]?.songName}
+									{songNameGet(songId)}
 								</Button>
 							</div>
 							<div></div>

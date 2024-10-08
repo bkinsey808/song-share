@@ -1,7 +1,7 @@
 import { ComponentProps, forwardRef } from "react";
 
 import { DateTimePicker, DateTimePickerRef } from "./datetime-picker";
-import { convertDateToISOWithOffset } from "@/features/time-zone/convertDateToISOWithOffset";
+import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
 type TimestampPickerProps = {
 	value: string | undefined;
@@ -15,7 +15,7 @@ const TimestampPicker = forwardRef<
 >(({ value, onChange, timeZone, ...props }: TimestampPickerProps, ref) => {
 	const handleChange = (date: Date | undefined) => {
 		if (date) {
-			const isoDate = convertDateToISOWithOffset(date, "UTC");
+			const isoDate = jsDateTimeZone2iso(date, "UTC");
 			onChange(isoDate);
 		} else {
 			onChange(undefined);
@@ -23,7 +23,7 @@ const TimestampPicker = forwardRef<
 	};
 
 	const converted = value
-		? convertDateToISOWithOffset(new Date(value), timeZone)
+		? jsDateTimeZone2iso(new Date(value), timeZone)
 		: undefined;
 
 	const zonedIsoDate = converted ? new Date(converted) : undefined;

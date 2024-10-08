@@ -1,6 +1,7 @@
 import { DateTime } from "luxon";
 
-export const convertISOWithOffset = (
+/** takes an iso date and timezone and returns converted iso */
+export const isoTimeZone2iso = (
 	isoString: string | undefined,
 	targetTimeZone: string,
 ): string | undefined => {

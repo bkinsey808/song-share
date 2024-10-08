@@ -7,9 +7,9 @@ export const PlaylistFollowing = () => {
 	const {
 		songActiveId,
 		playlistId,
-		songLibrary,
 		playlistLibrary,
 		songLoadClick,
+		songNameGet,
 	} = useAppStore();
 	const playlist = playlistId ? playlistLibrary[playlistId] : undefined;
 	const songs = playlist?.songs ?? [];
@@ -44,7 +44,7 @@ export const PlaylistFollowing = () => {
 										onClick={songLoadClick(songId)}
 										title="Load song"
 									>
-										{songLibrary[songId]?.songName}
+										{songNameGet(songId)}
 									</Button>
 								</div>
 							</GridRow>

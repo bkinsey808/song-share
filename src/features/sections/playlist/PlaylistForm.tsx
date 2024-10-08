@@ -31,7 +31,6 @@ export const PlaylistForm = () => {
 	const {
 		playlistId,
 		playlist,
-		songLibrary,
 		playlistSubmit,
 		playlistIsUnsaved,
 		playlistIsUnsavedSet,
@@ -42,6 +41,7 @@ export const PlaylistForm = () => {
 		songActiveClick,
 		fuid,
 		songLoadClick,
+		songNameGet,
 	} = useAppStore();
 
 	const defaultValues = useMemo(
@@ -151,7 +151,7 @@ export const PlaylistForm = () => {
 																onClick={songLoadClick(songId)}
 																title="Load song"
 															>
-																{songLibrary[songId]?.songName}
+																{songNameGet(songId)}
 															</Button>
 														</div>
 														<div className="flex gap-[0.5rem]">

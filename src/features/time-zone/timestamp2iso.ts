@@ -1,7 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 import { DateTime } from "luxon";
 
-export const timestampToISOWithOffset = (
+export const timestamp2iso = (
 	timestamp: Timestamp | undefined,
 	timeZone: string,
 ): string | undefined => {

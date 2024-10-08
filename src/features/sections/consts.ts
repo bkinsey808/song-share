@@ -25,6 +25,7 @@ export const sectionId = {
 	CREDITS: "CREDITS",
 	LYICS: "LYICS",
 	LOG: "LOG",
+	SONG_LOG: "SONG_LOG",
 	SETTINGS: "SETTINGS",
 	QR: "QR",
 } as const;

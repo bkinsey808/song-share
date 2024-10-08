@@ -9,3 +9,7 @@
 - [ ] song playlists
 - [ ] calendar
 - [ ] save at point of adding to playlist
+- [ ] auto open when song changes
+- [ ] log from song
+- [ ] animation!
+- [ ] timezone slice

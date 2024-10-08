@@ -3,7 +3,7 @@
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const SongTitle = () => {
-	const { song } = useAppStore();
+	const { songId, songNameGet } = useAppStore();
 
-	return <span>{song?.songName}</span>;
+	return <span>{songNameGet(songId)}</span>;
 };

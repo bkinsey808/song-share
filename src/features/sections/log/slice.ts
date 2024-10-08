@@ -38,6 +38,7 @@ export type LogSlice = LogSliceState & {
 	logLoadClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
+	songLogIdsGet: (songId: string | null) => string[];
 };
 
 export const createLogSlice: AppLogSlice = (set, get) => {
@@ -51,5 +52,11 @@ export const createLogSlice: AppLogSlice = (set, get) => {
 		logDeleteConfirmClick: logDeleteConfirmClick(get, set),
 		logIdSet: (logId) => set({ logId }),
 		logLoadClick: logLoadClick(get, set),
+		songLogIdsGet: (songId) => {
+			const { logs, logIds } = get();
+			return logIds
+				.filter(({ logId }) => logs[logId].songId === songId)
+				.map(({ logId }) => logId);
+		},
 	};
 };

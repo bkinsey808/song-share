@@ -5,6 +5,7 @@ import { UserPublicDoc } from "../firebase/types";
 
 type FollowingSliceState = {
 	following: UserPublicDoc | null;
+	/** follower user id, the follower following the song leader */
 	fuid: string | null;
 };
 

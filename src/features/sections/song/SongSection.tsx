@@ -2,6 +2,7 @@
 
 import { SongFollowing } from "./SongFollowing";
 import { SongForm } from "./SongForm";
+import { SongLog } from "./SongLog";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const SongSection = () => {
@@ -9,7 +10,14 @@ export const SongSection = () => {
 
 	return (
 		<section data-title="Song Section">
-			{fuid ? <SongFollowing /> : <SongForm />}
+			{fuid ? (
+				<SongFollowing />
+			) : (
+				<>
+					<SongForm />
+					<SongLog />
+				</>
+			)}
 		</section>
 	);
 };

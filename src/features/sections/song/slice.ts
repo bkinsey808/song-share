@@ -56,6 +56,7 @@ export type SongSlice = SongSliceState & {
 	setSong: (song: AppSong) => void;
 	setSongId: (songId: string | null) => void;
 	setActiveSongId: (songId: string | null) => void;
+	songNameGet: (songId: string | null) => string | undefined;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -74,5 +75,9 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		setSong: (song) => set({ song }),
 		setSongId: (songId) => set({ songId }),
 		setActiveSongId: (songId) => set({ songActiveId: songId }),
+		songNameGet: (songId) => {
+			const { songLibrary } = get();
+			return songId ? songLibrary[songId]?.songName : undefined;
+		},
 	};
 };

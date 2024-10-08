@@ -1,7 +1,10 @@
 import { DateTime } from "luxon";
 
-export const convertDateToISOWithOffset = (
+/** convert */
+export const jsDateTimeZone2iso = (
+	/** javascript date */
 	date: Date | undefined,
+	/** IANA timezone */
 	timeZone: string | undefined | null,
 ): string | undefined => {
 	if (!date || !timeZone) {

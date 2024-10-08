@@ -1,11 +1,11 @@
 import { Log } from "./types";
-import { convertDateToISOWithOffset } from "@/features/time-zone/convertDateToISOWithOffset";
+import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
 export const logDefaultGet = () => {
 	const defaultLog: Log = {
 		songId: "",
 		notes: "",
-		date: convertDateToISOWithOffset(new Date(), "UTC") ?? "",
+		date: jsDateTimeZone2iso(new Date(), "UTC") ?? "",
 	};
 	return defaultLog;
 };

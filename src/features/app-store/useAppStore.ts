@@ -6,6 +6,7 @@ import {
 	UserLibrarySlice,
 	createUserLibrarySlice,
 } from "../sections/user-library/slice";
+import { TimeZoneSlice, createTimeZoneSlice } from "../time-zone/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
@@ -41,6 +42,7 @@ export type AppSlice = ModalSlice &
 	SectionSlice &
 	AuthSlice &
 	SettingsSlice &
+	TimeZoneSlice &
 	SongSlice &
 	PlaylistSlice &
 	SongLibrarySlice &
@@ -80,6 +82,7 @@ export const useAppStore = create<AppSlice>()(
 			...createUserLibrarySlice(...a),
 			...createFollowingSlice(...a),
 			...createSettingsSlice(...a),
+			...createTimeZoneSlice(...a),
 			...createLogSlice(...a),
 			...createQRSlice(...a),
 		}),
