@@ -6,7 +6,7 @@ import { Get, Set } from "@/features/app-store/types";
 
 export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
-		songDeletingIs: true,
+		songDeleting: true,
 	});
 	const { songForm, songLibrary, songId, sessionCookieData, setOpenAppModal } =
 		get();
@@ -45,7 +45,7 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		songId: null,
 		song,
 		songLibrary,
-		songDeletingIs: false,
+		songDeleting: false,
 		songIds: result.songIds,
 	});
 	songForm.reset(song);

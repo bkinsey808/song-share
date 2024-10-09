@@ -10,6 +10,5 @@ export const iso2formatted = (get: Get) => (dateIso: string) => {
 	const timeZone = timeZoneGet();
 	const localIso = jsDateTimeZone2iso(new Date(dateIso), timeZone);
 	const localDt = localIso ? DateTime.fromISO(localIso) : undefined;
-	console.log({ localIso });
 	return localDt ? localDt.toFormat(appDateTimeFormat) : undefined;
 };

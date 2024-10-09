@@ -2,6 +2,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { LogDeleteConfirmModal } from "./LogDeleteConfirmModal";
 import { logDefaultGet } from "./logDefaultGet";
 import { LogFormSchema } from "./schemas";
 import { LogForm as LogFormType } from "./types";
@@ -71,77 +72,76 @@ export const LogForm = () => {
 	const [search, setSearch] = useState("");
 
 	return (
-		<Form {...form}>
-			<form onSubmit={logSubmit}>
-				<div className="flex gap-[1rem]">
+		<>
+			<LogDeleteConfirmModal />
+			<Form {...form}>
+				<form onSubmit={logSubmit}>
+					<div className="flex gap-[1rem]">
+						<FormField
+							name="date"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem className="flex flex-col">
+									<FormLabel>Log Date Time</FormLabel>
+									<FormControl>
+										<TimestampPicker {...field} timeZone={timeZone} />
+									</FormControl>
+								</FormItem>
+							)}
+						/>
+
+						<FormField
+							name="songId"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem className="flex flex-grow flex-col">
+									<FormLabel>Song</FormLabel>
+									<FormControl>
+										<Combobox
+											{...field}
+											options={songOptions.filter((option) =>
+												option.search.includes(search.toLocaleLowerCase()),
+											)}
+											search={search}
+											setSearch={setSearch}
+											label="song"
+										/>
+									</FormControl>
+								</FormItem>
+							)}
+						/>
+					</div>
+
 					<FormField
-						name="date"
+						name="notes"
 						control={form.control}
 						render={({ field }) => (
 							<FormItem className="flex flex-col">
-								<FormLabel>Log Date Time</FormLabel>
+								<FormLabel>Log Notes</FormLabel>
 								<FormControl>
-									<TimestampPicker
-										displayFormat={{ hour24: "yyyy/MM/dd HH:mm" }}
+									<Textarea
+										autoResize={true}
 										{...field}
-										timeZone={timeZone}
+										disabled={form.formState.isSubmitting}
 									/>
 								</FormControl>
 							</FormItem>
 						)}
 					/>
 
-					<FormField
-						name="songId"
-						control={form.control}
-						render={({ field }) => (
-							<FormItem className="flex flex-grow flex-col">
-								<FormLabel>Song</FormLabel>
-								<FormControl>
-									<Combobox
-										{...field}
-										options={songOptions.filter((option) =>
-											option.search.includes(search.toLocaleLowerCase()),
-										)}
-										search={search}
-										setSearch={setSearch}
-										label="song"
-									/>
-								</FormControl>
-							</FormItem>
-						)}
-					/>
-				</div>
-
-				<FormField
-					name="notes"
-					control={form.control}
-					render={({ field }) => (
-						<FormItem className="flex flex-col">
-							<FormLabel>Log Notes</FormLabel>
-							<FormControl>
-								<Textarea
-									autoResize={true}
-									{...field}
-									disabled={form.formState.isSubmitting}
-								/>
-							</FormControl>
-						</FormItem>
-					)}
-				/>
-
-				<div className="flex gap-[0.5rem]">
-					<Button type="submit" disabled={form.formState.isSubmitting}>
-						Save
-					</Button>
-					<Button onClick={logNewClick}>New</Button>
-					{logId ? (
-						<Button variant="destructive" onClick={logDeleteClick}>
-							Delete
+					<div className="flex gap-[0.5rem]">
+						<Button type="submit" disabled={form.formState.isSubmitting}>
+							Save
 						</Button>
-					) : null}
-				</div>
-			</form>
-		</Form>
+						<Button onClick={logNewClick}>New</Button>
+						{logId ? (
+							<Button variant="destructive" onClick={logDeleteClick}>
+								Delete
+							</Button>
+						) : null}
+					</div>
+				</form>
+			</Form>
+		</>
 	);
 };

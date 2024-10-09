@@ -11,38 +11,38 @@ import {
 } from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
-export const SongDeleteConfirmModal = () => {
+export const SongLogDeleteConfirmModal = () => {
 	const {
 		openAppModal,
 		setOpenAppModal,
-		songDeleting,
-		songDeleteConfirmClick,
+		songLogDeleting,
+		songLogDeleteConfirmClick,
 	} = useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
-			setOpenAppModal(open ? appModal.SONG_DELETE_CONFIRM : null);
+			setOpenAppModal(open ? appModal.SONG_LOG_DELETE_CONFIRM : null);
 		},
 		[setOpenAppModal],
 	);
 
 	return (
 		<Modal
-			heading="Confirm Delete Song"
-			open={openAppModal === appModal.SONG_DELETE_CONFIRM}
+			heading="Confirm Song Delete Log"
+			open={openAppModal === appModal.SONG_LOG_DELETE_CONFIRM}
 			setOpen={setOpen}
 		>
 			<ModalContent>
-				<p>Are you sure you want to delete this song? This cannot be undone.</p>
+				<p>This cannot be undone.</p>
 			</ModalContent>
 
 			<ModalFooter>
 				<Button
 					variant="destructive"
-					disabled={songDeleting}
-					onClick={songDeleteConfirmClick}
+					disabled={songLogDeleting}
+					onClick={songLogDeleteConfirmClick}
 				>
-					Delete Song
+					Delete Song Log
 				</Button>
 
 				<Button

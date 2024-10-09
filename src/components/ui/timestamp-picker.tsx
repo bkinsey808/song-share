@@ -1,6 +1,7 @@
 import { ComponentProps, forwardRef } from "react";
 
 import { DateTimePicker, DateTimePickerRef } from "./datetime-picker";
+import { appDateTimeFormat } from "@/features/time-zone/consts";
 import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
 type TimestampPickerProps = {
@@ -33,6 +34,7 @@ const TimestampPicker = forwardRef<
 			ref={ref}
 			value={zonedIsoDate}
 			onChange={handleChange}
+			displayFormat={{ hour24: appDateTimeFormat }}
 			{...props}
 		/>
 	);

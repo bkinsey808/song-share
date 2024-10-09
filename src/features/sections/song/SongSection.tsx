@@ -2,8 +2,8 @@
 
 import { SongFollowing } from "./SongFollowing";
 import { SongForm } from "./SongForm";
-import { SongLog } from "./SongLog";
 import { useAppStore } from "@/features/app-store/useAppStore";
+import { SongLog } from "@/features/sections/song-log/SongLog";
 
 export const SongSection = () => {
 	const { fuid } = useAppStore();

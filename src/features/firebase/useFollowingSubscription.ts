@@ -15,9 +15,9 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 	const {
 		setFuid,
 		setFollowing,
-		setSong,
-		setSongId,
-		setActiveSongId,
+		songSet,
+		songIdSet,
+		songActiveIdSet,
 		playlistSet,
 		playlistIdSet,
 	} = useAppStore();
@@ -79,9 +79,9 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 								return;
 							}
 							const song = songResult.output;
-							setSong(song);
-							setSongId(following.songActiveId);
-							setActiveSongId(following.songActiveId);
+							songSet(song);
+							songIdSet(following.songActiveId);
+							songActiveIdSet(following.songActiveId);
 							const { songForm, songLibraryAddSongIds } =
 								useAppStore.getState();
 							songForm?.reset?.(song);
@@ -132,5 +132,5 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 			setFuid(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fuid, setFuid, setFollowing, setSong, playlistSet]);
+	}, [fuid, setFuid, setFollowing, songSet, playlistSet]);
 };

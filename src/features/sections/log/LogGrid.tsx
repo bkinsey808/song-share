@@ -1,6 +1,5 @@
 "use client";
 
-import { LogDeleteConfirmModal } from "./LogDeleteConfirmModal";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
@@ -10,7 +9,6 @@ export const LogGrid = () => {
 		useAppStore();
 	return (
 		<div data-title="Log Grid">
-			<LogDeleteConfirmModal />
 			<Grid gridClassName="grid-cols-[12rem,2fr]">
 				<GridHeader>
 					<div>Log Date Time</div>

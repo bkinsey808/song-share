@@ -33,11 +33,11 @@ export const SongForm = () => {
 		songSubmit,
 		songIsUnsavedSet,
 		songNewClick,
-		setSongForm,
+		songFormSet,
 		songDeleteClick,
-		showAddSongToPlaylistButton,
-		addingSongToPlaylist,
-		addSongToPlaylistClick,
+		playlistSongAddButtonShouldShow,
+		playlistSongAdding,
+		playlistSongAddClick,
 	} = useAppStore();
 
 	const defaultValues: Song = useMemo(
@@ -71,9 +71,9 @@ export const SongForm = () => {
 	// set song form
 	useEffect(() => {
 		if (form) {
-			setSongForm(form);
+			songFormSet(form);
 		}
-	}, [form, setSongForm]);
+	}, [form, songFormSet]);
 
 	return (
 		<div>
@@ -175,10 +175,10 @@ export const SongForm = () => {
 								Save
 							</Button>
 							{songId ? <Button>Save As...</Button> : null}
-							{showAddSongToPlaylistButton() ? (
+							{playlistSongAddButtonShouldShow() ? (
 								<Button
-									disabled={addingSongToPlaylist}
-									onClick={addSongToPlaylistClick}
+									disabled={playlistSongAdding}
+									onClick={playlistSongAddClick}
 								>
 									Add to Playlist
 								</Button>

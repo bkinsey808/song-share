@@ -1,13 +1,13 @@
-import { logDefaultGet } from "./logDefaultGet";
 import { logDelete } from "@/actions/logDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
+import { logDefaultGet } from "@/features/sections/log/logDefaultGet";
 
-export const logDeleteConfirmClick = (get: Get, set: Set) => async () => {
-	const { logForm, logId, setOpenAppModal } = get();
+export const songLogDeleteConfirmClick = (get: Get, set: Set) => async () => {
+	const { songLogForm, logId, setOpenAppModal } = get();
 
-	if (!logForm) {
+	if (!songLogForm) {
 		console.error("no form");
 		return;
 	}
@@ -34,11 +34,11 @@ export const logDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
-	logForm.reset({
+	songLogForm.reset({
 		...logDefaultGet(),
 	});
 	set({
-		logDeleting: false,
+		songLogDeleting: false,
 	});
 
 	setOpenAppModal(null);

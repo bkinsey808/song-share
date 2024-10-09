@@ -2,8 +2,8 @@ import { Playlist } from "../playlist/types";
 import { toast } from "@/components/ui/use-toast";
 import { Get, Set } from "@/features/app-store/types";
 
-export const songAddToPlaylistClick = (get: Get, set: Set) => () => {
-	set({ addingSongToPlaylist: true });
+export const playlistSongAddClick = (get: Get, set: Set) => () => {
+	set({ playlistSongAdding: true });
 	const { songId, playlistId, playlistForm, playlist, playlistIsUnsavedSet } =
 		get();
 
@@ -26,5 +26,5 @@ export const songAddToPlaylistClick = (get: Get, set: Set) => () => {
 		});
 	}
 
-	set({ addingSongToPlaylist: false });
+	set({ playlistSongAdding: false });
 };

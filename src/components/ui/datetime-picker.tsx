@@ -6,6 +6,7 @@ import {
 	ChevronRight,
 } from "lucide-react";
 import { Clock } from "lucide-react";
+import { DateTime } from "luxon";
 import * as React from "react";
 import { useImperativeHandle, useRef } from "react";
 import { DayPicker } from "react-day-picker";
@@ -25,6 +26,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import { appDateTimeFormat } from "@/features/time-zone/consts";
 import { cn } from "@/lib/utils";
 
 // ---------- utils start ----------
@@ -710,7 +712,7 @@ const DateTimePicker = React.forwardRef<
 			hourCycle = 24,
 			yearRange = 50,
 			disabled = false,
-			displayFormat,
+			// displayFormat,
 			granularity = "second",
 			placeholder = "Pick a date",
 			className,
@@ -748,25 +750,28 @@ const DateTimePicker = React.forwardRef<
 			[value],
 		);
 
-		const initHourFormat = {
-			hour24:
-				displayFormat?.hour24 ??
-				`PPP HH:mm${!granularity || granularity === "second" ? ":ss" : ""}`,
-			hour12:
-				displayFormat?.hour12 ??
-				`PP hh:mm${!granularity || granularity === "second" ? ":ss" : ""} b`,
-		};
+		// const initHourFormat = {
+		// 	hour24:
+		// 		displayFormat?.hour24 ??
+		// 		`PPP HH:mm${!granularity || granularity === "second" ? ":ss" : ""}`,
+		// 	hour12:
+		// 		displayFormat?.hour12 ??
+		// 		`PP hh:mm${!granularity || granularity === "second" ? ":ss" : ""} b`,
+		// };
 
-		let loc = enUS;
-		const { options, localize, formatLong } = locale;
-		if (options && localize && formatLong) {
-			loc = {
-				...enUS,
-				options,
-				localize,
-				formatLong,
-			};
-		}
+		// let loc = enUS;
+		// const { options, localize, formatLong } = locale;
+		// if (options && localize && formatLong) {
+		// 	loc = {
+		// 		...enUS,
+		// 		options,
+		// 		localize,
+		// 		formatLong,
+		// 	};
+		// }
+
+		const dt = value ? DateTime.fromJSDate(value) : undefined;
+		const valueFormatted = dt ? dt.toFormat(appDateTimeFormat) : undefined;
 
 		return (
 			<Popover>
@@ -781,19 +786,7 @@ const DateTimePicker = React.forwardRef<
 						ref={buttonRef}
 					>
 						<CalendarIcon className="mr-2 h-4 w-4" />
-						{value ? (
-							format(
-								value,
-								hourCycle === 24
-									? initHourFormat.hour24
-									: initHourFormat.hour12,
-								{
-									locale: loc,
-								},
-							)
-						) : (
-							<span>{placeholder}</span>
-						)}
+						{value ? valueFormatted : <span>{placeholder}</span>}
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="w-auto p-0">

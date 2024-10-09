@@ -1,13 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { FollowingSlice, createFollowingSlice } from "../following/slice";
 import {
 	UserLibrarySlice,
 	createUserLibrarySlice,
 } from "../sections/user-library/slice";
-import { TimeZoneSlice, createTimeZoneSlice } from "../time-zone/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
+import {
+	FollowingSlice,
+	createFollowingSlice,
+} from "@/features/following/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
 import { LogSlice, createLogSlice } from "@/features/sections/log/slice";
@@ -28,7 +30,12 @@ import {
 	SongLibrarySlice,
 	createSongLibrarySlice,
 } from "@/features/sections/song-library/slice";
+import {
+	SongLogSlice,
+	createSongLogSlice,
+} from "@/features/sections/song-log/slice";
 import { SongSlice, createSongSlice } from "@/features/sections/song/slice";
+import { TimeZoneSlice, createTimeZoneSlice } from "@/features/time-zone/slice";
 
 export const sliceResetFns = new Set<() => void>();
 
@@ -50,6 +57,7 @@ export type AppSlice = ModalSlice &
 	UserLibrarySlice &
 	FollowingSlice &
 	LogSlice &
+	SongLogSlice &
 	QRSlice;
 
 /** for security, these shall not be stored in localStorage */
@@ -61,11 +69,11 @@ const omittedKeys: (keyof AppSlice)[] = [
 	"lastSignInCheck",
 	"isSigningIn",
 	"openAppModal",
-	"addingSongToPlaylist",
+	"playlistSongAdding",
 	"songUnsubscribeFns",
 	"playlistUnsubscribeFns",
-	"logDeletingIs",
-	"songDeletingIs",
+	"logDeleting",
+	"songDeleting",
 	"playlistDeletingIs",
 ];
 
@@ -84,6 +92,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSettingsSlice(...a),
 			...createTimeZoneSlice(...a),
 			...createLogSlice(...a),
+			...createSongLogSlice(...a),
 			...createQRSlice(...a),
 		}),
 		{

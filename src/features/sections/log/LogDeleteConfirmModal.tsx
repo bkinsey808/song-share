@@ -12,12 +12,8 @@ import {
 import { appModal } from "@/features/modal/consts";
 
 export const LogDeleteConfirmModal = () => {
-	const {
-		openAppModal,
-		setOpenAppModal,
-		logDeletingIs,
-		logDeleteConfirmClick,
-	} = useAppStore();
+	const { openAppModal, setOpenAppModal, logDeleting, logDeleteConfirmClick } =
+		useAppStore();
 
 	const setOpen = useCallback(
 		(open: boolean) => {
@@ -33,13 +29,13 @@ export const LogDeleteConfirmModal = () => {
 			setOpen={setOpen}
 		>
 			<ModalContent>
-				<p>Are you sure you want to delete this log? This cannot be undone.</p>
+				<p>This cannot be undone.</p>
 			</ModalContent>
 
 			<ModalFooter>
 				<Button
 					variant="destructive"
-					disabled={logDeletingIs}
+					disabled={logDeleting}
 					onClick={logDeleteConfirmClick}
 				>
 					Delete Log

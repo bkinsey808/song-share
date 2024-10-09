@@ -11,8 +11,8 @@ export const songLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { isSongUnsaved, isSignedIn } = get();
-		if (isSongUnsaved) {
+		const { songUnsavedIs, isSignedIn } = get();
+		if (songUnsavedIs) {
 			toast({
 				variant: "destructive",
 				title: "Please save your current song before loading a new one",
