@@ -22,13 +22,24 @@ export const SectionAccordion = ({
 }) => {
 	const { sectionToggle } = useAppStore();
 	const isOpen = useOpenSection(sectionId);
-
 	const detailsRef = useRef<HTMLDetailsElement>(null);
 
-	// open the accordion when the state changes
+	// open/close the accordion when the state changes
 	useEffect(() => {
-		if (detailsRef.current) {
-			detailsRef.current.open = isOpen;
+		if (!detailsRef.current) {
+			return;
+		}
+
+		if (isOpen) {
+			// open the accordion before the animation
+			detailsRef.current.open = true;
+		} else {
+			// close the accordion after the animation
+			setTimeout(() => {
+				if (detailsRef.current) {
+					detailsRef.current.open = false;
+				}
+			}, 200);
 		}
 	}, [isOpen]);
 
@@ -44,14 +55,10 @@ export const SectionAccordion = ({
 				onClick={(e) => {
 					e.preventDefault();
 					sectionToggle(sectionId);
-
-					if (detailsRef.current) {
-						detailsRef.current.open = !detailsRef.current.open;
-					}
 				}}
 			>
 				<Button className="flex" variant={buttonVariant}>
-					<div className="transition-all [[data-open='true']>summary>button>&]:rotate-90">
+					<div className="transition-all duration-200 [[data-open='true']>summary>button>&]:rotate-90">
 						▶
 					</div>
 					<div className="flex flex-nowrap gap-[0.5rem]">
@@ -62,7 +69,9 @@ export const SectionAccordion = ({
 					{title}
 				</div>
 			</summary>
-			{children}
+			<div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-200 [[data-open='true']>&]:grid-rows-[1fr]">
+				<div className="overflow-hidden">{children}</div>
+			</div>
 		</details>
 	);
 };
