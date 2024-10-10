@@ -10,3 +10,4 @@
 - [ ] save at point of adding to playlist
 - [ ] auto open when song changes
 - [ ] timezone slice
+- [ ] pwa

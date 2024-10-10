@@ -22,7 +22,7 @@ export const Header = () => {
 	return (
 		<header
 			data-following={fuid ? "true" : "false"}
-			className="flex justify-between bg-[gray] p-[0.5rem] text-[hsl(var(--background))] [&[data-following='true']]:bg-[green]"
+			className="fixed z-[1] flex w-full justify-between bg-[gray] p-[0.5rem] text-[hsl(var(--background))] lg:static [&[data-following='true']]:bg-[green]"
 		>
 			<span className="flex gap-[1rem]">
 				<h1 className="font-bold">Song Share</h1>
