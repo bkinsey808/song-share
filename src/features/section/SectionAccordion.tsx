@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { useOpenSection } from "@/features/section/slice";
 import { SectionId } from "@/features/sections/types";
+import { useTimeout } from "@/lib/useTimeout";
 
 export const SectionAccordion = ({
 	title,
@@ -33,15 +34,22 @@ export const SectionAccordion = ({
 		if (isOpen) {
 			// open the accordion before the animation
 			detailsRef.current.open = true;
-		} else {
-			// close the accordion after the animation
-			setTimeout(() => {
-				if (detailsRef.current) {
-					detailsRef.current.open = false;
-				}
-			}, 200);
 		}
 	}, [isOpen]);
+
+	useTimeout(
+		() => {
+			if (!detailsRef.current) {
+				return;
+			}
+			if (!isOpen) {
+				console.log("closing here");
+				detailsRef.current.open = false;
+			}
+		},
+		// we need to use null here because the details element will not close if the delay is 0
+		isOpen ? null : 200,
+	);
 
 	return (
 		<details

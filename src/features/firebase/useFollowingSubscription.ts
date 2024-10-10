@@ -4,12 +4,13 @@ import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { safeParse } from "valibot";
 
-import { PlaylistSchema } from "../sections/playlist/schemas";
-import { SongSchema } from "../sections/song/schemas";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseClient";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
+import { sectionId } from "@/features/sections/consts";
+import { PlaylistSchema } from "@/features/sections/playlist/schemas";
+import { SongSchema } from "@/features/sections/song/schemas";
 
 export const useFollowingSubscription = (fuid: string | string[]) => {
 	const {
@@ -20,7 +21,18 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		songActiveIdSet,
 		playlistSet,
 		playlistIdSet,
+		songForm,
+		songLibraryAddSongIds,
+		sectionToggle,
+		songActiveId,
 	} = useAppStore();
+
+	useEffect(() => {
+		// open the the song section if the song is active
+		if (songActiveId) {
+			sectionToggle(sectionId.SONG, true);
+		}
+	}, [songActiveId, sectionToggle]);
 
 	useEffect(() => {
 		const unsubscribeFns: Unsubscribe[] = [];
@@ -56,11 +68,12 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 				setFollowing(following);
 
 				if (following.songActiveId) {
-					if (following.playlistActiveId) {
-						useAppStore
-							.getState()
-							.playlistLibraryAddPlaylistIds([following.playlistActiveId]);
+					const { songId } = useAppStore.getState();
+
+					if (songId !== following.songActiveId) {
+						sectionToggle(sectionId.SONG, true);
 					}
+
 					const songUnsubscribe = onSnapshot(
 						doc(db, collection.SONGS, following.songActiveId),
 						(songSnapshot) => {
@@ -79,11 +92,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 								return;
 							}
 							const song = songResult.output;
-							songSet(song);
+
+							songSet?.(song);
 							songIdSet(following.songActiveId);
+
 							songActiveIdSet(following.songActiveId);
-							const { songForm, songLibraryAddSongIds } =
-								useAppStore.getState();
 							songForm?.reset?.(song);
 							if (following.songActiveId) {
 								songLibraryAddSongIds([following.songActiveId]);
@@ -118,6 +131,12 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							playlistForm?.reset?.(playlist);
 							const songIds = playlist.songs.map(({ songId }) => songId);
 							useAppStore.getState().songLibraryAddSongIds(songIds);
+
+							if (following.playlistActiveId) {
+								useAppStore
+									.getState()
+									.playlistLibraryAddPlaylistIds([following.playlistActiveId]);
+							}
 						},
 					);
 					unsubscribeFns.push(playlistUnsubscribe);
