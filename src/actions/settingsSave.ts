@@ -44,7 +44,12 @@ export const settingsSave = async ({ settings }: { settings: Settings }) => {
 		const { sessionCookieData } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
-		await db.collection(collection.USERS).doc(uid).update(settings);
+		await db
+			.collection(collection.USERS)
+			.doc(uid)
+			.update({
+				timeZone: settings.useSystemTimeZone ? null : settings.timeZone,
+			});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

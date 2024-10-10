@@ -18,7 +18,7 @@ const settingsSliceInitialState: SettingsSliceState = {
 
 export type SettingsSlice = SettingsSliceState & {
 	settingsSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
-	setSettingsForm: (settingsForm: UseFormReturn<Settings>) => void;
+	settingsFormSet: (settingsForm: UseFormReturn<Settings>) => void;
 };
 
 export const createSettingsSlice: AppSettingsSlice = (set, get) => {
@@ -26,6 +26,6 @@ export const createSettingsSlice: AppSettingsSlice = (set, get) => {
 	return {
 		...settingsSliceInitialState,
 		settingsSubmit: settingsSubmit(get, set),
-		setSettingsForm: (settingsForm) => set({ settingsForm }),
+		settingsFormSet: (settingsForm) => set({ settingsForm }),
 	};
 };

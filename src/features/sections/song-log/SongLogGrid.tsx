@@ -21,10 +21,16 @@ export const SongLogGrid = () => {
 
 				return (
 					<GridRow key={logId}>
-						<div>{dateLocalFormatted}</div>
 						<Button
 							variant="outline"
-							className="min-h-[2rem] w-full justify-start"
+							className="min-h-[2rem] justify-start"
+							onClick={songLogLoadClick(logId)}
+						>
+							{dateLocalFormatted}
+						</Button>
+						<Button
+							variant="outline"
+							className="min-h-[2rem] justify-start"
 							onClick={songLogLoadClick(logId)}
 						>
 							{log.notes}

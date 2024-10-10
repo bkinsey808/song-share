@@ -5,8 +5,14 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 
 export const LogGrid = () => {
-	const { logs, logIds, logLoadClick, songNameGet, iso2formatted } =
-		useAppStore();
+	const {
+		logs,
+		logIds,
+		logLoadClick,
+		songLoadClick,
+		songNameGet,
+		iso2formatted,
+	} = useAppStore();
 	return (
 		<div data-title="Log Grid">
 			<Grid gridClassName="grid-cols-[12rem,2fr]">
@@ -20,11 +26,18 @@ export const LogGrid = () => {
 
 					return (
 						<GridRow key={logId}>
-							<div>{dateLocalFormatted}</div>
 							<Button
 								variant="outline"
-								className="min-h-[2rem] w-full justify-start"
+								className="min-h-[2rem] justify-start"
 								onClick={logLoadClick(logId)}
+								title="Open log"
+							>
+								{dateLocalFormatted}
+							</Button>
+							<Button
+								variant="outline"
+								className="min-h-[2rem] justify-start"
+								onClick={songLoadClick(log.songId)}
 							>
 								{songNameGet(log.songId)}
 							</Button>

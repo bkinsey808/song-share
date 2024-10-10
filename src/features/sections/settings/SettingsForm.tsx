@@ -37,7 +37,7 @@ export const SettingsForm = () => {
 
 	const [search, setSearch] = useState("");
 
-	const { settingsSubmit, setSettingsForm, timeZone } = useAppStore();
+	const { settingsSubmit, settingsFormSet, timeZone } = useAppStore();
 
 	const form = useForm<Settings>({
 		resolver: valibotResolver(SettingsSchema),
@@ -50,9 +50,9 @@ export const SettingsForm = () => {
 	// set settings form
 	useEffect(() => {
 		if (form) {
-			setSettingsForm(form);
+			settingsFormSet(form);
 		}
-	}, [form, setSettingsForm]);
+	}, [form, settingsFormSet]);
 
 	const useSystemTimeZone = form.getValues().useSystemTimeZone;
 	useEffect(() => {
