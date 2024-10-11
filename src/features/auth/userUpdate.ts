@@ -54,7 +54,10 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				logIds: logIds ?? [],
 				logs: logs ?? {},
 			});
-			settingsForm?.reset({ timeZone, useSystemTimeZone: !timeZone });
+			settingsForm?.reset({
+				timeZone: timeZone ?? undefined,
+				useSystemTimeZone: !timeZone,
+			});
 		},
 	);
 
