@@ -172,21 +172,21 @@ export const SongForm = () => {
 					{isSignedIn ? (
 						<div className="flex gap-[0.5rem]">
 							<Button type="submit" disabled={form.formState.isSubmitting}>
-								Save
+								Save Song
 							</Button>
-							{songId ? <Button>Save As...</Button> : null}
+							{songId ? <Button>Save Song As...</Button> : null}
 							{playlistSongAddButtonShouldShow() ? (
 								<Button
 									disabled={playlistSongAdding}
 									onClick={playlistSongAddClick}
 								>
-									Add to Playlist
+									Add Song to Playlist
 								</Button>
 							) : null}
-							<Button onClick={songNewClick}>New</Button>
+							<Button onClick={songNewClick}>New Song</Button>
 							{songId ? (
 								<Button variant="destructive" onClick={songDeleteClick}>
-									Delete
+									Delete Song
 								</Button>
 							) : null}
 						</div>

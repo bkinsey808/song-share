@@ -10,7 +10,7 @@ import { getKeys } from "@/features/global/getKeys";
 export const songLogSubmit =
 	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songLogForm, logId, songId } = get();
+		const { songLogForm, songLogId, songId } = get();
 
 		if (!songLogForm) {
 			console.error("no form");
@@ -31,7 +31,7 @@ export const songLogSubmit =
 			const logSaveResult = await logSave({
 				...logFormValues,
 				songId: songId ?? "",
-				logId: logId ?? "",
+				logId: songLogId ?? "",
 			});
 
 			switch (logSaveResult.actionResultType) {

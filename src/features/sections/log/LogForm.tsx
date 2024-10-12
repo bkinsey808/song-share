@@ -131,12 +131,12 @@ export const LogForm = () => {
 
 					<div className="flex gap-[0.5rem]">
 						<Button type="submit" disabled={form.formState.isSubmitting}>
-							Save
+							Save Log
 						</Button>
-						<Button onClick={logNewClick}>New</Button>
+						<Button onClick={logNewClick}>New Log</Button>
 						{logId ? (
 							<Button variant="destructive" onClick={logDeleteClick}>
-								Delete
+								Delete Log
 							</Button>
 						) : null}
 					</div>

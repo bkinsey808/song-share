@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/sortable";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { useSongLogData } from "@/features/sections/song-log/slice";
 
 export const PlaylistForm = () => {
 	const { isSignedIn } = useAppStore();
@@ -81,6 +82,12 @@ export const PlaylistForm = () => {
 	useEffect(() => {
 		playlistFormSet(form);
 	}, [form, playlistFormSet]);
+
+	const songLogData = useSongLogData(
+		playlist?.songs?.map(({ songId }) => songId) ?? [],
+	);
+
+	console.log({ songLogData });
 
 	return (
 		<div>
@@ -190,13 +197,13 @@ export const PlaylistForm = () => {
 					{isSignedIn ? (
 						<div className="flex gap-[0.5rem]">
 							<Button type="submit" disabled={form.formState.isSubmitting}>
-								Save
+								Save Playlist
 							</Button>
 							{playlistId ? <Button>Save As...</Button> : null}
-							<Button onClick={playlistNewClick}>New</Button>
+							<Button onClick={playlistNewClick}>New Playlist</Button>
 							{playlistId ? (
 								<Button variant="destructive" onClick={playlistDeleteClick}>
-									Delete
+									Delete Playlist
 								</Button>
 							) : null}
 						</div>

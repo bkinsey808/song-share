@@ -93,12 +93,12 @@ export const SongLogForm = () => {
 
 					<div className="flex gap-[0.5rem]">
 						<Button type="submit" disabled={form.formState.isSubmitting}>
-							Save
+							Save Song Log
 						</Button>
-						<Button onClick={songLogNewClick}>New</Button>
+						<Button onClick={songLogNewClick}>New Song Log</Button>
 						{logId ? (
 							<Button variant="destructive" onClick={songLogDeleteClick}>
-								Delete
+								Delete Song Log
 							</Button>
 						) : null}
 					</div>

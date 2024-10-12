@@ -38,6 +38,7 @@ export const LogGrid = () => {
 								variant="outline"
 								className="min-h-[2rem] justify-start"
 								onClick={songLoadClick(log.songId)}
+								title="Open song"
 							>
 								{songNameGet(log.songId)}
 							</Button>

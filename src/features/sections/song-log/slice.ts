@@ -1,4 +1,4 @@
-import { MouseEventHandler } from "react";
+import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
@@ -12,6 +12,7 @@ import {
 	sliceResetFns,
 	useAppStore,
 } from "@/features/app-store/useAppStore";
+import { getValues } from "@/features/global/getKeys";
 import { LogForm } from "@/features/sections/log/types";
 
 type SongLogSliceState = {
@@ -29,6 +30,7 @@ const songSliceInitialState: SongLogSliceState = {
 };
 
 export type SongLogSlice = SongLogSliceState & {
+	songLogSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	songLogNewClick: () => void;
 	songLogDeleteClick: () => void;
 	songLogDeleteConfirmClick: () => Promise<void>;
@@ -61,3 +63,23 @@ export const createSongLogSlice: AppSongLogSlice = (set, get) => {
 // makes it reactive
 export const useSongLogIds = (songId: string | null) =>
 	useAppStore((state) => state.songLogIdsGet(songId));
+
+export const useSongLogData = (songIds: string[]) =>
+	useAppStore((state) => {
+		const { logs } = state;
+		return {
+			songLogs: songIds.reduce((acc, songId) => {
+				const songLogs = getValues(logs)
+					.filter((log) => log.songId === songId)
+					.sort((a, b) => a.date.localeCompare(b.date));
+				return {
+					...acc,
+					[songId]: {
+						logs: songLogs,
+						count: songLogs.length,
+						last: songLogs[0],
+					},
+				};
+			}, {}),
+		};
+	});

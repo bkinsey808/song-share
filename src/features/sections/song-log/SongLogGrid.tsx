@@ -25,6 +25,7 @@ export const SongLogGrid = () => {
 							variant="outline"
 							className="min-h-[2rem] justify-start"
 							onClick={songLogLoadClick(logId)}
+							title="Open Song Log"
 						>
 							{dateLocalFormatted}
 						</Button>
@@ -32,6 +33,7 @@ export const SongLogGrid = () => {
 							variant="outline"
 							className="min-h-[2rem] justify-start"
 							onClick={songLogLoadClick(logId)}
+							title="Open Song Log"
 						>
 							{log.notes}
 						</Button>

@@ -15,7 +15,7 @@ export const songLogNewClick = (get: Get, set: Set) => () => {
 	}
 
 	set({
-		logId: null,
+		songLogId: null,
 	});
 
 	songLogForm.reset(
