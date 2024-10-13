@@ -19,10 +19,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		songIdSet,
 		songActiveIdSet,
 		playlistIdSet,
-		songForm,
 		songLibraryAddSongIds,
 		sectionToggle,
 		songActiveId,
+		songLibrary,
+		playlistLibrary,
 	} = useAppStore();
 
 	useEffect(() => {
@@ -90,11 +91,13 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 								return;
 							}
 							const song = songResult.output;
-
+							if (following.songActiveId) {
+								songLibrary[following.songActiveId] = song;
+							}
 							songIdSet(following.songActiveId);
 
 							songActiveIdSet(following.songActiveId);
-							songForm?.reset?.(song);
+
 							if (following.songActiveId) {
 								songLibraryAddSongIds([following.songActiveId]);
 							}
@@ -104,6 +107,12 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 				}
 
 				if (following.playlistActiveId) {
+					const { playlistId } = useAppStore.getState();
+
+					if (playlistId !== following.playlistActiveId) {
+						sectionToggle(sectionId.PLAYLIST, true);
+					}
+
 					const playlistUnsubscribe = onSnapshot(
 						doc(db, collection.PLAYLISTS, following.playlistActiveId),
 						(playlistSnapshot) => {
@@ -122,9 +131,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 								return;
 							}
 							const playlist = playlistResult.output;
+							if (following.playlistActiveId) {
+								playlistLibrary[following.playlistActiveId] = playlist;
+							}
+
 							playlistIdSet(following.playlistActiveId ?? null);
-							const playlistForm = useAppStore.getState().playlistForm;
-							playlistForm?.reset?.(playlist);
 							const songIds = playlist.songs.map(({ songId }) => songId);
 							useAppStore.getState().songLibraryAddSongIds(songIds);
 

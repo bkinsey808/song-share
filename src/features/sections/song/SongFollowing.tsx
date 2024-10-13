@@ -1,8 +1,7 @@
-import { useAppStore } from "@/features/app-store/useAppStore";
+import { useSong } from "./slice";
 
 export const SongFollowing = () => {
-	const { songId, songLibrary } = useAppStore();
-	const song = songId ? songLibrary[songId] : undefined;
+	const song = useSong();
 	const { credits, lyrics, translation } = song ?? {};
 
 	return (
