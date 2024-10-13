@@ -1,4 +1,3 @@
-import { Playlist } from "./types";
 import { Get, Set } from "@/features/app-store/types";
 
 export const playlistNewClick = (get: Get, set: Set) => () => {
@@ -14,17 +13,9 @@ export const playlistNewClick = (get: Get, set: Set) => () => {
 		return;
 	}
 
-	const playlist: Playlist = {
-		playlistName: "",
-		sharer: uid,
-		songs: [],
-	};
-
 	set({
 		playlistId: null,
-		playlist,
 	});
 
 	playlistForm.setFocus("playlistName");
-	playlistForm.reset(playlist);
 };

@@ -12,7 +12,7 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const playlistIdSet = async (playlistId: string) => {
+export const playlistIdSet = async (playlistId: string | null) => {
 	try {
 		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {

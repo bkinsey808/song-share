@@ -16,7 +16,7 @@ import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 export const playlistGet = async (playlistId: string) => {
 	try {
 		const playlistDoc = await db
-			.collection(collection.SONG_SETS)
+			.collection(collection.PLAYLISTS)
 			.doc(playlistId)
 			.get();
 		if (!playlistDoc.exists) {

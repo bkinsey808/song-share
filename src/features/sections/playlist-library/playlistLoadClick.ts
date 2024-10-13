@@ -7,7 +7,7 @@ import type { Get, Set } from "@/features/app-store/types";
 
 export const playlistLoadClick =
 	(get: Get, set: Set) =>
-	(playlistId: string) =>
+	(playlistId: string | null) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
@@ -32,12 +32,7 @@ export const playlistLoadClick =
 			}
 		}
 
-		const { playlistLibrary, playlistForm } = get();
-		const playlist = playlistLibrary[playlistId];
-		playlistForm?.reset?.(playlist);
-
 		set({
-			playlist,
 			playlistId,
 		});
 

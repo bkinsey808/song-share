@@ -12,7 +12,23 @@ export const PlaylistSchema = object({
 		minLength(3, "Playlist Name must be at least 3 characters"),
 	),
 	sharer: string(),
-	// songIds: array(string()),
+	songs: array(
+		object({
+			songId: string(),
+		}),
+	),
+});
+
+export const PlaylistFormSchema = object({
+	playlistName: pipe(
+		string(),
+		nonEmpty("Playlist Name is required"),
+		minLength(3, "Playlist Name must be at least 3 characters"),
+	),
+	sharer: string(),
+});
+
+export const PlaylistGridFormSchema = object({
 	songs: array(
 		object({
 			songId: string(),

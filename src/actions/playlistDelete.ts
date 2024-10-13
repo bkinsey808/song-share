@@ -50,7 +50,7 @@ export const playlistDelete = async (playlistId: string) => {
 		}
 
 		// delete the playlist from the playlists collection
-		await db.collection(collection.SONG_SETS).doc(playlistId).delete();
+		await db.collection(collection.PLAYLISTS).doc(playlistId).delete();
 
 		// update user doc songs with the deleted song removed
 		await db.collection(collection.USERS).doc(uid).update({

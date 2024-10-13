@@ -1,6 +1,6 @@
 export const collection = {
 	SONGS: "songs",
-	SONG_SETS: "playlists",
+	PLAYLISTS: "playlists",
 	USER_NAMES: "userNames",
 	USERS: "users",
 	USERS_PUBLIC: "usersPublic",

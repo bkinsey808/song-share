@@ -20,7 +20,7 @@ export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
 
 		const { playlistId } = get();
 		if (playlistId === unsubscribePlaylistId) {
-			set({ playlistId: null, playlist: null });
+			set({ playlistId: null });
 		}
 	});
 
@@ -31,7 +31,7 @@ export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
 
 	playlistIdsToSubscribe.forEach((subscribePlaylistId) => {
 		const unsubscribeFn = onSnapshot(
-			doc(db, collection.SONG_SETS, subscribePlaylistId),
+			doc(db, collection.PLAYLISTS, subscribePlaylistId),
 			(playlistSnapshot) => {
 				if (!playlistSnapshot.exists) {
 					console.warn(`Playlist ${subscribePlaylistId} does not exist`);
@@ -49,11 +49,11 @@ export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
 				}
 				const playlist = playlistParseResult.output;
 				playlistLibrary[subscribePlaylistId] = playlist;
-				const { playlistId, playlistForm } = get();
+				const { playlistId, playlistForm, playlistGridForm } = get();
 
 				if (playlistId === subscribePlaylistId) {
-					set({ playlist });
 					playlistForm?.reset?.(playlist);
+					playlistGridForm?.reset?.(playlist);
 				}
 			},
 			(error) => {

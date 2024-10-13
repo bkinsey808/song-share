@@ -45,7 +45,7 @@ export const songActiveSet = async ({
 
 		if (playlistId) {
 			const playlistResult = await db
-				.collection(collection.SONG_SETS)
+				.collection(collection.PLAYLISTS)
 				.doc(playlistId)
 				.get();
 

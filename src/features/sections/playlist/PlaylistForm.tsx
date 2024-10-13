@@ -1,12 +1,12 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
 import { useEffect, useMemo } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { PlaylistDeleteConfirmModal } from "./PlaylistDeleteConfirmModal";
 import { PlaylistSchema } from "./schemas";
+import { usePlaylist } from "./slice";
 import { Playlist } from "./types";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,33 +17,22 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-	Sortable,
-	SortableDragHandle,
-	SortableItem,
-} from "@/components/ui/sortable";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { useSongLogData } from "@/features/sections/song-log/slice";
 
 export const PlaylistForm = () => {
 	const { isSignedIn } = useAppStore();
 	const {
 		playlistId,
-		playlist,
 		playlistSubmit,
 		playlistIsUnsaved,
 		playlistIsUnsavedSet,
 		playlistNewClick,
 		playlistFormSet,
 		playlistDeleteClick,
-		songActiveId,
-		songActiveClick,
-		fuid,
-		songLoadClick,
-		songNameGet,
 	} = useAppStore();
+
+	const playlist = usePlaylist();
 
 	const defaultValues = useMemo(
 		() => {
@@ -63,11 +52,6 @@ export const PlaylistForm = () => {
 		defaultValues,
 	});
 
-	const { fields, move, remove } = useFieldArray({
-		control: form.control,
-		name: "songs",
-	});
-
 	// keep unsavedPlaylist in sync with form state
 	useEffect(() => {
 		playlistIsUnsavedSet(form.formState.isDirty);
@@ -78,10 +62,15 @@ export const PlaylistForm = () => {
 		form.reset(defaultValues);
 	}, [form, defaultValues]);
 
-	// set song form
+	// set playlist form
 	useEffect(() => {
 		playlistFormSet(form);
 	}, [form, playlistFormSet]);
+
+	useEffect(() => {
+		form.reset(playlist);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [form, playlistId]);
 
 	const songLogData = useSongLogData(
 		playlist?.songs?.map(({ songId }) => songId) ?? [],
@@ -107,92 +96,6 @@ export const PlaylistForm = () => {
 							</FormItem>
 						)}
 					/>
-
-					<div>
-						<Grid gridClassName="grid-cols-[1.5rem,2fr,5rem]">
-							<GridHeader>
-								<div></div>
-								<div>Song Name</div>
-								<div>Options</div>
-							</GridHeader>
-							<RadioGroup
-								name="songActiveId"
-								id="songActiveId"
-								value={songActiveId ?? ""}
-							>
-								<Sortable
-									value={fields}
-									onMove={({ activeIndex, overIndex }) =>
-										move(activeIndex, overIndex)
-									}
-									overlay={
-										<div className="grid grid-cols-[1.5rem,2fr,5rem] gap-[0.5rem]">
-											<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
-											<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
-											<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
-										</div>
-									}
-								>
-									{playlistId &&
-										fields.map((field, index) => {
-											const songId = field.songId;
-											return (
-												<SortableItem key={field.id} value={field.id} asChild>
-													<GridRow key={songId}>
-														<div className="align-center grid justify-center">
-															<RadioGroupItem
-																className="self-center"
-																id={songId}
-																disabled={!!fuid}
-																value={songId}
-																onClick={songActiveClick({
-																	songId,
-																	playlistId,
-																})}
-															/>
-														</div>
-														<div>
-															<Button
-																variant="outline"
-																className="min-h-[2rem] w-full justify-start"
-																onClick={songLoadClick(songId)}
-																title="Load song"
-															>
-																{songNameGet(songId)}
-															</Button>
-														</div>
-														<div className="flex gap-[0.5rem]">
-															<SortableDragHandle
-																variant="outline"
-																size="icon"
-																className="size-8 shrink-0"
-																title="Drag to reorder"
-															>
-																<DragHandleDots2Icon
-																	className="size-4"
-																	aria-hidden="true"
-																/>
-															</SortableDragHandle>
-
-															<Button
-																variant="outline"
-																onClick={() => remove(index)}
-																title="Remove song from playlist"
-															>
-																<TrashIcon
-																	className="size-4 text-destructive"
-																	aria-hidden="true"
-																/>
-															</Button>
-														</div>
-													</GridRow>
-												</SortableItem>
-											);
-										})}
-								</Sortable>
-							</RadioGroup>
-						</Grid>
-					</div>
 
 					{isSignedIn ? (
 						<div className="flex gap-[0.5rem]">

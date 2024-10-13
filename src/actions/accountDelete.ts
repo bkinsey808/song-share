@@ -53,7 +53,7 @@ export const accountDelete = async () => {
 
 		const playlistIds = userDoc.playlistIds;
 		const deletePlaylistPromises = (playlistIds ?? []).map((playlistId) =>
-			db.collection(collection.SONG_SETS).doc(playlistId).delete(),
+			db.collection(collection.PLAYLISTS).doc(playlistId).delete(),
 		);
 		const promisePlaylistsAllSettledResult = await Promise.allSettled(
 			deletePlaylistPromises,

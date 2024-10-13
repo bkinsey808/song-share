@@ -2,6 +2,7 @@
 
 import { PlaylistFollowing } from "./PlaylistFollowing";
 import { PlaylistForm } from "./PlaylistForm";
+import { PlaylistGrid } from "./PlaylistGrid";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const PlaylistSection = () => {
@@ -9,7 +10,14 @@ export const PlaylistSection = () => {
 
 	return (
 		<section data-title="Playlist Section">
-			{fuid ? <PlaylistFollowing /> : <PlaylistForm />}
+			{fuid ? (
+				<PlaylistFollowing />
+			) : (
+				<>
+					<PlaylistForm />
+					<PlaylistGrid />
+				</>
+			)}
 		</section>
 	);
 };

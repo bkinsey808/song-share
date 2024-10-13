@@ -1,23 +1,23 @@
 import { FormEvent } from "react";
 
-import { playlistSave } from "@/actions/playlistSave";
+import { playlistGridSave } from "@/actions/playlistGridSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const playlistSubmit =
-	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const { playlistForm } = get();
+export const playlistGridFormSubmit =
+	(get: Get, set: Set) => (e?: FormEvent<HTMLFormElement>) => {
+		e?.preventDefault();
+		const { playlistGridForm } = get();
 
-		if (!playlistForm) {
+		if (!playlistGridForm) {
 			console.error("no form");
 			return;
 		}
 
-		return playlistForm.handleSubmit(async (playlist) => {
+		return playlistGridForm.handleSubmit(async (playlistGridFormValues) => {
 			set({ playlistFormIsDisabled: true });
 			const { sessionCookieData } = useAppStore.getState();
 
@@ -30,36 +30,36 @@ export const playlistSubmit =
 			}
 
 			const { playlistId, playlistIsUnsavedSet } = get();
-			const songSaveResult = await playlistSave({
-				playlist,
+			const playstGridFormSaveResult = await playlistGridSave({
+				playlistGridFormValues,
 				playlistId,
 			});
 			playlistIsUnsavedSet(false);
 
-			switch (songSaveResult.actionResultType) {
+			switch (playstGridFormSaveResult.actionResultType) {
 				case actionResultType.ERROR:
-					const keys = songSaveResult.fieldErrors
-						? getKeys(songSaveResult.fieldErrors)
+					const keys = playstGridFormSaveResult.fieldErrors
+						? getKeys(playstGridFormSaveResult.fieldErrors)
 						: undefined;
 					keys?.forEach((key) => {
-						const message = songSaveResult.fieldErrors?.[key]?.[0];
+						const message = playstGridFormSaveResult.fieldErrors?.[key]?.[0];
 						if (!message) {
 							return;
 						}
-						playlistForm.setError(key, {
+						playlistGridForm.setError(key, {
 							type: "manual",
 							message,
 						});
 					});
 					toast({
 						variant: "destructive",
-						title: "There was an error saving playlist",
+						title: "There was an error saving playlist grid",
 					});
 
 					break;
 				case actionResultType.SUCCESS:
-					playlistForm.reset(playlist);
-					toast({ title: "Playlist details saved" });
+					playlistGridForm.reset(playlistGridFormValues);
+					toast({ title: "Playlist grid saved" });
 					break;
 			}
 		})(e);

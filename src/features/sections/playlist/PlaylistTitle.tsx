@@ -1,9 +1,9 @@
 "use client";
 
-import { useAppStore } from "@/features/app-store/useAppStore";
+import { usePlaylist } from "./slice";
 
 export const PlaylistTitle = () => {
-	const { playlist } = useAppStore();
+	const playlist = usePlaylist();
 
 	return <span>{playlist?.playlistName}</span>;
 };

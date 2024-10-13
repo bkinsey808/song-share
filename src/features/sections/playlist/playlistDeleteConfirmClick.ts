@@ -1,4 +1,3 @@
-import { Playlist } from "./types";
 import { playlistDelete } from "@/actions/playlistDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -41,18 +40,12 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		return;
 	}
 	delete playlistLibrary[playlistId];
-	const playlist: Playlist = {
-		playlistName: "",
-		sharer: uid ?? "",
-		songs: [],
-	};
+
 	set({
 		playlistId: null,
-		playlist,
 		playlistLibrary,
 		playlistDeletingIs: false,
 		playlistIds: result.playlistIds,
 	});
-	playlistForm.reset(playlist);
 	setOpenAppModal(null);
 };

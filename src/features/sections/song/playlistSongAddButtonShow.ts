@@ -1,8 +1,15 @@
 import { Get } from "@/features/app-store/types";
 
 export const playlistSongAddButtonShow = (get: Get) => () => {
-	const { songId, playlistId, playlist } = get();
-	if (!songId || !playlistId || !playlist) {
+	const { songId, playlistId } = get();
+
+	if (!songId || !playlistId) {
+		return false;
+	}
+
+	const playlist = get().playlistLibrary[playlistId];
+
+	if (!playlist) {
 		return false;
 	}
 

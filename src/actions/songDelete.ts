@@ -45,7 +45,7 @@ export const songDelete = async (songId: string) => {
 
 		const playlistIds = song.playlistIds;
 		const deletePlaylistPromises = playlistIds.map((playlistId) =>
-			db.collection(collection.SONG_SETS).doc(playlistId).delete(),
+			db.collection(collection.PLAYLISTS).doc(playlistId).delete(),
 		);
 		const promiseResult = await Promise.allSettled(deletePlaylistPromises);
 		const failedPlaylistDeletes = promiseResult.filter(
