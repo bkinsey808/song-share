@@ -30,6 +30,7 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
+
 	const result = await playlistDelete(playlistId);
 	if (result.actionResultType === actionResultType.ERROR) {
 		toast({
@@ -39,6 +40,7 @@ export const playlistDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
+
 	delete playlistLibrary[playlistId];
 
 	set({

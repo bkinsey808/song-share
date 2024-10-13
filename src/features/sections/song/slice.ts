@@ -10,14 +10,14 @@ import { songDeleteConfirmClick } from "./songDeleteConfirmClick";
 import { songNewClick } from "./songNewClick";
 import { songSubmit } from "./songSubmit";
 import { Song } from "./types";
-import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
-import { Nullable } from "@/features/global/types";
-
-export type AppSong = Nullable<Song>;
+import {
+	AppSlice,
+	sliceResetFns,
+	useAppStore,
+} from "@/features/app-store/useAppStore";
 
 type SongSliceState = {
 	songActiveId: string | null;
-	song: AppSong | null;
 	songUnsavedIs: boolean;
 	songDeleting: boolean;
 	playlistSongAdding: boolean;
@@ -34,7 +34,6 @@ const songSliceInitialState: SongSliceState = {
 	songForm: null,
 	playlistSongAdding: false,
 	songUnsavedIs: false,
-	song: null,
 };
 
 export type SongSlice = SongSliceState & {
@@ -53,10 +52,10 @@ export type SongSlice = SongSliceState & {
 		songId: string;
 		playlistId?: string | undefined;
 	}) => () => Promise<void>;
-	songSet: (song: AppSong) => void;
 	songIdSet: (songId: string | null) => void;
 	songActiveIdSet: (songId: string | null) => void;
 	songNameGet: (songId: string | null) => string | undefined;
+	songDefaultGet: () => Song;
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
@@ -72,12 +71,24 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		playlistSongAddButtonShouldShow: playlistSongAddButtonShow(get),
 		playlistSongAddClick: playlistSongAddClick(get, set),
 		songActiveClick: songActiveClick(get),
-		songSet: (song) => set({ song }),
 		songIdSet: (songId) => set({ songId }),
 		songActiveIdSet: (songId) => set({ songActiveId: songId }),
 		songNameGet: (songId) => {
 			const { songLibrary } = get();
 			return songId ? songLibrary[songId]?.songName : undefined;
 		},
+		songDefaultGet: () => ({
+			songName: "",
+			lyrics: "",
+			translation: "",
+			credits: "",
+			sharer: get().sessionCookieData?.uid ?? "",
+			playlistIds: [],
+		}),
 	};
 };
+
+export const useSong = () =>
+	useAppStore((state) =>
+		state.songId ? state.songLibrary[state.songId] : state.songDefaultGet(),
+	);

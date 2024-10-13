@@ -108,6 +108,7 @@ export const songSave = async ({
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
+			songId: newSongId,
 		};
 	} catch (error) {
 		console.error({ error });

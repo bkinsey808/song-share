@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 // import { KeySection } from "../key/KeySection.tsx.ignore";
@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 // import { ScaleTitle } from "../scale/ScaleTitle.tsx.ignore";
 import { SongDeleteConfirmModal } from "./SongDeleteConfirmModal";
 import { SongSchema } from "./schemas";
+import { useSong } from "./slice";
 import { Song } from "./types";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,7 +30,6 @@ export const SongForm = () => {
 	const { isSignedIn } = useAppStore();
 	const {
 		songId,
-		song,
 		songSubmit,
 		songIsUnsavedSet,
 		songNewClick,
@@ -38,24 +38,14 @@ export const SongForm = () => {
 		playlistSongAddButtonShouldShow,
 		playlistSongAdding,
 		playlistSongAddClick,
+		songDefaultGet,
 	} = useAppStore();
 
-	const defaultValues: Song = useMemo(
-		() => ({
-			songName: song?.songName ?? "",
-			lyrics: song?.lyrics ?? "",
-			translation: song?.translation ?? "",
-			credits: song?.credits ?? "",
-			sharer: song?.sharer ?? "",
-			playlistIds: song?.playlistIds ?? [],
-		}),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	);
+	const song = useSong();
 
 	const form = useForm<Song>({
 		resolver: valibotResolver(SongSchema),
-		defaultValues,
+		defaultValues: songDefaultGet(),
 	});
 
 	// keep unsavedSong in sync with form state
@@ -63,17 +53,17 @@ export const SongForm = () => {
 		songIsUnsavedSet(form.formState.isDirty);
 	}, [form.formState.isDirty, songIsUnsavedSet]);
 
-	// handle load song from song library
-	useEffect(() => {
-		form.reset(defaultValues);
-	}, [form, defaultValues]);
-
 	// set song form
 	useEffect(() => {
 		if (form) {
 			songFormSet(form);
 		}
 	}, [form, songFormSet]);
+
+	useEffect(() => {
+		form.reset(song);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [form, songId]);
 
 	return (
 		<div>

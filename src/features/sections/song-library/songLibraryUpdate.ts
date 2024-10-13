@@ -20,7 +20,7 @@ export const songLibraryUpdate = (get: Get, set: Set) => () => {
 
 		const { songId, songForm } = get();
 		if (songId === unsubscribeSongId) {
-			set({ songId: null, song: null });
+			set({ songId: null });
 			songForm?.reset?.({});
 		}
 	});

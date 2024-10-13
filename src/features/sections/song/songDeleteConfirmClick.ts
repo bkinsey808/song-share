@@ -1,4 +1,3 @@
-import { Song } from "./types";
 import { songDelete } from "@/actions/songDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -8,9 +7,8 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
 		songDeleting: true,
 	});
-	const { songForm, songLibrary, songId, sessionCookieData, setOpenAppModal } =
-		get();
-	const uid = sessionCookieData?.uid;
+	const { songForm, songLibrary, songId, setOpenAppModal } = get();
+
 	if (!songForm) {
 		console.error("no form");
 		return;
@@ -23,6 +21,7 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
+
 	const result = await songDelete(songId);
 	if (result.actionResultType === actionResultType.ERROR) {
 		toast({
@@ -32,22 +31,14 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 		setOpenAppModal(null);
 		return;
 	}
+
 	delete songLibrary[songId];
-	const song: Song = {
-		songName: "",
-		credits: "",
-		lyrics: "",
-		translation: "",
-		sharer: uid ?? "",
-		playlistIds: [],
-	};
+
 	set({
 		songId: null,
-		song,
 		songLibrary,
 		songDeleting: false,
 		songIds: result.songIds,
 	});
-	songForm.reset(song);
 	setOpenAppModal(null);
 };

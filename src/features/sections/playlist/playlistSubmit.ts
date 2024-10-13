@@ -10,7 +10,7 @@ import { getKeys } from "@/features/global/getKeys";
 export const playlistSubmit =
 	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { playlistForm } = get();
+		const { playlistForm, playlistLibrary } = get();
 
 		if (!playlistForm) {
 			console.error("no form");
@@ -30,19 +30,19 @@ export const playlistSubmit =
 			}
 
 			const { playlistId, playlistIsUnsavedSet } = get();
-			const songSaveResult = await playlistSave({
+			const playlistSaveResult = await playlistSave({
 				playlist,
 				playlistId,
 			});
 			playlistIsUnsavedSet(false);
 
-			switch (songSaveResult.actionResultType) {
+			switch (playlistSaveResult.actionResultType) {
 				case actionResultType.ERROR:
-					const keys = songSaveResult.fieldErrors
-						? getKeys(songSaveResult.fieldErrors)
+					const keys = playlistSaveResult.fieldErrors
+						? getKeys(playlistSaveResult.fieldErrors)
 						: undefined;
 					keys?.forEach((key) => {
-						const message = songSaveResult.fieldErrors?.[key]?.[0];
+						const message = playlistSaveResult.fieldErrors?.[key]?.[0];
 						if (!message) {
 							return;
 						}
@@ -59,6 +59,11 @@ export const playlistSubmit =
 					break;
 				case actionResultType.SUCCESS:
 					playlistForm.reset(playlist);
+					if (playlistSaveResult.playlistId) {
+						playlistLibrary[playlistSaveResult.playlistId] = playlist;
+						set({ playlistId: playlistSaveResult.playlistId });
+					}
+
 					toast({ title: "Playlist details saved" });
 					break;
 			}

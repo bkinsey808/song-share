@@ -8,9 +8,9 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSubmit =
-	(get: Get, _set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songForm } = get();
+		const { songForm, songLibrary } = get();
 
 		if (!songForm) {
 			console.error("no form");
@@ -29,6 +29,7 @@ export const songSubmit =
 			}
 
 			const { songId, songIsUnsavedSet } = get();
+
 			const songSaveResult = await songSave({
 				song,
 				songId,
@@ -58,6 +59,12 @@ export const songSubmit =
 
 					break;
 				case actionResultType.SUCCESS:
+					songForm.reset(song);
+					if (songSaveResult.songId) {
+						songLibrary[songSaveResult.songId] = song;
+						set({ songId: songSaveResult.songId });
+					}
+
 					toast({ title: "Song details saved" });
 					break;
 			}

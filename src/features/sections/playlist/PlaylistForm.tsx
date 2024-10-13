@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { PlaylistDeleteConfirmModal } from "./PlaylistDeleteConfirmModal";
@@ -30,37 +30,20 @@ export const PlaylistForm = () => {
 		playlistNewClick,
 		playlistFormSet,
 		playlistDeleteClick,
+		playlistDefaultGet,
 	} = useAppStore();
 
 	const playlist = usePlaylist();
 
-	const defaultValues = useMemo(
-		() => {
-			const defaultPlaylist: Playlist = {
-				playlistName: playlist?.playlistName ?? "",
-				sharer: playlist?.sharer ?? "",
-				songs: playlist?.songs ?? [],
-			};
-			return defaultPlaylist;
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	);
-
 	const form = useForm<Playlist>({
 		resolver: valibotResolver(PlaylistSchema),
-		defaultValues,
+		defaultValues: playlistDefaultGet(),
 	});
 
 	// keep unsavedPlaylist in sync with form state
 	useEffect(() => {
 		playlistIsUnsavedSet(form.formState.isDirty);
 	}, [form.formState.isDirty, playlistIsUnsavedSet]);
-
-	// handle load playlist from playlist library
-	useEffect(() => {
-		form.reset(defaultValues);
-	}, [form, defaultValues]);
 
 	// set playlist form
 	useEffect(() => {

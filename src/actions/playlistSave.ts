@@ -113,6 +113,7 @@ export const playlistSave = async ({
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
+			playlistId: newPlaylistId,
 		};
 	} catch (error) {
 		console.error({ error });

@@ -16,7 +16,6 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 	const {
 		setFuid,
 		setFollowing,
-		songSet,
 		songIdSet,
 		songActiveIdSet,
 		playlistIdSet,
@@ -92,7 +91,6 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							}
 							const song = songResult.output;
 
-							songSet?.(song);
 							songIdSet(following.songActiveId);
 
 							songActiveIdSet(following.songActiveId);
@@ -149,5 +147,5 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 			setFuid(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fuid, setFuid, setFollowing, songSet]);
+	}, [fuid, setFuid, setFollowing]);
 };

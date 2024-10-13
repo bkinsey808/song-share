@@ -32,12 +32,7 @@ export const songLoadClick =
 			}
 		}
 
-		const { songLibrary, songForm } = get();
-		const song = songLibrary[songId];
-		songForm?.reset?.(song);
-
 		set({
-			song,
 			songId,
 		});
 
