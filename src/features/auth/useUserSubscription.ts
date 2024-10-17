@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const useUserSubscription = () => {
-	const { userUpdate, userUnsubscribe, sessionCookieData } = useAppStore();
+	const { userSubscribe, userUnsubscribe, sessionCookieData } = useAppStore();
 
 	const uid = sessionCookieData?.uid;
 
@@ -11,7 +11,7 @@ export const useUserSubscription = () => {
 		if (!uid) {
 			return;
 		}
-		userUpdate(uid);
+		userSubscribe(uid);
 		return userUnsubscribe;
-	}, [userUpdate, userUnsubscribe, uid]);
+	}, [userSubscribe, userUnsubscribe, uid]);
 };

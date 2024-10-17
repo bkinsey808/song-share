@@ -9,8 +9,8 @@ import { signInClick } from "./signInClick";
 import { signOutAndClearLocalClick } from "./signOutAndClearLocalClick";
 import { signOutClick } from "./signOutClick";
 import { RegistrationData, SessionCookieData } from "./types";
+import { userSubscribe } from "./userSubscribe";
 import { userUnsubscribe } from "./userUnsubscribe";
-import { userUpdate } from "./userUpdate";
 import { usernameGet } from "./usernameGet";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import "@/features/firebase/firebaseClient";
@@ -53,7 +53,7 @@ export type AuthSlice = AuthSliceState & {
 	) => (e: React.FormEvent<HTMLFormElement>) => void;
 	sessionExtendClick: () => void;
 	usernameGet: (uid: string) => string;
-	userUpdate: (uid: string) => void;
+	userSubscribe: (uid: string) => void;
 	userUnsubscribe: () => void;
 };
 
@@ -87,7 +87,7 @@ export const createAuthSlice: AppAuthSlice = (set, get) => {
 		registerSubmit: registerSubmit(get, set),
 		sessionExtendClick: sessionExtendClick(get, set),
 		usernameGet: usernameGet(get),
-		userUpdate: userUpdate(get, set),
+		userSubscribe: userSubscribe(get, set),
 		userUnsubscribe: userUnsubscribe(get, set),
 	};
 };

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { safeParse } from "valibot";
 
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseClient";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
 import { sectionId } from "@/features/sections/consts";
@@ -47,7 +47,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		setFuid(fuid);
 
 		const userPublicUnsubscribe = onSnapshot(
-			doc(db, collection.USERS_PUBLIC, fuid),
+			doc(db, Collection.USERS_PUBLIC, fuid),
 			(userPublicSnapshot) => {
 				if (!userPublicSnapshot.exists) {
 					console.warn("users public document does not exist!");
@@ -74,7 +74,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					}
 
 					const songUnsubscribe = onSnapshot(
-						doc(db, collection.SONGS, following.songActiveId),
+						doc(db, Collection.SONGS, following.songActiveId),
 						(songSnapshot) => {
 							if (!songSnapshot.exists) {
 								console.warn("Song does not exist");
@@ -114,7 +114,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					}
 
 					const playlistUnsubscribe = onSnapshot(
-						doc(db, collection.PLAYLISTS, following.playlistActiveId),
+						doc(db, Collection.PLAYLISTS, following.playlistActiveId),
 						(playlistSnapshot) => {
 							if (!playlistSnapshot.exists) {
 								console.warn("Playlist does not exist");

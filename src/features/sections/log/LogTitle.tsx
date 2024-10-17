@@ -1,10 +1,10 @@
 "use client";
 
-import { useAppStore } from "@/features/app-store/useAppStore";
+import { useSongLogs } from "@/features/sections/song-log/slice";
 
 export const LogTitle = () => {
-	const { logIds } = useAppStore();
-	const numberOfLogs = logIds.length;
+	const songLogs = useSongLogs();
+	const numberOfLogs = songLogs.length;
 
 	return (
 		<span>

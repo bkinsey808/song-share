@@ -4,7 +4,7 @@ import { safeParse } from "valibot";
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
@@ -31,7 +31,7 @@ export const songActiveSet = async ({
 		const { uid } = sessionCookieData;
 
 		const userPublicGetResult = await db
-			.collection(collection.USERS_PUBLIC)
+			.collection(Collection.USERS_PUBLIC)
 			.doc(uid)
 			.get();
 		if (!userPublicGetResult.exists) {
@@ -45,7 +45,7 @@ export const songActiveSet = async ({
 
 		if (playlistId) {
 			const playlistResult = await db
-				.collection(collection.PLAYLISTS)
+				.collection(Collection.PLAYLISTS)
 				.doc(playlistId)
 				.get();
 
@@ -70,7 +70,7 @@ export const songActiveSet = async ({
 		}
 
 		await db
-			.collection(collection.USERS_PUBLIC)
+			.collection(Collection.USERS_PUBLIC)
 			.doc(uid)
 			.update({
 				songActiveId: songId,

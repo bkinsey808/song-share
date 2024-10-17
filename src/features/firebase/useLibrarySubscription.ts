@@ -6,14 +6,14 @@ export const useLibrarySubscription = () => {
 	const {
 		songIds,
 		playlistIds,
-		songLibraryUpdate,
+		songLibrarySubscribe,
 		playlistLibraryUpdate,
 		songLibraryUnsubscribe,
 		playlistLibraryUnsubscribe,
 	} = useAppStore();
 
 	useEffect(() => {
-		songLibraryUpdate();
+		songLibrarySubscribe();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [songIds]);
 

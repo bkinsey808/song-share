@@ -72,9 +72,14 @@ const omittedKeys: (keyof AppSlice)[] = [
 	"playlistSongAdding",
 	"songUnsubscribeFns",
 	"playlistUnsubscribeFns",
-	"logDeleting",
 	"songDeleting",
 	"playlistDeletingIs",
+	"confirmModalButtonLabel",
+	"confirmModalError",
+	"confirmModalFn",
+	"confirmModalHeading",
+	"confirmModalSuccessWaiting",
+	"ConfirmModalContent",
 ];
 
 export const useAppStore = create<AppSlice>()(

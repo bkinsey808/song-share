@@ -1,7 +1,43 @@
-import { Get } from "@/features/app-store/types";
-import { appModal } from "@/features/modal/consts";
+import { UseFormReturn } from "react-hook-form";
 
-export const songLogDeleteClick = (get: Get) => () => {
-	const { setOpenAppModal } = get();
-	setOpenAppModal(appModal.SONG_LOG_DELETE_CONFIRM);
-};
+import { songLogDefaultGet } from "./songLogDefaultGet";
+import { SongLogForm } from "./types";
+import { songLogDelete } from "@/actions/songLogDelete";
+import { Get } from "@/features/app-store/types";
+
+export const songLogDeleteClick =
+	(get: Get) =>
+	({
+		songId,
+		logId,
+		form,
+		shouldClearSongId,
+	}: {
+		songId: string;
+		logId: string;
+		form: UseFormReturn<SongLogForm>;
+		shouldClearSongId: boolean;
+	}) =>
+	() => {
+		const { confirmModalOpen } = get();
+		confirmModalOpen({
+			heading: "Delete Song Log",
+			buttonLabel: "Delete",
+			content: "Are you sure you want to delete this song log?",
+			confirmFn: async () => {
+				const songDeleteResult = await songLogDelete({
+					songId,
+					logId,
+				});
+
+				if (songDeleteResult.actionResultType === "SUCCESS") {
+					form.reset({
+						...songLogDefaultGet(),
+						songId: shouldClearSongId || !songId ? "" : songId,
+					});
+				}
+
+				return songDeleteResult;
+			},
+		});
+	};

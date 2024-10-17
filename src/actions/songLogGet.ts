@@ -4,9 +4,9 @@ import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
-import { UserDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
+import { SongLogSchema } from "@/features/sections/song-log/schemas";
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
@@ -14,7 +14,13 @@ import { serverParse } from "@/features/global/serverParse";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-export const userDocGet = async (uid?: string) => {
+export const songLogGet = async ({
+	songId,
+	uid,
+}: {
+	songId: string;
+	uid?: string;
+}) => {
 	try {
 		if (!uid) {
 			const cookieResult = await sessionCookieGet();
@@ -27,28 +33,28 @@ export const userDocGet = async (uid?: string) => {
 			uid = sessionCookieData.uid;
 		}
 
-		const userDocSnapshot = await db
-			.collection(Collection.USERS)
-			.doc(uid)
+		const songLogSnapshot = await db
+			.collection(Collection.SONG_LOGS)
+			.doc(`${uid}_${songId}`)
 			.get();
-		if (!userDocSnapshot.exists) {
-			return actionErrorMessageGet("User not found");
+		if (!songLogSnapshot.exists) {
+			return actionErrorMessageGet("Song log not found");
 		}
-		const userDocData = userDocSnapshot.data();
+		const songLogData = songLogSnapshot.data();
 
-		if (!userDocData) {
-			return actionErrorMessageGet("User data not found");
-		}
-
-		const userDocResult = serverParse(UserDocSchema, userDocData);
-		if (!userDocResult.success) {
-			return actionErrorMessageGet("User data invalid");
+		if (!songLogData) {
+			return actionErrorMessageGet("Song log data not found");
 		}
 
-		const userDoc = userDocResult.output;
+		const songLogResult = serverParse(SongLogSchema, songLogData);
+		if (!songLogResult.success) {
+			return actionErrorMessageGet("Song Log data invalid");
+		}
 
-		return { actionResultType: actionResultType.SUCCESS, userDoc };
+		const songLog = songLogResult.output;
+
+		return { actionResultType: actionResultType.SUCCESS, songLog };
 	} catch (error) {
-		return actionErrorMessageGet("Error getting user doc");
+		return actionErrorMessageGet("Error getting song log");
 	}
 };

@@ -1,9 +1,9 @@
 "use server";
 
 import { sessionExtend } from "./sessionExtend";
-import { userDocGet } from "./userDocGet";
+import { songLogGet } from "./songLogGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -13,7 +13,13 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const logDelete = async (logId: string) => {
+export const songLogDelete = async ({
+	songId,
+	logId,
+}: {
+	songId: string;
+	logId: string;
+}) => {
 	try {
 		if (!logId) {
 			return actionErrorMessageGet("Log ID is required");
@@ -25,24 +31,33 @@ export const logDelete = async (logId: string) => {
 		}
 		const { uid } = sessionExtendResult.sessionCookieData;
 
-		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("User not found");
+		const songLogResult = await songLogGet({
+			songId,
+			uid,
+		});
+		if (songLogResult.actionResultType === actionResultType.ERROR) {
+			return actionErrorMessageGet("Song log not found");
 		}
-		const { userDoc } = userDocResult;
-		const { logIds = [], logs = {} } = userDoc;
+		const { songLog } = songLogResult;
+		const { logIds = [], logs = {} } = songLog;
 
-		const newLogIds = logIds.filter(
-			(logIdObject) => logIdObject.logId !== logId,
-		);
+		const newLogIds = logIds.filter((innerLogId) => innerLogId !== logId);
 		const newLogs = { ...logs };
 		delete newLogs[logId];
 
-		// update user doc with the deleted log removed
-		await db.collection(collection.USERS).doc(uid).update({
-			logIds: newLogIds,
-			logs: newLogs,
-		});
+		if (logIds.length === 0) {
+			await db
+				.collection(Collection.SONG_LOGS)
+				.doc(`${uid}_${songId}`)
+				.delete();
+		} else {
+			await db.collection(Collection.SONG_LOGS).doc(`${uid}_${songId}`).update({
+				songId,
+				uid,
+				logIds: newLogIds,
+				logs: newLogs,
+			});
+		}
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

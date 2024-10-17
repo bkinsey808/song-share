@@ -160,7 +160,7 @@ export const SongForm = () => {
 					</SectionAccordion>
 
 					{isSignedIn ? (
-						<div className="flex gap-[0.5rem]">
+						<div className="flex flex-wrap gap-[0.5rem]">
 							<Button type="submit" disabled={form.formState.isSubmitting}>
 								Save Song
 							</Button>

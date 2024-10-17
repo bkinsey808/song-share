@@ -2,16 +2,16 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { Get, Set } from "@/features/app-store/types";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseClient";
 import {
 	UserDocSchema,
 	UserPublicDocSchema,
 } from "@/features/firebase/schemas";
 
-export const userUpdate = (get: Get, set: Set) => (uid: string) => {
+export const userSubscribe = (get: Get, set: Set) => (uid: string) => {
 	const userUnsubscribeFn = onSnapshot(
-		doc(db, collection.USERS, uid),
+		doc(db, Collection.USERS, uid),
 		(userSnapshot) => {
 			if (!userSnapshot.exists) {
 				console.warn(`User ${uid} does not exist`);
@@ -35,8 +35,6 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				email,
 				roles,
 				timeZone,
-				logIds,
-				logs,
 			} = userParseResult.output;
 			const { sessionCookieData, settingsForm } = get();
 			if (!sessionCookieData) {
@@ -51,8 +49,6 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 				playlistId: playlistId ?? null,
 				sessionCookieData: newSessionCookieData,
 				timeZone: timeZone ?? null,
-				logIds: logIds ?? [],
-				logs: logs ?? {},
 			});
 			settingsForm?.reset({
 				timeZone: timeZone ?? undefined,
@@ -62,9 +58,8 @@ export const userUpdate = (get: Get, set: Set) => (uid: string) => {
 	);
 
 	const userPublicUnsubscribeFn = onSnapshot(
-		doc(db, collection.USERS_PUBLIC, uid),
+		doc(db, Collection.USERS_PUBLIC, uid),
 		(userPublicSnapshot) => {
-			console.log("update user public");
 			if (!userPublicSnapshot.exists) {
 				console.warn(`User public ${uid} does not exist`);
 				return;

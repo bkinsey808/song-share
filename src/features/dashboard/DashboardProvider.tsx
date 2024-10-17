@@ -2,6 +2,8 @@
 
 import { ReactNode, useEffect } from "react";
 
+import { ConfirmModal } from "../modal/ConfirmModal";
+import { useSongLogSubscription } from "../sections/song-log/useSongLogSubscription";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { useUserSubscription } from "@/features/auth/useUserSubscription";
 import { useLibrarySubscription } from "@/features/firebase/useLibrarySubscription";
@@ -15,6 +17,12 @@ export const DashboardProvider = ({ children }: { children: ReactNode }) => {
 
 	useLibrarySubscription();
 	useUserSubscription();
+	useSongLogSubscription();
 
-	return <>{children}</>;
+	return (
+		<>
+			<ConfirmModal />
+			{children}
+		</>
+	);
 };

@@ -6,7 +6,7 @@ import { sessionCookieGet } from "./sessionCookieGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -38,7 +38,7 @@ export const accountDelete = async () => {
 
 		const songIds = userDoc.songIds;
 		const deleteSongPromises = songIds.map((songId) =>
-			db.collection(collection.SONGS).doc(songId).delete(),
+			db.collection(Collection.SONGS).doc(songId).delete(),
 		);
 		const promiseSongsAllSettledResult =
 			await Promise.allSettled(deleteSongPromises);
@@ -53,7 +53,7 @@ export const accountDelete = async () => {
 
 		const playlistIds = userDoc.playlistIds;
 		const deletePlaylistPromises = (playlistIds ?? []).map((playlistId) =>
-			db.collection(collection.PLAYLISTS).doc(playlistId).delete(),
+			db.collection(Collection.PLAYLISTS).doc(playlistId).delete(),
 		);
 		const promisePlaylistsAllSettledResult = await Promise.allSettled(
 			deletePlaylistPromises,
@@ -67,9 +67,9 @@ export const accountDelete = async () => {
 			return actionErrorMessageGet("Failed to delete playlists");
 		}
 
-		await db.collection(collection.USERS).doc(uid).delete();
-		await db.collection(collection.USERS_PUBLIC).doc(uid).delete();
-		await db.collection(collection.USER_NAMES).doc(username).delete();
+		await db.collection(Collection.USERS).doc(uid).delete();
+		await db.collection(Collection.USERS_PUBLIC).doc(uid).delete();
+		await db.collection(Collection.USER_NAMES).doc(username).delete();
 
 		cookies().delete(SESSION_COOKIE_NAME);
 

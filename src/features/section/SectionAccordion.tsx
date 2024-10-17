@@ -43,7 +43,6 @@ export const SectionAccordion = ({
 				return;
 			}
 			if (!isOpen) {
-				console.log("closing here");
 				detailsRef.current.open = false;
 			}
 		},

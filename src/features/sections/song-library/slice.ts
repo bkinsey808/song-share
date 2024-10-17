@@ -3,8 +3,8 @@ import { MouseEventHandler } from "react";
 import { StateCreator } from "zustand";
 
 import { songLibraryAddSongIds } from "./songLibraryAddSongIds";
+import { songLibrarySubscribe } from "./songLibrarySubscribe";
 import { songLibraryUnsubscribe } from "./songLibraryUnsubscribe";
-import { songLibraryUpdate } from "./songLibraryUpdate";
 import { songLoadClick } from "./songLoadClick";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import { Song } from "@/features/sections/song/types";
@@ -25,7 +25,7 @@ export type SongLibrarySlice = SongLibrarySliceState & {
 	songLoadClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	songLibraryUpdate: () => void;
+	songLibrarySubscribe: () => void;
 	songLibraryUnsubscribe: () => void;
 	songLibraryAddSongIds: (songIds: string[]) => void;
 };
@@ -37,7 +37,7 @@ export const createSongLibrarySlice: AppSongLibrarySlice = (set, get) => {
 	return {
 		...songLibrarySliceInitialState,
 		songLoadClick: songLoadClick(get, set),
-		songLibraryUpdate: songLibraryUpdate(get, set),
+		songLibrarySubscribe: songLibrarySubscribe(get, set),
 		songLibraryUnsubscribe: songLibraryUnsubscribe(get),
 		songLibraryAddSongIds: songLibraryAddSongIds(get, set),
 	};

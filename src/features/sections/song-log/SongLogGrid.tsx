@@ -1,13 +1,18 @@
 "use client";
 
-import { useSongLogIds } from "./slice";
+import { useSongLogs } from "./slice";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 
 export const SongLogGrid = () => {
-	const { songId, logs, iso2formatted, songLogLoadClick } = useAppStore();
-	const songLogIds = useSongLogIds(songId);
+	const { songId, iso2formatted, songLogLoadClick, songLogForm } =
+		useAppStore();
+	const songLogs = useSongLogs(songId);
+
+	if (!songId) {
+		return null;
+	}
 
 	return (
 		<Grid gridClassName="grid-cols-[12rem,2fr]">
@@ -15,16 +20,19 @@ export const SongLogGrid = () => {
 				<div>Song Log Date Time</div>
 				<div>Notes</div>
 			</GridHeader>
-			{songLogIds.map((logId) => {
-				const log = logs[logId];
-				const dateLocalFormatted = iso2formatted(log.date);
+			{songLogs.map((songLog) => {
+				const dateLocalFormatted = iso2formatted(songLog.date);
 
 				return (
-					<GridRow key={logId}>
+					<GridRow key={songLog.logId}>
 						<Button
 							variant="outline"
 							className="min-h-[2rem] justify-start"
-							onClick={songLogLoadClick(logId)}
+							onClick={songLogLoadClick({
+								logId: songLog.logId,
+								songId: songLog.songId,
+								form: songLogForm,
+							})}
 							title="Open Song Log"
 						>
 							{dateLocalFormatted}
@@ -32,10 +40,14 @@ export const SongLogGrid = () => {
 						<Button
 							variant="outline"
 							className="min-h-[2rem] justify-start"
-							onClick={songLogLoadClick(logId)}
+							onClick={songLogLoadClick({
+								logId: songLog.logId,
+								songId: songLog.songId,
+								form: songLogForm,
+							})}
 							title="Open Song Log"
 						>
-							{log.notes}
+							{songLog.notes}
 						</Button>
 					</GridRow>
 				);

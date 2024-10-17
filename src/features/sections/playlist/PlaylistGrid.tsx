@@ -31,8 +31,6 @@ export const PlaylistGrid = () => {
 
 	const playlist = usePlaylist();
 
-	console.log({ playlist });
-
 	const defaultValues = useMemo(
 		() => {
 			const defaultPlaylistForm: PlaylistGridForm = {

@@ -5,7 +5,7 @@ import { flatten } from "valibot";
 import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { serverParse } from "@/features/global/serverParse";
 import {
@@ -36,7 +36,6 @@ export const playlistGridSave = async ({
 	playlistGridFormValues: PlaylistGridForm;
 	playlistId: string | null;
 }) => {
-	console.log(JSON.stringify(playlistGridFormValues));
 	try {
 		if (!playlistId) {
 			return getFormError("No playlist ID");
@@ -69,7 +68,7 @@ export const playlistGridSave = async ({
 		}
 
 		await db
-			.collection(collection.PLAYLISTS)
+			.collection(Collection.PLAYLISTS)
 			.doc(playlistId)
 			.update(playlistGridFormValues);
 

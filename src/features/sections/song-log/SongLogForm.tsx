@@ -1,8 +1,10 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { SongLogDeleteConfirmModal } from "./SongLogDeleteConfirmModal";
+import { SongLogFormSchema } from "./schemas";
+import { songLogDefaultGet } from "./songLogDefaultGet";
+import { SongLogForm as SongLogFormType } from "./types";
 import { Button } from "@/components/ui/button";
 import {
 	Form,
@@ -14,9 +16,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import TimestampPicker from "@/components/ui/timestamp-picker";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { logDefaultGet } from "@/features/sections/log/logDefaultGet";
-import { LogFormSchema } from "@/features/sections/log/schemas";
-import { LogForm as LogFormType } from "@/features/sections/log/types";
 
 export const SongLogForm = () => {
 	const {
@@ -25,28 +24,13 @@ export const SongLogForm = () => {
 		songLogSubmit,
 		songLogNewClick,
 		songLogDeleteClick,
-		logId,
 		songId,
 	} = useAppStore();
 	const timeZone = timeZoneGet();
 
-	const defaultValues: LogFormType = useMemo(
-		() => {
-			const defaultLog = logDefaultGet();
-			const defaultLogForm: LogFormType = {
-				...defaultLog,
-				songId: songId ?? "",
-				logId: "",
-			};
-			return defaultLogForm;
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	);
-
-	const form = useForm<LogFormType>({
-		resolver: valibotResolver(LogFormSchema),
-		defaultValues,
+	const form = useForm<SongLogFormType>({
+		resolver: valibotResolver(SongLogFormSchema),
+		defaultValues: { ...songLogDefaultGet(), songId: songId ?? "" },
 	});
 
 	// set song log form
@@ -56,11 +40,15 @@ export const SongLogForm = () => {
 		}
 	}, [form, songLogFormSet]);
 
+	const logId = form.getValues("logId");
+	const formSongId = form.getValues("songId");
+
 	return (
 		<>
-			<SongLogDeleteConfirmModal />
+			isDirty: {form.formState.isDirty.toString()}
+			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
 			<Form {...form}>
-				<form onSubmit={songLogSubmit}>
+				<form onSubmit={songLogSubmit(form)}>
 					<FormField
 						name="date"
 						control={form.control}
@@ -95,9 +83,19 @@ export const SongLogForm = () => {
 						<Button type="submit" disabled={form.formState.isSubmitting}>
 							Save Song Log
 						</Button>
-						<Button onClick={songLogNewClick}>New Song Log</Button>
+						<Button onClick={songLogNewClick({ form, songId })}>
+							New Song Log
+						</Button>
 						{logId ? (
-							<Button variant="destructive" onClick={songLogDeleteClick}>
+							<Button
+								variant="destructive"
+								onClick={songLogDeleteClick({
+									songId: formSongId,
+									logId,
+									form,
+									shouldClearSongId: false,
+								})}
+							>
 								Delete Song Log
 							</Button>
 						) : null}

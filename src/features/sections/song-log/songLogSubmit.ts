@@ -1,6 +1,8 @@
 import { FormEvent } from "react";
+import { UseFormReturn } from "react-hook-form";
 
-import { logSave } from "@/actions/logSave";
+import { SongLogForm } from "./types";
+import { songLogSave } from "@/actions/songLogSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
 import { Get, Set } from "@/features/app-store/types";
@@ -8,16 +10,17 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songLogSubmit =
-	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+	(_get: Get, _set: Set) =>
+	(form: UseFormReturn<SongLogForm>) =>
+	async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songLogForm, songLogId, songId } = get();
 
-		if (!songLogForm) {
+		if (!form) {
 			console.error("no form");
 			return;
 		}
 
-		return songLogForm.handleSubmit(async (logFormValues) => {
+		return form.handleSubmit(async (logFormValues) => {
 			const { sessionCookieData } = useAppStore.getState();
 
 			if (!sessionCookieData) {
@@ -28,10 +31,8 @@ export const songLogSubmit =
 				return;
 			}
 
-			const logSaveResult = await logSave({
+			const logSaveResult = await songLogSave({
 				...logFormValues,
-				songId: songId ?? "",
-				logId: songLogId ?? "",
 			});
 
 			switch (logSaveResult.actionResultType) {
@@ -44,7 +45,7 @@ export const songLogSubmit =
 						if (!message) {
 							return;
 						}
-						songLogForm.setError(key, {
+						form.setError(key, {
 							type: "manual",
 							message,
 						});
@@ -57,11 +58,9 @@ export const songLogSubmit =
 
 					break;
 				case actionResultType.SUCCESS:
-					set({ logId: logSaveResult.logId });
 					// this also sets the form to not dirty
-					songLogForm.reset({
+					form.reset({
 						...logFormValues,
-						songId: songId ?? "",
 						logId: logSaveResult.logId,
 					});
 					toast({ title: "Song Log saved" });

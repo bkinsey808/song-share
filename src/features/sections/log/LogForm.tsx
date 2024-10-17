@@ -2,10 +2,6 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { LogDeleteConfirmModal } from "./LogDeleteConfirmModal";
-import { logDefaultGet } from "./logDefaultGet";
-import { LogFormSchema } from "./schemas";
-import { LogForm as LogFormType } from "./types";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -19,16 +15,18 @@ import { Textarea } from "@/components/ui/textarea";
 import TimestampPicker from "@/components/ui/timestamp-picker";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
+import { SongLogFormSchema } from "@/features/sections/song-log/schemas";
+import { songLogDefaultGet } from "@/features/sections/song-log/songLogDefaultGet";
+import { SongLogForm as SongLogFormType } from "@/features/sections/song-log/types";
 
 export const LogForm = () => {
 	const {
 		timeZoneGet,
 		logFormSet,
-		logSubmit,
-		logNewClick,
-		logDeleteClick,
-		logId,
 		songLibrary,
+		songLogSubmit,
+		songLogNewClick,
+		songLogDeleteClick,
 	} = useAppStore();
 	const timeZone = timeZoneGet();
 	const songIds = getKeys(songLibrary);
@@ -44,22 +42,9 @@ export const LogForm = () => {
 		});
 	}, [songIds, songLibrary]);
 
-	const defaultValues: LogFormType = useMemo(
-		() => {
-			const defaultLog = logDefaultGet();
-			const defaultLogForm: LogFormType = {
-				...defaultLog,
-				logId: "",
-			};
-			return defaultLogForm;
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	);
-
-	const form = useForm<LogFormType>({
-		resolver: valibotResolver(LogFormSchema),
-		defaultValues,
+	const form = useForm<SongLogFormType>({
+		resolver: valibotResolver(SongLogFormSchema),
+		defaultValues: songLogDefaultGet(),
 	});
 
 	// set log form
@@ -70,12 +55,14 @@ export const LogForm = () => {
 	}, [form, logFormSet]);
 
 	const [search, setSearch] = useState("");
+	const logId = form.getValues("logId");
 
 	return (
 		<>
-			<LogDeleteConfirmModal />
+			isDirty: {form.formState.isDirty.toString()}
+			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
 			<Form {...form}>
-				<form onSubmit={logSubmit}>
+				<form onSubmit={songLogSubmit(form)}>
 					<div className="flex gap-[1rem]">
 						<FormField
 							name="date"
@@ -133,9 +120,17 @@ export const LogForm = () => {
 						<Button type="submit" disabled={form.formState.isSubmitting}>
 							Save Log
 						</Button>
-						<Button onClick={logNewClick}>New Log</Button>
+						<Button onClick={songLogNewClick({ form })}>New Log</Button>
 						{logId ? (
-							<Button variant="destructive" onClick={logDeleteClick}>
+							<Button
+								variant="destructive"
+								onClick={songLogDeleteClick({
+									songId: form.getValues("songId"),
+									logId,
+									form,
+									shouldClearSongId: true,
+								})}
+							>
 								Delete Log
 							</Button>
 						) : null}

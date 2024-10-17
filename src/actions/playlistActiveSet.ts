@@ -4,7 +4,7 @@ import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { collection } from "@/features/firebase/consts";
+import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -44,13 +44,13 @@ export const playlistActiveSet = async (playlistId: string | null) => {
 					(songActiveId &&
 						!songs.find(({ songId }) => songId === songActiveId)))
 			) {
-				await db.collection(collection.USERS_PUBLIC).doc(uid).update({
+				await db.collection(Collection.USERS_PUBLIC).doc(uid).update({
 					playlistActiveId: playlistId,
 					songActiveId: songs[0].songId,
 				});
 			} else {
 				await db
-					.collection(collection.USERS_PUBLIC)
+					.collection(Collection.USERS_PUBLIC)
 					.doc(uid)
 					.update({ playlistActiveId: playlistId });
 			}
@@ -62,7 +62,7 @@ export const playlistActiveSet = async (playlistId: string | null) => {
 		}
 
 		await db
-			.collection(collection.USERS_PUBLIC)
+			.collection(Collection.USERS_PUBLIC)
 			.doc(uid)
 			.update({ playlistActiveId: playlistId });
 

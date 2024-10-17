@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { useSongLogData } from "@/features/sections/song-log/slice";
 
 export const PlaylistForm = () => {
 	const { isSignedIn } = useAppStore();
@@ -54,12 +53,6 @@ export const PlaylistForm = () => {
 		form.reset(playlist);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [form, playlistId]);
-
-	const songLogData = useSongLogData(
-		playlist?.songs?.map(({ songId }) => songId) ?? [],
-	);
-
-	console.log({ songLogData });
 
 	return (
 		<div>
