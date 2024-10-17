@@ -43,6 +43,7 @@ export const songDelete = async (songId: string) => {
 			return actionErrorMessageGet("User does not own this song");
 		}
 
+		// delete from the playlists collection
 		const playlistIds = song.playlistIds;
 		const deletePlaylistPromises = playlistIds.map((playlistId) =>
 			db.collection(Collection.PLAYLISTS).doc(playlistId).delete(),
@@ -53,6 +54,27 @@ export const songDelete = async (songId: string) => {
 		);
 		if (failedPlaylistDeletes.length > 0) {
 			return actionErrorMessageGet("Failed to delete playlists");
+		}
+
+		// delete from the songLogs collection
+		const songLogsQuerySnapshot = await db
+			.collection(Collection.SONG_LOGS)
+			.where("songId", "==", songId)
+			.get();
+
+		const deleteSongLogsPromises = songLogsQuerySnapshot.docs.map((doc) =>
+			doc.ref.delete(),
+		);
+
+		const songLogsPromiseResult = await Promise.allSettled(
+			deleteSongLogsPromises,
+		);
+		const failedSongLogsDeletes = songLogsPromiseResult.filter(
+			(result) => result.status === "rejected",
+		);
+
+		if (failedSongLogsDeletes.length > 0) {
+			return actionErrorMessageGet("Failed to delete song logs");
 		}
 
 		// delete the song form the songs collection

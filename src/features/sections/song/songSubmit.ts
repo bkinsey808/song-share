@@ -1,5 +1,6 @@
 import { FormEvent } from "react";
 
+import { songLogDefaultGet } from "../song-log/songLogDefaultGet";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -10,7 +11,7 @@ import { getKeys } from "@/features/global/getKeys";
 export const songSubmit =
 	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const { songForm, songLibrary } = get();
+		const { songForm, songLogForm, songLibrary } = get();
 
 		if (!songForm) {
 			console.error("no form");
@@ -52,6 +53,8 @@ export const songSubmit =
 						});
 					});
 
+					console.error(songSaveResult);
+
 					toast({
 						variant: "destructive",
 						title: "There was an error saving song",
@@ -63,6 +66,19 @@ export const songSubmit =
 					if (songSaveResult.songId) {
 						songLibrary[songSaveResult.songId] = song;
 						set({ songId: songSaveResult.songId });
+					}
+
+					const currentSongLogSongId = songLogForm?.getValues().songId;
+					if (currentSongLogSongId !== songId) {
+						songLogForm?.reset(
+							{
+								...songLogDefaultGet(),
+								songId: songId ?? "",
+							},
+							{
+								keepDirty: false,
+							},
+						);
 					}
 
 					toast({ title: "Song details saved" });

@@ -41,10 +41,11 @@ const saveOrCreateSong = async (
 	if (songId) {
 		const songResult = await songGet(songId);
 		if (songResult.actionResultType === actionResultType.ERROR) {
-			throw new Error("Song not found");
-		}
-		if (!!songResult.song.sharer && songResult.song.sharer !== uid) {
-			throw new Error("User does not own this song");
+			console.warn("Song not found");
+		} else {
+			if (!!songResult.song.sharer && songResult.song.sharer !== uid) {
+				throw new Error("User does not own this song");
+			}
 		}
 		await db.collection(Collection.SONGS).doc(songId).set(song);
 		return songId;
@@ -61,6 +62,7 @@ export const songSave = async ({
 	song: Song;
 	songId: string | null;
 }) => {
+	console.log({ songId });
 	try {
 		const songParseResult = serverParse(SongSchema, song);
 		if (!songParseResult.success) {
@@ -84,27 +86,15 @@ export const songSave = async ({
 		}
 		const { userDoc } = userDocResult;
 
-		if (songId) {
-			const songResult = await songGet(songId);
-			if (songResult.actionResultType === actionResultType.ERROR) {
-				return getFormError("Song not found");
-			}
-			if (!!songResult.song.sharer && songResult.song.sharer !== uid) {
-				return getFormError("User does not own this song");
-			}
-		}
-
 		const newSongId = await saveOrCreateSong(songId, uid, song);
 		const newSongIds = songId
 			? userDoc.songIds
 			: Array.from(new Set([...userDoc.songIds, newSongId]));
 
-		if (!songId) {
-			await db.collection(Collection.USERS).doc(uid).update({
-				songIds: newSongIds,
-				songId: newSongId,
-			});
-		}
+		await db.collection(Collection.USERS).doc(uid).update({
+			songIds: newSongIds,
+			songId: newSongId,
+		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

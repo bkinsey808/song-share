@@ -1,3 +1,4 @@
+import { songLogDefaultGet } from "../song-log/songLogDefaultGet";
 import { songDelete } from "@/actions/songDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -7,12 +8,23 @@ export const songDeleteConfirmClick = (get: Get, set: Set) => async () => {
 	set({
 		songDeleting: true,
 	});
-	const { songForm, songLibrary, songId, setOpenAppModal } = get();
+	const {
+		songForm,
+		songLogForm,
+		songDefaultGet,
+		songLibrary,
+		songId,
+		setOpenAppModal,
+	} = get();
 
 	if (!songForm) {
 		console.error("no form");
 		return;
 	}
+
+	songForm?.reset(songDefaultGet());
+	songLogForm?.reset(songLogDefaultGet());
+
 	if (!songId) {
 		toast({
 			variant: "destructive",
