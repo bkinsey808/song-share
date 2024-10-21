@@ -9,3 +9,4 @@
 - [ ] calendar
 - [ ] timezone slice
 - [ ] pwa
+- [ ] sort

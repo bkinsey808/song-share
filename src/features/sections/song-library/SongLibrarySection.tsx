@@ -1,5 +1,7 @@
 "use client";
 
+import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -22,7 +24,15 @@ export const SongLibrarySection = () => {
 			<Grid gridClassName="grid-cols-[1.5rem,3fr,1fr]">
 				<GridHeader>
 					<div></div>
-					<div>Song Name</div>
+					<div>
+						Song Name
+						<Button variant="outline" className="p-0">
+							<ArrowUpIcon />
+						</Button>
+						<Button variant="outline" className="p-0">
+							<ArrowDownIcon />
+						</Button>
+					</div>
 					<div>Options</div>
 				</GridHeader>
 				<RadioGroup

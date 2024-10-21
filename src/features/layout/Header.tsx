@@ -25,7 +25,9 @@ export const Header = () => {
 			className="fixed z-[1] flex w-full justify-between bg-[gray] p-[0.5rem] text-[hsl(var(--background))] lg:static [&[data-following='true']]:bg-[green]"
 		>
 			<span className="flex gap-[1rem]">
-				<h1 className="font-bold">Song Share</h1>
+				<h1 className="font-bold">
+					{process.env.NEXT_PUBLIC_BRAND ?? "Song Share"}
+				</h1>
 				{fuid ? (
 					<span className="flex gap-[1rem]">
 						<span>Following: {usernameGet(fuid)}</span>

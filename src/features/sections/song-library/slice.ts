@@ -2,10 +2,12 @@ import { Unsubscribe } from "firebase/firestore";
 import { MouseEventHandler } from "react";
 import { StateCreator } from "zustand";
 
+import { songLibrarySort } from "./consts";
 import { songLibraryAddSongIds } from "./songLibraryAddSongIds";
 import { songLibrarySubscribe } from "./songLibrarySubscribe";
 import { songLibraryUnsubscribe } from "./songLibraryUnsubscribe";
 import { songLoadClick } from "./songLoadClick";
+import { SongLibrarySort } from "./types";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import { Song } from "@/features/sections/song/types";
 
@@ -13,12 +15,14 @@ type SongLibrarySliceState = {
 	songIds: string[];
 	songLibrary: Record<string, Song>;
 	songUnsubscribeFns: Record<string, Unsubscribe>;
+	songLibrarySort: SongLibrarySort | null;
 };
 
 const songLibrarySliceInitialState: SongLibrarySliceState = {
 	songIds: [],
 	songLibrary: {},
 	songUnsubscribeFns: {},
+	songLibrarySort: songLibrarySort.SONG_NAME_ASC,
 };
 
 export type SongLibrarySlice = SongLibrarySliceState & {

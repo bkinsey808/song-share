@@ -21,7 +21,7 @@ export const createQRSlice: AppQRSlice = (set, get) => {
 		getQRUrl: () => {
 			const { fuid, sessionCookieData } = get();
 
-			return `https://bk-music.vercel.app/f/${fuid ?? sessionCookieData?.uid}`;
+			return `https://${process.env.NEXT_PUBLIC_DOMAIN}/f/${fuid ?? sessionCookieData?.uid}`;
 		},
 	};
 };
