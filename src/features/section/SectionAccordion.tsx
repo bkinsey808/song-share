@@ -1,5 +1,6 @@
 "use client";
 
+import { TriangleRightIcon } from "@radix-ui/react-icons";
 import { ReactNode, useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -66,7 +67,7 @@ export const SectionAccordion = ({
 			>
 				<Button className="flex" variant={buttonVariant}>
 					<div className="transition-all duration-200 [[data-open='true']>summary>button>&]:rotate-90">
-						▶
+						<TriangleRightIcon />
 					</div>
 					<div className="flex flex-nowrap gap-[0.5rem]">
 						{isOpen ? "Close" : "Open"} {buttonLabel}
