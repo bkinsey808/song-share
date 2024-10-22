@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		setOpenAppModal,
 		signIn,
 		isSignedIn,
-		lastSignInCheck,
+		// lastSignInCheck,
 		setLastSignInCheck,
 		signOut,
 		sessionCookieData,
@@ -48,16 +48,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	}, [handleRefresh]);
 
 	const intervalFn = useCallback(async () => {
-		// we only need to poll if we haven't recently checked
-		if (
-			Date.now() - lastSignInCheck <
-			SESSION_POLLING_INTERVAL_SECONDS * 1000
-		) {
-			if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
-				setOpenAppModal(null);
-			}
-			return;
-		}
+		// // we only need to poll if we haven't recently checked
+		// if (
+		// 	Date.now() - lastSignInCheck <
+		// 	SESSION_POLLING_INTERVAL_SECONDS * 1000
+		// ) {
+		// 	if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
+		// 		setOpenAppModal(null);
+		// 	}
+		// 	return;
+		// }
 
 		const freshSessionCookieData = await sessionCookieGet();
 
@@ -76,18 +76,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		// 	return;
 		// }
 
-		if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
-			setOpenAppModal(null);
-		}
+		// if (openAppModal === appModal.SESSION_EXPIRE_WARNING) {
+		// 	setOpenAppModal(null);
+		// }
 
 		setLastSignInCheck(Date.now());
 	}, [
-		lastSignInCheck,
+		// lastSignInCheck,
 		setLastSignInCheck,
 		signOut,
 		setOpenAppModal,
 		// existingSessionWarningTimestamp,
-		openAppModal,
+		// openAppModal,
 	]);
 
 	useInterval(
