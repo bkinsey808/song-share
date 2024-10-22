@@ -28,6 +28,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className={"lg:overflow-hidden"}>
+			<link rel="icon" href="/favicon.ico" sizes="any" />
 			<body className={`dark ${geistSans.variable} ${geistMono.variable}`}>
 				<AuthProvider>{children}</AuthProvider>
 				<Toaster />
