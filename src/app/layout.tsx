@@ -5,11 +5,13 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/features/auth/AuthProvider";
 import "@/features/firebase/firebaseClient";
+import { FaviconLinks } from "@/features/layout/FaviconLinks";
 
 const geistSans = localFont({
 	src: "./fonts/GeistVF.woff",
 	variable: "--font-geist-sans",
 });
+
 const geistMono = localFont({
 	src: "./fonts/GeistMonoVF.woff",
 	variable: "--font-geist-mono",
@@ -29,26 +31,11 @@ export default function RootLayout({
 	return (
 		<html lang="en" className={"lg:overflow-hidden"}>
 			<head>
-				<meta name="apple-mobile-web-app-title" content={process.env.BRAND} />
-				<link
-					rel="icon"
-					type="image/png"
-					href="/favicon-48x48.png"
-					sizes="48x48"
+				<meta
+					name="apple-mobile-web-app-title"
+					content={process.env.NEXT_PUBLIC_BRAND}
 				/>
-				<link
-					rel="apple-touch-icon"
-					sizes="180x180"
-					href="/apple-touch-icon.png"
-				/>
-
-				<link id="dark-mode-icon" rel="shortcut icon" href="/favicon.ico" />
-				<link
-					id="svg-dark-mode-icon"
-					rel="icon"
-					type="image/svg+xml"
-					href="/favicon.svg"
-				/>
+				<FaviconLinks />
 			</head>
 			<body className={`dark ${geistSans.variable} ${geistMono.variable}`}>
 				<AuthProvider>{children}</AuthProvider>
