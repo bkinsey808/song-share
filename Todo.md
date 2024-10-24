@@ -8,5 +8,6 @@
 - [ ] song playlists
 - [ ] calendar
 - [ ] timezone slice
-- [ ] pwa
 - [ ] sort
+- [ ] floating details
+- [ ] google analytics

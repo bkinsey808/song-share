@@ -26,4 +26,4 @@ export const songLibrarySortData = {
 				return b.localeCompare(a);
 			},
 	},
-};
+} as const;

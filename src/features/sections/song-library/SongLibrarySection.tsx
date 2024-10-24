@@ -2,22 +2,24 @@
 
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 
+import { songLibrarySort, songLibrarySortData } from "./consts";
+import { useSortedSongIds } from "./slice";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
-import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibrarySection = () => {
 	const {
-		songLibrary,
+		// songLibrary,
 		songLoadClick,
 		songActiveId,
 		songNameGet,
 		songActiveClick,
 		fuid,
+		songLibrarySortSet,
 	} = useAppStore();
-	const songIds = getKeys(songLibrary);
+	const songIds = useSortedSongIds();
 
 	return (
 		<section data-title="Song Library Section">
@@ -26,10 +28,20 @@ export const SongLibrarySection = () => {
 					<div></div>
 					<div>
 						Song Name
-						<Button variant="outline" className="p-0">
+						<Button
+							variant="outline"
+							className="p-0"
+							onClick={songLibrarySortSet(songLibrarySort.SONG_NAME_ASC)}
+							title={songLibrarySortData[songLibrarySort.SONG_NAME_ASC].label}
+						>
 							<ArrowUpIcon />
 						</Button>
-						<Button variant="outline" className="p-0">
+						<Button
+							variant="outline"
+							className="p-0"
+							onClick={songLibrarySortSet(songLibrarySort.SONG_NAME_DESC)}
+							title={songLibrarySortData[songLibrarySort.SONG_NAME_DESC].label}
+						>
 							<ArrowDownIcon />
 						</Button>
 					</div>
