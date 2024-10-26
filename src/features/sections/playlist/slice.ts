@@ -45,9 +45,7 @@ const playlistSliceInitialState: PlaylistSliceState = {
 
 export type PlaylistSlice = PlaylistSliceState & {
 	playlistSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
-	playlistGridFormSubmit: (
-		e?: FormEvent<HTMLFormElement>,
-	) => Promise<void> | undefined;
+	playlistGridFormSubmit: (e?: FormEvent<HTMLFormElement>) => Promise<void>;
 	playlistNewClick: () => void;
 	playlistIsUnsavedSet: (unsavedPlaylist: boolean) => void;
 	playlistDeleteClick: () => void;

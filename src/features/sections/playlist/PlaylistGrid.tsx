@@ -1,6 +1,6 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
-import { FormEvent, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { PlaylistGridFormSchema } from "./schemas";
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sortable";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 
 export const PlaylistGrid = () => {
 	const {
@@ -52,27 +53,10 @@ export const PlaylistGrid = () => {
 		name: "songs",
 	});
 
-	useEffect(() => {
-		const submitForm = async () => {
-			await form.trigger(); // Validate the form
-			if (form.formState.isDirty) {
-				const formEvent = new Event("submit", {
-					bubbles: true,
-					cancelable: true,
-				});
-				await playlistGridFormSubmit(
-					formEvent as unknown as FormEvent<HTMLFormElement>,
-				);
-			}
-		};
-
-		// Watch formState.isDirty and call submitForm when it changes
-		if (form.formState.isDirty) {
-			void (async () => {
-				await submitForm();
-			})();
-		}
-	}, [form.formState.isDirty, form, playlistGridFormSubmit]); // Dependencies array
+	useFormSubmitOnChange({
+		form,
+		onSubmit: playlistGridFormSubmit,
+	});
 
 	// set playlist gridform
 	useEffect(() => {
@@ -85,7 +69,7 @@ export const PlaylistGrid = () => {
 
 	return (
 		<Form {...form}>
-			isDirty: {form.formState.isDirty.toString()}
+			{/* isDirty: {form.formState.isDirty.toString()} */}
 			<form onSubmit={playlistGridFormSubmit}>
 				<Grid gridClassName="grid-cols-[1.5rem,2fr,5rem]">
 					<GridHeader>

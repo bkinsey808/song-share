@@ -37,7 +37,7 @@ const songSliceInitialState: SongSliceState = {
 };
 
 export type SongSlice = SongSliceState & {
-	songSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void> | undefined;
+	songSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	songNewClick: () => void;
 	songIsUnsavedSet: (unsavedSong: boolean) => void;
 	songDeleteClick: () => void;

@@ -1,13 +1,18 @@
 import { Unsubscribe } from "firebase/firestore";
 import { MouseEventHandler } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
-import { songLibrarySort, songLibrarySortData } from "./consts";
+import { songLibraryGridFormSubmit } from "../playlist/songLibraryGridFormSubmit";
+import { songLibrarySortData, songLibrarySortDefault } from "./consts";
 import { songLibraryAddSongIds } from "./songLibraryAddSongIds";
 import { songLibrarySubscribe } from "./songLibrarySubscribe";
 import { songLibraryUnsubscribe } from "./songLibraryUnsubscribe";
 import { songLoadClick } from "./songLoadClick";
-import { SongLibrarySort } from "./types";
+import type {
+	SongLibraryGridForm,
+	SongLibrarySort as SongLibrarySortType,
+} from "./types";
 import {
 	AppSlice,
 	sliceResetFns,
@@ -19,14 +24,18 @@ type SongLibrarySliceState = {
 	songIds: string[];
 	songLibrary: Record<string, Song>;
 	songUnsubscribeFns: Record<string, Unsubscribe>;
-	songLibrarySort: SongLibrarySort | null;
+	songLibrarySort: SongLibrarySortType;
+	songLibrarySearch: string;
+	songLibraryGridForm: UseFormReturn<SongLibraryGridForm> | null;
 };
 
 const songLibrarySliceInitialState: SongLibrarySliceState = {
 	songIds: [],
 	songLibrary: {},
 	songUnsubscribeFns: {},
-	songLibrarySort: songLibrarySort.SONG_NAME_ASC,
+	songLibrarySort: songLibrarySortDefault,
+	songLibrarySearch: "",
+	songLibraryGridForm: null,
 };
 
 export type SongLibrarySlice = SongLibrarySliceState & {
@@ -36,7 +45,11 @@ export type SongLibrarySlice = SongLibrarySliceState & {
 	songLibrarySubscribe: () => void;
 	songLibraryUnsubscribe: () => void;
 	songLibraryAddSongIds: (songIds: string[]) => void;
-	songLibrarySortSet: (sort: SongLibrarySort) => () => void;
+	songLibrarySortSet: (sort: SongLibrarySortType) => () => void;
+	songLibraryGridFormSubmit: (
+		e: React.FormEvent<HTMLFormElement>,
+	) => Promise<void>;
+	songLibraryGridFormSet: (form: UseFormReturn<SongLibraryGridForm>) => void;
 };
 
 type AppSongLibrarySlice = StateCreator<AppSlice, [], [], SongLibrarySlice>;
@@ -50,10 +63,13 @@ export const createSongLibrarySlice: AppSongLibrarySlice = (set, get) => {
 		songLibraryUnsubscribe: songLibraryUnsubscribe(get),
 		songLibraryAddSongIds: songLibraryAddSongIds(get, set),
 		songLibrarySortSet: (sort) => () => {
+			console.log({ sort });
 			set({
 				songLibrarySort: sort,
 			});
 		},
+		songLibraryGridFormSubmit: songLibraryGridFormSubmit(get, set),
+		songLibraryGridFormSet: (form) => set({ songLibraryGridForm: form }),
 	};
 };
 

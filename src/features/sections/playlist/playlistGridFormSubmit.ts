@@ -8,13 +8,14 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const playlistGridFormSubmit =
-	(get: Get, set: Set) => (e?: FormEvent<HTMLFormElement>) => {
+	(get: Get, set: Set) =>
+	(e?: FormEvent<HTMLFormElement>): Promise<void> => {
 		e?.preventDefault();
 		const { playlistGridForm } = get();
 
 		if (!playlistGridForm) {
 			console.error("no form");
-			return;
+			return Promise.resolve();
 		}
 
 		return playlistGridForm.handleSubmit(async (playlistGridFormValues) => {

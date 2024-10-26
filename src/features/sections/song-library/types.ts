@@ -1,9 +1,15 @@
 import { InferOutput } from "valibot";
 
-import { songLibrarySort } from "./consts";
-import { SongLibrarySchema } from "./schemas";
+import { SongLibrarySort } from "./consts";
+import { SongLibraryGridFormSchema, SongLibrarySchema } from "./schemas";
 
 export type SongLibrary = InferOutput<typeof SongLibrarySchema>;
 
+export type SongLibraryGridForm = InferOutput<
+	typeof SongLibraryGridFormSchema
+> & {
+	sort: SongLibrarySort;
+};
+
 export type SongLibrarySort =
-	(typeof songLibrarySort)[keyof typeof songLibrarySort];
+	(typeof SongLibrarySort)[keyof typeof SongLibrarySort];

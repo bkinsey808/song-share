@@ -25,6 +25,7 @@ type ComboboxProps = {
 	onChange: (newValue: string) => void;
 	label: string;
 	value?: string | undefined;
+	valueDefault?: string;
 	search: string;
 	setSearch: (searchValue: string) => void;
 	disabled?: boolean;
@@ -37,6 +38,7 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
 			onChange,
 			label,
 			value = "",
+			valueDefault = "",
 			search,
 			setSearch,
 			disabled = false,
@@ -78,7 +80,9 @@ export const Combobox = forwardRef<HTMLButtonElement, ComboboxProps>(
 										key={option.value}
 										value={option.value}
 										onSelect={(currentValue: string) => {
-											onChange(currentValue === value ? "" : currentValue);
+											onChange(
+												currentValue === value ? valueDefault : currentValue,
+											);
 											setOpen(false);
 										}}
 									>

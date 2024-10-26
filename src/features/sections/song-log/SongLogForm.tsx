@@ -45,8 +45,8 @@ export const SongLogForm = () => {
 
 	return (
 		<>
-			isDirty: {form.formState.isDirty.toString()}
-			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
+			{/* isDirty: {form.formState.isDirty.toString()}
+			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
 			<Form {...form}>
 				<form onSubmit={songLogSubmit(form)}>
 					<FormField
