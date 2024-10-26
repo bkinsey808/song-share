@@ -7,7 +7,7 @@ export const useLibrarySubscription = () => {
 		songIds,
 		playlistIds,
 		songLibrarySubscribe,
-		playlistLibraryUpdate,
+		playlistLibrarySubscribe,
 		songLibraryUnsubscribe,
 		playlistLibraryUnsubscribe,
 	} = useAppStore();
@@ -18,7 +18,7 @@ export const useLibrarySubscription = () => {
 	}, [songIds]);
 
 	useEffect(() => {
-		playlistLibraryUpdate();
+		playlistLibrarySubscribe();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [playlistIds]);
 

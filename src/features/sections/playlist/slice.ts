@@ -17,14 +17,9 @@ import {
 	useAppStore,
 } from "@/features/app-store/useAppStore";
 
-// import { Nullable } from "@/features/global/types";
-
-// export type AppPlaylist = Nullable<Playlist>;
-
 type PlaylistSliceState = {
 	playlistId: string | null;
 	playlistActiveId: string | null;
-	// playlist: AppPlaylist | null;
 	playlistIsUnsaved: boolean;
 	playlistDeletingIs: boolean;
 	playlistForm: UseFormReturn<Playlist> | null;
@@ -35,7 +30,6 @@ type PlaylistSliceState = {
 const playlistSliceInitialState: PlaylistSliceState = {
 	playlistId: null,
 	playlistActiveId: null,
-	// playlist: null,
 	playlistIsUnsaved: false,
 	playlistDeletingIs: false,
 	playlistForm: null,
@@ -55,7 +49,6 @@ export type PlaylistSlice = PlaylistSliceState & {
 	) => void;
 	playlistDeleteConfirmClick: () => Promise<void>;
 	playlistActiveClick: (playlistId: string) => () => Promise<void>;
-	// playlistSet: (playlist: AppPlaylist) => void;
 	playlistIdSet: (playlistId: string | null) => void;
 	playlistLibraryUnsubscribe: () => void;
 	playlistDefaultGet: () => Playlist;
@@ -79,7 +72,6 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 		playlistDeleteConfirmClick: playlistDeleteConfirmClick(get, set),
 		playlistLoadClick: playlistLoadClick(get, set),
 		playlistActiveClick: playlistActiveClick(get, set),
-		// playlistSet: (playlist) => set({ playlist }),
 		playlistIdSet: (playlistId) => set({ playlistId }),
 		playlistLibraryUnsubscribe: playlistLibraryUnsubscribe(get),
 		playlistDefaultGet: () => ({

@@ -50,6 +50,13 @@ export type SongLibrarySlice = SongLibrarySliceState & {
 		e: React.FormEvent<HTMLFormElement>,
 	) => Promise<void>;
 	songLibraryGridFormSet: (form: UseFormReturn<SongLibraryGridForm>) => void;
+	songLibrarySongSet: ({
+		songId,
+		song,
+	}: {
+		songId: string;
+		song: Song;
+	}) => void;
 };
 
 type AppSongLibrarySlice = StateCreator<AppSlice, [], [], SongLibrarySlice>;
@@ -63,13 +70,24 @@ export const createSongLibrarySlice: AppSongLibrarySlice = (set, get) => {
 		songLibraryUnsubscribe: songLibraryUnsubscribe(get),
 		songLibraryAddSongIds: songLibraryAddSongIds(get, set),
 		songLibrarySortSet: (sort) => () => {
-			console.log({ sort });
 			set({
 				songLibrarySort: sort,
 			});
 		},
 		songLibraryGridFormSubmit: songLibraryGridFormSubmit(get, set),
 		songLibraryGridFormSet: (form) => set({ songLibraryGridForm: form }),
+		songLibrarySongSet: ({ songId, song }) => {
+			if (songId) {
+				// had to do it this way because otherwise component wouldn't re-render
+				set((innerState) => ({
+					...innerState,
+					songLibrary: {
+						...innerState.songLibrary,
+						[songId]: song,
+					},
+				}));
+			}
+		},
 	};
 };
 

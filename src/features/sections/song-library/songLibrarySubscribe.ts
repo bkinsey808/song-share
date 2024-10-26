@@ -48,9 +48,12 @@ export const songLibrarySubscribe = (get: Get, set: Set) => () => {
 					return;
 				}
 				const song = songParseResult.output;
-				const { songId, songForm } = get();
+				const { songId, songForm, songLibrarySongSet } = get();
 
-				songLibrary[subscribeSongId] = song;
+				songLibrarySongSet({
+					songId: subscribeSongId,
+					song,
+				});
 
 				if (songId === subscribeSongId) {
 					songForm?.reset?.(song);

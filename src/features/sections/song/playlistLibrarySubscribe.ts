@@ -7,12 +7,14 @@ import { db } from "@/features/firebase/firebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 
-export const playlistLibraryUpdate = (get: Get, set: Set) => () => {
+export const playlistLibrarySubscribe = (get: Get, set: Set) => () => {
 	const { playlistIds, playlistUnsubscribeFns, playlistLibrary } = get();
 	const playlistSubscriptionsSongIds = getKeys(playlistUnsubscribeFns);
+
 	const playlistIdsToUnsubscribe = playlistSubscriptionsSongIds.filter(
 		(unsubscribePlaylistId) => !playlistIds.includes(unsubscribePlaylistId),
 	);
+
 	playlistIdsToUnsubscribe.forEach((unsubscribePlaylistId) => {
 		playlistUnsubscribeFns[unsubscribePlaylistId]();
 		delete playlistUnsubscribeFns[unsubscribePlaylistId];

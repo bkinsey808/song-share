@@ -2,7 +2,7 @@ import { Unsubscribe } from "firebase/firestore";
 import { MouseEventHandler } from "react";
 import { StateCreator } from "zustand";
 
-import { playlistLibraryUpdate } from "../song/playlistLibraryUpdate";
+import { playlistLibrarySubscribe } from "../song/playlistLibrarySubscribe";
 import { playlistLibraryAddPlaylistIds } from "./playlistLibraryAddPlaylistIds";
 import { playlistLoadClick } from "./playlistLoadClick";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
@@ -24,7 +24,7 @@ export type PlaylistLibrarySlice = PlaylistLibrarySliceState & {
 	playlistLoadClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	playlistLibraryUpdate: () => void;
+	playlistLibrarySubscribe: () => void;
 	playlistLibraryAddPlaylistIds: (playlistIds: string[]) => void;
 };
 
@@ -35,7 +35,7 @@ export const createPlaylistLibrarySlice: AppSongLibrarySlice = (set, get) => {
 	return {
 		...playlistLibrarySliceInitialState,
 		playlistLoadClick: playlistLoadClick(get, set),
-		playlistLibraryUpdate: playlistLibraryUpdate(get, set),
+		playlistLibrarySubscribe: playlistLibrarySubscribe(get, set),
 		playlistLibraryAddPlaylistIds: playlistLibraryAddPlaylistIds(get, set),
 	};
 };
