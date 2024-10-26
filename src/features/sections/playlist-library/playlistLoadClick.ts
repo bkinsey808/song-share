@@ -21,6 +21,12 @@ export const playlistLoadClick =
 			return;
 		}
 
+		set({
+			playlistId,
+		});
+
+		sectionToggle(sectionId.PLAYLIST, true, true);
+
 		if (isSignedIn) {
 			const result = await playlistIdSet(playlistId);
 
@@ -32,12 +38,6 @@ export const playlistLoadClick =
 				return;
 			}
 		}
-
-		set({
-			playlistId,
-		});
-
-		sectionToggle(sectionId.PLAYLIST, true, true);
 
 		toast({
 			title: "Playlist loaded",

@@ -21,6 +21,12 @@ export const songLoadClick =
 			return;
 		}
 
+		set({
+			songId,
+		});
+
+		sectionToggle(sectionId.SONG, true, true);
+
 		if (isSignedIn) {
 			const result = await songIdSet({ songId });
 
@@ -32,12 +38,6 @@ export const songLoadClick =
 				return;
 			}
 		}
-
-		set({
-			songId,
-		});
-
-		sectionToggle(sectionId.SONG, true, true);
 
 		toast({
 			title: "Song loaded",

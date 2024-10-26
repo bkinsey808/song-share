@@ -54,7 +54,7 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 		if (open && scrollToElement) {
 			const el = document.getElementById(sectionId);
 			if (el) {
-        // for some reason scrollIntoView wasn't working on mobile
+				// for some reason scrollIntoView wasn't working on mobile
 
 				/** the distance from the outer border of the element (including its margin) to the top padding edge of the offsetParent, the closest positioned ancestor element */
 				const y = el.offsetTop;
