@@ -1,3 +1,4 @@
+import { AboutSection } from "./about/AboutSection";
 import { LogTitle } from "./log/LogTitle";
 import { LogSection } from "@/features/sections/log/LogSection";
 import { PlaylistLibraryButtonLabel } from "@/features/sections/playlist-library/PlaylistLibraryButtonLabel";
@@ -28,6 +29,7 @@ export const sectionId = {
 	SONG_LOG: "SONG_LOG",
 	SETTINGS: "SETTINGS",
 	QR: "QR",
+	ABOUT: "ABOUT",
 } as const;
 
 export const SECTIONS: Sections = {
@@ -65,5 +67,10 @@ export const SECTIONS: Sections = {
 		title: "QR",
 		section: QRSection,
 		buttonLabel: "QR",
+	},
+	[sectionId.ABOUT]: {
+		title: `About ${process.env.NEXT_PUBLIC_BRAND ?? "Song Share"}`,
+		section: AboutSection,
+		buttonLabel: "About",
 	},
 };

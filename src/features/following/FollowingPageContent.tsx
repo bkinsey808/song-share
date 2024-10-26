@@ -1,4 +1,5 @@
-import { SECTIONS, pageColumns } from "./pageColumns";
+import { SECTIONS } from "../sections/consts";
+import { pageColumns } from "./pageColumns";
 import { PageColumn } from "@/features/layout/PageColumn";
 import PageContent from "@/features/layout/PageContent";
 import { SectionAccordion } from "@/features/section/SectionAccordion";

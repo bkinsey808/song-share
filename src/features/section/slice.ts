@@ -54,19 +54,16 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 		if (open && scrollToElement) {
 			const el = document.getElementById(sectionId);
 			if (el) {
-				el.scrollIntoView({ behavior: "smooth" });
+        // for some reason scrollIntoView wasn't working on mobile
 
-				// now account for fixed header
-				const scrolledY = window.scrollY;
+				/** the distance from the outer border of the element (including its margin) to the top padding edge of the offsetParent, the closest positioned ancestor element */
+				const y = el.offsetTop;
 
-				if (scrolledY) {
-					window.scroll(
-						0,
-						scrolledY -
-							// height of header
-							50,
-					);
-				}
+				// scroll to element y
+				window.scrollTo({
+					top: y - 40, // header height
+					behavior: "smooth",
+				});
 			}
 		}
 	},
