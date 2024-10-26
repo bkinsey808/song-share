@@ -13,7 +13,11 @@ export const sectionSliceInitialState: SectionSliceState = {
 };
 
 export type SectionSlice = SectionSliceState & {
-	sectionToggle: (sectionId: SectionId, open?: boolean) => void;
+	sectionToggle: (
+		sectionId: SectionId,
+		open?: boolean,
+		scrollToElement?: boolean,
+	) => void;
 	getDashboardSections: () => SectionId[][];
 };
 
@@ -22,7 +26,7 @@ type AppSectionSlice = StateCreator<AppSlice, [], [], SectionSlice>;
 export const createSectionSlice: AppSectionSlice = (set, get) => ({
 	...sectionSliceInitialState,
 	getDashboardSections: getDashboardSections(get),
-	sectionToggle: (sectionId, open) => {
+	sectionToggle: (sectionId, open, scrollToElement) => {
 		set((state) => {
 			const isOpen = state.openSections.includes(sectionId);
 			if (open === undefined) {
@@ -47,6 +51,24 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 			}
 			return state;
 		});
+		if (open && scrollToElement) {
+			const el = document.getElementById(sectionId);
+			if (el) {
+				el.scrollIntoView({ behavior: "smooth" });
+
+				// now account for fixed header
+				const scrolledY = window.scrollY;
+
+				if (scrolledY) {
+					window.scroll(
+						0,
+						scrolledY -
+							// height of header
+							50,
+					);
+				}
+			}
+		}
 	},
 });
 

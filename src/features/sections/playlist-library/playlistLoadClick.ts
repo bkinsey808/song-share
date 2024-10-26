@@ -1,5 +1,6 @@
 import { MouseEventHandler } from "react";
 
+import { sectionId } from "../consts";
 import { playlistIdSet } from "@/actions/playlistIdSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -11,7 +12,7 @@ export const playlistLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { playlistIsUnsaved, isSignedIn } = get();
+		const { playlistIsUnsaved, isSignedIn, sectionToggle } = get();
 		if (playlistIsUnsaved) {
 			toast({
 				variant: "destructive",
@@ -35,6 +36,8 @@ export const playlistLoadClick =
 		set({
 			playlistId,
 		});
+
+		sectionToggle(sectionId.PLAYLIST, true, true);
 
 		toast({
 			title: "Playlist loaded",

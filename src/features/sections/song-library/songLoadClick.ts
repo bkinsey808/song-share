@@ -1,5 +1,6 @@
 import { MouseEventHandler } from "react";
 
+import { sectionId } from "../consts";
 import { songIdSet } from "@/actions/songIdSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -11,7 +12,7 @@ export const songLoadClick =
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();
 
-		const { songUnsavedIs, isSignedIn } = get();
+		const { songUnsavedIs, isSignedIn, sectionToggle } = get();
 		if (songUnsavedIs) {
 			toast({
 				variant: "destructive",
@@ -35,6 +36,8 @@ export const songLoadClick =
 		set({
 			songId,
 		});
+
+		sectionToggle(sectionId.SONG, true, true);
 
 		toast({
 			title: "Song loaded",

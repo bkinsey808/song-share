@@ -70,7 +70,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					const { songId } = useAppStore.getState();
 
 					if (songId !== following.songActiveId) {
-						sectionToggle(sectionId.SONG, true);
+						sectionToggle(sectionId.SONG, true, true);
 					}
 
 					const songUnsubscribe = onSnapshot(
@@ -110,7 +110,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					const { playlistId } = useAppStore.getState();
 
 					if (playlistId !== following.playlistActiveId) {
-						sectionToggle(sectionId.PLAYLIST, true);
+						sectionToggle(sectionId.PLAYLIST, true, true);
 					}
 
 					const playlistUnsubscribe = onSnapshot(

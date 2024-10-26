@@ -1,6 +1,5 @@
 import { JWTPayload, SignJWT } from "jose";
 
-import { SESSION_TIMEOUT_SECONDS } from "./consts";
 import { SessionCookieData } from "./types";
 
 const sessionPrivateKey = process.env.SESSION_PRIVATE_KEY;
@@ -19,7 +18,7 @@ export const sessionTokenEncode = async (
 	)
 		.setProtectedHeader({ alg: "HS256" })
 		.setIssuedAt()
-		.setExpirationTime(Date.now() + SESSION_TIMEOUT_SECONDS * 1000)
+		.setExpirationTime("1w")
 		.sign(jwtKey);
 
 	return sessionToken;
