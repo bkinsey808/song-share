@@ -2,7 +2,7 @@
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -11,7 +11,7 @@ import {
 	songLibrarySortOptions,
 } from "./consts";
 import { SongLibraryGridFormSchema } from "./schemas";
-import { useSortedSongIds } from "./slice";
+import { useSortedFilteredSongIds } from "./slice";
 import { SongLibraryGridForm } from "./types";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
@@ -64,7 +64,7 @@ export const SongLibraryGrid = () => {
 
 	const [sortSearch, setSortSearch] = useState("");
 
-	const songIds = useSortedSongIds();
+	const songIds = useSortedFilteredSongIds();
 
 	useFormSubmitOnChange({
 		form,
@@ -77,14 +77,26 @@ export const SongLibraryGrid = () => {
 			<Form {...form}>
 				<form
 					onSubmit={songLibraryGridFormSubmit}
-					className="mb-[1rem] flex gap-[1rem] pr-[0.1rem]"
+					className="flex gap-[1rem] pr-[0.1rem]"
 				>
+					<FormField
+						name="search"
+						control={form.control}
+						render={({ field }) => (
+							<FormItem className="w-[10rem] flex-grow">
+								<FormLabel>Search</FormLabel>
+								<FormControl>
+									<Input className="h-[1.6rem]" {...field} />
+								</FormControl>
+							</FormItem>
+						)}
+					/>
 					<FormField
 						name="sort"
 						control={form.control}
 						render={({ field }) => (
 							<FormItem className="h-[3rem] w-[10rem]">
-								<FormLabel>Sort By</FormLabel>
+								<FormLabel>Sort</FormLabel>
 								<FormControl>
 									<Combobox
 										options={songLibrarySortOptions}
@@ -99,20 +111,28 @@ export const SongLibraryGrid = () => {
 							</FormItem>
 						)}
 					/>
-					<FormField
-						name="search"
-						control={form.control}
-						render={({ field }) => (
-							<FormItem className="w-[10rem] flex-grow">
-								<FormLabel>Search</FormLabel>
-								<FormControl>
-									<Input className="h-[1.6rem]" {...field} />
-								</FormControl>
-							</FormItem>
-						)}
-					/>
 				</form>
 			</Form>
+			<Button
+				className="mb-[1rem] mt-[0.2rem]"
+				disabled={
+					form.formState.isSubmitting ||
+					(form.getValues("sort") === songLibrarySortDefault &&
+						form.getValues("search") === "")
+				}
+				onClick={() => {
+					form.reset({ sort: songLibrarySortDefault, search: "" });
+					const formEvent = new Event("submit", {
+						bubbles: true,
+						cancelable: true,
+					});
+					void songLibraryGridFormSubmit(
+						formEvent as unknown as FormEvent<HTMLFormElement>,
+					);
+				}}
+			>
+				Reset Search and Sort
+			</Button>
 			<Grid gridClassName="grid-cols-[1.5rem,3fr,1fr]">
 				<GridHeader>
 					<div></div>

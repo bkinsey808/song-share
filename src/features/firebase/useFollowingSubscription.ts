@@ -110,7 +110,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					const { playlistId } = useAppStore.getState();
 
 					if (playlistId !== following.playlistActiveId) {
-						sectionToggle(sectionId.PLAYLIST, true, true);
+						sectionToggle(sectionId.PLAYLIST, true);
 					}
 
 					const playlistUnsubscribe = onSnapshot(

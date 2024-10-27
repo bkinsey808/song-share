@@ -1,6 +1,5 @@
 ## Todo
 
-- [ ] search for songs
 - [ ] user library
 - [ ] reset button
 - [ ] offline mode
@@ -9,5 +8,6 @@
 - [ ] calendar
 - [ ] timezone slice
 - [ ] sort
-- [ ] floating details
 - [ ] google analytics
+- [ ] song requests
+- [ ] chat

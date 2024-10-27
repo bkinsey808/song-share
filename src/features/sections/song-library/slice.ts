@@ -18,6 +18,7 @@ import {
 	sliceResetFns,
 	useAppStore,
 } from "@/features/app-store/useAppStore";
+import { searchTextGet } from "@/features/global/searchTextGet";
 import { Song } from "@/features/sections/song/types";
 
 type SongLibrarySliceState = {
@@ -98,13 +99,42 @@ export const useSongLibrarySortData = () =>
 			: undefined,
 	);
 
-export const useSortedSongIds = () =>
+export const useSortedFilteredSongIds = () =>
 	useAppStore((state) => {
+		const search = state.songLibrarySearch.toLowerCase();
+		const filteredSongIds = state.songIds.filter((songId) => {
+			const song = state.songLibrary[songId];
+
+			if (!song) {
+				return false;
+			}
+
+			if (
+				searchTextGet(song.songName).includes(search) ||
+				searchTextGet(song.lyrics).includes(search) ||
+				searchTextGet(song.translation).includes(search) ||
+				searchTextGet(song.credits).includes(search)
+			) {
+				return true;
+			}
+
+			const songLogs = state.songLogs[songId];
+
+			if (
+				songLogs?.some((songLog) =>
+					searchTextGet(songLog.notes).includes(search),
+				)
+			) {
+				return true;
+			}
+
+			return false;
+		});
 		const sortData = state.songLibrarySort
 			? songLibrarySortData[state.songLibrarySort]
 			: undefined;
 		if (!sortData) {
 			return [];
 		}
-		return [...state.songIds].sort(sortData.sort(state.songLibrary));
+		return filteredSongIds.sort(sortData.sort(state.songLibrary));
 	});
