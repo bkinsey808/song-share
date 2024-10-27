@@ -22,6 +22,7 @@ import {
 	FormItem,
 	FormLabel,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
@@ -74,12 +75,15 @@ export const SongLibraryGrid = () => {
 		<>
 			{/* isDirty: {form.formState.isDirty.toString()} */}
 			<Form {...form}>
-				<form onSubmit={songLibraryGridFormSubmit}>
+				<form
+					onSubmit={songLibraryGridFormSubmit}
+					className="mb-[1rem] flex gap-[1rem] pr-[0.1rem]"
+				>
 					<FormField
 						name="sort"
 						control={form.control}
 						render={({ field }) => (
-							<FormItem className="w-[10rem] flex-grow">
+							<FormItem className="h-[3rem] w-[10rem]">
 								<FormLabel>Sort By</FormLabel>
 								<FormControl>
 									<Combobox
@@ -91,6 +95,18 @@ export const SongLibraryGrid = () => {
 										valueDefault={songLibrarySortDefault}
 										{...field}
 									/>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+					<FormField
+						name="search"
+						control={form.control}
+						render={({ field }) => (
+							<FormItem className="w-[10rem] flex-grow">
+								<FormLabel>Search</FormLabel>
+								<FormControl>
+									<Input className="h-[1.6rem]" {...field} />
 								</FormControl>
 							</FormItem>
 						)}

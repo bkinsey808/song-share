@@ -1,3 +1,4 @@
+import { isMobile } from "react-device-detect";
 import { StateCreator } from "zustand";
 
 import { getDashboardSections } from "../dashboard/getDashboardSectionts";
@@ -54,16 +55,28 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 		if (open && scrollToElement) {
 			const el = document.getElementById(sectionId);
 			if (el) {
-				// for some reason scrollIntoView wasn't working on mobile
+				if (isMobile) {
+					/** the distance from the outer border of the element (including its margin) to the top padding edge of the offsetParent, the closest positioned ancestor element */
+					const y = el.offsetTop;
 
-				/** the distance from the outer border of the element (including its margin) to the top padding edge of the offsetParent, the closest positioned ancestor element */
-				const y = el.offsetTop;
+					// scroll to element y
+					window.scrollTo({
+						top: y - 40, // header height
+						behavior: "smooth",
+					});
+				} else {
+					// use scrollIntoView for mobile
+					el.scrollIntoView({
+						behavior: "smooth",
+						block: "start",
+					});
 
-				// scroll to element y
-				window.scrollTo({
-					top: y - 40, // header height
-					behavior: "smooth",
-				});
+					const scrolledY = window.scrollY;
+
+					if (scrolledY) {
+						window.scroll(0, scrolledY - 40);
+					}
+				}
 			}
 		}
 	},
