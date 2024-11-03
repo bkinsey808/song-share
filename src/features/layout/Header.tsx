@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -15,6 +16,14 @@ export const Header = () => {
 	} = useAppStore();
 
 	const { fuid } = useParams();
+
+	const [following, setFollowing] = useState<string>();
+	useEffect(() => {
+		if (typeof fuid === "string") {
+			setFollowing(usernameGet(fuid));
+		}
+	}, [fuid]);
+
 	if (fuid && typeof fuid !== "string") {
 		return null;
 	}
@@ -30,7 +39,10 @@ export const Header = () => {
 				</h1>
 				{fuid ? (
 					<span className="flex gap-[1rem]">
-						<span>Following: {usernameGet(fuid)}</span>
+						<span>
+							Following:{" "}
+							<span suppressHydrationWarning={true}>{following}</span>
+						</span>
 						{/* <Button>Stop Following</Button> */}
 					</span>
 				) : null}
