@@ -54,7 +54,11 @@ export const signIn = async ({
 
 		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
-		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
+		(await cookies()).set(
+			SESSION_COOKIE_NAME,
+			sessionToken,
+			sessionCookieOptions,
+		);
 
 		if (fuid) {
 			await userActiveSet({

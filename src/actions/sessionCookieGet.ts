@@ -12,7 +12,7 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 export const sessionCookieGet = async () => {
 	try {
-		const sessionCookie = cookies().get(SESSION_COOKIE_NAME);
+		const sessionCookie = (await cookies()).get(SESSION_COOKIE_NAME);
 
 		if (!sessionCookie) {
 			return actionErrorMessageGet("No session cookie");

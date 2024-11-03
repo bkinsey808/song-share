@@ -9,7 +9,9 @@ import { useLibrarySubscription } from "@/features/firebase/useLibrarySubscripti
 export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 	const params = useParams();
 	const fuid = params.fuid;
-	useFollowingSubscription(fuid);
+	if (typeof fuid === "string") {
+		useFollowingSubscription(fuid);
+	}
 	useLibrarySubscription();
 
 	return <>{children}</>;

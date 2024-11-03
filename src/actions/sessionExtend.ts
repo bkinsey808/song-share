@@ -31,7 +31,7 @@ export const sessionExtend = async () => {
 
 		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
-		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
+		(await cookies()).set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

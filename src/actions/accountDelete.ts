@@ -71,7 +71,7 @@ export const accountDelete = async () => {
 		await db.collection(Collection.USERS_PUBLIC).doc(uid).delete();
 		await db.collection(Collection.USER_NAMES).doc(username).delete();
 
-		cookies().delete(SESSION_COOKIE_NAME);
+		(await cookies()).delete(SESSION_COOKIE_NAME);
 
 		return { actionResultType: actionResultType.SUCCESS };
 	} catch (error) {
