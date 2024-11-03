@@ -16,7 +16,6 @@ export const useFormSubmitOnChange = <
 		const submitForm = async () => {
 			await form.trigger(); // Validate the form
 			if (form.formState.isDirty) {
-				console.log("in here");
 				const formEvent = new Event("submit", {
 					bubbles: true,
 					cancelable: true,
@@ -28,7 +27,6 @@ export const useFormSubmitOnChange = <
 		// Watch formState.isDirty and call submitForm when it changes
 		if (isDirty) {
 			void (async () => {
-				console.log("is dirty");
 				await submitForm();
 			})();
 		}

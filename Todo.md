@@ -1,6 +1,6 @@
 ## Todo
 
-- [ ] user library
+- [ ] user library / community
 - [ ] reset button
 - [ ] offline mode
 - [ ] scrollbar styling

@@ -63,10 +63,6 @@ export const PlaylistGrid = () => {
 		playlistGridFormSet(form);
 	}, [form, playlistGridFormSet]);
 
-	useEffect(() => {
-		form.reset(playlist);
-	}, [form, playlist]);
-
 	return (
 		<Form {...form}>
 			{/* isDirty: {form.formState.isDirty.toString()} */}

@@ -1,4 +1,4 @@
-import { SECTIONS } from "../sections/consts";
+import { sectionData } from "../sections/consts";
 import { pageColumns } from "./pageColumns";
 import { PageColumn } from "@/features/layout/PageColumn";
 import PageContent from "@/features/layout/PageContent";
@@ -10,9 +10,9 @@ export const DashboardPageContent = () => {
 			{pageColumns.map((pageColumn, columnIndex) => (
 				<PageColumn key={columnIndex}>
 					{pageColumn.map((sectionId) => {
-						const Title = SECTIONS[sectionId]?.title;
-						const Section = SECTIONS[sectionId]?.section;
-						const ButtonLabel = SECTIONS[sectionId]?.buttonLabel;
+						const Title = sectionData[sectionId]?.title;
+						const Section = sectionData[sectionId]?.section;
+						const ButtonLabel = sectionData[sectionId]?.buttonLabel;
 
 						if (!Title || !Section || !ButtonLabel) {
 							return null;

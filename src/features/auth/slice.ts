@@ -11,7 +11,6 @@ import { signOutClick } from "./signOutClick";
 import { RegistrationData, SessionCookieData } from "./types";
 import { userSubscribe } from "./userSubscribe";
 import { userUnsubscribe } from "./userUnsubscribe";
-import { usernameGet } from "./usernameGet";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import "@/features/firebase/firebaseClient";
 import { appModal } from "@/features/modal/consts";
@@ -52,7 +51,6 @@ export type AuthSlice = AuthSliceState & {
 		form: UseFormReturn<RegistrationData>,
 	) => (e: React.FormEvent<HTMLFormElement>) => void;
 	sessionExtendClick: () => void;
-	usernameGet: (uid: string) => string;
 	userSubscribe: (uid: string) => void;
 	userUnsubscribe: () => void;
 };
@@ -86,7 +84,6 @@ export const createAuthSlice: AppAuthSlice = (set, get) => {
 		accountDeleteConfirmClick: accountDeleteConfirmClick(set),
 		registerSubmit: registerSubmit(get, set),
 		sessionExtendClick: sessionExtendClick(get, set),
-		usernameGet: usernameGet(get),
 		userSubscribe: userSubscribe(get, set),
 		userUnsubscribe: userUnsubscribe(get, set),
 	};

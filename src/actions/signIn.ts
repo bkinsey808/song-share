@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 
+import { userActiveSet } from "./userActiveSet";
 import { userDocGet } from "./userDocGet";
 import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
@@ -18,7 +19,13 @@ import { SessionCookieData } from "@/features/auth/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-export const signIn = async (uid: string) => {
+export const signIn = async ({
+	uid,
+	fuid,
+}: {
+	uid: string;
+	fuid: string | null;
+}) => {
 	try {
 		const existingUserDocResult = await userDocGet(uid);
 		if (existingUserDocResult.actionResultType === actionResultType.ERROR) {
@@ -48,6 +55,13 @@ export const signIn = async (uid: string) => {
 		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
+
+		if (fuid) {
+			await userActiveSet({
+				uid,
+				fuid,
+			});
+		}
 
 		const { songId, playlistId, songIds, playlistIds, timeZone } =
 			existingUserDoc;

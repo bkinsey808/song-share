@@ -35,6 +35,7 @@ export const userSubscribe = (get: Get, set: Set) => (uid: string) => {
 				email,
 				roles,
 				timeZone,
+				userIds,
 			} = userParseResult.output;
 			const { sessionCookieData, settingsForm } = get();
 			if (!sessionCookieData) {
@@ -49,6 +50,7 @@ export const userSubscribe = (get: Get, set: Set) => (uid: string) => {
 				playlistId: playlistId ?? null,
 				sessionCookieData: newSessionCookieData,
 				timeZone: timeZone ?? null,
+				userIds: userIds ?? [],
 			});
 			settingsForm?.reset({
 				timeZone: timeZone ?? undefined,
@@ -77,18 +79,23 @@ export const userSubscribe = (get: Get, set: Set) => (uid: string) => {
 				console.warn(`Invalid data for user public ${uid}`);
 				return;
 			}
-			const { picture, songActiveId, playlistActiveId, username } =
+			const { picture, songActiveId, playlistActiveId, username, usersActive } =
 				userPublicParseResult.output;
 			const { sessionCookieData } = get();
 			if (!sessionCookieData) {
 				console.warn("No session cookie data found");
 				return;
 			}
-			const newSessionCookieData = { ...sessionCookieData, picture, username };
+			const newSessionCookieData = {
+				...sessionCookieData,
+				picture,
+				username,
+			};
 			set({
 				songActiveId,
 				playlistActiveId: playlistActiveId ?? null,
 				sessionCookieData: newSessionCookieData,
+				usersActive: usersActive ?? {},
 			});
 		},
 	);

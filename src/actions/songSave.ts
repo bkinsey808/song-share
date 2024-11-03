@@ -62,7 +62,6 @@ export const songSave = async ({
 	song: Song;
 	songId: string | null;
 }) => {
-	console.log({ songId });
 	try {
 		const songParseResult = serverParse(SongSchema, song);
 		if (!songParseResult.success) {

@@ -13,9 +13,7 @@ export const songLibraryGridFormSubmit =
 		}
 
 		return songLibraryGridForm.handleSubmit(async (songLibraryGridValues) => {
-			console.log("in songLibraryGridFormSubmit handleSubmit");
 			const { sort, search } = songLibraryGridValues;
-			console.log({ sort, search });
 			set({
 				songLibrarySort: sort,
 				songLibrarySearch: search,

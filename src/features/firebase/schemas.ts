@@ -3,6 +3,7 @@ import {
 	nullable,
 	object,
 	optional,
+	record,
 	string,
 	enum as venum,
 } from "valibot";
@@ -14,6 +15,7 @@ export const UserPublicDocSchema = object({
 	picture: nullable(string()),
 	songActiveId: nullable(string()),
 	playlistActiveId: optional(nullable(string())),
+	usersActive: optional(record(string(), string())),
 });
 
 export const UserDocSchema = object({
@@ -24,4 +26,5 @@ export const UserDocSchema = object({
 	songId: nullable(string()),
 	playlistId: optional(nullable(string())),
 	timeZone: optional(nullable(string())),
+	userIds: optional(array(string())),
 });

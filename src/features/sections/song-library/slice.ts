@@ -1,5 +1,5 @@
 import { Unsubscribe } from "firebase/firestore";
-import { MouseEventHandler } from "react";
+import { FormEvent, MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
@@ -47,9 +47,7 @@ export type SongLibrarySlice = SongLibrarySliceState & {
 	songLibraryUnsubscribe: () => void;
 	songLibraryAddSongIds: (songIds: string[]) => void;
 	songLibrarySortSet: (sort: SongLibrarySortType) => () => void;
-	songLibraryGridFormSubmit: (
-		e: React.FormEvent<HTMLFormElement>,
-	) => Promise<void>;
+	songLibraryGridFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	songLibraryGridFormSet: (form: UseFormReturn<SongLibraryGridForm>) => void;
 	songLibrarySongSet: ({
 		songId,

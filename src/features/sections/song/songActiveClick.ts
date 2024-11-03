@@ -20,7 +20,6 @@ export const songActiveClick =
 
 		const activeSongResult = await songActiveSet({ songId, playlistId });
 		if (activeSongResult.actionResultType === actionResultType.ERROR) {
-			console.log({ activeSongResult });
 			toast({
 				variant: "destructive",
 				title: "There was an error setting the active song",

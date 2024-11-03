@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { flatten } from "valibot";
 
+import { userActiveSet } from "./userActiveSet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { registerFormFieldKey } from "@/features/auth/consts";
@@ -27,11 +28,13 @@ export const register = async ({
 	email,
 	picture,
 	registrationData,
+	fuid,
 }: {
 	uid: string;
 	email: string;
 	picture: string | null;
 	registrationData: RegistrationData;
+	fuid: string | null;
 }) => {
 	try {
 		const result = serverParse(RegistrationSchema, registrationData);
@@ -65,6 +68,7 @@ export const register = async ({
 			roles: [],
 			songId: null,
 			playlistId: null,
+			userIds: fuid ? [fuid] : [],
 		};
 
 		const userPublicDoc: UserPublicDoc = {
@@ -89,6 +93,13 @@ export const register = async ({
 		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
 		cookies().set(SESSION_COOKIE_NAME, sessionToken, sessionCookieOptions);
+
+		if (fuid) {
+			await userActiveSet({
+				uid,
+				fuid,
+			});
+		}
 
 		return {
 			actionResultType: actionResultType.SUCCESS,

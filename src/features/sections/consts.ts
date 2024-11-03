@@ -1,5 +1,6 @@
 import { AboutSection } from "./about/AboutSection";
 import { LogTitle } from "./log/LogTitle";
+import { UserLibrarySection } from "./user-library/UserLibrarySection";
 import { LogSection } from "@/features/sections/log/LogSection";
 import { PlaylistLibraryButtonLabel } from "@/features/sections/playlist-library/PlaylistLibraryButtonLabel";
 import { PlaylistLibrarySection } from "@/features/sections/playlist-library/PlaylistLibrarySection";
@@ -30,9 +31,10 @@ export const sectionId = {
 	SETTINGS: "SETTINGS",
 	QR: "QR",
 	ABOUT: "ABOUT",
+	USER_LIBRARY: "USER_LIBRARY",
 } as const;
 
-export const SECTIONS: Sections = {
+export const sectionData: Sections = {
 	[sectionId.PLAYLIST]: {
 		title: PlaylistTitle,
 		section: PlaylistSection,
@@ -72,5 +74,10 @@ export const SECTIONS: Sections = {
 		title: `About ${process.env.NEXT_PUBLIC_BRAND ?? "Song Share"}`,
 		section: AboutSection,
 		buttonLabel: "About",
+	},
+	[sectionId.USER_LIBRARY]: {
+		title: "User Library",
+		section: UserLibrarySection,
+		buttonLabel: "User Library",
 	},
 };

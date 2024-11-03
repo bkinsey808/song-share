@@ -25,7 +25,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 
 			const { setOpenAppModal, fuid, songIds, playlistIds } = get();
 
-			const signInResult = await signIn(uid);
+			const signInResult = await signIn({ uid, fuid });
 
 			switch (signInResult.signInResultType) {
 				case signInResultType.NEW:
@@ -65,7 +65,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 						playlistId: signInResult.playlistId ?? null,
 						songActiveId: signInResult.songActiveId,
 						playlistActiveId: signInResult.playlistActiveId ?? null,
-						fuid: uid === fuid ? null : uid,
+						fuid,
 						timeZone: signInResult.timeZone ?? null,
 					});
 

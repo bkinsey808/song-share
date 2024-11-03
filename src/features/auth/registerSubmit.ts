@@ -35,6 +35,7 @@ export const registerSubmit =
 					email: sessionCookieData.email,
 					picture: sessionCookieData.picture,
 					registrationData,
+					fuid: get().fuid,
 				});
 
 				switch (result.actionResultType) {
@@ -67,7 +68,7 @@ export const registerSubmit =
 							},
 						});
 						useAppStore.getState().setOpenAppModal(null);
-						toast({ title: "You have been registered" });
+						toast({ title: "You are now registered" });
 						break;
 				}
 			}

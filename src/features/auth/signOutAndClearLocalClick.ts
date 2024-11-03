@@ -4,8 +4,9 @@ import { resetAllSlices } from "@/features/app-store/useAppStore";
 import { wait } from "@/features/global/wait";
 
 export const signOutAndClearLocalClick = (get: Get) => () => {
+	const { sessionCookieData, fuid } = get();
 	void (async () => {
-		signOut();
+		await signOut({ uid: sessionCookieData?.uid ?? null, fuid });
 		const { setOpenAppModal } = get();
 		setOpenAppModal(null);
 		resetAllSlices();
