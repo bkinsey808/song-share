@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -35,6 +36,14 @@ export const Header = () => {
 		>
 			<span className="flex gap-[1rem]">
 				<h1 className="font-bold">
+					<Image
+						className="mr-[0.1rem] mt-[-0.2rem] inline"
+						src="/favicon-light-mode.svg"
+						alt="Brand"
+						width={20}
+						height={20}
+					/>
+
 					{process.env.NEXT_PUBLIC_BRAND ?? "Song Share"}
 				</h1>
 				{fuid ? (

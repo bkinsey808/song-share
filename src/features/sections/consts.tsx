@@ -1,3 +1,4 @@
+import { IconBrand } from "../design-system/IconBrand";
 import { AboutSection } from "./about/AboutSection";
 import { LogTitle } from "./log/LogTitle";
 import { UserLibrarySection } from "./user-library/UserLibrarySection";
@@ -31,6 +32,7 @@ export const sectionId = {
 	SETTINGS: "SETTINGS",
 	QR: "QR",
 	ABOUT: "ABOUT",
+	WHY_JOIN: "WHY_JOIN",
 	USER_LIBRARY: "USER_LIBRARY",
 } as const;
 
@@ -71,7 +73,11 @@ export const sectionData: Sections = {
 		buttonLabel: "QR",
 	},
 	[sectionId.ABOUT]: {
-		title: `About ${process.env.NEXT_PUBLIC_BRAND ?? "Song Share"}`,
+		title: () => (
+			<>
+				About <IconBrand />
+			</>
+		),
 		section: AboutSection,
 		buttonLabel: "About",
 	},

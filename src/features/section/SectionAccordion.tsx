@@ -70,7 +70,8 @@ export const SectionAccordion = ({
 						<TriangleRightIcon />
 					</div>
 					<div className="flex flex-nowrap gap-[0.5rem]">
-						{isOpen ? "Close" : "Open"} {buttonLabel}
+						<span className="text-[0.7rem]">{isOpen ? "Close" : "Open"}</span>{" "}
+						{buttonLabel}
 					</div>
 				</Button>
 				<div className="flex-grow overflow-hidden overflow-ellipsis">
