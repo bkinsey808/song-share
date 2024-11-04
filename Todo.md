@@ -7,3 +7,4 @@
 - [ ] calendar
 - [ ] song requests
 - [ ] chat
+- [ ] sitemap
