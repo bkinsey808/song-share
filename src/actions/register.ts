@@ -29,12 +29,18 @@ export const register = async ({
 	picture,
 	registrationData,
 	fuid,
+	songIds = [],
+	playlistIds = [],
+	userIds = [],
 }: {
 	uid: string;
 	email: string;
 	picture: string | null;
 	registrationData: RegistrationData;
 	fuid: string | null;
+	songIds: string[];
+	playlistIds: string[];
+	userIds: string[];
 }) => {
 	try {
 		const result = serverParse(RegistrationSchema, registrationData);
@@ -63,12 +69,12 @@ export const register = async ({
 		const userDoc: UserDoc = {
 			...registrationData,
 			email,
-			songIds: [],
-			playlistIds: [],
+			songIds,
+			playlistIds,
 			roles: [],
 			songId: null,
 			playlistId: null,
-			userIds: fuid ? [fuid] : [],
+			userIds: fuid ? Array.from(new Set([fuid, ...userIds])) : userIds,
 		};
 
 		const userPublicDoc: UserPublicDoc = {

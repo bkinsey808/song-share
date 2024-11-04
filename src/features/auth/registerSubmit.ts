@@ -15,7 +15,8 @@ export const registerSubmit =
 		e.preventDefault();
 		return form.handleSubmit(async (registrationData) => {
 			{
-				const sessionCookieData = get().sessionCookieData;
+				const { sessionCookieData, userIds, songIds, playlistIds, fuid } =
+					get();
 
 				if (!sessionCookieData) {
 					form.setError("root", {
@@ -35,7 +36,10 @@ export const registerSubmit =
 					email: sessionCookieData.email,
 					picture: sessionCookieData.picture,
 					registrationData,
-					fuid: get().fuid,
+					fuid,
+					songIds,
+					playlistIds,
+					userIds,
 				});
 
 				switch (result.actionResultType) {

@@ -23,9 +23,15 @@ export const signInClick = (set: Set, get: Get) => () => {
 				throw new Error("Email is not defined");
 			}
 
-			const { setOpenAppModal, fuid, songIds, playlistIds } = get();
+			const { setOpenAppModal, fuid, songIds, playlistIds, userIds } = get();
 
-			const signInResult = await signIn({ uid, fuid });
+			const signInResult = await signIn({
+				uid,
+				fuid,
+				songIds,
+				playlistIds,
+				userIds,
+			});
 
 			switch (signInResult.signInResultType) {
 				case signInResultType.NEW:

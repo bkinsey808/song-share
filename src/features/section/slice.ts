@@ -1,4 +1,4 @@
-import { isMobile } from "react-device-detect";
+import { isFirefox, isMobile } from "react-device-detect";
 import { StateCreator } from "zustand";
 
 import { getDashboardSections } from "../dashboard/getDashboardSectionts";
@@ -55,7 +55,7 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 		if (open && scrollToElement) {
 			const el = document.getElementById(sectionId);
 			if (el) {
-				if (isMobile) {
+				if (isMobile || isFirefox) {
 					/** the distance from the outer border of the element (including its margin) to the top padding edge of the offsetParent, the closest positioned ancestor element */
 					const y = el.offsetTop;
 

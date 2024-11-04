@@ -12,6 +12,8 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
+import { Collection } from "@/features/firebase/consts";
+import { db } from "@/features/firebase/firebaseServer";
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
@@ -22,9 +24,15 @@ import { SessionCookieData } from "@/features/auth/types";
 export const signIn = async ({
 	uid,
 	fuid,
+	songIds = [],
+	playlistIds = [],
+	userIds = [],
 }: {
 	uid: string;
 	fuid: string | null;
+	songIds: string[];
+	playlistIds: string[];
+	userIds: string[];
 }) => {
 	try {
 		const existingUserDocResult = await userDocGet(uid);
@@ -67,15 +75,32 @@ export const signIn = async ({
 			});
 		}
 
-		const { songId, playlistId, songIds, playlistIds, timeZone } =
-			existingUserDoc;
+		const newSongIds = Array.from(
+			new Set([...songIds, ...existingUserDoc.songIds]),
+		);
+		const newPlaylistIds = Array.from(
+			new Set([...playlistIds, ...(existingUserDoc.playlistIds ?? [])]),
+		);
+		const newUserIds = Array.from(
+			new Set([...userIds, ...(existingUserDoc.userIds ?? [])]),
+		);
+
+		// write newSongIds, newPlaylistIds, newUserIds to the database
+		await db.collection(Collection.USERS).doc(uid).update({
+			songIds: newSongIds,
+			playlistIds: newPlaylistIds,
+			userIds: newUserIds,
+		});
+
+		const { songId, playlistId, timeZone } = existingUserDoc;
 		const { songActiveId, playlistActiveId } = existingUserPublicDoc;
 
 		return {
 			signInResultType: signInResultType.EXISTING,
 			userData: sessionCookieData,
-			songIds,
-			playlistIds,
+			songIds: newSongIds,
+			playlistIds: newPlaylistIds,
+			userIds: newUserIds,
 			songId,
 			playlistId,
 			songActiveId,
