@@ -32,16 +32,13 @@ export const PlaylistGrid = () => {
 
 	const playlist = usePlaylist();
 
-	const defaultValues = useMemo(
-		() => {
-			const defaultPlaylistForm: PlaylistGridForm = {
-				songs: playlist?.songs ?? [],
-			};
-			return defaultPlaylistForm;
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[],
-	);
+	const defaultValues = useMemo(() => {
+		const defaultPlaylistForm: PlaylistGridForm = {
+			playlistId: playlistId ?? "",
+			songs: playlist?.songs ?? [],
+		};
+		return defaultPlaylistForm;
+	}, [playlistId]);
 
 	const form = useForm<PlaylistGridForm>({
 		resolver: valibotResolver(PlaylistGridFormSchema),
@@ -52,6 +49,11 @@ export const PlaylistGrid = () => {
 		control: form.control,
 		name: "songs",
 	});
+
+	// we want to reset the form when the playlistId changes
+	useEffect(() => {
+		form.reset(defaultValues);
+	}, [defaultValues, form, playlistId]);
 
 	useFormSubmitOnChange({
 		form,

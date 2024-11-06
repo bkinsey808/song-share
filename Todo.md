@@ -8,3 +8,4 @@
 - [ ] song requests
 - [ ] chat
 - [ ] sitemap
+- [ ] full screen mode

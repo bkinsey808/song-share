@@ -1,10 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import {
-	UserLibrarySlice,
-	createUserLibrarySlice,
-} from "../sections/user-library/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import {
 	FollowingSlice,
@@ -34,7 +30,15 @@ import {
 	SongLogSlice,
 	createSongLogSlice,
 } from "@/features/sections/song-log/slice";
+import {
+	SongRequestsSlice,
+	createSongRequestsSlice,
+} from "@/features/sections/song-requests/slice";
 import { SongSlice, createSongSlice } from "@/features/sections/song/slice";
+import {
+	UserLibrarySlice,
+	createUserLibrarySlice,
+} from "@/features/sections/user-library/slice";
 import { TimeZoneSlice, createTimeZoneSlice } from "@/features/time-zone/slice";
 
 export const sliceResetFns = new Set<() => void>();
@@ -58,6 +62,7 @@ export type AppSlice = ModalSlice &
 	FollowingSlice &
 	LogSlice &
 	SongLogSlice &
+	SongRequestsSlice &
 	QRSlice;
 
 /** for security, these shall not be stored in localStorage */
@@ -99,6 +104,7 @@ export const useAppStore = create<AppSlice>()(
 			...createLogSlice(...a),
 			...createSongLogSlice(...a),
 			...createQRSlice(...a),
+			...createSongRequestsSlice(...a),
 		}),
 		{
 			name: "app-store",

@@ -9,6 +9,7 @@ import {
 } from "valibot";
 
 import { role } from "@/features/auth/consts";
+import { SongRequestsSchema } from "@/features/sections/song-requests/schemas";
 
 export const UserPublicDocSchema = object({
 	username: string(),
@@ -16,6 +17,7 @@ export const UserPublicDocSchema = object({
 	songActiveId: nullable(string()),
 	playlistActiveId: optional(nullable(string())),
 	usersActive: optional(record(string(), string())),
+	songRequests: SongRequestsSchema,
 });
 
 export const UserDocSchema = object({
