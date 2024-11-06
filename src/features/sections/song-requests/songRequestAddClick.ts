@@ -9,10 +9,10 @@ export const songRequestAddClick = (set: Set, get: Get) => {
 		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 			e.preventDefault();
 
-			const { sessionCookieData, songRequests, fuid } = get();
+			const { sessionCookieData, fuid } = get();
 			const { uid } = sessionCookieData ?? {};
 
-			if (!uid || !fuid) {
+			if (!uid) {
 				return;
 			}
 

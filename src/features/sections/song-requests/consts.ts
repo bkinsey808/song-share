@@ -1,14 +1,14 @@
 import { Song } from "../song/types";
 
-export const songRequestsSort = {
+export const SongRequestsSort = {
 	SONG_NAME_ASC: "SONG_NAME_ASC",
 	SONG_NAME_DESC: "SONG_NAME_DESC",
 } as const;
 
-export const songRequestsSortDefault = songRequestsSort.SONG_NAME_ASC;
+export const songRequestsSortDefault = SongRequestsSort.SONG_NAME_ASC;
 
 export const songRequestsSortData = {
-	[songRequestsSort.SONG_NAME_ASC]: {
+	[SongRequestsSort.SONG_NAME_ASC]: {
 		label: "Song Name (A-Z)",
 		sort:
 			(songRequests: Record<string, Song>) =>
@@ -18,7 +18,7 @@ export const songRequestsSortData = {
 				return a?.localeCompare(b);
 			},
 	},
-	[songRequestsSort.SONG_NAME_DESC]: {
+	[SongRequestsSort.SONG_NAME_DESC]: {
 		label: "Song Name (Z-A)",
 		sort:
 			(songRequests: Record<string, Song>) =>

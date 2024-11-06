@@ -20,8 +20,9 @@ export const songRequestAdd = async ({
 	fuid,
 }: {
 	songId: string;
-	fuid: string;
+	fuid: string | null;
 }) => {
+	console.log({ songId, fuid });
 	try {
 		const extendSessionResult = await sessionExtend();
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
@@ -32,7 +33,7 @@ export const songRequestAdd = async ({
 
 		const userPublicGetResult = await db
 			.collection(Collection.USERS_PUBLIC)
-			.doc(fuid)
+			.doc(fuid ?? uid)
 			.get();
 		if (!userPublicGetResult.exists) {
 			return actionErrorMessageGet(`Public user ${fuid} not found`);
@@ -60,7 +61,7 @@ export const songRequestAdd = async ({
 		songRequests[songId] = songRequestUserIds;
 		await db
 			.collection(Collection.USERS_PUBLIC)
-			.doc(fuid)
+			.doc(fuid ?? uid)
 			.update({ songRequests });
 
 		return {

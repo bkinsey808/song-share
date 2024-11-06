@@ -1,10 +1,10 @@
 import { array, object, optional, record, string, union } from "valibot";
 
-import { songRequestsSort } from "./consts";
+import { SongRequestsSort } from "./consts";
 
 export const SongRequestsSchema = optional(record(string(), array(string())));
 
 export const SongRequestsGridFormSchema = object({
-	sort: union(Object.values(songRequestsSort).map((value) => string(value))),
+	sort: union(Object.values(SongRequestsSort).map((value) => string(value))),
 	search: string(),
 });

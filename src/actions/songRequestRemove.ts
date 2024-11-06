@@ -20,7 +20,7 @@ export const songRequestRemove = async ({
 	fuid,
 }: {
 	songId: string;
-	fuid: string;
+	fuid: string | null;
 }) => {
 	try {
 		const extendSessionResult = await sessionExtend();
@@ -32,7 +32,7 @@ export const songRequestRemove = async ({
 
 		const userPublicGetResult = await db
 			.collection(Collection.USERS_PUBLIC)
-			.doc(fuid)
+			.doc(fuid ?? uid)
 			.get();
 		if (!userPublicGetResult.exists) {
 			return actionErrorMessageGet(`Public user ${fuid} not found`);
@@ -57,10 +57,14 @@ export const songRequestRemove = async ({
 			return actionErrorMessageGet("Song not already requested");
 		}
 		const newSongRequestUserIds = songRequestUserIds.filter((id) => id !== uid);
-		songRequests[songId] = newSongRequestUserIds;
+		if (newSongRequestUserIds.length === 0) {
+			delete songRequests[songId];
+		} else {
+			songRequests[songId] = newSongRequestUserIds;
+		}
 		await db
 			.collection(Collection.USERS_PUBLIC)
-			.doc(fuid)
+			.doc(fuid ?? uid)
 			.update({ songRequests });
 
 		return {

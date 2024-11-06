@@ -9,6 +9,7 @@ export const getDashboardSections = (get: Get) => () => {
 		sectionId.ABOUT,
 		sectionId.SONG,
 		sectionId.SONG_LIBRARY,
+		sectionId.SONG_REQUESTS,
 		sectionId.USER_LIBRARY,
 	];
 	// const centerSections: SectionId[] = [SectionId.SONG_LIBRARY, SectionId.SONG];

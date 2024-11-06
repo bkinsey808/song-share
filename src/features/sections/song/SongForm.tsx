@@ -39,6 +39,10 @@ export const SongForm = () => {
 		playlistSongAdding,
 		playlistSongAddClick,
 		songDefaultGet,
+		songRequestAddClick,
+		songRequestAdded,
+		songRequestRemoveClick,
+		songRequestPending,
 	} = useAppStore();
 
 	const song = useSong();
@@ -174,6 +178,23 @@ export const SongForm = () => {
 								</Button>
 							) : null}
 							<Button onClick={songNewClick}>New Song</Button>
+							{songId && !songRequestAdded(songId) ? (
+								<Button
+									disabled={songRequestPending}
+									onClick={songRequestAddClick(songId)}
+								>
+									Request Song
+								</Button>
+							) : null}
+							{songId && songRequestAdded(songId) ? (
+								<Button
+									disabled={songRequestPending}
+									onClick={songRequestRemoveClick(songId)}
+								>
+									Cancel Request Song
+								</Button>
+							) : null}
+
 							{songId ? (
 								<Button variant="destructive" onClick={songDeleteClick}>
 									Delete Song

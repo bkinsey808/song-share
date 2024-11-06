@@ -12,7 +12,7 @@ export const songRequestRemoveClick = (set: Set, get: Get) => {
 			const { sessionCookieData, fuid } = get();
 			const { uid } = sessionCookieData ?? {};
 
-			if (!uid || !fuid) {
+			if (!uid) {
 				return;
 			}
 
@@ -38,7 +38,7 @@ export const songRequestRemoveClick = (set: Set, get: Get) => {
 						songRequests: songRequestRemoveResult.songRequests,
 					});
 					toast({
-						title: "Song requested successfully",
+						title: "Song request cancelled successfully",
 					});
 				}
 			})();

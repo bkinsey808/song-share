@@ -55,7 +55,7 @@ export const GridRow = forwardRef<
 		<div
 			ref={ref}
 			className={cn(
-				"grid grid-flow-col gap-[0.5rem]",
+				"grid grid-flow-row gap-[0.5rem]",
 				gridClassName,
 				className,
 			)}
