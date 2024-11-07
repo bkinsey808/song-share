@@ -1,5 +1,8 @@
+import { AboutButtonLabel } from "./about/AboutButtonLabel";
+import { QRButtonLabel } from "./qr/QRButtonLabel";
 import { IconBrand } from "@/features/design-system/IconBrand";
 import { AboutSection } from "@/features/sections/about/AboutSection";
+import { LogButtonLabel } from "@/features/sections/log/LogButtonLabel";
 import { LogSection } from "@/features/sections/log/LogSection";
 import { LogTitle } from "@/features/sections/log/LogTitle";
 import { PlaylistLibraryButtonLabel } from "@/features/sections/playlist-library/PlaylistLibraryButtonLabel";
@@ -9,6 +12,7 @@ import { PlaylistButtonLabel } from "@/features/sections/playlist/PlaylistButton
 import { PlaylistSection } from "@/features/sections/playlist/PlaylistSection";
 import { PlaylistTitle } from "@/features/sections/playlist/PlaylistTitle";
 import { QRSection } from "@/features/sections/qr/QRSection";
+import { SettingsButtonLabel } from "@/features/sections/settings/SettingsButtonLabel";
 import { SettingsSection } from "@/features/sections/settings/SettingsSection";
 import { SongLibraryButtonLabel } from "@/features/sections/song-library/SongLibraryButtonLabel";
 import { SongLibrarySection } from "@/features/sections/song-library/SongLibrarySection";
@@ -20,6 +24,7 @@ import { SongButtonLabel } from "@/features/sections/song/SongButtonLabel";
 import { SongSection } from "@/features/sections/song/SongSection";
 import { SongTitle } from "@/features/sections/song/SongTitle";
 import { Sections } from "@/features/sections/types";
+import { UserLibraryButtonLabel } from "@/features/sections/user-library/UserLibraryButtonLabel";
 import { UserLibrarySection } from "@/features/sections/user-library/UserLibrarySection";
 
 export const sectionId = {
@@ -69,17 +74,17 @@ export const sectionData: Sections = {
 	[sectionId.LOG]: {
 		title: LogTitle,
 		section: LogSection,
-		buttonLabel: "Log",
+		buttonLabel: LogButtonLabel,
 	},
 	[sectionId.SETTINGS]: {
 		title: "Settings",
 		section: SettingsSection,
-		buttonLabel: "Settings",
+		buttonLabel: SettingsButtonLabel,
 	},
 	[sectionId.QR]: {
 		title: "QR",
 		section: QRSection,
-		buttonLabel: "QR",
+		buttonLabel: QRButtonLabel,
 	},
 	[sectionId.ABOUT]: {
 		title: () => (
@@ -88,11 +93,11 @@ export const sectionData: Sections = {
 			</>
 		),
 		section: AboutSection,
-		buttonLabel: "About",
+		buttonLabel: AboutButtonLabel,
 	},
 	[sectionId.USER_LIBRARY]: {
 		title: "User Library",
 		section: UserLibrarySection,
-		buttonLabel: "User Library",
+		buttonLabel: UserLibraryButtonLabel,
 	},
 };
