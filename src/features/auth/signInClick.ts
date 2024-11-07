@@ -73,6 +73,7 @@ export const signInClick = (set: Set, get: Get) => () => {
 						playlistActiveId: signInResult.playlistActiveId ?? null,
 						fuid,
 						timeZone: signInResult.timeZone ?? null,
+						songRequests: signInResult.songRequests,
 					});
 
 					setOpenAppModal(null);

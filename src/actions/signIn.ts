@@ -93,7 +93,8 @@ export const signIn = async ({
 		});
 
 		const { songId, playlistId, timeZone } = existingUserDoc;
-		const { songActiveId, playlistActiveId } = existingUserPublicDoc;
+		const { songActiveId, playlistActiveId, songRequests } =
+			existingUserPublicDoc;
 
 		return {
 			signInResultType: signInResultType.EXISTING,
@@ -106,6 +107,7 @@ export const signIn = async ({
 			songActiveId,
 			playlistActiveId,
 			timeZone,
+			songRequests,
 		};
 	} catch (error) {
 		console.error({ error });

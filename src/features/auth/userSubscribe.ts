@@ -79,8 +79,14 @@ export const userSubscribe = (get: Get, set: Set) => (uid: string) => {
 				console.warn(`Invalid data for user public ${uid}`);
 				return;
 			}
-			const { picture, songActiveId, playlistActiveId, username, usersActive } =
-				userPublicParseResult.output;
+			const {
+				picture,
+				songActiveId,
+				playlistActiveId,
+				username,
+				usersActive,
+				songRequests,
+			} = userPublicParseResult.output;
 			const { sessionCookieData } = get();
 			if (!sessionCookieData) {
 				console.warn("No session cookie data found");
@@ -96,6 +102,7 @@ export const userSubscribe = (get: Get, set: Set) => (uid: string) => {
 				playlistActiveId: playlistActiveId ?? null,
 				sessionCookieData: newSessionCookieData,
 				usersActive: usersActive ?? {},
+				songRequests: songRequests ?? {},
 			});
 		},
 	);
