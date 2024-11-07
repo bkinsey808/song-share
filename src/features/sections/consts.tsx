@@ -1,5 +1,6 @@
 import { AboutButtonLabel } from "./about/AboutButtonLabel";
 import { QRButtonLabel } from "./qr/QRButtonLabel";
+import { UserLibraryTitle } from "./user-library/UserLibraryTitle";
 import { IconBrand } from "@/features/design-system/IconBrand";
 import { AboutSection } from "@/features/sections/about/AboutSection";
 import { LogButtonLabel } from "@/features/sections/log/LogButtonLabel";
@@ -96,7 +97,7 @@ export const sectionData: Sections = {
 		buttonLabel: AboutButtonLabel,
 	},
 	[sectionId.USER_LIBRARY]: {
-		title: "User Library",
+		title: UserLibraryTitle,
 		section: UserLibrarySection,
 		buttonLabel: UserLibraryButtonLabel,
 	},

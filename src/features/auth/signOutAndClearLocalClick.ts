@@ -1,9 +1,9 @@
 import { signOut } from "@/actions/signOut";
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 import { resetAllSlices } from "@/features/app-store/useAppStore";
 import { wait } from "@/features/global/wait";
 
-export const signOutAndClearLocalClick = (get: Get) => () => {
+export const signOutAndClearLocalClick = (get: AppSliceGet) => () => {
 	const { sessionCookieData, fuid } = get();
 	void (async () => {
 		await signOut({ uid: sessionCookieData?.uid ?? null, fuid });

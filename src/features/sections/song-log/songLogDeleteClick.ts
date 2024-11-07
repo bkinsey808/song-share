@@ -3,10 +3,10 @@ import { UseFormReturn } from "react-hook-form";
 import { songLogDefaultGet } from "./songLogDefaultGet";
 import { SongLogForm } from "./types";
 import { songLogDelete } from "@/actions/songLogDelete";
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 
 export const songLogDeleteClick =
-	(get: Get) =>
+	(get: AppSliceGet) =>
 	({
 		songId,
 		logId,

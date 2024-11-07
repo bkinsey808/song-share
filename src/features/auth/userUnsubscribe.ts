@@ -1,6 +1,6 @@
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const userUnsubscribe = (get: Get, set: Set) => () => {
+export const userUnsubscribe = (get: AppSliceGet, set: AppSliceSet) => () => {
 	const { userUnsubscribeFn, userPublicUnsubscribeFn } = get();
 	if (!userUnsubscribeFn) {
 		console.warn("No user unsubscribe function found");

@@ -4,10 +4,10 @@ import { sectionId } from "../consts";
 import { songIdSet } from "@/actions/songIdSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import type { Get, Set } from "@/features/app-store/types";
+import type { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songLoadClick =
-	(get: Get, set: Set) =>
+	(get: AppSliceGet, set: AppSliceSet) =>
 	(songId: string) =>
 	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 		e.preventDefault();

@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 
 import { useFollowingSubscription } from "@/features/firebase/useFollowingSubscription";
 import { useLibrarySubscription } from "@/features/firebase/useLibrarySubscription";
+import { useUserLibrarySubscription } from "@/features/sections/user-library/useUserLibrarySubscription";
 
 export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 	const params = useParams();
@@ -13,6 +14,7 @@ export const FollowingProvider = ({ children }: { children: ReactNode }) => {
 		useFollowingSubscription(fuid);
 	}
 	useLibrarySubscription();
+	useUserLibrarySubscription();
 
 	return <>{children}</>;
 };

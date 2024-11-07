@@ -1,8 +1,8 @@
 import { signOut } from "@/actions/signOut";
 import { toast } from "@/components/ui/use-toast";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const signOutClick = (get: Get, set: Set) => () => {
+export const signOutClick = (get: AppSliceGet, set: AppSliceSet) => () => {
 	const { sessionCookieData, fuid } = get();
 	void (async () => {
 		await signOut({ uid: sessionCookieData?.uid ?? null, fuid });

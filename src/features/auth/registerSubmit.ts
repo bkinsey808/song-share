@@ -4,12 +4,12 @@ import { RegistrationData } from "./types";
 import { register } from "@/actions/register";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const registerSubmit =
-	(get: Get, set: Set) =>
+	(get: AppSliceGet, set: AppSliceSet) =>
 	(form: UseFormReturn<RegistrationData>) =>
 	(e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

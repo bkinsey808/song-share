@@ -1,6 +1,6 @@
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const playlistNewClick = (get: Get, set: Set) => () => {
+export const playlistNewClick = (get: AppSliceGet, set: AppSliceSet) => () => {
 	const { sessionCookieData, playlistForm } = get();
 	const uid = sessionCookieData?.uid;
 	if (!uid) {

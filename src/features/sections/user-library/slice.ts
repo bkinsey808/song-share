@@ -62,6 +62,8 @@ export type UserLibrarySlice = UserLibrarySliceState & {
 	userLibraryGridFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	usernameGet: (uid: string) => string | undefined;
 	isActiveGet: (uid: string) => boolean;
+	userIdsSet: (userIds: string[]) => void;
+	usersActiveSet: (usersActive: UsersActive) => void;
 };
 
 type AppUserLibrarySlice = StateCreator<AppSlice, [], [], UserLibrarySlice>;
@@ -94,6 +96,12 @@ export const createUserLibrarySlice: AppUserLibrarySlice = (set, get) => {
 		userLibraryGridFormSubmit: userLibraryGridFormSubmit(get, set),
 		usernameGet: usernameGet(get),
 		isActiveGet: userActiveIs(get),
+		userIdsSet: (userIds) => {
+			set({ userIds });
+		},
+		usersActiveSet: (usersActive) => {
+			set({ usersActive });
+		},
 	};
 };
 

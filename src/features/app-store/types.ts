@@ -1,7 +1,7 @@
 import { AppSlice } from "./useAppStore";
 
-export type Get = () => AppSlice;
-export type Set = (
+export type AppSliceGet = () => AppSlice;
+export type AppSliceSet = (
 	partial:
 		| AppSlice
 		| Partial<AppSlice>

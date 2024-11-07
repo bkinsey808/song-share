@@ -1,6 +1,6 @@
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 
-export const userActiveIs = (get: Get) => (uid: string) => {
+export const userActiveIs = (get: AppSliceGet) => (uid: string) => {
 	const { usersActive } = get();
 	if (!usersActive?.[uid]) {
 		return false;

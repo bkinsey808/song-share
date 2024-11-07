@@ -3,12 +3,12 @@ import { FormEvent } from "react";
 import { playlistSave } from "@/actions/playlistSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const playlistSubmit =
-	(get: Get, set: Set) => (e: FormEvent<HTMLFormElement>) => {
+	(get: AppSliceGet, set: AppSliceSet) => (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { playlistForm, playlistLibrary } = get();
 

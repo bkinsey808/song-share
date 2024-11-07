@@ -1,10 +1,10 @@
 import { songActiveSet } from "@/actions/songActiveSet";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 
 export const songActiveClick =
-	(get: Get) =>
+	(get: AppSliceGet) =>
 	({
 		songId,
 		playlistId,

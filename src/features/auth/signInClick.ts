@@ -4,10 +4,10 @@ import { signInResultType } from "./consts";
 import { sessionWarningTimestampGet } from "./sessionWarningTimestampGet";
 import { signIn } from "@/actions/signIn";
 import { toast } from "@/components/ui/use-toast";
-import type { Get, Set } from "@/features/app-store/types";
+import type { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { appModal } from "@/features/modal/consts";
 
-export const signInClick = (set: Set, get: Get) => () => {
+export const signInClick = (set: AppSliceSet, get: AppSliceGet) => () => {
 	void (async () => {
 		try {
 			const auth = getAuth();

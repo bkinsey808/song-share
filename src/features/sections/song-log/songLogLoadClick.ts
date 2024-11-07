@@ -3,10 +3,10 @@ import { UseFormReturn } from "react-hook-form";
 
 import { SongLogForm } from "./types";
 import { toast } from "@/components/ui/use-toast";
-import type { Get, Set } from "@/features/app-store/types";
+import type { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songLogLoadClick =
-	(get: Get, set: Set) =>
+	(get: AppSliceGet, set: AppSliceSet) =>
 	({
 		logId,
 		songId,

@@ -6,12 +6,13 @@ import QRCode from "react-qr-code";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const QRSection = () => {
-	const { getQRUrl } = useAppStore();
+	const { getQRUrl, sessionCookieData } = useAppStore();
+	const { uid } = sessionCookieData ?? {};
 
-	const [qrUrl, setQrUrl] = useState<string>("");
+	const [qrUrl, setQrUrl] = useState<string>();
 	useEffect(() => {
 		setQrUrl(getQRUrl());
-	}, [getQRUrl]);
+	}, [getQRUrl, uid]);
 
 	return (
 		<>

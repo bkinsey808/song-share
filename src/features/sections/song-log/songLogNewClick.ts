@@ -2,10 +2,10 @@ import { UseFormReturn } from "react-hook-form";
 
 import { songLogDefaultGet } from "./songLogDefaultGet";
 import { SongLogForm } from "./types";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songLogNewClick =
-	(get: Get, set: Set) =>
+	(get: AppSliceGet, set: AppSliceSet) =>
 	({
 		form,
 		songId,

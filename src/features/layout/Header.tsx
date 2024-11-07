@@ -14,6 +14,7 @@ export const Header = () => {
 		signInClick,
 		accountManageClick,
 		usernameGet,
+		userLibrary,
 	} = useAppStore();
 
 	const { fuid } = useParams();
@@ -23,7 +24,7 @@ export const Header = () => {
 		if (typeof fuid === "string") {
 			setFollowing(usernameGet(fuid));
 		}
-	}, [fuid]);
+	}, [fuid, userLibrary]);
 
 	if (fuid && typeof fuid !== "string") {
 		return null;

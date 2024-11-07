@@ -1,10 +1,10 @@
 import { accountDelete } from "@/actions/accountDelete";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Set } from "@/features/app-store/types";
+import { AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const accountDeleteConfirmClick = (set: Set) => () => {
+export const accountDeleteConfirmClick = (set: AppSliceSet) => () => {
 	void (async () => {
 		set({ deletingAccount: true });
 		const deleteAccountResult = await accountDelete();

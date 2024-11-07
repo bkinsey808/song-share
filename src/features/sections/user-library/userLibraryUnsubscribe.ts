@@ -1,7 +1,7 @@
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 import { getKeys } from "@/features/global/getKeys";
 
-export const userLibraryUnsubscribe = (get: Get) => () => {
+export const userLibraryUnsubscribe = (get: AppSliceGet) => () => {
 	const { userLibraryUnsubscribeFns } = get();
 	const userIds = getKeys(userLibraryUnsubscribeFns);
 	userIds.forEach((userId) => {

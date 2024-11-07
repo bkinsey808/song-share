@@ -1,6 +1,6 @@
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 
-export const playlistSongAddButtonShow = (get: Get) => () => {
+export const playlistSongAddButtonShow = (get: AppSliceGet) => () => {
 	const { songId, playlistId } = get();
 
 	if (!songId || !playlistId) {

@@ -12,7 +12,7 @@ type AppQRSlice = StateCreator<AppSlice, [], [], QRSlice>;
 const QRSliceInitialState: QRSliceState = {};
 
 export type QRSlice = QRSliceState & {
-	getQRUrl: () => string;
+	getQRUrl: () => string | undefined;
 };
 
 export const createQRSlice: AppQRSlice = (set, get) => {
@@ -20,6 +20,10 @@ export const createQRSlice: AppQRSlice = (set, get) => {
 	return {
 		getQRUrl: () => {
 			const { fuid, sessionCookieData } = get();
+			const f = fuid ?? sessionCookieData?.uid;
+			if (!f) {
+				return undefined;
+			}
 
 			return `https://${process.env.NEXT_PUBLIC_DOMAIN}/f/${fuid ?? sessionCookieData?.uid}`;
 		},

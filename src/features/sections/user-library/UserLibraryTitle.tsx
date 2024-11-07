@@ -8,11 +8,8 @@ export const UserLibraryTitle = () => {
 	const numberOfUsers = getKeys(userLibrary).length;
 
 	return (
-		<>
-			<div>User Library{numberOfUsers ? `: ` : null}</div>
-			<div className="overflow-hidden text-ellipsis text-nowrap">
-				({numberOfUsers})
-			</div>
-		</>
+		<span>
+			{numberOfUsers} user{numberOfUsers === 1 ? "" : "s"}
+		</span>
 	);
 };

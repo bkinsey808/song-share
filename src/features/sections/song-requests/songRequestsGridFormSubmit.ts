@@ -1,9 +1,10 @@
 import { FormEvent } from "react";
 
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songRequestsGridFormSubmit =
-	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { songRequestsGridForm } = get();
 

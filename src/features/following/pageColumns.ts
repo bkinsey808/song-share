@@ -10,6 +10,7 @@ const leftSections: SectionId[] = [
 const rightSections: SectionId[] = [
 	sectionId.PLAYLIST,
 	sectionId.PLAYLIST_LIBRARY,
+	sectionId.USER_LIBRARY,
 	sectionId.QR,
 ];
 

@@ -2,9 +2,9 @@ import { MouseEventHandler } from "react";
 
 import { songRequestAdd } from "@/actions/songRequestAdd";
 import { toast } from "@/components/ui/use-toast";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const songRequestAddClick = (set: Set, get: Get) => {
+export const songRequestAddClick = (set: AppSliceSet, get: AppSliceGet) => {
 	return (songId: string) =>
 		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 			e.preventDefault();

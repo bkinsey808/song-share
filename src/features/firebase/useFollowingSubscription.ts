@@ -1,5 +1,6 @@
 "use client";
 
+import { set } from "date-fns";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { safeParse } from "valibot";
@@ -8,6 +9,7 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseClient";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
+import { getKeys } from "@/features/global/getKeys";
 import { sectionId } from "@/features/sections/consts";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 import { SongSchema } from "@/features/sections/song/schemas";
@@ -24,6 +26,8 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		songActiveId,
 		songLibrary,
 		playlistLibrary,
+		userIdsSet,
+		usersActiveSet,
 	} = useAppStore();
 
 	useEffect(() => {
@@ -147,6 +151,18 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 						},
 					);
 					unsubscribeFns.push(playlistUnsubscribe);
+				}
+
+				if (following.usersActive) {
+					const { userIds, usersActive } = useAppStore.getState();
+					const newUserIds = Array.from(
+						new Set([...getKeys(following.usersActive), ...userIds, fuid]),
+					);
+					const newUsersActive = following.usersActive;
+					userIdsSet(newUserIds);
+					usersActiveSet(newUsersActive);
+				} else {
+					userIdsSet([fuid]);
 				}
 			},
 		);

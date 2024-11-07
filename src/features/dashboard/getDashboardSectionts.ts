@@ -1,8 +1,8 @@
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 import { sectionId } from "@/features/sections/consts";
 import { SectionId } from "@/features/sections/types";
 
-export const getDashboardSections = (get: Get) => () => {
+export const getDashboardSections = (get: AppSliceGet) => () => {
 	const { isSignedIn } = get();
 
 	const leftSections: SectionId[] = [

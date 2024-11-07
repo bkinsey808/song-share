@@ -1,6 +1,6 @@
-import { Get } from "@/features/app-store/types";
+import { AppSliceGet } from "@/features/app-store/types";
 
-export const usernameGet = (get: Get) => (uid: string) => {
+export const usernameGet = (get: AppSliceGet) => (uid: string) => {
 	const { userLibrary, sessionCookieData, fuid, following } = get();
 
 	if (uid === sessionCookieData?.uid && sessionCookieData?.username) {

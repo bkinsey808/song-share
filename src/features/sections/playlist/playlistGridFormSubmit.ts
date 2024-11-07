@@ -3,12 +3,12 @@ import { FormEvent } from "react";
 import { playlistGridSave } from "@/actions/playlistGridSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const playlistGridFormSubmit =
-	(get: Get, set: Set) =>
+	(get: AppSliceGet, set: AppSliceSet) =>
 	(e?: FormEvent<HTMLFormElement>): Promise<void> => {
 		e?.preventDefault();
 		const { playlistGridForm } = get();

@@ -3,12 +3,13 @@ import { FormEvent } from "react";
 import { settingsSave } from "@/actions/settingsSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const settingsSubmit =
-	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { settingsForm } = get();
 

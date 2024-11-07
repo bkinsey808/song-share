@@ -5,12 +5,12 @@ import { SongLogForm } from "./types";
 import { songLogSave } from "@/actions/songLogSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songLogSubmit =
-	(_get: Get, _set: Set) =>
+	(_get: AppSliceGet, _set: AppSliceSet) =>
 	(form: UseFormReturn<SongLogForm>) =>
 	async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();

@@ -4,12 +4,13 @@ import { songLogDefaultGet } from "../song-log/songLogDefaultGet";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
-import { Get, Set } from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const songSubmit =
-	(get: Get, set: Set) => async (e: FormEvent<HTMLFormElement>) => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const { songForm, songLogForm, songLibrary } = get();
 
