@@ -12,7 +12,7 @@ export const signOut = async ({
 	uid: string | null;
 	fuid: string | null;
 }) => {
-	if (uid && fuid) {
+	if (uid) {
 		await userActiveUnset({ uid, fuid });
 	}
 	(await cookies()).delete(SESSION_COOKIE_NAME);

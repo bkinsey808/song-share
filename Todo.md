@@ -9,3 +9,4 @@
 - [ ] chat
 - [ ] sitemap
 - [ ] full screen mode
+- [ ] advanced mode

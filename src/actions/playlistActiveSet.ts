@@ -22,12 +22,7 @@ export const playlistActiveSet = async (playlistId: string | null) => {
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
-
-		const userPublicGetResult = await userPublicDocGet();
-		if (userPublicGetResult.actionResultType === actionResultType.ERROR) {
-			return actionErrorMessageGet("Public user not found");
-		}
-		const { userPublicDoc } = userPublicGetResult;
+		const { userPublicDoc } = extendSessionResult;
 		const { songActiveId } = userPublicDoc;
 
 		if (playlistId) {

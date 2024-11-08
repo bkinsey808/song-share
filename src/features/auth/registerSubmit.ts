@@ -70,6 +70,7 @@ export const registerSubmit =
 								...result.sessionCookieData,
 								roles: result.sessionCookieData.roles,
 							},
+							usersActive: result.usersActive,
 						});
 						useAppStore.getState().setOpenAppModal(null);
 						toast({ title: "You are now registered" });

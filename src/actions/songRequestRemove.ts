@@ -27,30 +27,9 @@ export const songRequestRemove = async ({
 		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
-		const sessionCookieData = extendSessionResult.sessionCookieData;
+		const { sessionCookieData, userPublicDoc } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
-		const userPublicGetResult = await db
-			.collection(Collection.USERS_PUBLIC)
-			.doc(fuid ?? uid)
-			.get();
-		if (!userPublicGetResult.exists) {
-			return actionErrorMessageGet(`Public user ${fuid} not found`);
-		}
-
-		const userPublicDocData = userPublicGetResult.data();
-		if (!userPublicDocData) {
-			return actionErrorMessageGet("Public user not found");
-		}
-
-		const userPublicDocDataParseResult = safeParse(
-			UserPublicDocSchema,
-			userPublicDocData,
-		);
-		if (!userPublicDocDataParseResult.success) {
-			return actionErrorMessageGet("Public user data invalid");
-		}
-		const userPublicDoc = userPublicDocDataParseResult.output;
 		const songRequests = userPublicDoc.songRequests ?? {};
 		const songRequestUserIds = songRequests[songId] ?? [];
 		if (!songRequestUserIds.includes(uid)) {

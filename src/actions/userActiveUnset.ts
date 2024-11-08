@@ -17,12 +17,12 @@ export const userActiveUnset = async ({
 	fuid,
 }: {
 	uid: string;
-	fuid: string;
+	fuid: string | null;
 }) => {
 	// get the fuid user public doc
 	const fuidUserPublicDocSnapshot = await db
 		.collection(Collection.USERS_PUBLIC)
-		.doc(fuid)
+		.doc(fuid ?? uid)
 		.get();
 	if (!fuidUserPublicDocSnapshot.exists) {
 		throw new Error("fuidUserPublicDocSnapshot does not exist");
@@ -45,9 +45,13 @@ export const userActiveUnset = async ({
 	}
 	delete fuidUserPublicDoc.usersActive[uid];
 
+	console.log(fuidUserPublicDoc.usersActive);
+
 	// update the fuid user public doc
 	await db
 		.collection(Collection.USERS_PUBLIC)
-		.doc(fuid)
+		.doc(fuid ?? uid)
 		.update({ usersActive: fuidUserPublicDoc.usersActive });
+
+	return { usersActive: fuidUserPublicDoc.usersActive };
 };

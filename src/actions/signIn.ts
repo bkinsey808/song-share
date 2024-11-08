@@ -68,12 +68,10 @@ export const signIn = async ({
 			sessionCookieOptions,
 		);
 
-		if (fuid) {
-			await userActiveSet({
-				uid,
-				fuid,
-			});
-		}
+		const { usersActive } = await userActiveSet({
+			uid,
+			fuid,
+		});
 
 		const newSongIds = Array.from(
 			new Set([...songIds, ...existingUserDoc.songIds]),
@@ -108,6 +106,7 @@ export const signIn = async ({
 			playlistActiveId,
 			timeZone,
 			songRequests,
+			usersActive,
 		};
 	} catch (error) {
 		console.error({ error });

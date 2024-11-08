@@ -30,19 +30,6 @@ export const songActiveSet = async ({
 		const sessionCookieData = extendSessionResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
-		const userPublicGetResult = await db
-			.collection(Collection.USERS_PUBLIC)
-			.doc(uid)
-			.get();
-		if (!userPublicGetResult.exists) {
-			return actionErrorMessageGet("Public user not found");
-		}
-
-		const userPublic = userPublicGetResult.data();
-		if (!userPublic) {
-			return actionErrorMessageGet("Public user not found");
-		}
-
 		if (playlistId) {
 			const playlistResult = await db
 				.collection(Collection.PLAYLISTS)

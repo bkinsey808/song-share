@@ -1,5 +1,6 @@
 "use server";
 
+import { userPublicDocGet } from "./userPublicDocGet";
 import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import {
@@ -20,12 +21,12 @@ export const userActiveSet = async ({
 	fuid,
 }: {
 	uid: string;
-	fuid: string;
+	fuid: string | null;
 }) => {
 	// get the fuid user doc
 	const fuidUserDocSnapshot = await db
 		.collection(Collection.USERS)
-		.doc(fuid)
+		.doc(fuid ?? uid)
 		.get();
 	if (!fuidUserDocSnapshot.exists) {
 		throw new Error("fuidUserDocSnapshot does not exist");
@@ -50,14 +51,17 @@ export const userActiveSet = async ({
 	} else {
 		fuidUserDoc.userIds = [uid];
 	}
-	await db.collection(Collection.USERS).doc(fuid).update({
-		userIds: fuidUserDoc.userIds,
-	});
+	await db
+		.collection(Collection.USERS)
+		.doc(fuid ?? uid)
+		.update({
+			userIds: fuidUserDoc.userIds,
+		});
 
 	// get the fuid user public doc
 	const fuidUserPublicDocSnapshot = await db
 		.collection(Collection.USERS_PUBLIC)
-		.doc(fuid)
+		.doc(fuid ?? uid)
 		.get();
 	if (!fuidUserPublicDocSnapshot.exists) {
 		throw new Error("fuidUserPublicDocSnapshot does not exist");
@@ -84,6 +88,8 @@ export const userActiveSet = async ({
 	// update the fuid user public doc
 	await db
 		.collection(Collection.USERS_PUBLIC)
-		.doc(fuid)
+		.doc(fuid ?? uid)
 		.update({ usersActive: fuidUserPublicDoc.usersActive });
+
+	return { usersActive: fuidUserPublicDoc.usersActive };
 };

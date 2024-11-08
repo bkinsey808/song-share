@@ -1,7 +1,10 @@
+import { cons } from "effect/List";
+
 import { AppSliceGet } from "@/features/app-store/types";
 
 export const userActiveIs = (get: AppSliceGet) => (uid: string) => {
 	const { usersActive } = get();
+	console.log({ usersActive });
 	if (!usersActive?.[uid]) {
 		return false;
 	}

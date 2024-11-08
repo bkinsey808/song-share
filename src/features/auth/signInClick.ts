@@ -74,7 +74,10 @@ export const signInClick = (set: AppSliceSet, get: AppSliceGet) => () => {
 						fuid,
 						timeZone: signInResult.timeZone ?? null,
 						songRequests: signInResult.songRequests,
+						usersActive: signInResult.usersActive,
 					});
+
+					console.log(signInResult.usersActive);
 
 					setOpenAppModal(null);
 					toast({ title: "Welcome back!" });

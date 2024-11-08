@@ -104,16 +104,15 @@ export const register = async ({
 			sessionCookieOptions,
 		);
 
-		if (fuid) {
-			await userActiveSet({
-				uid,
-				fuid,
-			});
-		}
+		const { usersActive } = await userActiveSet({
+			uid,
+			fuid,
+		});
 
 		return {
 			actionResultType: actionResultType.SUCCESS,
 			sessionCookieData,
+			usersActive,
 		};
 	} catch (error) {
 		console.error({ error });
