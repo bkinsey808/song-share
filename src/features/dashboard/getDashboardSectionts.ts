@@ -16,8 +16,7 @@ export const getDashboardSections = (get: AppSliceGet) => () => {
 	const rightSections: SectionId[] = [
 		sectionId.PLAYLIST,
 		sectionId.PLAYLIST_LIBRARY,
-		...(isSignedIn ? [sectionId.LOG, sectionId.SETTINGS] : []),
-		sectionId.QR,
+		...(isSignedIn ? [sectionId.LOG, sectionId.SETTINGS, sectionId.QR] : []),
 	];
 
 	return [leftSections, rightSections];

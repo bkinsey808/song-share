@@ -70,7 +70,7 @@ export const SectionAccordion = ({
 						<TriangleRightIcon />
 					</div>
 					<div className="flex flex-nowrap gap-[0.5rem]">
-						<span className="text-[0.7rem]">{isOpen ? "Close" : "Open"}</span>{" "}
+						{/* <span className="text-[0.7rem]">{isOpen ? "Close" : "Open"}</span>{" "} */}
 						{buttonLabel}
 					</div>
 				</Button>
