@@ -29,7 +29,6 @@ export const PlaylistFormSchema = object({
 });
 
 export const PlaylistGridFormSchema = object({
-	playlistId: string(),
 	songs: array(
 		object({
 			songId: string(),

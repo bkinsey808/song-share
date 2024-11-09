@@ -20,6 +20,7 @@ export const useFormSubmitOnChange = <
 					bubbles: true,
 					cancelable: true,
 				});
+
 				await onSubmit(formEvent as unknown as FormEvent<HTMLFormElement>);
 			}
 		};

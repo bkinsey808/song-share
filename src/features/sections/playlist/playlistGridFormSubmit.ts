@@ -18,50 +18,55 @@ export const playlistGridFormSubmit =
 			return Promise.resolve();
 		}
 
-		return playlistGridForm.handleSubmit(async (playlistGridFormValues) => {
-			set({ playlistFormIsDisabled: true });
-			const { sessionCookieData } = useAppStore.getState();
+		return playlistGridForm.handleSubmit(
+			async (playlistGridFormValues) => {
+				set({ playlistFormIsDisabled: true });
+				const { sessionCookieData } = useAppStore.getState();
 
-			if (!sessionCookieData) {
-				toast({
-					variant: "destructive",
-					title: "Please sign in again",
-				});
-				return;
-			}
-
-			const { playlistId, playlistIsUnsavedSet } = get();
-			const playstGridFormSaveResult = await playlistGridSave({
-				playlistGridFormValues,
-				playlistId,
-			});
-			playlistIsUnsavedSet(false);
-
-			switch (playstGridFormSaveResult.actionResultType) {
-				case actionResultType.ERROR:
-					const keys = playstGridFormSaveResult.fieldErrors
-						? getKeys(playstGridFormSaveResult.fieldErrors)
-						: undefined;
-					keys?.forEach((key) => {
-						const message = playstGridFormSaveResult.fieldErrors?.[key]?.[0];
-						if (!message) {
-							return;
-						}
-						playlistGridForm.setError(key, {
-							type: "manual",
-							message,
-						});
-					});
+				if (!sessionCookieData) {
 					toast({
 						variant: "destructive",
-						title: "There was an error saving playlist grid",
+						title: "Please sign in again",
 					});
+					return;
+				}
 
-					break;
-				case actionResultType.SUCCESS:
-					playlistGridForm.reset(playlistGridFormValues);
-					toast({ title: "Playlist grid saved" });
-					break;
-			}
-		})(e);
+				const { playlistId, playlistIsUnsavedSet } = get();
+				const playstGridFormSaveResult = await playlistGridSave({
+					playlistGridFormValues,
+					playlistId,
+				});
+				playlistIsUnsavedSet(false);
+
+				switch (playstGridFormSaveResult.actionResultType) {
+					case actionResultType.ERROR:
+						const keys = playstGridFormSaveResult.fieldErrors
+							? getKeys(playstGridFormSaveResult.fieldErrors)
+							: undefined;
+						keys?.forEach((key) => {
+							const message = playstGridFormSaveResult.fieldErrors?.[key]?.[0];
+							if (!message) {
+								return;
+							}
+							playlistGridForm.setError(key, {
+								type: "manual",
+								message,
+							});
+						});
+						toast({
+							variant: "destructive",
+							title: "There was an error saving playlist grid",
+						});
+
+						break;
+					case actionResultType.SUCCESS:
+						playlistGridForm.reset(playlistGridFormValues);
+						toast({ title: "Playlist grid saved" });
+						break;
+				}
+			},
+			(args) => {
+				console.error("invalid", args);
+			},
+		)(e);
 	};
