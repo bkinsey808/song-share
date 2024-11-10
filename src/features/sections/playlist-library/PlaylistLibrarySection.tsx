@@ -17,7 +17,6 @@ export const PlaylistLibrarySection = () => {
 
 	return (
 		<section data-title="Playlist Library Section">
-			Playlist Active Id: {playlistActiveId}
 			<Grid gridClassName="grid-cols-[1.5rem,3fr,1fr]">
 				<GridHeader>
 					<div></div>
