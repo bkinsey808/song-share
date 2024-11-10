@@ -10,3 +10,4 @@
 - [ ] sitemap
 - [ ] full screen mode
 - [ ] advanced mode
+- [ ] song key
