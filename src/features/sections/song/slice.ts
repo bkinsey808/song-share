@@ -59,20 +59,30 @@ export type SongSlice = SongSliceState & {
 };
 
 export const createSongSlice: AppSongSlice = (set, get) => {
-	sliceResetFns.add(() => set(songSliceInitialState));
+	sliceResetFns.add(() => {
+		set(songSliceInitialState);
+	});
 	return {
 		...songSliceInitialState,
 		songSubmit: songSubmit(get, set),
 		songNewClick: songNewClick(get, set),
-		songIsUnsavedSet: (unsavedSong) => set({ songUnsavedIs: unsavedSong }),
+		songIsUnsavedSet: (unsavedSong) => {
+			set({ songUnsavedIs: unsavedSong });
+		},
 		songDeleteClick: songDeleteClick(get),
-		songFormSet: (songForm) => set({ songForm }),
+		songFormSet: (songForm) => {
+			set({ songForm });
+		},
 		songDeleteConfirmClick: songDeleteConfirmClick(get, set),
 		playlistSongAddButtonShouldShow: playlistSongAddButtonShow(get),
 		playlistSongAddClick: playlistSongAddClick(get, set),
 		songActiveClick: songActiveClick(get),
-		songIdSet: (songId) => set({ songId }),
-		songActiveIdSet: (songId) => set({ songActiveId: songId }),
+		songIdSet: (songId) => {
+			set({ songId });
+		},
+		songActiveIdSet: (songId) => {
+			set({ songActiveId: songId });
+		},
 		songNameGet: (songId) => {
 			const { songLibrary } = get();
 			return songId ? songLibrary[songId]?.songName : undefined;

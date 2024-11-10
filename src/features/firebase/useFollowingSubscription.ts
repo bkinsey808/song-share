@@ -1,6 +1,5 @@
 "use client";
 
-import { set } from "date-fns";
 import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { safeParse } from "valibot";
@@ -28,6 +27,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		playlistLibrary,
 		userIdsSet,
 		usersActiveSet,
+		playlistActiveIdSet,
 	} = useAppStore();
 
 	useEffect(() => {
@@ -115,6 +115,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 
 					if (playlistId !== following.playlistActiveId) {
 						sectionToggle(sectionId.PLAYLIST, true);
+						playlistActiveIdSet(following.playlistActiveId);
 					}
 
 					const playlistUnsubscribe = onSnapshot(

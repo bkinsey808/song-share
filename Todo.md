@@ -11,3 +11,4 @@
 - [ ] full screen mode
 - [ ] advanced mode
 - [ ] song key
+- [ ] secure client side firestore
