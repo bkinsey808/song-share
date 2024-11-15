@@ -72,6 +72,7 @@ export const SongForm = () => {
 	return (
 		<div>
 			<SongDeleteConfirmModal />
+			SongId: {songId}
 			<Form {...form}>
 				<form onSubmit={songSubmit}>
 					<FormField
@@ -189,7 +190,7 @@ export const SongForm = () => {
 							{songId && songRequestAdded(songId) ? (
 								<Button
 									disabled={songRequestPending}
-									onClick={songRequestRemoveClick(songId)}
+									onClick={songRequestRemoveClick({ songId })}
 								>
 									Cancel Request Song
 								</Button>
@@ -204,7 +205,6 @@ export const SongForm = () => {
 					) : null}
 				</form>
 			</Form>
-
 			{/* <div className="flex flex-col gap-[0.2rem] px-[0.2rem]">
 				<DashboardAccordion
 					key={Section.KEY}

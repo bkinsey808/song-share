@@ -1,7 +1,14 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+import {
+	ArrowDownIcon,
+	ArrowUpIcon,
+	AvatarIcon,
+	Cross1Icon,
+	HandIcon,
+	TrashIcon,
+} from "@radix-ui/react-icons";
 import { FormEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +20,7 @@ import {
 import { SongRequestsGridFormSchema } from "./schemas";
 import { useSortedFilteredSongRequestSongIds } from "./slice";
 import { SongRequestsGridForm } from "./types";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Combobox } from "@/components/ui/combobox";
 import {
@@ -42,6 +50,8 @@ export const SongRequestsGrid = () => {
 		songRequestsGridFormSet,
 		songRequests,
 		usernameGet,
+		songRequestRemoveClick,
+		songRequestsRemoveAllClick,
 	} = useAppStore();
 
 	const form = useForm<SongRequestsGridForm>({
@@ -192,11 +202,29 @@ export const SongRequestsGrid = () => {
 									{songNameGet(songId)}
 								</Button>
 							</div>
-							<div></div>
-							<div className="col-span-full flex flex-wrap gap-[1rem]">
-								Requested by:
+							<div className="flex gap-[0.5rem]">
+								<Button
+									variant="outline"
+									title="Remove all requests for this song"
+									onClick={songRequestsRemoveAllClick(songId)}
+								>
+									<TrashIcon className="text-[1rem] text-destructive" />
+								</Button>
+							</div>
+							<div className="col-span-full flex flex-wrap gap-x-[1rem] gap-y-[0.5rem]">
 								{songRequests?.[songId]?.map((userId) => (
-									<div key={userId}>{usernameGet(userId)}</div>
+									<Badge key={userId} variant="secondary" className="pr-0">
+										<HandIcon className="mr-[0.2rem] inline" />
+										<AvatarIcon className="mr-[0.2rem] inline" />
+										<div>{usernameGet(userId)}</div>
+										<Button
+											variant="secondary"
+											onClick={songRequestRemoveClick({ songId, userId })}
+											title="Cancel Song Request for this user"
+										>
+											<Cross1Icon />
+										</Button>
+									</Badge>
 								))}
 							</div>
 						</GridRow>

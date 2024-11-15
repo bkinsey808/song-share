@@ -28,6 +28,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		userIdsSet,
 		usersActiveSet,
 		playlistActiveIdSet,
+		songRequestsSet,
 	} = useAppStore();
 
 	useEffect(() => {
@@ -164,6 +165,10 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					usersActiveSet(newUsersActive);
 				} else {
 					userIdsSet([fuid]);
+				}
+
+				if (following.songRequests) {
+					songRequestsSet(following.songRequests);
 				}
 			},
 		);

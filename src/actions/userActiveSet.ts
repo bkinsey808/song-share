@@ -1,6 +1,5 @@
 "use server";
 
-import { userPublicDocGet } from "./userPublicDocGet";
 import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import {

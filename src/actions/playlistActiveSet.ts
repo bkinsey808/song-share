@@ -2,7 +2,6 @@
 
 import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
-import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { Collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";

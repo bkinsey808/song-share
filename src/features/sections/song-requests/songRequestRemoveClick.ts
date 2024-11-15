@@ -5,7 +5,7 @@ import { toast } from "@/components/ui/use-toast";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songRequestRemoveClick = (set: AppSliceSet, get: AppSliceGet) => {
-	return (songId: string) =>
+	return ({ songId, userId }: { songId: string; userId?: string }) =>
 		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
 			e.preventDefault();
 
@@ -23,6 +23,7 @@ export const songRequestRemoveClick = (set: AppSliceSet, get: AppSliceGet) => {
 				const songRequestRemoveResult = await songRequestRemove({
 					songId,
 					fuid,
+					requestUserId: userId ?? uid,
 				});
 
 				if (songRequestRemoveResult.actionResultType === "ERROR") {

@@ -45,8 +45,6 @@ export const userActiveUnset = async ({
 	}
 	delete fuidUserPublicDoc.usersActive[uid];
 
-	console.log(fuidUserPublicDoc.usersActive);
-
 	// update the fuid user public doc
 	await db
 		.collection(Collection.USERS_PUBLIC)

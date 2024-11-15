@@ -1,10 +1,8 @@
-import { HandIcon } from "@radix-ui/react-icons";
+import { SongRequestIcon } from "@/features/design-system/SongRequestIcon";
 
 export const SongRequestsButtonLabel = () => (
 	<span className="flex flex-nowrap">
-		<span className="mr-[0.2rem] mt-[-0.1rem] text-[1.2rem]">
-			♪<HandIcon className="mr-[0.2rem] inline" />
-		</span>
+		<SongRequestIcon />
 		Song Requests
 	</span>
 );

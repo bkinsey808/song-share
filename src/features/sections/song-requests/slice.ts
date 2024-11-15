@@ -6,6 +6,7 @@ import { songRequestsSortData, songRequestsSortDefault } from "./consts";
 import { songRequestAddClick } from "./songRequestAddClick";
 import { songRequestRemoveClick } from "./songRequestRemoveClick";
 import { songRequestsGridFormSubmit } from "./songRequestsGridFormSubmit";
+import { songRequestsRemoveAllClick } from "./songRequestsRemoveAllClick";
 import { SongRequests, SongRequestsGridForm, SongRequestsSort } from "./types";
 import {
 	AppSlice,
@@ -35,13 +36,21 @@ export type SongRequestsSlice = SongRequestsSliceState & {
 	songRequestAddClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	songRequestRemoveClick: (
-		userId: string,
-	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
+	songRequestRemoveClick: ({
+		songId,
+		userId,
+	}: {
+		songId: string;
+		userId?: string;
+	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 	songRequestsSortSet: (sort: SongRequestsSort) => () => void;
 	songRequestsGridFormSubmit: (e: FormEvent<HTMLFormElement>) => Promise<void>;
 	songRequestsGridFormSet: (form: UseFormReturn<SongRequestsGridForm>) => void;
 	songRequestAdded: (songId: string) => boolean;
+	songRequestsSet: (songRequests: SongRequests) => void;
+	songRequestsRemoveAllClick: (
+		songId: string,
+	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
 };
 
 type AppSongRequestsSlice = StateCreator<AppSlice, [], [], SongRequestsSlice>;
@@ -59,7 +68,17 @@ export const createSongRequestsSlice: AppSongRequestsSlice = (set, get) => {
 		},
 		songRequestsGridFormSubmit: songRequestsGridFormSubmit(get, set),
 		songRequestsGridFormSet: (form) => set({ songRequestsGridForm: form }),
-		songRequestAdded: (songId) => get().songRequests?.[songId] !== undefined,
+		songRequestAdded: (songId) => {
+			const { sessionCookieData, songRequests } = get();
+
+			return sessionCookieData?.uid
+				? (songRequests?.[songId]?.includes(sessionCookieData?.uid) ?? false)
+				: false;
+		},
+		songRequestsSet: (songRequests) => {
+			set({ songRequests });
+		},
+		songRequestsRemoveAllClick: songRequestsRemoveAllClick(set, get),
 	};
 };
 
