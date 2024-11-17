@@ -25,7 +25,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		songActiveId,
 		songLibrary,
 		playlistLibrary,
-		userIdsSet,
+		userIdsAdd,
 		usersActiveSet,
 		playlistActiveIdSet,
 		songRequestsSet,
@@ -156,19 +156,26 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 				}
 
 				if (following.usersActive) {
-					const { userIds, usersActive } = useAppStore.getState();
+					const { userIds } = useAppStore.getState();
 					const newUserIds = Array.from(
 						new Set([...getKeys(following.usersActive), ...userIds, fuid]),
 					);
 					const newUsersActive = following.usersActive;
-					userIdsSet(newUserIds);
+					userIdsAdd(newUserIds);
 					usersActiveSet(newUsersActive);
 				} else {
-					userIdsSet([fuid]);
+					userIdsAdd([fuid]);
 				}
 
 				if (following.songRequests) {
 					songRequestsSet(following.songRequests);
+					const songIds = getKeys(following.songRequests);
+					songLibraryAddSongIds(songIds);
+					const userIds = songIds.reduce((acc, songId) => {
+						const userIds = following.songRequests?.[songId] ?? [];
+						return [...acc, ...userIds];
+					}, [] as string[]);
+					userIdsAdd(userIds);
 				}
 			},
 		);
