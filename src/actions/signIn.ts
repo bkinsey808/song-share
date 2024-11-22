@@ -107,6 +107,7 @@ export const signIn = async ({
 			timeZone,
 			songRequests,
 			usersActive,
+			wakeLockActive: existingUserDoc.wakeLockActive ?? false,
 		};
 	} catch (error) {
 		console.error({ error });

@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { sectionId } from "../sections/consts";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { PlaylistIcon } from "@/features/design-system/PlaylistIcon";
+import { sectionId } from "@/features/sections/consts";
 
 export const Header = () => {
 	const {
@@ -19,6 +19,8 @@ export const Header = () => {
 		usernameGet,
 		userLibrary,
 		sectionToggle,
+		wakeLockActive,
+		wakeLockToggle,
 	} = useAppStore();
 
 	const { fuid } = useParams();

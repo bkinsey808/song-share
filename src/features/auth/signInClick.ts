@@ -23,7 +23,15 @@ export const signInClick = (set: AppSliceSet, get: AppSliceGet) => () => {
 				throw new Error("Email is not defined");
 			}
 
-			const { setOpenAppModal, fuid, songIds, playlistIds, userIds } = get();
+			const {
+				setOpenAppModal,
+				fuid,
+				songIds,
+				playlistIds,
+				userIds,
+				wakeLockActive,
+				wakeLockToggle,
+			} = get();
 
 			const signInResult = await signIn({
 				uid,
@@ -76,6 +84,18 @@ export const signInClick = (set: AppSliceSet, get: AppSliceGet) => () => {
 						songRequests: signInResult.songRequests,
 						usersActive: signInResult.usersActive,
 					});
+
+					if (signInResult.wakeLockActive && !wakeLockActive) {
+						try {
+							console.log("sign in toggle wake lock");
+							await wakeLockToggle();
+						} catch (error) {
+							console.error(error);
+							set({
+								wakeLockActive: false,
+							});
+						}
+					}
 
 					console.log(signInResult.usersActive);
 

@@ -8,8 +8,13 @@ import { cn } from "@/lib/utils";
 
 const CheckboxStringValue = React.forwardRef<
 	React.ElementRef<typeof CheckboxPrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
->(({ className, ...props }, ref) => {
+	Omit<
+		React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
+		"value"
+	> & {
+		value: boolean | undefined;
+	}
+>(({ className, value = false, ...props }, ref) => {
 	const internalRef = React.useRef<HTMLInputElement>(null);
 	React.useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
 		ref as React.Ref<HTMLInputElement | null>,
@@ -23,6 +28,8 @@ const CheckboxStringValue = React.forwardRef<
 				className,
 			)}
 			{...props}
+			checked={value ?? false}
+			value={(value ?? false) as any}
 			onClick={(e) => {
 				e.stopPropagation();
 				props.onClick?.(e);
@@ -40,9 +47,14 @@ CheckboxStringValue.displayName = CheckboxPrimitive.Root.displayName;
 
 // make a version of Checkbox such that the type of value prop is boolean
 type CheckboxProps = React.ComponentProps<typeof CheckboxStringValue>;
-type CheckboxBooleanProps = Omit<CheckboxProps, "value"> & { value: boolean };
+type CheckboxBooleanProps = Omit<CheckboxProps, "value"> & {
+	value: boolean | undefined;
+};
 
-const Checkbox =
-	CheckboxStringValue as unknown as React.FC<CheckboxBooleanProps>;
+const Checkbox = CheckboxStringValue as unknown as React.FC<
+	CheckboxBooleanProps & {
+		value: boolean | undefined;
+	}
+>;
 
 export { Checkbox };

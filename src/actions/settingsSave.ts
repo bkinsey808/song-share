@@ -49,6 +49,7 @@ export const settingsSave = async ({ settings }: { settings: Settings }) => {
 			.doc(uid)
 			.update({
 				timeZone: settings.useSystemTimeZone ? null : settings.timeZone,
+				wakeLockActive: settings.wakeLockActive,
 			});
 
 		return {

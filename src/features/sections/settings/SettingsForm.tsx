@@ -37,13 +37,21 @@ export const SettingsForm = () => {
 
 	const [search, setSearch] = useState("");
 
-	const { settingsSubmit, settingsFormSet, timeZone } = useAppStore();
+	const {
+		settingsSubmit,
+		settingsFormSet,
+		timeZone,
+		wakeLockActive,
+		wakeLockToggle,
+		wakeLockSentinel,
+	} = useAppStore();
 
 	const form = useForm<Settings>({
 		resolver: valibotResolver(SettingsSchema),
 		defaultValues: {
 			useSystemTimeZone: !timeZone,
 			timeZone: timeZone ?? undefined,
+			wakeLockActive,
 		},
 	});
 
@@ -54,7 +62,7 @@ export const SettingsForm = () => {
 		}
 	}, [form, settingsFormSet]);
 
-	const useSystemTimeZone = form.getValues().useSystemTimeZone;
+	const { useSystemTimeZone } = form.getValues();
 	useEffect(() => {
 		if (useSystemTimeZone) {
 			form.setValue("timeZone", undefined);
@@ -63,6 +71,10 @@ export const SettingsForm = () => {
 
 	return (
 		<Form {...form}>
+			<div>
+				wakeLockSentinel released: {wakeLockSentinel?.released?.toString()}
+			</div>
+			<div>wakeLockActive: {wakeLockActive.toString()}</div>
 			<form onSubmit={settingsSubmit}>
 				<div className="flex gap-[2rem]">
 					<FormField
@@ -76,7 +88,6 @@ export const SettingsForm = () => {
 										className="block"
 										{...field}
 										onCheckedChange={() => field.onChange(!field.value)}
-										checked={field.value}
 									/>
 								</FormControl>
 							</FormItem>
@@ -87,7 +98,7 @@ export const SettingsForm = () => {
 						name="timeZone"
 						control={form.control}
 						render={({ field }) => (
-							<FormItem className="flex-grow">
+							<FormItem>
 								<FormLabel>Time Zone</FormLabel>
 								<FormControl>
 									<Combobox
@@ -99,6 +110,33 @@ export const SettingsForm = () => {
 										setSearch={setSearch}
 										disabled={form.formState.isSubmitting || useSystemTimeZone}
 										{...field}
+									/>
+								</FormControl>
+							</FormItem>
+						)}
+					/>
+
+					<FormField
+						name="wakeLockActive"
+						control={form.control}
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Wake Lock</FormLabel>
+								<FormControl>
+									<Checkbox
+										className="block"
+										{...field}
+										value={wakeLockActive}
+										onCheckedChange={() => {
+											void (async () => {
+												const oldWakeLockActive = field.value;
+												const newWakeLockActive =
+													await wakeLockToggle(!oldWakeLockActive);
+												if (newWakeLockActive !== oldWakeLockActive) {
+													field.onChange(newWakeLockActive);
+												}
+											})();
+										}}
 									/>
 								</FormControl>
 							</FormItem>

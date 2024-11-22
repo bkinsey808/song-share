@@ -175,11 +175,7 @@ export const UserLibraryGrid = () => {
 
 							<div>{usernameGet(userId)}</div>
 							<div>
-								<Checkbox
-									value={isActiveGet(userId)} // TODO: fix this
-									checked={isActiveGet(userId)}
-									disabled={true}
-								/>
+								<Checkbox value={isActiveGet(userId)} disabled={true} />
 							</div>
 							<div></div>
 						</GridRow>
