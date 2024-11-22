@@ -7,25 +7,25 @@ import { cn } from "@/lib/utils";
 
 export type TextareaProps = {
 	autoResize?: boolean;
+	ref?: React.ComponentProps<"textarea">["ref"] | undefined;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-	({ className, autoResize = false, ...props }, ref) => {
-		const { textAreaRef } = useAutoResizeTextarea(ref, autoResize);
+export const Textarea = ({
+	className,
+	autoResize = false,
+	ref,
+	...props
+}: TextareaProps) => {
+	const { textAreaRef } = useAutoResizeTextarea(ref, autoResize);
 
-		return (
-			<textarea
-				className={cn(
-					"flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-					className,
-				)}
-				ref={textAreaRef}
-				{...props}
-			/>
-		);
-	},
-);
-
-Textarea.displayName = "Textarea";
-
-export { Textarea };
+	return (
+		<textarea
+			className={cn(
+				"flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+				className,
+			)}
+			ref={textAreaRef}
+			{...props}
+		/>
+	);
+};

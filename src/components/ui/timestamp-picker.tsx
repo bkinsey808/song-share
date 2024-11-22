@@ -1,6 +1,6 @@
-import { ComponentProps, forwardRef } from "react";
+import { ComponentProps } from "react";
 
-import { DateTimePicker, DateTimePickerRef } from "./datetime-picker";
+import { DateTimePicker } from "./datetime-picker";
 import { appDateTimeFormat } from "@/features/time-zone/consts";
 import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
@@ -10,10 +10,13 @@ type TimestampPickerProps = {
 	timeZone: string; // Add timezone prop
 } & Omit<ComponentProps<typeof DateTimePicker>, "value" | "onChange">;
 
-const TimestampPicker = forwardRef<
-	Partial<DateTimePickerRef>,
-	TimestampPickerProps
->(({ value, onChange, timeZone, ...props }: TimestampPickerProps, ref) => {
+export const TimestampPicker = ({
+	value,
+	onChange,
+	timeZone,
+	ref,
+	...props
+}: TimestampPickerProps) => {
 	const handleChange = (date: Date | undefined) => {
 		if (date) {
 			const isoDate = jsDateTimeZone2iso(date, "UTC");
@@ -38,7 +41,4 @@ const TimestampPicker = forwardRef<
 			{...props}
 		/>
 	);
-});
-TimestampPicker.displayName = "TimestampPicker";
-
-export default TimestampPicker;
+};

@@ -12,7 +12,7 @@ import {
 	FormLabel,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import TimestampPicker from "@/components/ui/timestamp-picker";
+import { TimestampPicker } from "@/components/ui/timestamp-picker";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 import { SongLogFormSchema } from "@/features/sections/song-log/schemas";

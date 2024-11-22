@@ -1,8 +1,9 @@
 import {
 	ButtonHTMLAttributes,
+	Component,
+	ComponentProps,
 	HTMLAttributes,
 	createContext,
-	forwardRef,
 	useContext,
 } from "react";
 
@@ -45,15 +46,13 @@ export const GridHeader = ({
 	);
 };
 
-export const GridRow = forwardRef<
-	HTMLDivElement,
-	HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+type GridRowProps = ComponentProps<"div">;
+
+export const GridRow = ({ className, ...props }: GridRowProps) => {
 	const { gridClassName } = useContext(GridContext);
 
 	return (
 		<div
-			ref={ref}
 			className={cn(
 				"grid grid-flow-row gap-[0.5rem]",
 				gridClassName,
@@ -62,5 +61,4 @@ export const GridRow = forwardRef<
 			{...props}
 		/>
 	);
-});
-GridRow.displayName = "GridRow";
+};

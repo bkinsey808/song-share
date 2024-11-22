@@ -1,7 +1,7 @@
 import * as React from "react";
 
 export const useAutoResizeTextarea = (
-	ref: React.ForwardedRef<HTMLTextAreaElement>,
+	ref: React.ForwardedRef<HTMLTextAreaElement> | undefined,
 	autoResize: boolean,
 ) => {
 	const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
