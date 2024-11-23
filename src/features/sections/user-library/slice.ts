@@ -98,7 +98,7 @@ export const createUserLibrarySlice: AppUserLibrarySlice = (set, get) => {
 		isActiveGet: userActiveIs(get),
 		userIdsAdd: (userIds) => {
 			const currentUserIds = get().userIds;
-			const newUserIds = [...currentUserIds, ...userIds];
+			const newUserIds = Array.from(new Set([...currentUserIds, ...userIds]));
 			set({ userIds: newUserIds });
 		},
 		usersActiveSet: (usersActive) => {
@@ -110,19 +110,21 @@ export const createUserLibrarySlice: AppUserLibrarySlice = (set, get) => {
 export const useSortedFilteredUserIds = () =>
 	useAppStore((state) => {
 		const search = state.userLibrarySearch.toLowerCase();
-		const filteredUserIds = state.userIds.filter((userId) => {
-			const user = state.userLibrary[userId];
+		const filteredUserIds = Array.from(new Set(state.userIds)).filter(
+			(userId) => {
+				const user = state.userLibrary[userId];
 
-			if (!user) {
+				if (!user) {
+					return false;
+				}
+
+				if (searchTextGet(user.username).includes(search)) {
+					return true;
+				}
+
 				return false;
-			}
-
-			if (searchTextGet(user.username).includes(search)) {
-				return true;
-			}
-
-			return false;
-		});
+			},
+		);
 		const sortData = state.userLibrarySort
 			? userLibrarySortData[state.userLibrarySort]
 			: undefined;
