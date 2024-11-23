@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { FullScreenSlice, createFullScreenSlice } from "../full-screen/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import {
 	FollowingSlice,
@@ -56,6 +57,7 @@ export type AppSlice = ModalSlice &
 	SettingsSlice &
 	TimeZoneSlice &
 	WakeLockSlice &
+	FullScreenSlice &
 	SongSlice &
 	PlaylistSlice &
 	SongLibrarySlice &
@@ -104,6 +106,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSettingsSlice(...a),
 			...createTimeZoneSlice(...a),
 			...createWakeLockSlice(...a),
+			...createFullScreenSlice(...a),
 			...createLogSlice(...a),
 			...createSongLogSlice(...a),
 			...createQRSlice(...a),

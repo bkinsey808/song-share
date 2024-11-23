@@ -31,4 +31,5 @@ export const UserDocSchema = object({
 	timeZone: optional(nullable(string())),
 	userIds: optional(array(string())),
 	wakeLockActive: optional(boolean()),
+	fullScreenActive: optional(boolean()),
 });

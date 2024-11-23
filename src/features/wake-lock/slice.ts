@@ -9,7 +9,7 @@ type WakeLockSliceState = {
 
 type AppWakeLockSlice = StateCreator<AppSlice, [], [], WakeLockSlice>;
 
-const settingsSliceInitialState: WakeLockSliceState = {
+const wakeLockSliceInitialState: WakeLockSliceState = {
 	wakeLockActive: false,
 	wakeLockSentinel: null,
 };
@@ -19,9 +19,9 @@ export type WakeLockSlice = WakeLockSliceState & {
 };
 
 export const createWakeLockSlice: AppWakeLockSlice = (set, get) => {
-	sliceResetFns.add(() => set(settingsSliceInitialState));
+	sliceResetFns.add(() => set(wakeLockSliceInitialState));
 	return {
-		...settingsSliceInitialState,
+		...wakeLockSliceInitialState,
 		wakeLockToggle: async (active) => {
 			const { wakeLockActive, wakeLockSentinel } = get();
 			const newWakeLockActive = active ?? !wakeLockActive;

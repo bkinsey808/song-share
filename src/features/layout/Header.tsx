@@ -1,6 +1,10 @@
 "use client";
 
-import { LayersIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
+import {
+	EnterFullScreenIcon,
+	LayersIcon,
+	PaperPlaneIcon,
+} from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,8 +23,7 @@ export const Header = () => {
 		usernameGet,
 		userLibrary,
 		sectionToggle,
-		wakeLockActive,
-		wakeLockToggle,
+		fullScreenToggle,
 	} = useAppStore();
 
 	const { fuid } = useParams();
@@ -98,16 +101,27 @@ export const Header = () => {
 					</span>
 				) : null}
 			</span>
-			{isSignedIn ? (
-				<Button variant="ghost" onClick={accountManageClick}>
-					{sessionCookieData?.username}
+			<span className="flex">
+				{isSignedIn ? (
+					<Button variant="ghost" onClick={accountManageClick}>
+						{sessionCookieData?.username}
+					</Button>
+				) : (
+					<Button variant="ghost" onClick={signInClick}>
+						Sign in
+					</Button>
+				)}
+				<Button
+					className="ml-[-0.3rem]"
+					variant="ghost"
+					title="Full screen toggle"
+					onClick={() => fullScreenToggle()}
+				>
+					<span className="mt-[0.1rem]">
+						<EnterFullScreenIcon />
+					</span>
 				</Button>
-			) : (
-				<Button variant="ghost" onClick={signInClick}>
-					Sign in
-				</Button>
-			)}
+			</span>
 		</header>
 	);
 };
-1;

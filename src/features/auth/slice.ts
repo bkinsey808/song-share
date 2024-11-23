@@ -1,4 +1,5 @@
 import { Unsubscribe } from "firebase/auth";
+import { MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 

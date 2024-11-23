@@ -87,7 +87,6 @@ export const signInClick = (set: AppSliceSet, get: AppSliceGet) => () => {
 
 					if (signInResult.wakeLockActive && !wakeLockActive) {
 						try {
-							console.log("sign in toggle wake lock");
 							await wakeLockToggle();
 						} catch (error) {
 							console.error(error);
@@ -96,8 +95,6 @@ export const signInClick = (set: AppSliceSet, get: AppSliceGet) => () => {
 							});
 						}
 					}
-
-					console.log(signInResult.usersActive);
 
 					setOpenAppModal(null);
 					toast({ title: "Welcome back!" });

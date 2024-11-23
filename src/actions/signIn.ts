@@ -54,8 +54,9 @@ export const signIn = async ({
 
 		const sessionCookieData: SessionCookieData = {
 			uid,
-			...existingUserDoc,
-			...existingUserPublicDoc,
+			email: existingUserDoc.email,
+			roles: existingUserDoc.roles,
+			username: existingUserPublicDoc.username ?? null,
 			picture: existingUserPublicDoc.picture ?? null,
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
@@ -108,6 +109,7 @@ export const signIn = async ({
 			songRequests,
 			usersActive,
 			wakeLockActive: existingUserDoc.wakeLockActive ?? false,
+			fullScreenActive: existingUserDoc.fullScreenActive ?? false,
 		};
 	} catch (error) {
 		console.error({ error });
