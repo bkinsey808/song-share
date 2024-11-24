@@ -1,10 +1,15 @@
-import { sectionData } from "../sections/consts";
-import { pageColumns } from "./pageColumns";
+"use client";
+
+import { useAppStore } from "@/features/app-store/useAppStore";
 import { PageColumn } from "@/features/layout/PageColumn";
 import PageContent from "@/features/layout/PageContent";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
+import { sectionData } from "@/features/sections/consts";
 
 export const DashboardPageContent = () => {
+	const { sectionsFollowingGet } = useAppStore();
+	const pageColumns = sectionsFollowingGet();
+
 	return (
 		<PageContent>
 			{pageColumns.map((pageColumn, columnIndex) => (

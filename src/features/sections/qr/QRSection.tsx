@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
@@ -16,7 +17,7 @@ export const QRSection = () => {
 
 	return (
 		<>
-			{qrUrl}
+			<Link href={qrUrl ?? "#"}>{qrUrl}</Link>
 
 			<div
 				className="max-h-[50vh] max-w-[50vh] bg-white p-[2rem]"

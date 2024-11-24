@@ -10,13 +10,41 @@ export const AboutSection = () => {
 	return (
 		<section data-title="About Section">
 			<SectionAccordion
+				sectionId={sectionId.WHY_SIGN_IN}
+				title={
+					<>
+						Why Register and Sign In to <IconBrand />
+					</>
+				}
+				buttonLabel="Why Register for Free and Sign In"
+				buttonVariant="secondary"
+			>
+				<div className="mb-[2rem] flex flex-col gap-[1rem]">
+					<p>
+						Registering an account on <IconBrand /> is <em>free!</em>
+					</p>
+					<p>
+						First and foremost: signing in allows you to request songs from your
+						song library.
+					</p>
+					<p>
+						Signing in to allows you to save your songs into your song library
+						across sessions and across browsers. Same with playlists and users.
+						Signing into an account gives you access to additional settings
+						suchtimezone and a feature called "Wake Lock". If set, Wake Lock
+						will keep your device from going to sleep while this app is open.
+					</p>
+				</div>
+			</SectionAccordion>
+
+			<SectionAccordion
 				sectionId={sectionId.WHY_JOIN}
 				title={
 					<>
 						Why Join <IconBrand />
 					</>
 				}
-				buttonLabel="Why Join"
+				buttonLabel="Why Join as a Paying Member"
 				buttonVariant="secondary"
 			>
 				<div className="mb-[2rem] flex flex-col gap-[1rem]">
@@ -51,6 +79,7 @@ export const AboutSection = () => {
 					</ul>
 				</div>
 			</SectionAccordion>
+
 			<div className="flex flex-col gap-[2rem]">
 				<p>
 					<IconBrand /> helps musicians share songs with their communities. Song

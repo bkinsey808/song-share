@@ -1,7 +1,8 @@
 import { isFirefox, isMobile } from "react-device-detect";
 import { StateCreator } from "zustand";
 
-import { getDashboardSections } from "../dashboard/getDashboardSectionts";
+import { sectionsDashboardGet } from "../dashboard/sectionsDashboardGet";
+import { sectionsFollowingGet } from "../following/sectionsFollowingGet";
 import { AppSlice, useAppStore } from "@/features/app-store/useAppStore";
 import { SectionId } from "@/features/sections/types";
 
@@ -19,14 +20,16 @@ export type SectionSlice = SectionSliceState & {
 		open?: boolean,
 		scrollToElement?: boolean,
 	) => void;
-	getDashboardSections: () => SectionId[][];
+	sectionsDashboardGet: () => SectionId[][];
+	sectionsFollowingGet: () => SectionId[][];
 };
 
 type AppSectionSlice = StateCreator<AppSlice, [], [], SectionSlice>;
 
 export const createSectionSlice: AppSectionSlice = (set, get) => ({
 	...sectionSliceInitialState,
-	getDashboardSections: getDashboardSections(get),
+	sectionsDashboardGet: sectionsDashboardGet(get),
+	sectionsFollowingGet: sectionsFollowingGet(get),
 	sectionToggle: (sectionId, open, scrollToElement) => {
 		set((state) => {
 			const isOpen = state.openSections.includes(sectionId);

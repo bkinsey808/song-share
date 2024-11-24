@@ -7,8 +7,8 @@ import { SectionAccordion } from "@/features/section/SectionAccordion";
 import { sectionData } from "@/features/sections/consts";
 
 export const DashboardPageContent = () => {
-	const { getDashboardSections } = useAppStore();
-	const pageColumns = getDashboardSections();
+	const { sectionsDashboardGet } = useAppStore();
+	const pageColumns = sectionsDashboardGet();
 
 	return (
 		<PageContent>

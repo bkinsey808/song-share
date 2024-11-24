@@ -57,6 +57,7 @@ export const PlaylistForm = () => {
 	return (
 		<div>
 			<PlaylistDeleteConfirmModal />
+			Playlist ID: {playlistId}
 			{/* Saved? {playlistIsUnsaved ? "No" : "Yes"} */}
 			<Form {...form}>
 				<form onSubmit={playlistSubmit}>
