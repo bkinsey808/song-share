@@ -51,7 +51,8 @@ export const SettingsForm = () => {
 		defaultValues: {
 			useSystemTimeZone: !timeZone,
 			timeZone: timeZone ?? undefined,
-			wakeLockActive,
+			wakeLockActive:
+				wakeLockActive && !!wakeLockSentinel && !wakeLockSentinel.released,
 		},
 	});
 
@@ -69,10 +70,19 @@ export const SettingsForm = () => {
 		}
 	}, [form, useSystemTimeZone]);
 
+	const released = wakeLockSentinel?.released;
+
+	useEffect(() => {
+		if (wakeLockActive && (!wakeLockSentinel || wakeLockSentinel.released)) {
+			wakeLockToggle(false);
+		}
+	}, [wakeLockActive, wakeLockSentinel, released]);
+
 	return (
 		<Form {...form}>
+			<div>wakeLockSentinel exists: {(!!wakeLockSentinel)?.toString()}</div>
 			<div>
-				wakeLockSentinel released: {wakeLockSentinel?.released?.toString()}
+				wakeLockSentinel released: {(!!wakeLockSentinel?.released)?.toString()}
 			</div>
 			<div>wakeLockActive: {wakeLockActive.toString()}</div>
 			<form onSubmit={settingsSubmit}>
@@ -126,12 +136,15 @@ export const SettingsForm = () => {
 									<Checkbox
 										className="block"
 										{...field}
-										value={wakeLockActive}
-										onCheckedChange={() => {
+										// onCheckedChange={() => field.onChange(!field.value)}
+										onClick={() => {
 											void (async () => {
 												const oldWakeLockActive = field.value;
 												const newWakeLockActive =
 													await wakeLockToggle(!oldWakeLockActive);
+												alert(
+													`old ${oldWakeLockActive} newWakeLockActive: ${newWakeLockActive}`,
+												);
 												if (newWakeLockActive !== oldWakeLockActive) {
 													field.onChange(newWakeLockActive);
 												}
