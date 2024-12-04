@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { useFirestoreClient } from "./useFirebaseClient";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const useLibrarySubscription = () => {
@@ -12,15 +13,19 @@ export const useLibrarySubscription = () => {
 		playlistLibraryUnsubscribe,
 	} = useAppStore();
 
-	useEffect(() => {
-		songLibrarySubscribe();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [songIds]);
+	const { getDb, initialized, clearDb } = useFirestoreClient();
 
 	useEffect(() => {
-		playlistLibrarySubscribe();
+		const db = getDb();
+		songLibrarySubscribe({ db, clearDb });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [playlistIds]);
+	}, [songIds, initialized]);
+
+	useEffect(() => {
+		const db = getDb();
+		playlistLibrarySubscribe({ db, clearDb });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [playlistIds, initialized]);
 
 	useEffect(() => {
 		return () => {

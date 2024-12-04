@@ -36,40 +36,14 @@ const songSliceInitialState: SongLogSliceState = {
 };
 
 export type SongLogSlice = SongLogSliceState & {
-	songLogSubmit: (
-		form: UseFormReturn<SongLogForm>,
-	) => (e: FormEvent<HTMLFormElement>) => Promise<void>;
-	songLogNewClick: ({
-		form,
-		songId,
-	}: {
-		form: UseFormReturn<SongLogForm>;
-		songId?: string | null;
-	}) => () => void;
-	songLogDeleteClick: ({
-		songId,
-		logId,
-		form,
-		shouldClearSongId,
-	}: {
-		songId: string;
-		logId: string;
-		form: UseFormReturn<SongLogForm>;
-		shouldClearSongId: boolean;
-	}) => () => void;
+	songLogSubmit: ReturnType<typeof songLogSubmit>;
+	songLogNewClick: ReturnType<typeof songLogNewClick>;
+	songLogDeleteClick: ReturnType<typeof songLogDeleteClick>;
 	songLogFormSet: (songLogForm: UseFormReturn<SongLogForm>) => void;
-	songLogLoadClick: ({
-		logId,
-		songId,
-		form,
-	}: {
-		songId: string;
-		logId: string;
-		form: UseFormReturn<SongLogForm> | null;
-	}) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
+	songLogLoadClick: ReturnType<typeof songLogLoadClick>;
 	songLogIdsGet: (songId: string | null) => string[];
-	songLogSubscribe: (uid: string) => void;
-	songLogUnsubscribe: () => void;
+	songLogSubscribe: ReturnType<typeof songLogSubscribe>;
+	songLogUnsubscribe: ReturnType<typeof songLogUnsubscribe>;
 };
 
 export const createSongLogSlice: AppSongLogSlice = (set, get) => {

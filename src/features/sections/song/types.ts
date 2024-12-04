@@ -1,5 +1,7 @@
 import { InferOutput } from "valibot";
 
-import { SongSchema } from "./schemas";
+import { SongFormSchema, SongSchema } from "./schemas";
 
 export type Song = InferOutput<typeof SongSchema>;
+
+export type SongForm = InferOutput<typeof SongFormSchema>;

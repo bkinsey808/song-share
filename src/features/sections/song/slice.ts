@@ -2,6 +2,7 @@ import { FormEvent } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
+import { keyMap } from "./consts";
 import { playlistSongAddButtonShow } from "./playlistSongAddButtonShow";
 import { playlistSongAddClick } from "./playlistSongAddClick";
 import { songActiveClick } from "./songActiveClick";
@@ -9,7 +10,7 @@ import { songDeleteClick } from "./songDeleteClick";
 import { songDeleteConfirmClick } from "./songDeleteConfirmClick";
 import { songNewClick } from "./songNewClick";
 import { songSubmit } from "./songSubmit";
-import { Song } from "./types";
+import { Song, SongForm } from "./types";
 import {
 	AppSlice,
 	sliceResetFns,
@@ -22,7 +23,7 @@ type SongSliceState = {
 	songDeleting: boolean;
 	playlistSongAdding: boolean;
 	songId: string | null;
-	songForm: UseFormReturn<Song> | null;
+	songForm: UseFormReturn<SongForm> | null;
 };
 
 type AppSongSlice = StateCreator<AppSlice, [], [], SongSlice>;
@@ -55,6 +56,7 @@ export type SongSlice = SongSliceState & {
 	songIdSet: (songId: string | null) => void;
 	songActiveIdSet: (songId: string | null) => void;
 	songNameGet: (songId: string | null) => string | undefined;
+	songKeyGet: (songId: string | null) => string | undefined;
 	songDefaultGet: () => Song;
 };
 
@@ -87,6 +89,11 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 			const { songLibrary } = get();
 			return songId ? songLibrary[songId]?.songName : undefined;
 		},
+		songKeyGet: (songId) => {
+			const { songLibrary } = get();
+			const songKey = songId ? songLibrary[songId]?.songKey : undefined;
+			return songKey !== undefined ? keyMap.get(songKey) : undefined;
+		},
 		songDefaultGet: () => ({
 			songName: "",
 			lyrics: "",
@@ -94,6 +101,8 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 			credits: "",
 			sharer: get().sessionCookieData?.uid ?? "",
 			playlistIds: [],
+			songKey: undefined,
+			songKeyString: undefined,
 		}),
 	};
 };

@@ -1,27 +1,43 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { Firestore, doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
+import { useFirestoreClient } from "../firebase/useFirebaseClient";
 import { getKeys } from "../global/getKeys";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { Collection } from "@/features/firebase/consts";
-import { db } from "@/features/firebase/firebaseClient";
 import {
 	UserDocSchema,
 	UserPublicDocSchema,
 } from "@/features/firebase/schemas";
 
 export const userSubscribe =
-	(get: AppSliceGet, set: AppSliceSet) => (uid: string) => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	({
+		uid,
+		db,
+		clearDb,
+	}: {
+		uid: string;
+		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+	}) => {
+		if (!db) {
+			return;
+		}
 		const userUnsubscribeFn = onSnapshot(
 			doc(db, Collection.USERS, uid),
 			(userSnapshot) => {
+				if (userSnapshot.metadata.fromCache) {
+					clearDb();
+					return;
+				}
+
 				if (!userSnapshot.exists) {
 					console.warn(`User ${uid} does not exist`);
 					return;
 				}
 				const userData = userSnapshot.data();
 				if (!userData) {
-					console.warn(`No data found for user ${uid}`);
 					return;
 				}
 				const userParseResult = safeParse(UserDocSchema, userData);
@@ -63,6 +79,10 @@ export const userSubscribe =
 					useSystemTimeZone: !timeZone,
 				});
 			},
+			(error) => {
+				console.log("got error");
+				console.error(error);
+			},
 		);
 
 		const userPublicUnsubscribeFn = onSnapshot(
@@ -74,7 +94,6 @@ export const userSubscribe =
 				}
 				const userPublicData = userPublicSnapshot.data();
 				if (!userPublicData) {
-					console.warn(`No data found for user public ${uid}`);
 					return;
 				}
 				const userPublicParseResult = safeParse(

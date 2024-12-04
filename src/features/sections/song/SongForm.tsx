@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // import { KeySection } from "../key/KeySection.tsx.ignore";
@@ -9,15 +9,18 @@ import { useForm } from "react-hook-form";
 // import { ScaleSection } from "../scale/ScaleSection.tsx.ignore";
 // import { ScaleTitle } from "../scale/ScaleTitle.tsx.ignore";
 import { SongDeleteConfirmModal } from "./SongDeleteConfirmModal";
-import { SongSchema } from "./schemas";
+import { keyMap, keyOptions, keyOptionsWithNone, keys } from "./consts";
+import { SongFormSchema } from "./schemas";
 import { useSong } from "./slice";
-import { Song } from "./types";
+import { SongForm as SongFormType } from "./types";
 import { Button } from "@/components/ui/button";
+import { Combobox } from "@/components/ui/combobox";
 import {
 	Form,
 	FormControl,
 	FormField,
 	FormItem,
+	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -43,12 +46,13 @@ export const SongForm = () => {
 		songRequestAdded,
 		songRequestRemoveClick,
 		songRequestPending,
+		songKeyGet,
 	} = useAppStore();
 
 	const song = useSong();
 
-	const form = useForm<Song>({
-		resolver: valibotResolver(SongSchema),
+	const form = useForm<SongFormType>({
+		resolver: valibotResolver(SongFormSchema),
 		defaultValues: songDefaultGet(),
 	});
 
@@ -69,10 +73,13 @@ export const SongForm = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [form, songId]);
 
+	const [songKeySearch, songKeySearchSet] = useState("");
+
 	return (
 		<div>
 			<SongDeleteConfirmModal />
-			SongId: {songId}
+			<div>SongId: {songId}</div>
+			<div>Form song key: {form.getValues().songKey}</div>
 			<Form {...form}>
 				<form onSubmit={songSubmit}>
 					<FormField
@@ -156,6 +163,51 @@ export const SongForm = () => {
 											autoResize={true}
 											{...field}
 											disabled={form.formState.isSubmitting}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</SectionAccordion>
+
+					<SectionAccordion
+						sectionId={sectionId.SONG_KEY_SCALE}
+						title={`${songKeyGet(songId)}`}
+						buttonLabel="Key and Scale"
+						buttonVariant="secondary"
+					>
+						<FormField
+							name="songKeyString"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem>
+									{/* Field value: {form.getValues().songKey},{" "}
+									{keyMap.get(form.getValues().songKey)} */}
+									<FormLabel>Song Key</FormLabel>
+									<FormControl>
+										<Combobox
+											{...field}
+											options={keyOptionsWithNone.filter((option) =>
+												option.search.includes(
+													songKeySearch.toLocaleLowerCase(),
+												),
+											)}
+											onChange={(value) => {
+												field.onChange(value);
+												console.log({
+													value,
+													fv: field.value,
+													k: keys[value as keyof typeof keys],
+												});
+												form.setValue(
+													"songKey",
+													value ? keys[value as keyof typeof keys] : undefined,
+												);
+											}}
+											search={songKeySearch}
+											setSearch={songKeySearchSet}
+											label="song key"
 										/>
 									</FormControl>
 									<FormMessage />

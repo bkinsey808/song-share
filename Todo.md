@@ -8,7 +8,14 @@
 - [ ] song requests
 - [ ] chat
 - [ ] sitemap
-- [ ] full screen mode
+- [ ] full screen mode (fix)
 - [ ] advanced mode
 - [ ] song key
 - [ ] secure client side firestore
+- [ ] products!
+- [ ] home screen
+- [ ] debug mode
+- [ ] scrollable grid
+- [ ] tool to check validity of firestore data
+- [ ] test env
+- [ ] visible unsaved form state

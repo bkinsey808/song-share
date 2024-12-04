@@ -48,8 +48,8 @@ export type UserLibrarySlice = UserLibrarySliceState & {
 	userLoadClick: (
 		userId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	userLibrarySubscribe: () => void;
-	userLibraryUnsubscribe: () => void;
+	userLibrarySubscribe: ReturnType<typeof userLibrarySubscribe>;
+	userLibraryUnsubscribe: ReturnType<typeof userLibraryUnsubscribe>;
 	userSet: ({
 		userId,
 		userPublicDoc,

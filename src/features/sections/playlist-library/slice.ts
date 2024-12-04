@@ -21,11 +21,11 @@ const playlistLibrarySliceInitialState: PlaylistLibrarySliceState = {
 };
 
 export type PlaylistLibrarySlice = PlaylistLibrarySliceState & {
-	playlistLoadClick: (
-		songId: string,
-	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	playlistLibrarySubscribe: () => void;
-	playlistLibraryAddPlaylistIds: (playlistIds: string[]) => void;
+	playlistLoadClick: ReturnType<typeof playlistLoadClick>;
+	playlistLibrarySubscribe: ReturnType<typeof playlistLibrarySubscribe>;
+	playlistLibraryAddPlaylistIds: ReturnType<
+		typeof playlistLibraryAddPlaylistIds
+	>;
 };
 
 type AppSongLibrarySlice = StateCreator<AppSlice, [], [], PlaylistLibrarySlice>;

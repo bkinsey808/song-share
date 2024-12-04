@@ -1,18 +1,21 @@
 import { useEffect } from "react";
 
 import { useAppStore } from "@/features/app-store/useAppStore";
+import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 
 export const useSongLogSubscription = () => {
 	const { songLogSubscribe, songLogUnsubscribe, sessionCookieData } =
 		useAppStore();
 
 	const uid = sessionCookieData?.uid;
+	const { getDb, initialized, clearDb } = useFirestoreClient();
 
 	useEffect(() => {
 		if (!uid) {
 			return;
 		}
-		songLogSubscribe(uid);
+		const db = getDb();
+		songLogSubscribe({ uid, db, clearDb });
 		return songLogUnsubscribe;
-	}, [songLogSubscribe, songLogUnsubscribe, uid]);
+	}, [songLogSubscribe, songLogUnsubscribe, uid, initialized]);
 };

@@ -1,14 +1,21 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { Firestore, doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { Collection } from "@/features/firebase/consts";
-import { db } from "@/features/firebase/firebaseClient";
+import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 
 export const playlistLibrarySubscribe =
-	(get: AppSliceGet, set: AppSliceSet) => () => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	({
+		db,
+		clearDb,
+	}: {
+		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+	}) => {
 		const { playlistIds, playlistUnsubscribeFns, playlistLibrary } = get();
 		const playlistSubscriptionsSongIds = getKeys(playlistUnsubscribeFns);
 
@@ -32,10 +39,19 @@ export const playlistLibrarySubscribe =
 				!playlistSubscriptionsSongIds.includes(subscribePlaylistId),
 		);
 
+		if (!db) {
+			return;
+		}
+
 		playlistIdsToSubscribe.forEach((subscribePlaylistId) => {
 			const unsubscribeFn = onSnapshot(
 				doc(db, Collection.PLAYLISTS, subscribePlaylistId),
 				(playlistSnapshot) => {
+					if (playlistSnapshot.metadata.fromCache) {
+						clearDb();
+						return;
+					}
+
 					if (!playlistSnapshot.exists) {
 						console.warn(`Playlist ${subscribePlaylistId} does not exist`);
 						return;

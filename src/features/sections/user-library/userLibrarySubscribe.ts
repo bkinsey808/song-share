@@ -1,14 +1,24 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { Firestore, doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { Collection } from "@/features/firebase/consts";
-import { db } from "@/features/firebase/firebaseClient";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
+import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 
 export const userLibrarySubscribe =
-	(get: AppSliceGet, set: AppSliceSet) => () => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	({
+		db,
+		clearDb,
+	}: {
+		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+	}) => {
+		if (!db) {
+			return;
+		}
 		const { userIds, userLibrary, userLibraryUnsubscribeFns } = get();
 		const currentlySubscribedUserIds = getKeys(userLibraryUnsubscribeFns);
 
@@ -30,6 +40,11 @@ export const userLibrarySubscribe =
 			const unsubscribeFn = onSnapshot(
 				doc(db, Collection.USERS_PUBLIC, subscribeUserId),
 				(userPublicSnapshot) => {
+					if (userPublicSnapshot.metadata.fromCache) {
+						clearDb();
+						return;
+					}
+
 					if (!userPublicSnapshot.exists) {
 						console.warn(`User ${subscribeUserId} does not exist`);
 						return;

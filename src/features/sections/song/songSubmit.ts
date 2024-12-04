@@ -1,6 +1,7 @@
 import { FormEvent } from "react";
 
 import { songLogDefaultGet } from "../song-log/songLogDefaultGet";
+import { SongForm } from "./types";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
 import { actionResultType } from "@/features/app-store/consts";
@@ -48,7 +49,7 @@ export const songSubmit =
 						if (!message) {
 							return;
 						}
-						songForm.setError(key, {
+						songForm.setError(key as keyof SongForm, {
 							type: "manual",
 							message,
 						});

@@ -45,9 +45,10 @@ export const songDelete = async (songId: string) => {
 
 		// delete from the playlists collection
 		const playlistIds = song.playlistIds;
-		const deletePlaylistPromises = playlistIds.map((playlistId) =>
-			db.collection(Collection.PLAYLISTS).doc(playlistId).delete(),
-		);
+		const deletePlaylistPromises =
+			playlistIds?.map((playlistId) =>
+				db.collection(Collection.PLAYLISTS).doc(playlistId).delete(),
+			) ?? [];
 		const promiseResult = await Promise.allSettled(deletePlaylistPromises);
 		const failedPlaylistDeletes = promiseResult.filter(
 			(result) => result.status === "rejected",

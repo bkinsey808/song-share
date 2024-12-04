@@ -1,18 +1,41 @@
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import {
+	Firestore,
+	collection,
+	onSnapshot,
+	query,
+	where,
+} from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { SongLogSchema } from "./schemas";
 import { SongLogEntry } from "./types";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
-import { db } from "@/features/firebase/firebaseClient";
+import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 
 export const songLogSubscribe =
-	(get: AppSliceGet, set: AppSliceSet) => (uid: string) => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	({
+		uid,
+		db,
+		clearDb,
+	}: {
+		uid: string;
+		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+	}) => {
+		if (!db) {
+			return;
+		}
 		const songLogsRef = collection(db, "songLogs");
 		const q = query(songLogsRef, where("uid", "==", uid));
 		const { songLogs } = get();
 
 		const songLogUnsubscribeFn = onSnapshot(q, (querySnapshot) => {
+			if (querySnapshot.metadata.fromCache) {
+				clearDb();
+				return;
+			}
+
 			const newSongLogs = querySnapshot.docs
 				.map((doc) => doc.data())
 				.map((songLog) => {

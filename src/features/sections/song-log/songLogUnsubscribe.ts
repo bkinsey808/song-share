@@ -4,7 +4,6 @@ export const songLogUnsubscribe =
 	(get: AppSliceGet, set: AppSliceSet) => () => {
 		const { songLogUnsubscribeFn } = get();
 		if (!songLogUnsubscribeFn) {
-			console.warn("No song log unsubscribe function found");
 			return;
 		}
 		songLogUnsubscribeFn();

@@ -5,6 +5,7 @@ import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { FormEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import { keyMap } from "../song/consts";
 import {
 	SongLibrarySort,
 	songLibrarySortDefault,
@@ -33,6 +34,7 @@ export const SongLibraryGrid = () => {
 		songLoadClick,
 		songActiveId,
 		songNameGet,
+		songKeyGet,
 		songActiveClick,
 		fuid,
 		songLibrarySort,
@@ -133,7 +135,7 @@ export const SongLibraryGrid = () => {
 			>
 				Reset Search and Sort
 			</Button>
-			<Grid gridClassName="grid-cols-[1.5rem,3fr,1fr]">
+			<Grid gridClassName="grid-cols-[1.5rem,3fr,1.5rem,1fr]">
 				<GridHeader>
 					<div></div>
 					<Button
@@ -159,6 +161,7 @@ export const SongLibraryGrid = () => {
 							Song Name
 						</span>
 					</Button>
+					<div>Key</div>
 					<div>Options</div>
 				</GridHeader>
 				<RadioGroup
@@ -190,6 +193,7 @@ export const SongLibraryGrid = () => {
 									{songNameGet(songId)}
 								</Button>
 							</div>
+							<div>{songKeyGet(songId)}</div>
 							<div></div>
 						</GridRow>
 					))}

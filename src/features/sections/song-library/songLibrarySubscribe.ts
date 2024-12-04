@@ -1,14 +1,22 @@
-import { doc, onSnapshot } from "firebase/firestore";
+import { Firestore, doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
+import { keyMap } from "../song/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { Collection } from "@/features/firebase/consts";
-import { db } from "@/features/firebase/firebaseClient";
+import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { SongSchema } from "@/features/sections/song/schemas";
 
 export const songLibrarySubscribe =
-	(get: AppSliceGet, set: AppSliceSet) => () => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	({
+		db,
+		clearDb,
+	}: {
+		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+	}) => {
 		const { songIds, songUnsubscribeFns, songLibrary } = get();
 		const songSubscriptionsSongIds = getKeys(songUnsubscribeFns);
 		const songIdsToUnsubscribe = songSubscriptionsSongIds.filter(
@@ -30,39 +38,56 @@ export const songLibrarySubscribe =
 			(subscribeSongId) => !songSubscriptionsSongIds.includes(subscribeSongId),
 		);
 
-		songIdsToSubscribe.forEach((subscribeSongId) => {
-			const unsubscribeFn = onSnapshot(
-				doc(db, Collection.SONGS, subscribeSongId),
-				(songSnapshot) => {
-					if (!songSnapshot.exists) {
-						console.warn(`Song ${subscribeSongId} does not exist`);
-						return;
-					}
-					const songData = songSnapshot.data();
-					if (!songData) {
-						console.warn(`No data found for song ${subscribeSongId}`);
-						return;
-					}
-					const songParseResult = safeParse(SongSchema, songData);
-					if (!songParseResult.success) {
-						console.warn(`Invalid data for song ${subscribeSongId}`);
-						return;
-					}
-					const song = songParseResult.output;
-					const { songId, songForm, songLibrarySongSet } = get();
+		if (!db) {
+			return;
+		}
 
-					songLibrarySongSet({
-						songId: subscribeSongId,
-						song,
-					});
+		try {
+			songIdsToSubscribe.forEach((subscribeSongId) => {
+				const unsubscribeFn = onSnapshot(
+					doc(db, Collection.SONGS, subscribeSongId),
+					(songSnapshot) => {
+						if (songSnapshot.metadata.fromCache) {
+							clearDb();
+							return;
+						}
 
-					if (songId === subscribeSongId) {
-						songForm?.reset?.(song);
-					}
-				},
-			);
-			songUnsubscribeFns[subscribeSongId] = unsubscribeFn;
-		});
+						if (!songSnapshot.exists) {
+							console.warn(`Song ${subscribeSongId} does not exist`);
+							return;
+						}
+						const songData = songSnapshot.data();
+						if (!songData) {
+							console.warn(`No data found for song ${subscribeSongId}`);
+							return;
+						}
+						const songParseResult = safeParse(SongSchema, songData);
+						if (!songParseResult.success) {
+							console.warn(`Invalid data for song ${subscribeSongId}`);
+							return;
+						}
+						const song = songParseResult.output;
+						const { songId, songForm, songLibrarySongSet } = get();
 
-		set({ songLibrary, songUnsubscribeFns });
+						songLibrarySongSet({
+							songId: subscribeSongId,
+							song,
+						});
+
+						if (songId === subscribeSongId) {
+							songForm?.reset?.({
+								...song,
+								songKeyString: keyMap.get(song.songKey),
+							});
+						}
+					},
+					(error) => console.error(error),
+				);
+				songUnsubscribeFns[subscribeSongId] = unsubscribeFn;
+			});
+
+			set({ songLibrary, songUnsubscribeFns });
+		} catch (e) {
+			console.error(e);
+		}
 	};

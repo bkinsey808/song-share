@@ -43,7 +43,7 @@ export type SongLibrarySlice = SongLibrarySliceState & {
 	songLoadClick: (
 		songId: string,
 	) => (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => void;
-	songLibrarySubscribe: () => void;
+	songLibrarySubscribe: ReturnType<typeof songLibrarySubscribe>;
 	songLibraryUnsubscribe: () => void;
 	songLibraryAddSongIds: (songIds: string[]) => void;
 	songLibrarySortSet: (sort: SongLibrarySortType) => () => void;

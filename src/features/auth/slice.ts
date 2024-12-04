@@ -1,4 +1,5 @@
 import { Unsubscribe } from "firebase/auth";
+import { Firestore } from "firebase/firestore";
 import { MouseEventHandler } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
@@ -45,14 +46,12 @@ export type AuthSlice = AuthSliceState & {
 	accountManageClick: () => void;
 	signOut: () => void;
 	signOutClick: () => void;
-	signOutAndClearLocalClick: () => void;
+	signOutAndClearLocalClick: ReturnType<typeof signOutAndClearLocalClick>;
 	deleteAccountClick: () => void;
 	accountDeleteConfirmClick: () => void;
-	registerSubmit: (
-		form: UseFormReturn<RegistrationData>,
-	) => (e: React.FormEvent<HTMLFormElement>) => void;
+	registerSubmit: ReturnType<typeof registerSubmit>;
 	sessionExtendClick: () => void;
-	userSubscribe: (uid: string) => void;
+	userSubscribe: ReturnType<typeof userSubscribe>;
 	userUnsubscribe: () => void;
 };
 

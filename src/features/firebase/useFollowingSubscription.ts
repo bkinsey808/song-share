@@ -4,9 +4,9 @@ import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { safeParse } from "valibot";
 
+import { useFirestoreClient } from "./useFirebaseClient";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Collection } from "@/features/firebase/consts";
-import { db } from "@/features/firebase/firebaseClient";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
 import { getKeys } from "@/features/global/getKeys";
 import { sectionId } from "@/features/sections/consts";
@@ -31,6 +31,8 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		songRequestsSet,
 	} = useAppStore();
 
+	const { getDb, initialized, clearDb } = useFirestoreClient();
+
 	useEffect(() => {
 		// open the the song section if the song is active
 		if (songActiveId) {
@@ -51,9 +53,19 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 
 		setFuid(fuid);
 
+		const db = getDb();
+
+		if (!db) {
+			return;
+		}
+
 		const userPublicUnsubscribe = onSnapshot(
 			doc(db, Collection.USERS_PUBLIC, fuid),
 			(userPublicSnapshot) => {
+				if (userPublicSnapshot.metadata.fromCache) {
+					clearDb();
+					return;
+				}
 				if (!userPublicSnapshot.exists) {
 					console.warn("users public document does not exist!");
 					return;
@@ -81,6 +93,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					const songUnsubscribe = onSnapshot(
 						doc(db, Collection.SONGS, following.songActiveId),
 						(songSnapshot) => {
+							if (songSnapshot.metadata.fromCache) {
+								clearDb();
+								return;
+							}
+
 							if (!songSnapshot.exists) {
 								console.warn("Song does not exist");
 								return;
@@ -122,6 +139,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					const playlistUnsubscribe = onSnapshot(
 						doc(db, Collection.PLAYLISTS, following.playlistActiveId),
 						(playlistSnapshot) => {
+							if (playlistSnapshot.metadata.fromCache) {
+								clearDb();
+								return;
+							}
+
 							if (!playlistSnapshot.exists) {
 								console.warn("Playlist does not exist");
 								return;
@@ -187,5 +209,5 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 			setFuid(null);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [fuid, setFuid, setFollowing]);
+	}, [fuid, setFuid, setFollowing, initialized]);
 };

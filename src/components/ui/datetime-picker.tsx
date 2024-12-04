@@ -780,7 +780,9 @@ export const DateTimePicker = ({
 					ref={buttonRef}
 				>
 					<CalendarIcon className="mr-2 h-4 w-4" />
-					{value ? valueFormatted : <span>{placeholder}</span>}
+					<span suppressHydrationWarning={true}>
+						{value ? valueFormatted : <span>{placeholder}</span>}
+					</span>
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-auto p-0">
