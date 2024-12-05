@@ -37,22 +37,13 @@ export const SettingsForm = () => {
 
 	const [search, setSearch] = useState("");
 
-	const {
-		settingsSubmit,
-		settingsFormSet,
-		timeZone,
-		wakeLockActive,
-		wakeLockToggle,
-		wakeLockSentinel,
-	} = useAppStore();
+	const { settingsSubmit, settingsFormSet, timeZone } = useAppStore();
 
 	const form = useForm<Settings>({
 		resolver: valibotResolver(SettingsSchema),
 		defaultValues: {
 			useSystemTimeZone: !timeZone,
 			timeZone: timeZone ?? undefined,
-			wakeLockActive:
-				wakeLockActive && !!wakeLockSentinel && !wakeLockSentinel.released,
 		},
 	});
 
@@ -70,21 +61,8 @@ export const SettingsForm = () => {
 		}
 	}, [form, useSystemTimeZone]);
 
-	const released = wakeLockSentinel?.released;
-
-	useEffect(() => {
-		if (wakeLockActive && (!wakeLockSentinel || wakeLockSentinel.released)) {
-			wakeLockToggle(false);
-		}
-	}, [wakeLockActive, wakeLockSentinel, released]);
-
 	return (
 		<Form {...form}>
-			<div>wakeLockSentinel exists: {(!!wakeLockSentinel)?.toString()}</div>
-			<div>
-				wakeLockSentinel released: {(!!wakeLockSentinel?.released)?.toString()}
-			</div>
-			<div>wakeLockActive: {wakeLockActive.toString()}</div>
 			<form onSubmit={settingsSubmit}>
 				<div className="flex gap-[2rem]">
 					<FormField
@@ -120,36 +98,6 @@ export const SettingsForm = () => {
 										setSearch={setSearch}
 										disabled={form.formState.isSubmitting || useSystemTimeZone}
 										{...field}
-									/>
-								</FormControl>
-							</FormItem>
-						)}
-					/>
-
-					<FormField
-						name="wakeLockActive"
-						control={form.control}
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Wake Lock</FormLabel>
-								<FormControl>
-									<Checkbox
-										className="block"
-										{...field}
-										// onCheckedChange={() => field.onChange(!field.value)}
-										onClick={() => {
-											void (async () => {
-												const oldWakeLockActive = field.value;
-												const newWakeLockActive =
-													await wakeLockToggle(!oldWakeLockActive);
-												alert(
-													`old ${oldWakeLockActive} newWakeLockActive: ${newWakeLockActive}`,
-												);
-												if (newWakeLockActive !== oldWakeLockActive) {
-													field.onChange(newWakeLockActive);
-												}
-											})();
-										}}
 									/>
 								</FormControl>
 							</FormItem>

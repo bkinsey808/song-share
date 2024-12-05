@@ -41,7 +41,6 @@ import {
 	createUserLibrarySlice,
 } from "@/features/sections/user-library/slice";
 import { TimeZoneSlice, createTimeZoneSlice } from "@/features/time-zone/slice";
-import { WakeLockSlice, createWakeLockSlice } from "@/features/wake-lock/slice";
 
 export const sliceResetFns = new Set<() => void>();
 
@@ -56,7 +55,6 @@ export type AppSlice = ModalSlice &
 	AuthSlice &
 	SettingsSlice &
 	TimeZoneSlice &
-	WakeLockSlice &
 	FullScreenSlice &
 	SongSlice &
 	PlaylistSlice &
@@ -105,7 +103,6 @@ export const useAppStore = create<AppSlice>()(
 			...createFollowingSlice(...a),
 			...createSettingsSlice(...a),
 			...createTimeZoneSlice(...a),
-			...createWakeLockSlice(...a),
 			...createFullScreenSlice(...a),
 			...createLogSlice(...a),
 			...createSongLogSlice(...a),

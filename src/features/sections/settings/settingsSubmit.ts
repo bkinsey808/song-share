@@ -56,7 +56,6 @@ export const settingsSubmit =
 				case actionResultType.SUCCESS:
 					set({
 						timeZone: settingsSaveResult.timeZone ?? null,
-						wakeLockActive: settings.wakeLockActive ?? false,
 					});
 					toast({ title: "Settings saved" });
 					break;

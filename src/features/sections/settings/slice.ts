@@ -14,7 +14,6 @@ type AppSettingsSlice = StateCreator<AppSlice, [], [], SettingsSlice>;
 
 const settingsSliceInitialState: SettingsSliceState = {
 	// timeZone is in the timeZone slice
-	// wakeLockActive is in the wakeLock slice
 	settingsForm: null,
 };
 

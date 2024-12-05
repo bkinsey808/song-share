@@ -30,6 +30,5 @@ export const UserDocSchema = object({
 	playlistId: optional(nullable(string())),
 	timeZone: optional(nullable(string())),
 	userIds: optional(array(string())),
-	wakeLockActive: optional(boolean()),
 	fullScreenActive: optional(boolean()),
 });

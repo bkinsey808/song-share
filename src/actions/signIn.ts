@@ -108,7 +108,6 @@ export const signIn = async ({
 			timeZone,
 			songRequests,
 			usersActive,
-			wakeLockActive: existingUserDoc.wakeLockActive ?? false,
 			fullScreenActive: existingUserDoc.fullScreenActive ?? false,
 		};
 	} catch (error) {
