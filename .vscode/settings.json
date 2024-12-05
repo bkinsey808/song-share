@@ -13,7 +13,15 @@
 		"**/app/**/page.tsx": "${dirname(1)}/${dirname} <page>",
 		"**/app/**/layout.tsx": "${dirname(1)}/${dirname} <layout>",
 		"**/app/api/**/route.ts": "${dirname(1)}/${dirname} <route>",
+		"**/src/**/*.test.tsx": "${dirname}/${filename} <test>",
 		"**/src/**/*.tsx": "${dirname}/${filename}",
+		"**/src/**/*.test.ts": "${dirname}/${filename} <test>",
 		"**/src/**/*.ts": "${dirname}/${filename}"
-	}
+	},
+	"editor.quickSuggestions": {
+		"strings": true
+	},
+	"tailwindCSS.experimental.classRegex": [
+		"tw`([^`]*)`" // Add your custom tag here
+	]
 }

@@ -5,7 +5,6 @@ import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
 import { FormEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { keyMap } from "../song/consts";
 import {
 	SongLibrarySort,
 	songLibrarySortDefault,
@@ -26,8 +25,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+// import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
+import { Grid } from "@/features/grid/Grid";
+import { GridHeader } from "@/features/grid/GridHeader";
+import { GridRow } from "@/features/grid/GridRow";
 
 export const SongLibraryGrid = () => {
 	const {
@@ -42,6 +45,7 @@ export const SongLibraryGrid = () => {
 		songLibrarySearch,
 		songLibraryGridFormSubmit,
 		songLibraryGridFormSet,
+		isSignedIn,
 	} = useAppStore();
 
 	const form = useForm<SongLibraryGridForm>({
@@ -135,40 +139,44 @@ export const SongLibraryGrid = () => {
 			>
 				Reset Search and Sort
 			</Button>
-			<Grid gridClassName="grid-cols-[1.5rem,3fr,1.5rem,1fr]">
-				<GridHeader>
-					<div></div>
-					<Button
-						variant="outline"
-						className="justify-start"
-						onClick={() => {
-							if (songLibrarySort === SongLibrarySort.SONG_NAME_ASC) {
-								songLibrarySortSet(SongLibrarySort.SONG_NAME_DESC)();
-							} else {
-								songLibrarySortSet(SongLibrarySort.SONG_NAME_ASC)();
-							}
-						}}
-					>
-						<span className="flex gap-[0.3rem] align-middle">
-							<span className="mt-[0.2rem]">
-								{songLibrarySort === SongLibrarySort.SONG_NAME_ASC ? (
-									<ArrowUpIcon />
-								) : null}
-								{songLibrarySort === SongLibrarySort.SONG_NAME_DESC ? (
-									<ArrowDownIcon />
-								) : null}
-							</span>
-							Song Name
-						</span>
-					</Button>
-					<div>Key</div>
-					<div>Options</div>
-				</GridHeader>
-				<RadioGroup
-					name="songActiveId"
-					id="songActiveId"
-					value={songActiveId ?? ""}
+			<RadioGroup
+				name="songActiveId"
+				id="songActiveId"
+				value={songActiveId ?? ""}
+				disabled={!isSignedIn}
+			>
+				<Grid
+					fixedClassName={tw`grid-cols-[1.5rem,15rem]`}
+					scrollingClassName={tw`grid-cols-[2rem,10rem]`}
 				>
+					<GridHeader>
+						<div></div>
+						<Button
+							variant="outline"
+							className="justify-start font-bold"
+							onClick={() => {
+								if (songLibrarySort === SongLibrarySort.SONG_NAME_ASC) {
+									songLibrarySortSet(SongLibrarySort.SONG_NAME_DESC)();
+								} else {
+									songLibrarySortSet(SongLibrarySort.SONG_NAME_ASC)();
+								}
+							}}
+						>
+							<span className="flex gap-[0.3rem] align-middle">
+								<span className="mt-[0.2rem]">
+									{songLibrarySort === SongLibrarySort.SONG_NAME_ASC ? (
+										<ArrowUpIcon />
+									) : null}
+									{songLibrarySort === SongLibrarySort.SONG_NAME_DESC ? (
+										<ArrowDownIcon />
+									) : null}
+								</span>
+								Song Name
+							</span>
+						</Button>
+						<div>Key</div>
+						<div>Options</div>
+					</GridHeader>
 					{songIds.map((songId) => (
 						<GridRow key={songId}>
 							<div className="align-center grid justify-center">
@@ -197,8 +205,8 @@ export const SongLibraryGrid = () => {
 							<div></div>
 						</GridRow>
 					))}
-				</RadioGroup>
-			</Grid>
+				</Grid>
+			</RadioGroup>
 		</>
 	);
 };

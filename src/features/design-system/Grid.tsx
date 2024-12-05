@@ -1,8 +1,6 @@
 import {
 	ButtonHTMLAttributes,
-	Component,
 	ComponentProps,
-	HTMLAttributes,
 	createContext,
 	useContext,
 } from "react";

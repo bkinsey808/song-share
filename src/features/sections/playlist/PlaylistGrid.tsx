@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sortable";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 
 export const PlaylistGrid = () => {
@@ -68,7 +69,7 @@ export const PlaylistGrid = () => {
 		<Form {...form}>
 			{/* isDirty: {form.formState.isDirty.toString()} */}
 			<form onSubmit={playlistGridFormSubmit}>
-				<Grid gridClassName="grid-cols-[1.5rem,2fr,5rem]">
+				<Grid gridClassName={tw`grid-cols-[1.5rem,2fr,5rem]`}>
 					<GridHeader>
 						<div></div>
 						<div>Song Name</div>

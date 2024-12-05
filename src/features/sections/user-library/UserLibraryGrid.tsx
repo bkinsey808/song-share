@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 
 export const UserLibraryGrid = () => {
@@ -132,7 +133,7 @@ export const UserLibraryGrid = () => {
 			>
 				Reset Search and Sort
 			</Button>
-			<Grid gridClassName="grid-cols-[1.5rem,3fr,3rem,1fr]">
+			<Grid gridClassName={tw`grid-cols-[1.5rem,3fr,3rem,1fr]`}>
 				<GridHeader>
 					<div></div>
 					<Button

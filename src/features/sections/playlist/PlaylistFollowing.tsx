@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { tw } from "@/features/global/tw";
 
 export const PlaylistFollowing = () => {
 	const { songActiveId, songLoadClick, songNameGet } = useAppStore();
@@ -12,7 +13,7 @@ export const PlaylistFollowing = () => {
 	return (
 		<div className="flex flex-col gap-[1rem]">
 			{songs.length > 0 ? (
-				<Grid gridClassName="grid-cols-[1.5rem,1fr]">
+				<Grid gridClassName={tw`grid-cols-[1.5rem,1fr]`}>
 					<GridHeader>
 						<div></div>
 						<div>Song Name</div>

@@ -4,6 +4,7 @@ import { useSongLogs } from "./slice";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
+import { tw } from "@/features/global/tw";
 
 export const SongLogGrid = () => {
 	const { songId, iso2formatted, songLogLoadClick, songLogForm } =
@@ -15,7 +16,7 @@ export const SongLogGrid = () => {
 	}
 
 	return (
-		<Grid gridClassName="grid-cols-[12rem,2fr]">
+		<Grid gridClassName={tw`grid-cols-[12rem,2fr]`}>
 			<GridHeader>
 				<div>Song Log Date Time</div>
 				<div>Notes</div>

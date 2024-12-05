@@ -5,6 +5,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { getKeys } from "@/features/global/getKeys";
+import { tw } from "@/features/global/tw";
 
 export const PlaylistLibrarySection = () => {
 	const {
@@ -17,7 +18,7 @@ export const PlaylistLibrarySection = () => {
 
 	return (
 		<section data-title="Playlist Library Section">
-			<Grid gridClassName="grid-cols-[1.5rem,3fr,1fr]">
+			<Grid gridClassName={tw`grid-cols-[1.5rem,3fr,1fr]`}>
 				<GridHeader>
 					<div></div>
 					<div>Playlist Name</div>
