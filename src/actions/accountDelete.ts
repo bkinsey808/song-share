@@ -37,35 +37,36 @@ export const accountDelete = async () => {
 		const { userDoc } = userDocResult;
 
 		const songIds = userDoc.songIds;
-		const deleteSongPromises = songIds.map((songId) =>
-			db.collection(Collection.SONGS).doc(songId).delete(),
-		);
-		const promiseSongsAllSettledResult =
-			await Promise.allSettled(deleteSongPromises);
+		console.log({ songIds });
+		// const deleteSongPromises = songIds.map((songId) =>
+		// 	db.collection(Collection.SONGS).doc(songId).delete(),
+		// );
+		// const promiseSongsAllSettledResult =
+		// 	await Promise.allSettled(deleteSongPromises);
+
+		// // check to see if any of the song deletes failed
+		// const failedSongDeletes = promiseSongsAllSettledResult.filter(
+		// 	(result) => result.status === "rejected",
+		// );
+		// if (failedSongDeletes.length > 0) {
+		// 	return actionErrorMessageGet("Failed to delete songs");
+		// }
+
+		// const playlistIds = userDoc.playlistIds;
+		// const deletePlaylistPromises = (playlistIds ?? []).map((playlistId) =>
+		// 	db.collection(Collection.PLAYLISTS).doc(playlistId).delete(),
+		// );
+		// const promisePlaylistsAllSettledResult = await Promise.allSettled(
+		// 	deletePlaylistPromises,
+		// );
 
 		// check to see if any of the song deletes failed
-		const failedSongDeletes = promiseSongsAllSettledResult.filter(
-			(result) => result.status === "rejected",
-		);
-		if (failedSongDeletes.length > 0) {
-			return actionErrorMessageGet("Failed to delete songs");
-		}
-
-		const playlistIds = userDoc.playlistIds;
-		const deletePlaylistPromises = (playlistIds ?? []).map((playlistId) =>
-			db.collection(Collection.PLAYLISTS).doc(playlistId).delete(),
-		);
-		const promisePlaylistsAllSettledResult = await Promise.allSettled(
-			deletePlaylistPromises,
-		);
-
-		// check to see if any of the song deletes failed
-		const failedPlaylistsDeletes = promisePlaylistsAllSettledResult.filter(
-			(result) => result.status === "rejected",
-		);
-		if (failedPlaylistsDeletes.length > 0) {
-			return actionErrorMessageGet("Failed to delete playlists");
-		}
+		// const failedPlaylistsDeletes = promisePlaylistsAllSettledResult.filter(
+		// 	(result) => result.status === "rejected",
+		// );
+		// if (failedPlaylistsDeletes.length > 0) {
+		// 	return actionErrorMessageGet("Failed to delete playlists");
+		// }
 
 		await db.collection(Collection.USERS).doc(uid).delete();
 		await db.collection(Collection.USERS_PUBLIC).doc(uid).delete();

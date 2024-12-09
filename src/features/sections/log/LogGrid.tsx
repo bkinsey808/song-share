@@ -19,7 +19,7 @@ export const LogGrid = () => {
 
 	return (
 		<div data-title="Log Grid">
-			<Grid gridClassName={tw`grid-cols-[12rem,2fr]`}>
+			<Grid gridClassName={tw`grid-cols-[8.5rem,2fr]`}>
 				<GridHeader>
 					<div>Log Date Time</div>
 					<div>Song Name</div>
@@ -39,7 +39,7 @@ export const LogGrid = () => {
 								})}
 								title="Open log"
 							>
-								{dateLocalFormatted}
+								<pre>{dateLocalFormatted}</pre>
 							</Button>
 							<Button
 								variant="outline"

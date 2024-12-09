@@ -30,7 +30,7 @@ export const SessionExpiredModal = () => {
 				<p>Your session has expired</p>
 			</ModalContent>
 			<ModalFooter>
-				<Button disabled={isSigningIn} onClick={signInClick}>
+				<Button disabled={isSigningIn} onClick={signInClick()}>
 					Sign In
 				</Button>
 				<Button

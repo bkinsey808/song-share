@@ -16,7 +16,7 @@ export const SongLogGrid = () => {
 	}
 
 	return (
-		<Grid gridClassName={tw`grid-cols-[12rem,2fr]`}>
+		<Grid gridClassName={tw`grid-cols-[8rem,2fr]`}>
 			<GridHeader>
 				<div>Song Log Date Time</div>
 				<div>Notes</div>
@@ -36,7 +36,7 @@ export const SongLogGrid = () => {
 							})}
 							title="Open Song Log"
 						>
-							{dateLocalFormatted}
+							<pre>{dateLocalFormatted}</pre>
 						</Button>
 						<Button
 							variant="outline"

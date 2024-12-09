@@ -25,6 +25,7 @@ export const accountDeleteConfirmClick = (set: AppSliceSet) => () => {
 		set({
 			isSignedIn: false,
 			deletingAccount: false,
+			sessionCookieData: null,
 		});
 		toast({ title: "Your account has been deleted" });
 		useAppStore.getState().setOpenAppModal(null);

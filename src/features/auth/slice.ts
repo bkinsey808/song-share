@@ -1,7 +1,4 @@
 import { Unsubscribe } from "firebase/auth";
-import { Firestore } from "firebase/firestore";
-import { MouseEventHandler } from "react";
-import { UseFormReturn } from "react-hook-form";
 import { StateCreator } from "zustand";
 
 import { accountDeleteConfirmClick } from "./accountDeleteConfirmClick";
@@ -10,7 +7,7 @@ import { sessionExtendClick } from "./sessionExtendClick";
 import { signInClick } from "./signInClick";
 import { signOutAndClearLocalClick } from "./signOutAndClearLocalClick";
 import { signOutClick } from "./signOutClick";
-import { RegistrationData, SessionCookieData } from "./types";
+import { SessionCookieData } from "./types";
 import { userSubscribe } from "./userSubscribe";
 import { userUnsubscribe } from "./userUnsubscribe";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
@@ -26,6 +23,7 @@ type AuthSliceState = {
 	deletingAccount: boolean;
 	userUnsubscribeFn: Unsubscribe | null;
 	userPublicUnsubscribeFn: Unsubscribe | null;
+	registerRedirectPath: null | string;
 };
 
 const authSliceInitialState: AuthSliceState = {
@@ -37,12 +35,13 @@ const authSliceInitialState: AuthSliceState = {
 	isSigningIn: false,
 	userUnsubscribeFn: null,
 	userPublicUnsubscribeFn: null,
+	registerRedirectPath: null,
 };
 
 export type AuthSlice = AuthSliceState & {
 	setLastSignInCheck: (lastSignInCheck: number) => void;
 	signIn: (sessionCookieData: SessionCookieData) => void;
-	signInClick: () => void;
+	signInClick: ReturnType<typeof signInClick>;
 	accountManageClick: () => void;
 	signOut: () => void;
 	signOutClick: () => void;

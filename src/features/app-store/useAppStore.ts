@@ -1,12 +1,19 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { FullScreenSlice, createFullScreenSlice } from "../full-screen/slice";
 import { AuthSlice, createAuthSlice } from "@/features/auth/slice";
 import {
 	FollowingSlice,
 	createFollowingSlice,
 } from "@/features/following/slice";
+import {
+	FullScreenSlice,
+	createFullScreenSlice,
+} from "@/features/full-screen/slice";
+import {
+	GetStartedSlice,
+	createGetStartedSlice,
+} from "@/features/get-started/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
 import { LogSlice, createLogSlice } from "@/features/sections/log/slice";
@@ -65,7 +72,8 @@ export type AppSlice = ModalSlice &
 	LogSlice &
 	SongLogSlice &
 	SongRequestsSlice &
-	QRSlice;
+	QRSlice &
+	GetStartedSlice;
 
 /** for security, these shall not be stored in localStorage */
 const omittedKeys: (keyof AppSlice)[] = [
@@ -108,6 +116,7 @@ export const useAppStore = create<AppSlice>()(
 			...createSongLogSlice(...a),
 			...createQRSlice(...a),
 			...createSongRequestsSlice(...a),
+			...createGetStartedSlice(...a),
 		}),
 		{
 			name: "app-store",

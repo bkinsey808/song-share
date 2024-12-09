@@ -1,5 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 
+import { wait } from "../global/wait";
+import { sessionWarningTimestampGet } from "./sessionWarningTimestampGet";
 import { RegistrationData } from "./types";
 import { register } from "@/actions/register";
 import { toast } from "@/components/ui/use-toast";
@@ -42,6 +44,8 @@ export const registerSubmit =
 					userIds,
 				});
 
+				console.log({ result });
+
 				switch (result.actionResultType) {
 					case actionResultType.ERROR:
 						const keys = result.fieldErrors
@@ -66,14 +70,30 @@ export const registerSubmit =
 					case actionResultType.SUCCESS:
 						set({
 							isSignedIn: true,
+							isSigningIn: false,
+							lastSignInCheck: 0,
 							sessionCookieData: {
 								...result.sessionCookieData,
 								roles: result.sessionCookieData.roles,
+								sessionWarningTimestamp: sessionWarningTimestampGet(),
 							},
 							usersActive: result.usersActive,
 						});
 						useAppStore.getState().setOpenAppModal(null);
 						toast({ title: "You are now registered" });
+
+						const { registerRedirectPath } = get();
+
+						if (registerRedirectPath) {
+							await wait(1000);
+
+							const { isSignedIn } = get();
+							console.log({ isSignedIn });
+							if (isSignedIn) {
+								window.location.href = registerRedirectPath;
+							}
+						}
+
 						break;
 				}
 			}

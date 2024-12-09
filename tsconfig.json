@@ -25,20 +25,6 @@
 		"baseUrl": ".",
 		"types": ["node", "jest", "@testing-library/jest-dom"]
 	},
-	"include": [
-		"next-env.d.ts",
-		"**/*.ts",
-		"**/*.tsx",
-		".next/types/**/*.ts",
-		"src/features/sections/community-old/CommunityUsersGrid.tsx.old",
-		"src/features/sections/community-old/communityUsersGridFormSubmit.ts.old",
-		"src/features/sections/community-old/communityUsersSubscribe.ts.old",
-		"src/features/sections/community-old/communityUsersUnsubscribe.ts.old",
-		"src/features/sections/community-old/consts.ts.old",
-		"src/features/sections/community-old/schemas.ts.old",
-		"src/features/sections/community-old/slice.ts.old",
-		"src/features/sections/community-old/types.ts.old",
-		"src/features/sections/community-old/SongLibrarySection.tsx.old"
-	],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }

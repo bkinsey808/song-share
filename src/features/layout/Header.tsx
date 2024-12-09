@@ -29,6 +29,8 @@ export const Header = () => {
 		fullScreenToggle,
 	} = useAppStore();
 
+	console.log({ isSignedIn, sessionCookieData });
+
 	const { fuid } = useParams();
 
 	const [following, setFollowing] = useState<string>();
@@ -115,7 +117,7 @@ export const Header = () => {
 							{sessionCookieData?.username}
 						</Button>
 					) : (
-						<Button variant="ghost" onClick={signInClick}>
+						<Button variant="ghost" onClick={signInClick()}>
 							Sign in
 						</Button>
 					)}

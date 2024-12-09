@@ -18,7 +18,7 @@ export const useWakeLock = () => {
 				setIsWakeLockRequested(true);
 			}
 		} catch (err: any) {
-			console.error(`Wake lock request failed: ${err.name}, ${err.message}`);
+			console.warn(`Wake lock request failed: ${err.name}, ${err.message}`);
 			// Optional: Retry logic or alert user
 		}
 	}, []);

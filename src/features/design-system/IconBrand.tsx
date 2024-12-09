@@ -4,7 +4,7 @@ const brand = process.env.NEXT_PUBLIC_BRAND ?? "Song Share";
 
 export const IconBrand = () => {
 	return (
-		<>
+		<span className="whitespace-nowrap">
 			<Image
 				className="mr-[0.1rem] mt-[-0.2rem] inline"
 				src="/favicon.svg"
@@ -13,6 +13,6 @@ export const IconBrand = () => {
 				height={20}
 			/>
 			{brand}
-		</>
+		</span>
 	);
 };

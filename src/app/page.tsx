@@ -1,7 +1,5 @@
+import { HomePage } from "@/features/home-page/HomePage";
+
 export default function Home() {
-	return (
-		<main className="justify-center">
-			This site is currently in closed private alpha. Please check back later.
-		</main>
-	);
+	return <HomePage />;
 }
