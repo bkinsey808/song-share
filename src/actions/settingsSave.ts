@@ -4,7 +4,7 @@ import { flatten } from "valibot";
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { serverParse } from "@/features/global/serverParse";
 import { SettingsSchema } from "@/features/sections/settings/schemas";
@@ -45,7 +45,7 @@ export const settingsSave = async ({ settings }: { settings: Settings }) => {
 		const { uid } = sessionCookieData;
 
 		await db
-			.collection(Collection.USERS)
+			.collection(collection.USERS)
 			.doc(uid)
 			.update({
 				timeZone: settings.useSystemTimeZone ? null : settings.timeZone,

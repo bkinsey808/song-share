@@ -29,8 +29,6 @@ export const Header = () => {
 		fullScreenToggle,
 	} = useAppStore();
 
-	console.log({ isSignedIn, sessionCookieData });
-
 	const { fuid } = useParams();
 
 	const [following, setFollowing] = useState<string>();

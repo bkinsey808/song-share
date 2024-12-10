@@ -2,7 +2,7 @@ import { Firestore, doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
 import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
@@ -38,7 +38,7 @@ export const userLibrarySubscribe =
 
 		newSubscriptionUserIds.forEach((subscribeUserId) => {
 			const unsubscribeFn = onSnapshot(
-				doc(db, Collection.USERS_PUBLIC, subscribeUserId),
+				doc(db, collection.USERS_PUBLIC, subscribeUserId),
 				(userPublicSnapshot) => {
 					if (userPublicSnapshot.metadata.fromCache) {
 						clearDb();

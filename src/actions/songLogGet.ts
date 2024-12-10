@@ -2,7 +2,7 @@
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
@@ -34,7 +34,7 @@ export const songLogGet = async ({
 		}
 
 		const songLogSnapshot = await db
-			.collection(Collection.SONG_LOGS)
+			.collection(collection.SONG_LOGS)
 			.doc(`${uid}_${songId}`)
 			.get();
 		if (!songLogSnapshot.exists) {

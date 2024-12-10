@@ -3,7 +3,7 @@
 import { sessionExtend } from "./sessionExtend";
 import { songLogGet } from "./songLogGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -47,11 +47,11 @@ export const songLogDelete = async ({
 
 		if (logIds.length === 0) {
 			await db
-				.collection(Collection.SONG_LOGS)
+				.collection(collection.SONG_LOGS)
 				.doc(`${uid}_${songId}`)
 				.delete();
 		} else {
-			await db.collection(Collection.SONG_LOGS).doc(`${uid}_${songId}`).update({
+			await db.collection(collection.SONG_LOGS).doc(`${uid}_${songId}`).update({
 				songId,
 				uid,
 				logIds: newLogIds,

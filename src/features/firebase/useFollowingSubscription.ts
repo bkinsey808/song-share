@@ -6,7 +6,7 @@ import { safeParse } from "valibot";
 
 import { useFirestoreClient } from "./useFirebaseClient";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
 import { getKeys } from "@/features/global/getKeys";
 import { sectionId } from "@/features/sections/consts";
@@ -60,7 +60,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		}
 
 		const userPublicUnsubscribe = onSnapshot(
-			doc(db, Collection.USERS_PUBLIC, fuid),
+			doc(db, collection.USERS_PUBLIC, fuid),
 			(userPublicSnapshot) => {
 				if (userPublicSnapshot.metadata.fromCache) {
 					clearDb();
@@ -91,7 +91,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					}
 
 					const songUnsubscribe = onSnapshot(
-						doc(db, Collection.SONGS, following.songActiveId),
+						doc(db, collection.SONGS, following.songActiveId),
 						(songSnapshot) => {
 							if (songSnapshot.metadata.fromCache) {
 								clearDb();
@@ -137,7 +137,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					}
 
 					const playlistUnsubscribe = onSnapshot(
-						doc(db, Collection.PLAYLISTS, following.playlistActiveId),
+						doc(db, collection.PLAYLISTS, following.playlistActiveId),
 						(playlistSnapshot) => {
 							if (playlistSnapshot.metadata.fromCache) {
 								clearDb();

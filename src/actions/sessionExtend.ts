@@ -10,7 +10,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
@@ -35,7 +35,7 @@ export const sessionExtend = async () => {
 		usersActive[uid] = jsDateTimeZone2iso(new Date(), "UTC") ?? "";
 		userPublicDoc.usersActive = usersActive;
 
-		await db.collection(Collection.USERS_PUBLIC).doc(uid).update({
+		await db.collection(collection.USERS_PUBLIC).doc(uid).update({
 			usersActive,
 		});
 

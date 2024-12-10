@@ -4,7 +4,7 @@ import { safeParse } from "valibot";
 import { useFirestoreClient } from "../firebase/useFirebaseClient";
 import { getKeys } from "../global/getKeys";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import {
 	UserDocSchema,
 	UserPublicDocSchema,
@@ -25,7 +25,7 @@ export const userSubscribe =
 			return;
 		}
 		const userUnsubscribeFn = onSnapshot(
-			doc(db, Collection.USERS, uid),
+			doc(db, collection.USERS, uid),
 			(userSnapshot) => {
 				if (userSnapshot.metadata.fromCache) {
 					clearDb();
@@ -86,7 +86,7 @@ export const userSubscribe =
 		);
 
 		const userPublicUnsubscribeFn = onSnapshot(
-			doc(db, Collection.USERS_PUBLIC, uid),
+			doc(db, collection.USERS_PUBLIC, uid),
 			(userPublicSnapshot) => {
 				if (!userPublicSnapshot.exists) {
 					console.warn(`User public ${uid} does not exist`);

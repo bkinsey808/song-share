@@ -1,4 +1,5 @@
 import { AboutButtonLabel } from "./about/AboutButtonLabel";
+import { AdminSection } from "./admin/AdminSection";
 import { QRButtonLabel } from "./qr/QRButtonLabel";
 import { UserLibraryTitle } from "./user-library/UserLibraryTitle";
 import { IconBrand } from "@/features/design-system/IconBrand";
@@ -46,6 +47,7 @@ export const sectionId = {
 	WHY_JOIN: "WHY_JOIN",
 	USER_LIBRARY: "USER_LIBRARY",
 	SONG_REQUESTS: "SONG_REQUESTS",
+	ADMIN: "ADMIN",
 } as const;
 
 export const sectionData: Sections = {
@@ -102,5 +104,11 @@ export const sectionData: Sections = {
 		title: UserLibraryTitle,
 		section: UserLibrarySection,
 		buttonLabel: UserLibraryButtonLabel,
+	},
+
+	[sectionId.ADMIN]: {
+		title: "Admin",
+		buttonLabel: "Admin",
+		section: AdminSection,
 	},
 };

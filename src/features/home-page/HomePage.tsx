@@ -22,20 +22,24 @@ export const HomePage = () => {
 						<h1 className="text-2xl font-bold">Two Easy Ways to Get Started</h1>
 						<div className="rounded-[1rem] border border-current p-[2rem]">
 							<h2 className="mb-[1.5rem] text-2xl">
-								<span className="mr-[1rem] inline-flex h-8 w-8 items-center justify-center rounded-full bg-[white]">
-									<span className="text-background">1</span>
+								<span className="flex items-center">
+									<span className="mr-[1rem] inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[white]">
+										<span className="text-background">1</span>
+									</span>
+									<span>Follow a Song Leader</span>
 								</span>
-								Follow a Song Leader
 							</h2>
 							<GetStartedForm />
 						</div>
 
 						<div className="rounded-[1rem] border border-current p-[2rem]">
 							<h2 className="mb-[1.5rem] text-2xl">
-								<span className="mr-[1rem] inline-flex h-8 w-8 items-center justify-center rounded-full bg-[white]">
-									<span className="text-background">2</span>
+								<span className="flex items-center">
+									<span className="mr-[1rem] inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[white]">
+										<span className="text-background">2</span>
+									</span>
+									<span>Register as a Song Leader</span>
 								</span>
-								Register as a Song Leader
 							</h2>
 							<p>
 								Or aspiring song leader. Registering an account can unlock

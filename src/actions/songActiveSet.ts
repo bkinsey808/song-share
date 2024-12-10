@@ -4,7 +4,7 @@ import { safeParse } from "valibot";
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
@@ -32,7 +32,7 @@ export const songActiveSet = async ({
 
 		if (playlistId) {
 			const playlistResult = await db
-				.collection(Collection.PLAYLISTS)
+				.collection(collection.PLAYLISTS)
 				.doc(playlistId)
 				.get();
 
@@ -57,7 +57,7 @@ export const songActiveSet = async ({
 		}
 
 		await db
-			.collection(Collection.USERS_PUBLIC)
+			.collection(collection.USERS_PUBLIC)
 			.doc(uid)
 			.update({
 				songActiveId: songId,

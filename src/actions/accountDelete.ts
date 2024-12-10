@@ -6,7 +6,7 @@ import { sessionCookieGet } from "./sessionCookieGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -68,9 +68,9 @@ export const accountDelete = async () => {
 		// 	return actionErrorMessageGet("Failed to delete playlists");
 		// }
 
-		await db.collection(Collection.USERS).doc(uid).delete();
-		await db.collection(Collection.USERS_PUBLIC).doc(uid).delete();
-		await db.collection(Collection.USER_NAMES).doc(username).delete();
+		await db.collection(collection.USERS).doc(uid).delete();
+		await db.collection(collection.USERS_PUBLIC).doc(uid).delete();
+		await db.collection(collection.USER_NAMES).doc(username).delete();
 
 		(await cookies()).delete(SESSION_COOKIE_NAME);
 

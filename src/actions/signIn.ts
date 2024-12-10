@@ -12,7 +12,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { SessionCookieData } from "@/features/auth/types";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
@@ -85,7 +85,7 @@ export const signIn = async ({
 		);
 
 		// write newSongIds, newPlaylistIds, newUserIds to the database
-		await db.collection(Collection.USERS).doc(uid).update({
+		await db.collection(collection.USERS).doc(uid).update({
 			songIds: newSongIds,
 			playlistIds: newPlaylistIds,
 			userIds: newUserIds,

@@ -1,6 +1,6 @@
 "use server";
 
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import {
 	UserDocSchema,
@@ -24,7 +24,7 @@ export const userActiveSet = async ({
 }) => {
 	// get the fuid user doc
 	const fuidUserDocSnapshot = await db
-		.collection(Collection.USERS)
+		.collection(collection.USERS)
 		.doc(fuid ?? uid)
 		.get();
 	if (!fuidUserDocSnapshot.exists) {
@@ -51,7 +51,7 @@ export const userActiveSet = async ({
 		fuidUserDoc.userIds = [uid];
 	}
 	await db
-		.collection(Collection.USERS)
+		.collection(collection.USERS)
 		.doc(fuid ?? uid)
 		.update({
 			userIds: fuidUserDoc.userIds,
@@ -59,7 +59,7 @@ export const userActiveSet = async ({
 
 	// get the fuid user public doc
 	const fuidUserPublicDocSnapshot = await db
-		.collection(Collection.USERS_PUBLIC)
+		.collection(collection.USERS_PUBLIC)
 		.doc(fuid ?? uid)
 		.get();
 	if (!fuidUserPublicDocSnapshot.exists) {
@@ -86,7 +86,7 @@ export const userActiveSet = async ({
 
 	// update the fuid user public doc
 	await db
-		.collection(Collection.USERS_PUBLIC)
+		.collection(collection.USERS_PUBLIC)
 		.doc(fuid ?? uid)
 		.update({ usersActive: fuidUserPublicDoc.usersActive });
 

@@ -1,7 +1,7 @@
 "use server";
 
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
@@ -16,7 +16,7 @@ import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 export const playlistGet = async (playlistId: string) => {
 	try {
 		const playlistDoc = await db
-			.collection(Collection.PLAYLISTS)
+			.collection(collection.PLAYLISTS)
 			.doc(playlistId)
 			.get();
 		if (!playlistDoc.exists) {

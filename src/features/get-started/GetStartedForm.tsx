@@ -47,7 +47,11 @@ export const GetStartedForm = () => {
 							<FormItem>
 								<FormLabel>Song Leader Username</FormLabel>
 								<FormControl>
-									<Input placeholder="Song Leader Username" {...field} />
+									<Input
+										placeholder="Song Leader Username"
+										{...field}
+										autoFocus={true}
+									/>
 								</FormControl>
 								<FormDescription>
 									Get started by entering the username of the song leader you

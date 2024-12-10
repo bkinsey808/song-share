@@ -1,7 +1,7 @@
 "use server";
 
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -15,7 +15,7 @@ export const userIdFromUsernameGet = async (username: string) => {
 	try {
 		// get the username from the userNames collection
 		const usernamesDoc = await db
-			.collection(Collection.USER_NAMES)
+			.collection(collection.USER_NAMES)
 			.doc(username)
 			.get();
 		if (!usernamesDoc.exists) {

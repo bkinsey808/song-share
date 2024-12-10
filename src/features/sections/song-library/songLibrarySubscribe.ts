@@ -3,7 +3,7 @@ import { safeParse } from "valibot";
 
 import { keyMap } from "../song/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { SongSchema } from "@/features/sections/song/schemas";
@@ -45,7 +45,7 @@ export const songLibrarySubscribe =
 		try {
 			songIdsToSubscribe.forEach((subscribeSongId) => {
 				const unsubscribeFn = onSnapshot(
-					doc(db, Collection.SONGS, subscribeSongId),
+					doc(db, collection.SONGS, subscribeSongId),
 					(songSnapshot) => {
 						if (songSnapshot.metadata.fromCache) {
 							clearDb();

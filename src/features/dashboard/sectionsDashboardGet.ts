@@ -1,9 +1,13 @@
+import { role } from "../auth/consts";
 import { AppSliceGet } from "@/features/app-store/types";
 import { sectionId } from "@/features/sections/consts";
 import { SectionId } from "@/features/sections/types";
 
 export const sectionsDashboardGet = (get: AppSliceGet) => () => {
-	const { isSignedIn } = get();
+	const { isSignedIn, sessionCookieData } = get();
+	const { roles } = sessionCookieData ?? {};
+
+	console.log({ sessionCookieData });
 
 	const leftSections: SectionId[] = [
 		sectionId.ABOUT,
@@ -17,6 +21,7 @@ export const sectionsDashboardGet = (get: AppSliceGet) => () => {
 		sectionId.PLAYLIST,
 		sectionId.PLAYLIST_LIBRARY,
 		...(isSignedIn ? [sectionId.LOG, sectionId.SETTINGS, sectionId.QR] : []),
+		...(roles?.includes(role.ADMIN) ? [sectionId.ADMIN] : []),
 	];
 
 	return [leftSections, rightSections];

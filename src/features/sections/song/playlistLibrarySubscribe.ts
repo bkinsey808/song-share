@@ -2,7 +2,7 @@ import { Firestore, doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
@@ -45,7 +45,7 @@ export const playlistLibrarySubscribe =
 
 		playlistIdsToSubscribe.forEach((subscribePlaylistId) => {
 			const unsubscribeFn = onSnapshot(
-				doc(db, Collection.PLAYLISTS, subscribePlaylistId),
+				doc(db, collection.PLAYLISTS, subscribePlaylistId),
 				(playlistSnapshot) => {
 					if (playlistSnapshot.metadata.fromCache) {
 						clearDb();

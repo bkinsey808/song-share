@@ -1,7 +1,7 @@
 "use server";
 
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
@@ -15,7 +15,7 @@ import { SongSchema } from "@/features/sections/song/schemas";
 
 export const songGet = async (songId: string) => {
 	try {
-		const songDoc = await db.collection(Collection.SONGS).doc(songId).get();
+		const songDoc = await db.collection(collection.SONGS).doc(songId).get();
 		if (!songDoc.exists) {
 			console.warn("Song not found");
 			return actionErrorMessageGet("Song not found");

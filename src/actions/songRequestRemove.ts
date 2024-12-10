@@ -5,7 +5,7 @@ import { safeParse } from "valibot";
 import { sessionExtend } from "./sessionExtend";
 import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
@@ -54,7 +54,7 @@ export const songRequestRemove = async ({
 			songRequests[songId] = newSongRequestUserIds;
 		}
 		await db
-			.collection(Collection.USERS_PUBLIC)
+			.collection(collection.USERS_PUBLIC)
 			.doc(fuid ?? uid)
 			.update({ songRequests });
 

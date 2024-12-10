@@ -1,4 +1,4 @@
-export const Collection = {
+export const collection = {
 	SONGS: "songs",
 	PLAYLISTS: "playlists",
 	USER_NAMES: "userNames",

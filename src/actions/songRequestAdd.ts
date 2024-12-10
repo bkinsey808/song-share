@@ -5,7 +5,7 @@ import { safeParse } from "valibot";
 import { sessionExtend } from "./sessionExtend";
 import { userPublicDocGet } from "./userPublicDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
@@ -47,7 +47,7 @@ export const songRequestAdd = async ({
 		songRequestUserIds.push(uid);
 		songRequests[songId] = songRequestUserIds;
 		await db
-			.collection(Collection.USERS_PUBLIC)
+			.collection(collection.USERS_PUBLIC)
 			.doc(fuid ?? uid)
 			.update({ songRequests });
 

@@ -6,7 +6,7 @@ import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
-import { Collection } from "@/features/firebase/consts";
+import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { serverParse } from "@/features/global/serverParse";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
@@ -48,11 +48,11 @@ const saveOrCreatePlaylist = async (
 		if (playlistResult.playlist.sharer !== uid) {
 			throw new Error("User does not own this playlist");
 		}
-		await db.collection(Collection.PLAYLISTS).doc(playlistId).update(playlist);
+		await db.collection(collection.PLAYLISTS).doc(playlistId).update(playlist);
 		return playlistId;
 	}
 
-	const result = await db.collection(Collection.PLAYLISTS).add(playlist);
+	const result = await db.collection(collection.PLAYLISTS).add(playlist);
 	playlistId = result.id;
 	return playlistId;
 };
@@ -105,7 +105,7 @@ export const playlistSave = async ({
 			: Array.from(new Set([...(userDoc.playlistIds ?? []), newPlaylistId]));
 
 		if (!playlistId) {
-			await db.collection(Collection.USERS).doc(uid).update({
+			await db.collection(collection.USERS).doc(uid).update({
 				playlistIds: newPlaylistIds,
 				playlistId: newPlaylistId,
 			});
