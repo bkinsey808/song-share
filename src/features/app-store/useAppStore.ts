@@ -16,6 +16,7 @@ import {
 } from "@/features/get-started/slice";
 import { type ModalSlice, createModalSlice } from "@/features/modal/slice";
 import { SectionSlice, createSectionSlice } from "@/features/section/slice";
+import { AdminSlice, createAdminSlice } from "@/features/sections/admin/slice";
 import { LogSlice, createLogSlice } from "@/features/sections/log/slice";
 import {
 	PlaylistLibrarySlice,
@@ -73,7 +74,8 @@ export type AppSlice = ModalSlice &
 	SongLogSlice &
 	SongRequestsSlice &
 	QRSlice &
-	GetStartedSlice;
+	GetStartedSlice &
+	AdminSlice;
 
 /** for security, these shall not be stored in localStorage */
 const omittedKeys: (keyof AppSlice)[] = [
@@ -117,6 +119,7 @@ export const useAppStore = create<AppSlice>()(
 			...createQRSlice(...a),
 			...createSongRequestsSlice(...a),
 			...createGetStartedSlice(...a),
+			...createAdminSlice(...a),
 		}),
 		{
 			name: "app-store",

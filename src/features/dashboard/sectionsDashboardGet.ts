@@ -7,8 +7,6 @@ export const sectionsDashboardGet = (get: AppSliceGet) => () => {
 	const { isSignedIn, sessionCookieData } = get();
 	const { roles } = sessionCookieData ?? {};
 
-	console.log({ sessionCookieData });
-
 	const leftSections: SectionId[] = [
 		sectionId.ABOUT,
 		sectionId.SONG,

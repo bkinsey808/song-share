@@ -4,6 +4,7 @@ import { Unsubscribe, doc, onSnapshot } from "firebase/firestore";
 import { useEffect } from "react";
 import { safeParse } from "valibot";
 
+import { collectionNameGet } from "./collectionNameGet";
 import { useFirestoreClient } from "./useFirebaseClient";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { collection } from "@/features/firebase/consts";
@@ -60,7 +61,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 		}
 
 		const userPublicUnsubscribe = onSnapshot(
-			doc(db, collection.USERS_PUBLIC, fuid),
+			doc(db, collectionNameGet(collection.USERS_PUBLIC), fuid),
 			(userPublicSnapshot) => {
 				if (userPublicSnapshot.metadata.fromCache) {
 					clearDb();
@@ -91,7 +92,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					}
 
 					const songUnsubscribe = onSnapshot(
-						doc(db, collection.SONGS, following.songActiveId),
+						doc(
+							db,
+							collectionNameGet(collection.SONGS),
+							following.songActiveId,
+						),
 						(songSnapshot) => {
 							if (songSnapshot.metadata.fromCache) {
 								clearDb();
@@ -137,7 +142,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					}
 
 					const playlistUnsubscribe = onSnapshot(
-						doc(db, collection.PLAYLISTS, following.playlistActiveId),
+						doc(
+							db,
+							collectionNameGet(collection.PLAYLISTS),
+							following.playlistActiveId,
+						),
 						(playlistSnapshot) => {
 							if (playlistSnapshot.metadata.fromCache) {
 								clearDb();

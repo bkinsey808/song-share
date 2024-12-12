@@ -5,6 +5,7 @@ import { flatten } from "valibot";
 import { sessionExtend } from "./sessionExtend";
 import { songLogGet } from "./songLogGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { serverParse } from "@/features/global/serverParse";
@@ -59,7 +60,7 @@ export const songLogSave = async (logFormValues: SongLogForm) => {
 		});
 		if (songLogResult.actionResultType === actionResultType.ERROR) {
 			await db
-				.collection(collection.SONG_LOGS)
+				.collection(collectionNameGet(collection.SONG_LOGS))
 				.doc(`${uid}_${logFormValues.songId}`)
 				.set({
 					songId: logFormValues.songId,
@@ -84,7 +85,7 @@ export const songLogSave = async (logFormValues: SongLogForm) => {
 			};
 
 			await db
-				.collection(collection.SONG_LOGS)
+				.collection(collectionNameGet(collection.SONG_LOGS))
 				.doc(`${uid}_${logFormValues.songId}`)
 				.update({
 					logIds: newLogIds,

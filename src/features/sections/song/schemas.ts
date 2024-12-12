@@ -3,7 +3,6 @@ import {
 	literal,
 	minLength,
 	nonEmpty,
-	number,
 	object,
 	optional,
 	pipe,

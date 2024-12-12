@@ -2,6 +2,7 @@
 
 import { sessionExtend } from "./sessionExtend";
 import { actionResultType } from "@/features/app-store/consts";
+import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
@@ -21,7 +22,7 @@ export const songIdSet = async ({ songId }: { songId: string }) => {
 		const sessionCookieData = sessionExtendResult.sessionCookieData;
 		const { uid } = sessionCookieData;
 
-		await db.collection(collection.USERS).doc(uid).update({
+		await db.collection(collectionNameGet(collection.USERS)).doc(uid).update({
 			songId,
 		});
 

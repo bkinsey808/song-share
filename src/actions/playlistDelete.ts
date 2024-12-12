@@ -4,6 +4,7 @@ import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
@@ -50,10 +51,13 @@ export const playlistDelete = async (playlistId: string) => {
 		}
 
 		// delete the playlist from the playlists collection
-		await db.collection(collection.PLAYLISTS).doc(playlistId).delete();
+		await db
+			.collection(collectionNameGet(collection.PLAYLISTS))
+			.doc(playlistId)
+			.delete();
 
 		// update user doc songs with the deleted song removed
-		await db.collection(collection.USERS).doc(uid).update({
+		await db.collection(collectionNameGet(collection.USERS)).doc(uid).update({
 			playlistIds: newPlaylistIds,
 		});
 

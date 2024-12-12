@@ -4,6 +4,7 @@ import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { userDocGet } from "./userDocGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
@@ -47,7 +48,10 @@ export const songDelete = async (songId: string) => {
 		const playlistIds = song.playlistIds;
 		const deletePlaylistPromises =
 			playlistIds?.map((playlistId) =>
-				db.collection(collection.PLAYLISTS).doc(playlistId).delete(),
+				db
+					.collection(collectionNameGet(collection.PLAYLISTS))
+					.doc(playlistId)
+					.delete(),
 			) ?? [];
 		const promiseResult = await Promise.allSettled(deletePlaylistPromises);
 		const failedPlaylistDeletes = promiseResult.filter(
@@ -59,7 +63,7 @@ export const songDelete = async (songId: string) => {
 
 		// delete from the songLogs collection
 		const songLogsQuerySnapshot = await db
-			.collection(collection.SONG_LOGS)
+			.collection(collectionNameGet(collection.SONG_LOGS))
 			.where("songId", "==", songId)
 			.get();
 
@@ -79,12 +83,15 @@ export const songDelete = async (songId: string) => {
 		}
 
 		// delete the song form the songs collection
-		await db.collection(collection.SONGS).doc(songId).delete();
+		await db
+			.collection(collectionNameGet(collection.SONGS))
+			.doc(songId)
+			.delete();
 
 		const songIds = userDocSongIds.filter((id) => id !== songId);
 
 		// update user doc songs with the deleted song removed
-		await db.collection(collection.USERS).doc(uid).update({
+		await db.collection(collectionNameGet(collection.USERS)).doc(uid).update({
 			songIds,
 		});
 

@@ -2,6 +2,7 @@
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
+import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { UserPublicDocSchema } from "@/features/firebase/schemas";
@@ -28,7 +29,7 @@ export const userPublicDocGet = async (uid?: string) => {
 		}
 
 		const userPublicDocSnapshot = await db
-			.collection(collection.USERS_PUBLIC)
+			.collection(collectionNameGet(collection.USERS_PUBLIC))
 			.doc(uid)
 			.get();
 		if (!userPublicDocSnapshot.exists) {

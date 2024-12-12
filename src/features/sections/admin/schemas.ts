@@ -1,8 +1,8 @@
-import { object, string } from "valibot";
+import { object } from "valibot";
 
-import { backUpFormFieldKey } from "./consts";
+import { backUpFormFieldData } from "./consts";
+import { formFieldSchemasGet } from "@/features/form/formFieldSchemasGet";
 
-export const BackUpFormSchema = object({
-	[backUpFormFieldKey.FROM_PREFIX]: string(),
-	[backUpFormFieldKey.TO_PREFIX]: string(),
-});
+export const BackUpFormSchema = object(
+	formFieldSchemasGet(backUpFormFieldData),
+);

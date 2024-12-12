@@ -1,4 +1,6 @@
-"server action";
+"use server";
+
+import { doc } from "firebase/firestore";
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
@@ -17,22 +19,21 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 		if (!fromPrefix || !toPrefix) {
 			return {
 				actionResultType: actionResultType.ERROR,
-				fieldErrors: {},
-				message: "Prefixes are required",
+				fieldErrors: { root: ["Prefixes are required"] },
 			};
 		}
 		if (toPrefix === fromPrefix) {
 			return {
 				actionResultType: actionResultType.ERROR,
-				fieldErrors: {},
-				message: "Cannot overwrite same prefix",
+				fieldErrors: { root: ["Cannot overwrite same prefix"] },
 			};
 		}
 		if (toPrefix === "production") {
 			return {
 				actionResultType: actionResultType.ERROR,
-				fieldErrors: {},
-				message: "Cannot overwrite production",
+				fieldErrors: {
+					[backUpFormFieldKey.TO_PREFIX]: ["Cannot overwrite production"],
+				},
 			};
 		}
 
@@ -41,8 +42,7 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 		if (cookieResult.actionResultType === actionResultType.ERROR) {
 			return {
 				actionResultType: actionResultType.ERROR,
-				fieldErrors: {},
-				message: "Session expired",
+				fieldErrors: { root: ["Session expired"] },
 			};
 		}
 
@@ -62,13 +62,21 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 			};
 		}
 
+		console.log(collectionNames);
+
 		const collectionPromises = collectionNames.map((collectionName) => {
-			const fromCollection = `${fromPrefix}_${collectionName}`;
-			const toCollection = `${toPrefix}_${collectionName}`;
+			const collectionNameWithoutPrefix = collectionName.replace(
+				`${fromPrefix}_`,
+				"",
+			);
+			const fromCollection = collectionName;
+
+			const toCollection = `${toPrefix}_${collectionNameWithoutPrefix}`;
 			return db
 				.collection(fromCollection)
 				.get()
 				.then((snapshot) => {
+					console.log(toCollection);
 					const promises = snapshot.docs.map((doc) => {
 						const data = doc.data();
 						return db.collection(toCollection).doc(doc.id).set(data);
@@ -83,8 +91,7 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 		if (failedCollections.length > 0) {
 			return {
 				actionResultType: actionResultType.ERROR,
-				fieldErrors: {},
-				message: "Failed to backup collections",
+				fieldErrors: { root: ["Failed to backup collections"] },
 			};
 		}
 
@@ -93,8 +100,7 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 		console.error(error);
 		return {
 			actionResultType: actionResultType.ERROR,
-			fieldErrors: {},
-			message: "Error backing up database",
+			fieldErrors: { root: ["Error backing up database"] },
 		};
 	}
 };

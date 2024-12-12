@@ -12,6 +12,7 @@ import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
 import { RegistrationData, SessionCookieData } from "@/features/auth/types";
+import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { UserDoc, UserPublicDoc } from "@/features/firebase/types";
@@ -54,7 +55,7 @@ export const register = async ({
 		const username = registrationData[registerFormFieldKey.Username];
 
 		const usernameSnapshot = await db
-			.collection(collection.USER_NAMES)
+			.collection(collectionNameGet(collection.USER_NAMES))
 			.doc(username)
 			.get();
 		if (usernameSnapshot.exists) {
@@ -92,9 +93,18 @@ export const register = async ({
 			sessionWarningTimestamp: sessionWarningTimestampGet(),
 		};
 
-		await db.collection(collection.USERS).doc(uid).set(userDoc);
-		await db.collection(collection.USERS_PUBLIC).doc(uid).set(userPublicDoc);
-		await db.collection(collection.USER_NAMES).doc(username).set({ uid });
+		await db
+			.collection(collectionNameGet(collection.USERS))
+			.doc(uid)
+			.set(userDoc);
+		await db
+			.collection(collectionNameGet(collection.USERS_PUBLIC))
+			.doc(uid)
+			.set(userPublicDoc);
+		await db
+			.collection(collectionNameGet(collection.USER_NAMES))
+			.doc(username)
+			.set({ uid });
 
 		const sessionToken = await sessionTokenEncode(sessionCookieData);
 
