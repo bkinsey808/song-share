@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
+import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
 import { FormEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -25,7 +25,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
-// import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 import { Grid } from "@/features/grid/Grid";
@@ -46,6 +45,8 @@ export const SongLibraryGrid = () => {
 		songLibraryGridFormSubmit,
 		songLibraryGridFormSet,
 		isSignedIn,
+		songDeleteClick,
+		isSharer,
 	} = useAppStore();
 
 	const form = useForm<SongLibraryGridForm>({
@@ -147,7 +148,7 @@ export const SongLibraryGrid = () => {
 			>
 				<Grid
 					fixedClassName={tw`grid-cols-[1.5rem,15rem]`}
-					scrollingClassName={tw`grid-cols-[2rem,10rem]`}
+					scrollingClassName={tw`grid-cols-[2rem,4rem]`}
 				>
 					<GridHeader>
 						<div></div>
@@ -179,7 +180,7 @@ export const SongLibraryGrid = () => {
 					</GridHeader>
 					{songIds.map((songId) => (
 						<GridRow key={songId}>
-							<div className="align-center grid justify-center">
+							<div className="grid items-center justify-center">
 								<RadioGroupItem
 									className="self-center"
 									id={songId}
@@ -202,7 +203,23 @@ export const SongLibraryGrid = () => {
 								</Button>
 							</div>
 							<div>{songKeyGet(songId)}</div>
-							<div></div>
+							<div>
+								{isSharer(songId) ? (
+									<Button
+										type="button"
+										variant="outline"
+										size="icon"
+										className="size-8 shrink-0"
+										onClick={songDeleteClick(songId)}
+									>
+										<TrashIcon
+											className="size-4 text-destructive"
+											aria-hidden="true"
+										/>
+										<span className="sr-only">Delete Song</span>
+									</Button>
+								) : null}
+							</div>
 						</GridRow>
 					))}
 				</Grid>

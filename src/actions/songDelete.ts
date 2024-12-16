@@ -86,7 +86,7 @@ export const songDelete = async (songId: string) => {
 		await db
 			.collection(collectionNameGet(collection.SONGS))
 			.doc(songId)
-			.delete();
+			.update({ deleted: true });
 
 		const songIds = userDocSongIds.filter((id) => id !== songId);
 

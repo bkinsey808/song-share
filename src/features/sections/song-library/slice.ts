@@ -103,7 +103,7 @@ export const useSortedFilteredSongIds = () =>
 		const filteredSongIds = state.songIds.filter((songId) => {
 			const song = state.songLibrary[songId];
 
-			if (!song) {
+			if (!song || song.deleted) {
 				return false;
 			}
 

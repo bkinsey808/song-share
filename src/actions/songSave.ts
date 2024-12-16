@@ -92,9 +92,7 @@ export const songSave = async ({
 		const { userDoc } = userDocResult;
 
 		const newSongId = await saveOrCreateSong(songId, uid, song);
-		const newSongIds = songId
-			? userDoc.songIds
-			: Array.from(new Set([...userDoc.songIds, newSongId]));
+		const newSongIds = Array.from(new Set([...userDoc.songIds, newSongId]));
 
 		await db.collection(collectionNameGet(collection.USERS)).doc(uid).update({
 			songIds: newSongIds,

@@ -19,6 +19,7 @@ export const songLibrarySubscribe =
 		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
 	}) => {
 		const { songIds, songUnsubscribeFns, songLibrary } = get();
+		const deletedSongIds = [] as string[];
 		const songSubscriptionsSongIds = getKeys(songUnsubscribeFns);
 		const songIdsToUnsubscribe = songSubscriptionsSongIds.filter(
 			(unsubscribeSongId) => !songIds.includes(unsubscribeSongId),
@@ -68,6 +69,7 @@ export const songLibrarySubscribe =
 							return;
 						}
 						const song = songParseResult.output;
+
 						const { songId, songForm, songLibrarySongSet } = get();
 
 						songLibrarySongSet({

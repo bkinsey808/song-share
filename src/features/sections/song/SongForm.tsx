@@ -24,6 +24,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
@@ -47,6 +48,8 @@ export const SongForm = () => {
 		songRequestRemoveClick,
 		songRequestPending,
 		songKeyGet,
+		songActiveId,
+		songActiveClick,
 	} = useAppStore();
 
 	const song = useSong();
@@ -82,22 +85,41 @@ export const SongForm = () => {
 			<div>Form song key: {form.getValues().songKey}</div>
 			<Form {...form}>
 				<form onSubmit={songSubmit}>
-					<FormField
-						name="songName"
-						control={form.control}
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<Input
-										placeholder="Song Name"
-										{...field}
-										disabled={form.formState.isSubmitting}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<div className="mr-[0.1rem] flex flex-wrap gap-[0.5rem]">
+						{songId && isSignedIn ? (
+							<RadioGroup
+								name="songActiveId"
+								id="songActiveId"
+								value={songActiveId ?? ""}
+							>
+								<RadioGroupItem
+									className="self-center"
+									id={songId}
+									value={songId}
+									onClick={songActiveClick({
+										songId,
+									})}
+								/>
+							</RadioGroup>
+						) : null}
+
+						<FormField
+							name="songName"
+							control={form.control}
+							render={({ field }) => (
+								<FormItem className="flex-1">
+									<FormControl>
+										<Input
+											placeholder="Song Name"
+											{...field}
+											disabled={form.formState.isSubmitting}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
 					<SectionAccordion
 						sectionId={sectionId.LYICS}
@@ -225,7 +247,7 @@ export const SongForm = () => {
 							{playlistSongAddButtonShouldShow() ? (
 								<Button
 									disabled={playlistSongAdding}
-									onClick={playlistSongAddClick}
+									onClick={playlistSongAddClick()}
 								>
 									Add Song to Playlist
 								</Button>
@@ -249,7 +271,7 @@ export const SongForm = () => {
 							) : null}
 
 							{songId ? (
-								<Button variant="destructive" onClick={songDeleteClick}>
+								<Button variant="destructive" onClick={songDeleteClick(songId)}>
 									Delete Song
 								</Button>
 							) : null}

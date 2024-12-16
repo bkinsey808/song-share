@@ -2,16 +2,21 @@ import { toast } from "@/components/ui/use-toast";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const playlistSongAddClick =
-	(get: AppSliceGet, set: AppSliceSet) => () => {
+	(get: AppSliceGet, set: AppSliceSet) =>
+	({ songId, playlistId }: { songId?: string; playlistId?: string }) =>
+	() => {
 		set({ playlistSongAdding: true });
 		const {
-			songId,
-			playlistId,
+			songId: songIdCurrent,
+			playlistId: playlistIdCurrent,
 			playlistForm,
 			playlistGridForm,
 			playlistIsUnsavedSet,
 		} = get();
 		try {
+			songId = songId ?? songIdCurrent ?? undefined;
+			playlistId = playlistId ?? playlistIdCurrent ?? undefined;
+
 			if (!songId || !playlistId) {
 				toast({
 					variant: "destructive",
@@ -22,7 +27,7 @@ export const playlistSongAddClick =
 
 			const playlist = get().playlistLibrary[playlistId];
 
-			if (!songId || !playlistId || !playlist) {
+			if (!playlist) {
 				toast({
 					variant: "destructive",
 					title: "Cannot add song to playlist",

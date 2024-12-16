@@ -14,7 +14,7 @@ export const songDeleteConfirmClick =
 			songLogForm,
 			songDefaultGet,
 			songLibrary,
-			songId,
+			songIdToDelete,
 			setOpenAppModal,
 		} = get();
 
@@ -26,7 +26,7 @@ export const songDeleteConfirmClick =
 		songForm?.reset(songDefaultGet());
 		songLogForm?.reset(songLogDefaultGet());
 
-		if (!songId) {
+		if (!songIdToDelete) {
 			toast({
 				variant: "destructive",
 				title: "No song selected",
@@ -35,7 +35,7 @@ export const songDeleteConfirmClick =
 			return;
 		}
 
-		const result = await songDelete(songId);
+		const result = await songDelete(songIdToDelete);
 		if (result.actionResultType === actionResultType.ERROR) {
 			toast({
 				variant: "destructive",
@@ -45,13 +45,14 @@ export const songDeleteConfirmClick =
 			return;
 		}
 
-		delete songLibrary[songId];
+		delete songLibrary[songIdToDelete];
 
 		set({
 			songId: null,
 			songLibrary,
 			songDeleting: false,
 			songIds: result.songIds,
+			songIdToDelete: null,
 		});
 		setOpenAppModal(null);
 	};

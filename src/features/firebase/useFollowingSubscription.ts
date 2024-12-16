@@ -121,11 +121,11 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 							if (following.songActiveId) {
 								songLibrary[following.songActiveId] = song;
 							}
-							songIdSet(following.songActiveId);
+							songIdSet(song.deleted ? null : following.songActiveId);
 
-							songActiveIdSet(following.songActiveId);
+							songActiveIdSet(song.deleted ? null : following.songActiveId);
 
-							if (following.songActiveId) {
+							if (following.songActiveId && !song.deleted) {
 								songLibraryAddSongIds([following.songActiveId]);
 							}
 						},

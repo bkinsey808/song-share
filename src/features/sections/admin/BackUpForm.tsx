@@ -36,8 +36,6 @@ export const BackUpForm = () => {
 		}
 	}, [form, backUpFormSet]);
 
-	console.log({ errors: form.formState.errors });
-
 	return (
 		<Form {...form}>
 			{form.formState.errors["root"] && (

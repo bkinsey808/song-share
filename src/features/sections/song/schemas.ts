@@ -1,5 +1,6 @@
 import {
 	array,
+	boolean,
 	literal,
 	minLength,
 	nonEmpty,
@@ -14,7 +15,7 @@ import { keys, scaleDegrees } from "./consts";
 import { getKeys, getValues } from "@/features/global/getKeys";
 
 const keyValueSchema = union(getValues(keys).map((key) => literal(key)));
-const keyKeySchema = union(getKeys(keys).map((key) => literal(key)));
+const keyKeySchema = union([...getKeys(keys), ""].map((key) => literal(key)));
 const scaleDegreeValueSchema = union(
 	getValues(scaleDegrees).map((key) => literal(key)),
 );
@@ -32,6 +33,7 @@ export const SongSchema = object({
 	playlistIds: optional(array(string())),
 	songKey: optional(keyValueSchema),
 	songScale: optional(array(scaleDegreeValueSchema)),
+	deleted: optional(boolean()),
 });
 
 export const SongFormSchema = object({

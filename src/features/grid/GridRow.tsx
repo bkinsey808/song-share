@@ -29,7 +29,7 @@ export const GridRow = ({ className, section, children }: GridRowProps) => {
 		<>
 			{section === "fixed" &&
 				fixedChildren.map((child, index) => (
-					<div key={index} role="cell" className={cellClassName}>
+					<div key={index} role="cell" className={cn("grid", cellClassName)}>
 						{child}
 					</div>
 				))}
@@ -37,7 +37,7 @@ export const GridRow = ({ className, section, children }: GridRowProps) => {
 			{section === "scrolling" &&
 				scrollingColumnCount > 0 &&
 				scrollingChildren.map((child, index) => (
-					<div key={index} role="cell" className={cellClassName}>
+					<div key={index} role="cell" className={cn("grid", cellClassName)}>
 						{child}
 					</div>
 				))}

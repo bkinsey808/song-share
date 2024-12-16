@@ -5,7 +5,9 @@ import { getKeys } from "@/features/global/getKeys";
 
 export const SongLibraryTitle = () => {
 	const { songLibrary } = useAppStore();
-	const numberOfSongs = getKeys(songLibrary).length;
+	const numberOfSongs = getKeys(songLibrary).filter(
+		(songId) => !songLibrary[songId].deleted,
+	).length;
 
 	return (
 		<span>
