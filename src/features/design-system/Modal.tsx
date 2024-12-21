@@ -9,9 +9,9 @@ import {
 import { cn } from "@/lib/utils";
 
 type ModalProps = ComponentProps<"dialog"> & {
-	open: boolean;
-	setOpen: (isOpen: boolean) => void;
-	heading?: string;
+	readonly open: boolean;
+	readonly setOpen: (isOpen: boolean) => void;
+	readonly heading?: string;
 };
 
 export const Modal = ({
@@ -112,7 +112,11 @@ export const Modal = ({
 	);
 };
 
-export const ModalContent = ({ children }: { children: ReactNode }) => {
+export const ModalContent = ({
+	children,
+}: {
+	readonly children: ReactNode;
+}) => {
 	return (
 		<div className="h-full flex-grow overflow-auto">
 			<section className="flex flex-col gap-[2rem] p-[1rem]">
@@ -122,7 +126,11 @@ export const ModalContent = ({ children }: { children: ReactNode }) => {
 	);
 };
 
-export const ModalFooter = ({ children }: { children?: ReactNode }) => {
+export const ModalFooter = ({
+	children,
+}: {
+	readonly children?: ReactNode;
+}) => {
 	return (
 		<footer
 			id="modal-footer"

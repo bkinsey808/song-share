@@ -203,8 +203,8 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 					const songIds = getKeys(following.songRequests);
 					songLibraryAddSongIds(songIds);
 					const userIds = songIds.reduce((acc, songId) => {
-						const userIds = following.songRequests?.[songId] ?? [];
-						return [...acc, ...userIds];
+						const newUserIds = following.songRequests?.[songId] ?? [];
+						return [...acc, ...newUserIds];
 					}, [] as string[]);
 					userIdsAdd(userIds);
 				}

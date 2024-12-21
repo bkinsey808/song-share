@@ -39,7 +39,7 @@ export const useFirestoreClient = () => {
 			setInitialized(false); // Set initialized to false when initialization fails
 			return null;
 		}
-	}, [db, initialized]);
+	}, [db]);
 
 	useEffect(() => {
 		if (!initialized) {

@@ -16,7 +16,7 @@ const GridContext = createContext<GridContextValue>({} as GridContextValue);
 export const Grid = (
 	props: ButtonHTMLAttributes<HTMLDivElement> & {
 		/** gets applied to both the grid header and grid rows */
-		gridClassName: string;
+		readonly gridClassName: string;
 	},
 ) => {
 	return (

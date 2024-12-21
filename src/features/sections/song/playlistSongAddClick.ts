@@ -3,19 +3,17 @@ import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const playlistSongAddClick =
 	(get: AppSliceGet, set: AppSliceSet) =>
-	({ songId, playlistId }: { songId?: string; playlistId?: string }) =>
+	(options?: { songId?: string; playlistId?: string }) =>
 	() => {
 		set({ playlistSongAdding: true });
-		const {
-			songId: songIdCurrent,
-			playlistId: playlistIdCurrent,
-			playlistForm,
-			playlistGridForm,
-			playlistIsUnsavedSet,
-		} = get();
+		const { playlistForm, playlistGridForm, playlistIsUnsavedSet } = get();
+		const songIdCurrent = get().songId;
+		const playlistIdCurrent = get().playlistId;
 		try {
-			songId = songId ?? songIdCurrent ?? undefined;
-			playlistId = playlistId ?? playlistIdCurrent ?? undefined;
+			const {
+				songId = songIdCurrent ?? undefined,
+				playlistId = playlistIdCurrent ?? undefined,
+			} = options ?? {};
 
 			if (!songId || !playlistId) {
 				toast({

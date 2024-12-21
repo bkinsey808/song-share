@@ -10,7 +10,7 @@ type CheckboxProps = Omit<
 	ComponentProps<typeof CheckboxPrimitive.Root>,
 	"value"
 > & {
-	value: boolean | undefined;
+	readonly value: boolean | undefined;
 };
 
 export const Checkbox = ({
@@ -26,6 +26,7 @@ export const Checkbox = ({
 			)}
 			{...props}
 			checked={value ?? false}
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
 			value={(value ?? false) as any}
 			onClick={(e) => {
 				e.stopPropagation();

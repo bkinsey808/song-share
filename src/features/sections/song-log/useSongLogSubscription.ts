@@ -17,5 +17,5 @@ export const useSongLogSubscription = () => {
 		const db = getDb();
 		songLogSubscribe({ uid, db, clearDb });
 		return songLogUnsubscribe;
-	}, [songLogSubscribe, songLogUnsubscribe, uid, initialized]);
+	}, [songLogSubscribe, songLogUnsubscribe, uid, initialized, clearDb, getDb]);
 };

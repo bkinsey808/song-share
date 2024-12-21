@@ -38,7 +38,7 @@ export const BackUpForm = () => {
 
 	return (
 		<Form {...form}>
-			{form.formState.errors["root"] && (
+			{form.formState.errors.root && (
 				<div className="text-red-500">{form.formState.errors.root.message}</div>
 			)}
 			<form onSubmit={backUpFormSubmit}>

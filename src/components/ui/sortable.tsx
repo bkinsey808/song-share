@@ -62,7 +62,7 @@ type SortableProps<TData extends { id: UniqueIdentifier }> = {
 	 *   { id: 2, name: 'Item 2' },
 	 * ]}
 	 */
-	value: TData[];
+	readonly value: TData[];
 
 	/**
 	 * An optional callback function that is called when the order of the data items changes.
@@ -70,7 +70,7 @@ type SortableProps<TData extends { id: UniqueIdentifier }> = {
 	 * @example
 	 * onValueChange={(items) => console.log(items)}
 	 */
-	onValueChange?: (items: TData[]) => void;
+	readonly onValueChange?: (items: TData[]) => void;
 
 	/**
 	 * An optional callback function that is called when an item is moved.
@@ -80,14 +80,14 @@ type SortableProps<TData extends { id: UniqueIdentifier }> = {
 	 * @example
 	 * onMove={(event) => console.log(`Item moved from index ${event.activeIndex} to index ${event.overIndex}`)}
 	 */
-	onMove?: (event: { activeIndex: number; overIndex: number }) => void;
+	readonly onMove?: (event: { activeIndex: number; overIndex: number }) => void;
 
 	/**
 	 * A collision detection strategy that will be used to determine the closest sortable item.
 	 * @default closestCenter
 	 * @type DndContextProps["collisionDetection"]
 	 */
-	collisionDetection?: DndContextProps["collisionDetection"];
+	readonly collisionDetection?: DndContextProps["collisionDetection"];
 
 	/**
 	 * An array of modifiers that will be used to modify the behavior of the sortable component.
@@ -95,21 +95,21 @@ type SortableProps<TData extends { id: UniqueIdentifier }> = {
 	 * [restrictToVerticalAxis, restrictToParentElement]
 	 * @type Modifier[]
 	 */
-	modifiers?: DndContextProps["modifiers"];
+	readonly modifiers?: DndContextProps["modifiers"];
 
 	/**
 	 * A sorting strategy that will be used to determine the new order of the data items.
 	 * @default verticalListSortingStrategy
 	 * @type SortableContextProps["strategy"]
 	 */
-	strategy?: SortableContextProps["strategy"];
+	readonly strategy?: SortableContextProps["strategy"];
 
 	/**
 	 * Specifies the axis for the drag-and-drop operation. It can be "vertical", "horizontal", or "both".
 	 * @default "vertical"
 	 * @type "vertical" | "horizontal" | "mixed"
 	 */
-	orientation?: "vertical" | "horizontal" | "mixed";
+	readonly orientation?: "vertical" | "horizontal" | "mixed";
 
 	/**
 	 * An optional React node that is rendered on top of the sortable component.
@@ -119,7 +119,7 @@ type SortableProps<TData extends { id: UniqueIdentifier }> = {
 	 * @example
 	 * overlay={<Skeleton className="w-full h-8" />}
 	 */
-	overlay?: React.ReactNode | null;
+	readonly overlay?: React.ReactNode | null;
 } & DndContextProps;
 
 export const Sortable = <TData extends { id: UniqueIdentifier }>({
@@ -189,7 +189,7 @@ const dropAnimationOpts: DropAnimation = {
 };
 
 type SortableOverlayProps = {
-	activeId?: UniqueIdentifier | null;
+	readonly activeId?: UniqueIdentifier | null;
 } & React.ComponentPropsWithRef<typeof DragOverlay>;
 
 export const SortableOverlay = ({
@@ -237,22 +237,22 @@ type SortableItemProps = {
 	 * @example "item-1"
 	 * @type UniqueIdentifier
 	 */
-	value: UniqueIdentifier;
+	readonly value: UniqueIdentifier;
 
 	/**
 	 * Specifies whether the item should act as a trigger for the drag-and-drop action.
 	 * @default false
 	 * @type boolean | undefined
 	 */
-	asTrigger?: boolean;
+	readonly asTrigger?: boolean;
 
 	/**
 	 * Merges the item's props into its immediate child.
 	 * @default false
 	 * @type boolean | undefined
 	 */
-	asChild?: boolean;
-	ref?: React.ComponentProps<"div">["ref"] | undefined;
+	readonly asChild?: boolean;
+	readonly ref?: React.ComponentProps<"div">["ref"] | undefined;
 } & SlotProps;
 
 export const SortableItem = ({
@@ -308,7 +308,7 @@ export const SortableItem = ({
 };
 
 type SortableDragHandleProps = {
-	withHandle?: boolean;
+	readonly withHandle?: boolean;
 } & ButtonProps;
 
 export const SortableDragHandle = ({

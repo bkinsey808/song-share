@@ -1,5 +1,3 @@
-import { string } from "valibot";
-
 import { getKeys } from "@/features/global/getKeys";
 
 export const keys = {
@@ -22,7 +20,7 @@ export const keys = {
 	B: 11,
 } as const;
 
-export const keyMap = new Map();
+export const keyMap = new Map<(typeof keys)[keyof typeof keys], string>();
 keyMap.set(0, "C");
 keyMap.set(1, "C#");
 keyMap.set(-1, "Db");
@@ -40,8 +38,6 @@ keyMap.set(9, "A");
 keyMap.set(10, "A#");
 keyMap.set(-10, "Bb");
 keyMap.set(11, "B");
-
-
 
 export const scaleDegrees = {
 	"1": 0,

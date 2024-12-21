@@ -1,4 +1,4 @@
-import { Firestore, doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { keyMap } from "../song/consts";
@@ -19,7 +19,6 @@ export const songLibrarySubscribe =
 		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
 	}) => {
 		const { songIds, songUnsubscribeFns, songLibrary } = get();
-		const deletedSongIds = [] as string[];
 		const songSubscriptionsSongIds = getKeys(songUnsubscribeFns);
 		const songIdsToUnsubscribe = songSubscriptionsSongIds.filter(
 			(unsubscribeSongId) => !songIds.includes(unsubscribeSongId),
@@ -80,7 +79,9 @@ export const songLibrarySubscribe =
 						if (songId === subscribeSongId) {
 							songForm?.reset?.({
 								...song,
-								songKeyString: keyMap.get(song.songKey),
+								...(song.songKey !== undefined && {
+									songKeyString: keyMap.get(song.songKey),
+								}),
 							});
 						}
 					},

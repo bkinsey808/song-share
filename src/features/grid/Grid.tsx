@@ -5,9 +5,9 @@ import { GridHeader } from "./GridHeader";
 import { GridRow } from "./GridRow";
 
 type GridProps = {
-	fixedClassName: string;
-	scrollingClassName?: string | undefined;
-	children: React.ReactNode;
+	readonly fixedClassName: string;
+	readonly scrollingClassName?: string | undefined;
+	readonly children: React.ReactNode;
 };
 
 export const Grid = ({

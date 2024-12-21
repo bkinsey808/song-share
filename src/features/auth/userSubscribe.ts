@@ -1,4 +1,4 @@
-import { Firestore, doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { collectionNameGet } from "../firebase/collectionNameGet";
@@ -110,7 +110,6 @@ export const userSubscribe =
 					songActiveId,
 					playlistActiveId,
 					username,
-					usersActive,
 					songRequests,
 				} = userPublicParseResult.output;
 				const { sessionCookieData, fuid } = get();

@@ -7,9 +7,9 @@ import { useGridContext } from "./GridContext";
 import { cn } from "@/lib/utils";
 
 type GridRowProps = {
-	className?: string;
-	children: React.ReactNode;
-	section?: "fixed" | "scrolling";
+	readonly className?: string;
+	readonly children: React.ReactNode;
+	readonly section?: "fixed" | "scrolling";
 };
 
 export const GridRow = ({ className, section, children }: GridRowProps) => {

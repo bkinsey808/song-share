@@ -1,7 +1,5 @@
 "use server";
 
-import { doc } from "firebase/firestore";
-
 import { sessionCookieGet } from "./sessionCookieGet";
 import { actionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -62,8 +60,6 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 			};
 		}
 
-		console.log(collectionNames);
-
 		const collectionPromises = collectionNames.map((collectionName) => {
 			const collectionNameWithoutPrefix = collectionName.replace(
 				`${fromPrefix}_`,
@@ -76,17 +72,16 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 				.collection(fromCollection)
 				.get()
 				.then((snapshot) => {
-					console.log(toCollection);
-					const promises = snapshot.docs.map((doc) => {
-						const data = doc.data();
-						return db.collection(toCollection).doc(doc.id).set(data);
+					const promises = snapshot.docs.map((innerDoc) => {
+						const data = innerDoc.data();
+						return db.collection(toCollection).doc(innerDoc.id).set(data);
 					});
 					return Promise.all(promises);
 				});
 		});
 		const result = await Promise.allSettled(collectionPromises);
 		const failedCollections = result.filter(
-			(result) => result.status === "rejected",
+			(innerResult) => innerResult.status === "rejected",
 		);
 		if (failedCollections.length > 0) {
 			return {

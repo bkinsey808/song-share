@@ -1,10 +1,4 @@
-import {
-	Firestore,
-	collection,
-	onSnapshot,
-	query,
-	where,
-} from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { SongLogSchema } from "./schemas";

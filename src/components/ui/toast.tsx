@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 export const ToastProvider = ToastPrimitives.Provider;
 
 type ToastProviderProps = ComponentProps<typeof ToastPrimitives.Provider> & {
-	className?: string;
+	readonly className?: string;
 };
 
 export const ToastViewport = ({ className, ...props }: ToastProviderProps) => (

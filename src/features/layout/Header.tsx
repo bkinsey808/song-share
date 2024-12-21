@@ -36,7 +36,7 @@ export const Header = () => {
 		if (typeof fuid === "string") {
 			setFollowing(usernameGet(fuid));
 		}
-	}, [fuid, userLibrary]);
+	}, [fuid, userLibrary, usernameGet]);
 
 	if (fuid && typeof fuid !== "string") {
 		return null;

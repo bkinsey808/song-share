@@ -28,7 +28,7 @@ const defaultValues: RegistrationData = {
 export const RegisterForm = ({
 	setOpen,
 }: {
-	setOpen: (open: boolean) => void;
+	readonly setOpen: (open: boolean) => void;
 }) => {
 	const form = useForm<RegistrationData>({
 		resolver: valibotResolver(RegistrationSchema),

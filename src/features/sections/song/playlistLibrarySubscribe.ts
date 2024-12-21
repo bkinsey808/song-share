@@ -1,4 +1,4 @@
-import { Firestore, doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { safeParse } from "valibot";
 
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";

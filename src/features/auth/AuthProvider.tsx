@@ -14,7 +14,11 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { useInterval } from "@/features/global/useInterval";
 import { appModal } from "@/features/modal/consts";
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const AuthProvider = ({
+	children,
+}: {
+	readonly children: ReactNode;
+}) => {
 	const {
 		openAppModal,
 		setOpenAppModal,

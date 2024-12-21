@@ -5,7 +5,7 @@ import { toast } from "@/components/ui/use-toast";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const getStartedSubmit =
-	(get: AppSliceGet, set: AppSliceSet) =>
+	(get: AppSliceGet, _set: AppSliceSet) =>
 	async (e: FormEvent<HTMLFormElement>) => {
 		console.log("here");
 		e.preventDefault();

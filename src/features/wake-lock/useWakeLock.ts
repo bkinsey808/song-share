@@ -17,15 +17,17 @@ export const useWakeLock = () => {
 
 				setIsWakeLockRequested(true);
 			}
-		} catch (err: any) {
-			console.warn(`Wake lock request failed: ${err.name}, ${err.message}`);
+		} catch (err: unknown) {
+			if (err instanceof Error) {
+				console.warn(`Wake lock request failed: ${err.name}, ${err.message}`);
+			}
 			// Optional: Retry logic or alert user
 		}
 	}, []);
 
-	const releaseWakeLock = useCallback(() => {
+	const releaseWakeLock = useCallback(async () => {
 		if (wakeLockRef.current) {
-			wakeLockRef.current.release();
+			await wakeLockRef.current.release();
 			wakeLockRef.current = null;
 			setIsWakeLockRequested(false);
 			console.log("Wake lock was manually released");
@@ -38,7 +40,7 @@ export const useWakeLock = () => {
 			if (document.visibilityState === "visible") {
 				console.log("Page became visible again, requesting wake lock");
 				if (wakeLockRef.current === null) {
-					requestWakeLock();
+					void requestWakeLock();
 				}
 			} else if (document.visibilityState === "hidden") {
 				console.log("Page became hidden, wake lock may be released");
@@ -58,7 +60,7 @@ export const useWakeLock = () => {
 		// Cleanup on unmount
 		return () => {
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
-			releaseWakeLock();
+			void releaseWakeLock();
 		};
 	}, [requestWakeLock, releaseWakeLock]);
 

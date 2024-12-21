@@ -2,7 +2,11 @@ import { ReactNode } from "react";
 
 import { Header } from "@/features/layout/Header";
 
-export const PageContent = ({ children }: { children?: ReactNode }) => {
+export const PageContent = ({
+	children,
+}: {
+	readonly children?: ReactNode;
+}) => {
 	return (
 		<>
 			<Header />

@@ -34,11 +34,12 @@ export const PlaylistGrid = () => {
 	const playlist = usePlaylist();
 
 	const defaultValues = useMemo(() => {
+		const playlistSongs = playlist?.songs ?? [];
 		const defaultPlaylistForm: PlaylistGridForm = {
-			songs: playlist?.songs ?? [],
+			songs: playlistSongs,
 		};
 		return defaultPlaylistForm;
-	}, [playlistId]);
+	}, [playlist]);
 
 	const form = useForm<PlaylistGridForm>({
 		resolver: valibotResolver(PlaylistGridFormSchema),

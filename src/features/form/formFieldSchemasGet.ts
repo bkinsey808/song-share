@@ -3,12 +3,14 @@ import { BaseSchema } from "valibot";
 import { getKeys } from "../global/getKeys";
 
 export const formFieldSchemasGet = <T>(
-	data: T extends {
-		[key: string]: {
+	data: T extends Record<
+		string,
+		{
 			label: string;
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			schema: BaseSchema<any, any, any>;
-		};
-	}
+		}
+	>
 		? T
 		: never,
 ) =>

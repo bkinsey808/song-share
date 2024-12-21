@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // import { KeySection } from "../key/KeySection.tsx.ignore";
@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 // import { ScaleSection } from "../scale/ScaleSection.tsx.ignore";
 // import { ScaleTitle } from "../scale/ScaleTitle.tsx.ignore";
 import { SongDeleteConfirmModal } from "./SongDeleteConfirmModal";
-import { keyMap, keyOptions, keyOptionsWithNone, keys } from "./consts";
+import { keyOptionsWithNone, keys } from "./consts";
 import { SongFormSchema } from "./schemas";
 import { useSong } from "./slice";
 import { SongForm as SongFormType } from "./types";

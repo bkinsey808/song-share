@@ -6,8 +6,8 @@ import { useAutoResizeTextarea } from "./use-auto-resize-textarea";
 import { cn } from "@/lib/utils";
 
 export type TextareaProps = {
-	autoResize?: boolean;
-	ref?: React.ComponentProps<"textarea">["ref"] | undefined;
+	readonly autoResize?: boolean;
+	readonly ref?: React.ComponentProps<"textarea">["ref"] | undefined;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export const Textarea = ({

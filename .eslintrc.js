@@ -1,8 +1,5 @@
-const { parse } = require("path");
-
 module.exports = {
 	extends: [
-		"plugin:react-hooks/recommended",
 		"eslint:recommended",
 		"plugin:@typescript-eslint/recommended-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
@@ -37,6 +34,7 @@ module.exports = {
 		"destructuring/in-params": "off",
 		"no-case-declarations": "off",
 		"no-shadow": "error",
+		"react/prefer-read-only-props": "error",
 	},
 	overrides: [
 		{

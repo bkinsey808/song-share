@@ -16,11 +16,11 @@ export const SectionAccordion = ({
 	sectionId,
 	children,
 }: {
-	title: ReactNode;
-	buttonLabel?: ReactNode;
-	buttonVariant?: Parameters<typeof Button>[0]["variant"];
-	sectionId: SectionId;
-	children: ReactNode;
+	readonly title: ReactNode;
+	readonly buttonLabel?: ReactNode;
+	readonly buttonVariant?: Parameters<typeof Button>[0]["variant"];
+	readonly sectionId: SectionId;
+	readonly children: ReactNode;
 }) => {
 	const { sectionToggle } = useAppStore();
 	const isOpen = useOpenSection(sectionId);

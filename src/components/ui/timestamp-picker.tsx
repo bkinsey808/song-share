@@ -5,9 +5,9 @@ import { appDateTimeFormat } from "@/features/time-zone/consts";
 import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
 type TimestampPickerProps = {
-	value: string | undefined;
-	onChange: (timestamp: string | undefined) => void;
-	timeZone: string; // Add timezone prop
+	readonly value: string | undefined;
+	readonly onChange: (timestamp: string | undefined) => void;
+	readonly timeZone: string; // Add timezone prop
 } & Omit<ComponentProps<typeof DateTimePicker>, "value" | "onChange">;
 
 export const TimestampPicker = ({

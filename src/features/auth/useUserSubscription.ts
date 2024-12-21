@@ -16,5 +16,5 @@ export const useUserSubscription = () => {
 		const db = getDb();
 		userSubscribe({ uid, db, clearDb });
 		return userUnsubscribe;
-	}, [userSubscribe, userUnsubscribe, uid, initialized]);
+	}, [userSubscribe, userUnsubscribe, uid, initialized, getDb, clearDb]);
 };

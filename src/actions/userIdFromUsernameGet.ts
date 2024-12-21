@@ -4,7 +4,9 @@ import { actionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { UserNamesSchema } from "@/features/firebase/schemas";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
+import { serverParse } from "@/features/global/serverParse";
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
@@ -27,7 +29,12 @@ export const userIdFromUsernameGet = async (username: string) => {
 			return actionErrorMessageGet("Username data invalid");
 		}
 
-		const userId = userNamesData.uid;
+		const userNamesResult = serverParse(UserNamesSchema, userNamesData);
+		if (!userNamesResult.success) {
+			return actionErrorMessageGet("Username data invalid");
+		}
+
+		const userId = userNamesResult.output.uid;
 		if (!userId) {
 			return actionErrorMessageGet("User ID not found");
 		}

@@ -1,7 +1,7 @@
 export const PlaylistIcon = ({
 	props,
 }: {
-	props?: React.SVGProps<SVGSVGElement>;
+	readonly props?: React.SVGProps<SVGSVGElement>;
 }) => {
 	const { height = 15, width = 15, ...otherProps } = props ?? {};
 	return (

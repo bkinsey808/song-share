@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 import { GridProvider, useGridContext } from "./GridContext";
@@ -22,7 +22,7 @@ const TestComponent = () => {
 
 describe("GridContext", () => {
 	it("provides the correct context values", () => {
-		const { getByTestId } = render(
+		render(
 			<GridProvider
 				fixedClassName="grid-cols-[12rem,1fr]"
 				scrollingClassName="grid-cols-[2fr,2fr]"
@@ -31,13 +31,13 @@ describe("GridContext", () => {
 			</GridProvider>,
 		);
 
-		expect(getByTestId("fixedClassName").textContent).toBe(
+		expect(screen.getByTestId("fixedClassName")).toHaveTextContent(
 			"grid-cols-[12rem,1fr]",
 		);
-		expect(getByTestId("scrollingClassName").textContent).toBe(
+		expect(screen.getByTestId("scrollingClassName")).toHaveTextContent(
 			"grid-cols-[2fr,2fr]",
 		);
-		expect(getByTestId("fixedColumnCount").textContent).toBe("2");
-		expect(getByTestId("scrollingColumnCount").textContent).toBe("2");
+		expect(screen.getByTestId("fixedColumnCount")).toHaveTextContent("2");
+		expect(screen.getByTestId("scrollingColumnCount")).toHaveTextContent("2");
 	});
 });

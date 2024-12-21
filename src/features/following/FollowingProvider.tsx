@@ -7,12 +7,14 @@ import { useFollowingSubscription } from "@/features/firebase/useFollowingSubscr
 import { useLibrarySubscription } from "@/features/firebase/useLibrarySubscription";
 import { useUserLibrarySubscription } from "@/features/sections/user-library/useUserLibrarySubscription";
 
-export const FollowingProvider = ({ children }: { children: ReactNode }) => {
+export const FollowingProvider = ({
+	children,
+}: {
+	readonly children: ReactNode;
+}) => {
 	const params = useParams();
-	const fuid = params.fuid;
-	if (typeof fuid === "string") {
-		useFollowingSubscription(fuid);
-	}
+	const fuid = params.fuid as string;
+	useFollowingSubscription(fuid);
 	useLibrarySubscription();
 	useUserLibrarySubscription();
 

@@ -32,8 +32,9 @@ export const AboutSection = () => {
 						Signing in to allows you to save your songs into your song library
 						across sessions and across browsers. Same with playlists and users.
 						Signing into an account gives you access to additional settings
-						suchtimezone and a feature called "Wake Lock". If set, Wake Lock
-						will keep your device from going to sleep while this app is open.
+						suchtimezone and a feature called &quot;Wake Lock&quot;. If set,
+						Wake Lock will keep your device from going to sleep while this app
+						is open.
 					</p>
 				</div>
 			</SectionAccordion>

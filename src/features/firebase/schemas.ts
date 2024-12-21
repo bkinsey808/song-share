@@ -32,3 +32,7 @@ export const UserDocSchema = object({
 	userIds: optional(array(string())),
 	fullScreenActive: optional(boolean()),
 });
+
+export const UserNamesSchema = object({
+	uid: string(),
+});

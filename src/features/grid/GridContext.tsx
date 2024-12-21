@@ -12,9 +12,9 @@ type GridContextValue = {
 const GridContext = createContext<GridContextValue>({} as GridContextValue);
 
 export const GridProvider: React.FC<{
-	fixedClassName: string;
-	scrollingClassName?: string | undefined;
-	children: ReactNode;
+	readonly fixedClassName: string;
+	readonly scrollingClassName?: string | undefined;
+	readonly children: ReactNode;
 }> = ({ fixedClassName, scrollingClassName, children }) => {
 	const fixedColumnCount = useMemo(() => {
 		const match = fixedClassName.match(/\[([^\]]+)\]/);

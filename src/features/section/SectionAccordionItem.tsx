@@ -14,9 +14,9 @@ export const SectionAccordionItem = ({
 	title,
 	children,
 }: {
-	sectionId: SectionId;
-	title: ReactNode;
-	children: ReactNode;
+	readonly sectionId: SectionId;
+	readonly title: ReactNode;
+	readonly children: ReactNode;
 }) => {
 	return (
 		<AccordionItem

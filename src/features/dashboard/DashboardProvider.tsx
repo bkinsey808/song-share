@@ -9,7 +9,11 @@ import { useLibrarySubscription } from "@/features/firebase/useLibrarySubscripti
 import { ConfirmModal } from "@/features/modal/ConfirmModal";
 import { useSongLogSubscription } from "@/features/sections/song-log/useSongLogSubscription";
 
-export const DashboardProvider = ({ children }: { children: ReactNode }) => {
+export const DashboardProvider = ({
+	children,
+}: {
+	readonly children: ReactNode;
+}) => {
 	const { fuid, setFuid } = useAppStore();
 
 	useEffect(() => {

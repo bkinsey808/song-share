@@ -17,6 +17,7 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
 export const PlaylistForm = () => {
@@ -24,12 +25,13 @@ export const PlaylistForm = () => {
 	const {
 		playlistId,
 		playlistSubmit,
-		playlistIsUnsaved,
 		playlistIsUnsavedSet,
 		playlistNewClick,
 		playlistFormSet,
 		playlistDeleteClick,
 		playlistDefaultGet,
+		playlistActiveId,
+		playlistActiveClick,
 	} = useAppStore();
 
 	const playlist = usePlaylist();
@@ -61,18 +63,35 @@ export const PlaylistForm = () => {
 			{/* Saved? {playlistIsUnsaved ? "No" : "Yes"} */}
 			<Form {...form}>
 				<form onSubmit={playlistSubmit}>
-					<FormField
-						control={form.control}
-						name="playlistName"
-						render={({ field }) => (
-							<FormItem>
-								<FormControl>
-									<Input placeholder="Playlist Name" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
+					<div className="mr-[0.1rem] flex flex-wrap gap-[0.5rem]">
+						{playlistId && isSignedIn ? (
+							<RadioGroup
+								name="playlistActiveId"
+								id="playlistActiveId"
+								value={playlistActiveId ?? ""}
+							>
+								<RadioGroupItem
+									className="self-center"
+									id={playlistId}
+									value={playlistId}
+									onClick={playlistActiveClick(playlistId)}
+								/>
+							</RadioGroup>
+						) : null}
+
+						<FormField
+							control={form.control}
+							name="playlistName"
+							render={({ field }) => (
+								<FormItem>
+									<FormControl>
+										<Input placeholder="Playlist Name" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</div>
 
 					{isSignedIn ? (
 						<div className="flex flex-wrap gap-[0.5rem]">

@@ -13,21 +13,21 @@ const fullScreenSliceInitialState: FullScreenSliceState = {
 };
 
 export type FullScreenSlice = FullScreenSliceState & {
-	fullScreenToggle: (newFullScreenActive?: boolean) => boolean;
+	fullScreenToggle: (newFullScreenActive?: boolean) => Promise<boolean>;
 };
 
 export const createFullScreenSlice: AppFullScreenSlice = (set, get) => {
 	sliceResetFns.add(() => set(fullScreenSliceInitialState));
 	return {
 		...fullScreenSliceInitialState,
-		fullScreenToggle: (active) => {
+		fullScreenToggle: async (active) => {
 			const { fullScreenActive } = get();
 			const newFullScreenActive = active ?? !fullScreenActive;
 			const fullScreenEl = document.fullscreenElement;
 			if (!newFullScreenActive || fullScreenEl) {
-				document.exitFullscreen();
+				await document.exitFullscreen();
 			} else {
-				document.documentElement.requestFullscreen();
+				await document.documentElement.requestFullscreen();
 			}
 			set({
 				fullScreenActive: newFullScreenActive,

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export interface IsOnlineValues {
+export type IsOnlineValues = {
 	error: null | string;
 	isOffline: boolean;
 	isOnline: boolean;
-}
+};
 
 const MISSING_BROWSER_ERROR =
 	"useIsOnline only works in a browser environment.";
@@ -14,14 +14,6 @@ const missingWindow = typeof window === "undefined";
 const missingNavigator = typeof navigator === "undefined";
 
 const useIsOnline = (): IsOnlineValues => {
-	if (missingWindow || missingNavigator) {
-		return {
-			error: MISSING_BROWSER_ERROR,
-			isOnline: false,
-			isOffline: false,
-		};
-	}
-
 	const [isOnline, setOnlineStatus] = useState(window.navigator.onLine);
 
 	useEffect(() => {
@@ -35,6 +27,14 @@ const useIsOnline = (): IsOnlineValues => {
 			window.removeEventListener("offline", toggleOnlineStatus);
 		};
 	}, [isOnline]);
+
+	if (missingWindow || missingNavigator) {
+		return {
+			error: MISSING_BROWSER_ERROR,
+			isOnline: false,
+			isOffline: false,
+		};
+	}
 
 	return {
 		error: null,

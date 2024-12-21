@@ -2,7 +2,7 @@
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import * as React from "react";
-import { ComponentProps, RefObject, useState } from "react";
+import { ComponentProps, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,15 +21,15 @@ import {
 import { cn } from "@/lib/utils";
 
 type ComboboxProps = {
-	options: { value: string; label: string }[];
-	onChange: (newValue: string) => void;
-	label: string;
-	value?: string | undefined;
-	valueDefault?: string;
-	search: string;
-	setSearch: (searchValue: string) => void;
-	disabled?: boolean;
-	ref?: ComponentProps<typeof Button>["ref"];
+	readonly options: { value: string; label: string }[];
+	readonly onChange: (newValue: string) => void;
+	readonly label: string;
+	readonly value?: string | undefined;
+	readonly valueDefault?: string;
+	readonly search: string;
+	readonly setSearch: (searchValue: string) => void;
+	readonly disabled?: boolean;
+	readonly ref?: ComponentProps<typeof Button>["ref"];
 };
 
 export const Combobox = ({

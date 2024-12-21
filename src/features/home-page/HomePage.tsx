@@ -3,7 +3,6 @@ import { GetStartedForm } from "../get-started/GetStartedForm";
 import { PageColumn } from "../layout/PageColumn";
 import { AboutBlurb } from "../sections/about/AboutBlurb";
 import { RegisterSignInButton } from "./RegisterSignInButton";
-import { Button } from "@/components/ui/button";
 
 export const HomePage = () => {
 	return (
