@@ -19,3 +19,4 @@
 - [ ] tool to check validity of firestore data
 - [ ] test env
 - [ ] visible unsaved form state
+- [ ] products and donations

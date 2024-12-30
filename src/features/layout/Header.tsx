@@ -2,6 +2,8 @@
 
 import {
 	EnterFullScreenIcon,
+	EyeClosedIcon,
+	EyeOpenIcon,
 	LayersIcon,
 	PaperPlaneIcon,
 	QuestionMarkCircledIcon,
@@ -10,6 +12,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { useWakeLockContext } from "../wake-lock/WakeLockContext";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { PlaylistIcon } from "@/features/design-system/PlaylistIcon";
@@ -37,6 +40,8 @@ export const Header = () => {
 			setFollowing(usernameGet(fuid));
 		}
 	}, [fuid, userLibrary, usernameGet]);
+
+	const { isWakeLockActive, requestWakeLock } = useWakeLockContext();
 
 	if (fuid && typeof fuid !== "string") {
 		return null;
@@ -130,15 +135,26 @@ export const Header = () => {
 						</span>
 					</Button>
 				</span>
-				{fuid ? (
-					<span className="ml-[0.3rem] flex gap-[0.2rem] text-[0.7rem]">
-						<span className="mt-[0.1rem]">
-							<PaperPlaneIcon />
+				<span className="flex justify-end gap-[0.2rem] pr-[0.5rem]">
+					{fuid ? (
+						<span className="ml-[0.3rem] flex gap-[0.2rem] text-[0.7rem]">
+							<span className="mt-[0.1rem]">
+								<PaperPlaneIcon />
+							</span>
+							{following}
+							{/* <Button>Stop Following</Button> */}
 						</span>
-						{following}
-						{/* <Button>Stop Following</Button> */}
-					</span>
-				) : null}
+					) : null}
+					{isWakeLockActive ? (
+						<div title="Wake Lock is Active">
+							<EyeOpenIcon />
+						</div>
+					) : (
+						<div title="Wake Lock is not Active">
+							<EyeClosedIcon onClick={requestWakeLock} />
+						</div>
+					)}
+				</span>
 			</div>
 		</header>
 	);

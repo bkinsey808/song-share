@@ -47,7 +47,7 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 		const collections = await db.listCollections();
 		const collectionNames = collections
 			.map((collection) => collection.id)
-			.filter((collectionName) => collectionName.startsWith(`${fromPrefix}`));
+			.filter((collectionName) => collectionName.startsWith(fromPrefix));
 
 		if (collectionNames.length === 0) {
 			return {

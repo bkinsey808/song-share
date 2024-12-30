@@ -7,6 +7,7 @@ import { useWakeLock } from "./useWakeLock";
 type WakeLockContextProps = {
 	requestWakeLock: () => Promise<void>;
 	releaseWakeLock: () => Promise<void>;
+	isWakeLockActive: boolean;
 };
 
 const WakeLockContext = createContext<WakeLockContextProps | undefined>(
@@ -18,7 +19,7 @@ export const WakeLockProvider = ({
 }: {
 	readonly children: ReactNode;
 }) => {
-	const { requestWakeLock, releaseWakeLock } = useWakeLock();
+	const { requestWakeLock, releaseWakeLock, isWakeLockActive } = useWakeLock();
 
 	useEffect(() => {
 		void requestWakeLock();
@@ -28,7 +29,9 @@ export const WakeLockProvider = ({
 	}, [requestWakeLock, releaseWakeLock]);
 
 	return (
-		<WakeLockContext.Provider value={{ requestWakeLock, releaseWakeLock }}>
+		<WakeLockContext.Provider
+			value={{ requestWakeLock, releaseWakeLock, isWakeLockActive }}
+		>
 			{children}
 		</WakeLockContext.Provider>
 	);
