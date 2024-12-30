@@ -8,7 +8,6 @@
 - [ ] song requests
 - [ ] chat
 - [ ] sitemap
-- [ ] full screen mode (fix)
 - [ ] advanced mode
 - [ ] song key
 - [ ] secure client side firestore

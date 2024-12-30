@@ -10,15 +10,19 @@ export const timestamp2iso = (
 	}
 	const date = timestamp.toDate();
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-	const dt = DateTime.fromJSDate(date).setZone(timeZone);
-
-	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	const dt = DateTime.fromJSDate(date);
 	if (!dt.isValid) {
 		throw new Error("Invalid DateTime object");
 	}
 
+	const zonedDt = dt.setZone(timeZone);
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+	if (!zonedDt.isValid) {
+		throw new Error("Invalid Time Zone");
+	}
+
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-	const isoString: string | null = dt.toISO();
+	const isoString: string | null = zonedDt.toISO();
 
 	if (isoString === null) {
 		throw new Error("Failed to convert DateTime object to ISO string");
