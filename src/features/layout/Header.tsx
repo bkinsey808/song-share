@@ -2,6 +2,7 @@
 
 import {
 	EnterFullScreenIcon,
+	ExitFullScreenIcon,
 	EyeClosedIcon,
 	EyeOpenIcon,
 	LayersIcon,
@@ -10,8 +11,9 @@ import {
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 
+import { useFullScreen } from "../full-screen/FullScreenContext";
 import { useWakeLockContext } from "../wake-lock/WakeLockContext";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -29,7 +31,6 @@ export const Header = () => {
 		usernameGet,
 		userLibrary,
 		sectionToggle,
-		fullScreenToggle,
 	} = useAppStore();
 
 	const { fuid } = useParams();
@@ -42,6 +43,15 @@ export const Header = () => {
 	}, [fuid, userLibrary, usernameGet]);
 
 	const { isWakeLockActive, requestWakeLock } = useWakeLockContext();
+	const { isFullScreen, requestFullScreen, exitFullScreen } = useFullScreen();
+
+	const refElement = useRef<HTMLElement | null>(null);
+	// set ref element here
+	useEffect(() => {
+		if (!refElement.current) {
+			refElement.current = document.documentElement;
+		}
+	}, [refElement]);
 
 	if (fuid && typeof fuid !== "string") {
 		return null;
@@ -114,7 +124,7 @@ export const Header = () => {
 				</div>
 			</span>
 			<div className="ml-[2rem]">
-				<span className="flex">
+				<span className="flex justify-end">
 					{isSignedIn ? (
 						<Button variant="ghost" onClick={accountManageClick}>
 							{sessionCookieData?.username}
@@ -124,16 +134,34 @@ export const Header = () => {
 							Sign in
 						</Button>
 					)}
-					<Button
-						className="ml-[-0.3rem]"
-						variant="ghost"
-						title="Full screen toggle"
-						onClick={() => fullScreenToggle()}
-					>
-						<span className="mt-[0.1rem]">
-							<EnterFullScreenIcon />
-						</span>
-					</Button>
+					{isFullScreen ? (
+						<Button
+							className="ml-[-0.3rem]"
+							variant="ghost"
+							title="Exit full screen"
+							onClick={() => exitFullScreen()}
+						>
+							<span className="mt-[0.1rem]">
+								<ExitFullScreenIcon />
+							</span>
+						</Button>
+					) : (
+						<Button
+							className="ml-[-0.3rem]"
+							variant="ghost"
+							title="Full screen toggle"
+							onClick={async () => {
+								if (refElement === null) {
+									return;
+								}
+								await requestFullScreen(refElement as RefObject<HTMLElement>);
+							}}
+						>
+							<span className="mt-[0.1rem]">
+								<EnterFullScreenIcon />
+							</span>
+						</Button>
+					)}
 				</span>
 				<span className="flex justify-end gap-[0.2rem] pr-[0.5rem]">
 					{fuid ? (

@@ -6,6 +6,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/features/auth/AuthProvider";
 import "@/features/firebase/firebaseClient";
+import { FullScreenProvider } from "@/features/full-screen/FullScreenContext";
 import { FaviconLinks } from "@/features/layout/FaviconLinks";
 import { WakeLockProvider } from "@/features/wake-lock/WakeLockContext";
 
@@ -41,7 +42,9 @@ export default function RootLayout({
 			</head>
 			<body className={`dark ${geistSans.variable} ${geistMono.variable}`}>
 				<AuthProvider>
-					<WakeLockProvider>{children}</WakeLockProvider>
+					<WakeLockProvider>
+						<FullScreenProvider>{children}</FullScreenProvider>
+					</WakeLockProvider>
 				</AuthProvider>
 				<Toaster />
 			</body>

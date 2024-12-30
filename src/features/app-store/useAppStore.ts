@@ -7,10 +7,6 @@ import {
 	createFollowingSlice,
 } from "@/features/following/slice";
 import {
-	FullScreenSlice,
-	createFullScreenSlice,
-} from "@/features/full-screen/slice";
-import {
 	GetStartedSlice,
 	createGetStartedSlice,
 } from "@/features/get-started/slice";
@@ -63,7 +59,6 @@ export type AppSlice = ModalSlice &
 	AuthSlice &
 	SettingsSlice &
 	TimeZoneSlice &
-	FullScreenSlice &
 	SongSlice &
 	PlaylistSlice &
 	SongLibrarySlice &
@@ -113,7 +108,6 @@ export const useAppStore = create<AppSlice>()(
 			...createFollowingSlice(...a),
 			...createSettingsSlice(...a),
 			...createTimeZoneSlice(...a),
-			...createFullScreenSlice(...a),
 			...createLogSlice(...a),
 			...createSongLogSlice(...a),
 			...createQRSlice(...a),

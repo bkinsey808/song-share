@@ -10,6 +10,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * - `requestWakeLock`: A function to request a wake lock.
  * - `releaseWakeLock`: A function to release the wake lock.
  * - `isWakeLockRequested`: A boolean indicating whether a wake lock is currently requested.
+ * - `isWakeLockActive`: A boolean indicating whether a wake lock is currently active.
  *
  * @example
  * const { requestWakeLock, releaseWakeLock, isWakeLockRequested } = useWakeLock();
