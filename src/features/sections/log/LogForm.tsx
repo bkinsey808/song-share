@@ -1,5 +1,5 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect, useMemo, useState } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
@@ -16,10 +16,10 @@ import { TimestampPicker } from "@/components/ui/timestamp-picker";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 import { SongLogFormSchema } from "@/features/sections/song-log/schemas";
-import { songLogDefaultGet } from "@/features/sections/song-log/songLogDefaultGet";
+import { songLogFormDefaultGet } from "@/features/sections/song-log/songLogFormDefaultGet";
 import { SongLogForm as SongLogFormType } from "@/features/sections/song-log/types";
 
-export const LogForm = () => {
+export const LogForm = (): JSX.Element => {
 	const {
 		timeZoneGet,
 		logFormSet,
@@ -44,7 +44,7 @@ export const LogForm = () => {
 
 	const form = useForm<SongLogFormType>({
 		resolver: valibotResolver(SongLogFormSchema),
-		defaultValues: songLogDefaultGet(),
+		defaultValues: songLogFormDefaultGet(),
 	});
 
 	// set log form

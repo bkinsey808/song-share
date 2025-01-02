@@ -7,7 +7,7 @@ import {
 	ChevronUpIcon,
 } from "@radix-ui/react-icons";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -23,7 +23,7 @@ export const SelectTrigger = ({
 	className,
 	children,
 	...props
-}: SelectTriggerProps) => (
+}: SelectTriggerProps): JSX.Element => (
 	<SelectPrimitive.Trigger
 		className={cn(
 			"flex h-9 w-full items-center justify-between whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
@@ -45,7 +45,7 @@ type SelectScrollUpButtonProps = ComponentProps<
 export const SelectScrollUpButton = ({
 	className,
 	...props
-}: SelectScrollUpButtonProps) => (
+}: SelectScrollUpButtonProps): JSX.Element => (
 	<SelectPrimitive.ScrollUpButton
 		className={cn(
 			"flex cursor-default items-center justify-center py-1",
@@ -64,7 +64,7 @@ type SelectScrollDownButtonProps = ComponentProps<
 const SelectScrollDownButton = ({
 	className,
 	...props
-}: SelectScrollDownButtonProps) => (
+}: SelectScrollDownButtonProps): JSX.Element => (
 	<SelectPrimitive.ScrollDownButton
 		className={cn(
 			"flex cursor-default items-center justify-center py-1",
@@ -83,7 +83,7 @@ export const SelectContent = ({
 	children,
 	position = "popper",
 	...props
-}: SelectContentProps) => (
+}: SelectContentProps): JSX.Element => (
 	<SelectPrimitive.Portal>
 		<SelectPrimitive.Content
 			className={cn(
@@ -112,7 +112,10 @@ export const SelectContent = ({
 
 type SelectLabelProps = ComponentProps<typeof SelectPrimitive.Label>;
 
-export const SelectLabel = ({ className, ...props }: SelectLabelProps) => (
+export const SelectLabel = ({
+	className,
+	...props
+}: SelectLabelProps): JSX.Element => (
 	<SelectPrimitive.Label
 		className={cn("px-2 py-1.5 text-sm font-semibold", className)}
 		{...props}
@@ -125,7 +128,7 @@ export const SelectItem = ({
 	className,
 	children,
 	...props
-}: SelectItemProps) => (
+}: SelectItemProps): JSX.Element => (
 	<SelectPrimitive.Item
 		className={cn(
 			"relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
@@ -147,7 +150,7 @@ type SelectSeparatorProps = ComponentProps<typeof SelectPrimitive.Separator>;
 export const SelectSeparator = ({
 	className,
 	...props
-}: SelectSeparatorProps) => (
+}: SelectSeparatorProps): JSX.Element => (
 	<SelectPrimitive.Separator
 		className={cn("-mx-1 my-1 h-px bg-muted", className)}
 		{...props}

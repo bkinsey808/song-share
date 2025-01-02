@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { JSX, useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -11,7 +11,7 @@ import {
 } from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
-export const AccountManageModal = () => {
+export const AccountManageModal = (): JSX.Element => {
 	const {
 		openAppModal,
 		setOpenAppModal,

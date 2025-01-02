@@ -1,4 +1,4 @@
-export const searchTextGet = (searchText: string | undefined) => {
+export const searchTextGet = (searchText: string | undefined): string => {
 	const lowerCaseSearchText = searchText?.toLowerCase();
 	const normalized = lowerCaseSearchText
 		?.replaceAll("ś", "sh")

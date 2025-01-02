@@ -54,7 +54,7 @@ export const createSongLogSlice: AppSongLogSlice = (set, get) => {
 		songLogFormSet: (songLogForm) => set({ songLogForm }),
 		songLogLoadClick: songLogLoadClick(get, set),
 		songLogDeleteClick: songLogDeleteClick(get),
-		songLogIdsGet: (songId) => {
+		songLogIdsGet: (songId): string[] => {
 			const { songLogs } = get();
 			if (!songId) {
 				return [];
@@ -69,7 +69,7 @@ export const createSongLogSlice: AppSongLogSlice = (set, get) => {
 type SongLogEntrySong = SongLogEntry & { songId: string };
 
 // makes it reactive
-export const useSongLogs = (songId?: string | null) =>
+export const useSongLogs = (songId?: string | null): SongLogEntrySong[] =>
 	useAppStore((state) => {
 		if (songId) {
 			return (

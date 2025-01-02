@@ -1,3 +1,5 @@
+import { JSX } from "react";
+
 import { usePlaylist } from "./slice";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -5,7 +7,7 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 
-export const PlaylistFollowing = () => {
+export const PlaylistFollowing = (): JSX.Element => {
 	const { songActiveId, songLoadClick, songNameGet } = useAppStore();
 	const playlist = usePlaylist();
 	const songs = playlist?.songs ?? [];

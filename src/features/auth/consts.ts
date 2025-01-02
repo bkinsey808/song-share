@@ -9,7 +9,7 @@ export const registerFormFieldKey = {
 	AcceptTermsAndConditions: "acceptTermsAndConditions",
 } as const;
 
-export const signInResultType = {
+export const SignInResultType = {
 	NEW: "NEW",
 	EXISTING: "EXISTING",
 	ERROR: "ERROR",

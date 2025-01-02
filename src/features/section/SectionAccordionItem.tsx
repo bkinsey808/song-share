@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { JSX, ReactNode } from "react";
 
 import {
 	AccordionContent,
@@ -17,7 +17,7 @@ export const SectionAccordionItem = ({
 	readonly sectionId: SectionId;
 	readonly title: ReactNode;
 	readonly children: ReactNode;
-}) => {
+}): JSX.Element => {
 	return (
 		<AccordionItem
 			value={sectionId}

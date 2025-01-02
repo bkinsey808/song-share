@@ -16,13 +16,15 @@ import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const userActiveSet = async ({
+type UserActiveSet = ({
 	uid,
 	fuid,
 }: {
 	uid: string;
 	fuid: string | null;
-}) => {
+}) => Promise<{ usersActive: Record<string, string> }>;
+
+export const userActiveSet: UserActiveSet = async ({ uid, fuid }) => {
 	// get the fuid user doc
 	const fuidUserDocSnapshot = await db
 		.collection(collectionNameGet(collection.USERS))

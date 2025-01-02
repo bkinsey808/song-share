@@ -1,11 +1,12 @@
 import { AvatarIcon, HandIcon } from "@radix-ui/react-icons";
+import { JSX } from "react";
 
 import { useSong } from "./slice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const SongFollowing = () => {
+export const SongFollowing = (): JSX.Element => {
 	const song = useSong();
 	const {
 		isSignedIn,

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useCallback, useEffect } from "react";
+import { JSX, ReactNode, useCallback, useEffect } from "react";
 
 import { AccountDeleteConfirmModal } from "./AccountDeleteConfirmModal";
 import { AccountManageModal } from "./AccountManageModal";
@@ -9,7 +9,7 @@ import { SessionExpireWarningModal } from "./SessionExpireWarningModal";
 import { SessionExpiredModal } from "./SessionExpiredModal";
 import { SESSION_POLLING_INTERVAL_SECONDS } from "./consts";
 import { sessionCookieGet } from "@/actions/sessionCookieGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { useInterval } from "@/features/global/useInterval";
 import { appModal } from "@/features/modal/consts";
@@ -18,7 +18,7 @@ export const AuthProvider = ({
 	children,
 }: {
 	readonly children: ReactNode;
-}) => {
+}): JSX.Element => {
 	const {
 		openAppModal,
 		setOpenAppModal,
@@ -33,7 +33,7 @@ export const AuthProvider = ({
 	const handleRefresh = useCallback(async () => {
 		const cookieResult = await sessionCookieGet();
 
-		if (cookieResult.actionResultType === actionResultType.ERROR) {
+		if (cookieResult.actionResultType === ActionResultType.ERROR) {
 			signOut();
 			setOpenAppModal(null);
 			return;

@@ -1,13 +1,14 @@
 "use server";
 
 import { sessionCookieGet } from "./sessionCookieGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
 import { SongLogSchema } from "@/features/sections/song-log/schemas";
+import { SongLog } from "@/features/sections/song-log/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
@@ -15,18 +16,29 @@ import { SongLogSchema } from "@/features/sections/song-log/schemas";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-export const songLogGet = async ({
+type SongLogGet = ({
 	songId,
 	uid,
 }: {
 	songId: string;
 	uid?: string;
-}) => {
+}) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			songLog: SongLog;
+	  }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const songLogGet: SongLogGet = async ({ songId, uid }) => {
 	try {
 		if (!uid) {
 			const cookieResult = await sessionCookieGet();
 
-			if (cookieResult.actionResultType === actionResultType.ERROR) {
+			if (cookieResult.actionResultType === ActionResultType.ERROR) {
 				return actionErrorMessageGet("Session expired");
 			}
 
@@ -54,7 +66,7 @@ export const songLogGet = async ({
 
 		const songLog = songLogResult.output;
 
-		return { actionResultType: actionResultType.SUCCESS, songLog };
+		return { actionResultType: ActionResultType.SUCCESS, songLog };
 	} catch (error) {
 		return actionErrorMessageGet("Error getting song log");
 	}

@@ -2,14 +2,18 @@ import { FormEvent } from "react";
 
 import { playlistGridSave } from "@/actions/playlistGridSave";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const playlistGridFormSubmit =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	(e?: FormEvent<HTMLFormElement>): Promise<void> => {
+type PlaylistGridFormSubmit = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => (e?: FormEvent<HTMLFormElement>) => Promise<void>;
+
+export const playlistGridFormSubmit: PlaylistGridFormSubmit =
+	(get, set) => (e) => {
 		e?.preventDefault();
 		const { playlistGridForm } = get();
 
@@ -39,7 +43,7 @@ export const playlistGridFormSubmit =
 				playlistIsUnsavedSet(false);
 
 				switch (playstGridFormSaveResult.actionResultType) {
-					case actionResultType.ERROR:
+					case ActionResultType.ERROR:
 						const keys = playstGridFormSaveResult.fieldErrors
 							? getKeys(playstGridFormSaveResult.fieldErrors)
 							: undefined;
@@ -59,7 +63,7 @@ export const playlistGridFormSubmit =
 						});
 
 						break;
-					case actionResultType.SUCCESS:
+					case ActionResultType.SUCCESS:
 						playlistGridForm.reset(playlistGridFormValues);
 						toast({ title: "Playlist grid saved" });
 						break;

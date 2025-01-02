@@ -22,7 +22,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
  *   };
  * }, [requestWakeLock, releaseWakeLock]);
  */
-export const useWakeLock = () => {
+export const useWakeLock = (): {
+	requestWakeLock: () => Promise<void>;
+	releaseWakeLock: () => Promise<void>;
+	isWakeLockRequested: boolean;
+	isWakeLockActive: boolean;
+} => {
 	const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 	const timeoutIdRef = useRef<NodeJS.Timeout | null>(null);
 	const releaseEventListenerRef = useRef<(() => void) | null>(null);
@@ -52,7 +57,7 @@ export const useWakeLock = () => {
 				wakeLockRef.current = await navigator.wakeLock.request("screen");
 				console.log("Wake lock was requested");
 
-				const handleRelease = () => {
+				const handleRelease = (): void => {
 					console.log("Wake lock was released");
 					wakeLockRef.current = null;
 					setIsWakeLockRequested(false);
@@ -103,7 +108,7 @@ export const useWakeLock = () => {
 	// - if requestWakeLock is true, it calls requestWakeLock
 	// - if requestWakeLock is false, it calls releaseWakeLock
 	useEffect(() => {
-		const handleVisibilityChange = async () => {
+		const handleVisibilityChange = async (): Promise<void> => {
 			if (document.visibilityState === "visible") {
 				console.log("Page became visible again, requesting wake lock");
 				await requestWakeLock();
@@ -113,7 +118,9 @@ export const useWakeLock = () => {
 			}
 		};
 
-		const visibilityChangeHandler = () => void handleVisibilityChange();
+		const visibilityChangeHandler = (): void => {
+			void handleVisibilityChange();
+		};
 
 		if ("wakeLock" in navigator) {
 			document.addEventListener("visibilitychange", visibilityChangeHandler);
@@ -121,7 +128,7 @@ export const useWakeLock = () => {
 			console.error("Wake lock API not supported.");
 		}
 
-		return () => {
+		return (): void => {
 			document.removeEventListener("visibilitychange", visibilityChangeHandler);
 			void releaseWakeLock();
 		};

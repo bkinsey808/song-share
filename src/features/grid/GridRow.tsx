@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { JSX } from "react";
 
 import { tw } from "../global/tw";
 import { useGridContext } from "./GridContext";
@@ -12,7 +12,11 @@ type GridRowProps = {
 	readonly section?: "fixed" | "scrolling";
 };
 
-export const GridRow = ({ className, section, children }: GridRowProps) => {
+export const GridRow = ({
+	className,
+	section,
+	children,
+}: GridRowProps): JSX.Element => {
 	const { fixedColumnCount, scrollingColumnCount } = useGridContext();
 
 	const childrenArray = React.Children.toArray(children);

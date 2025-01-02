@@ -1,12 +1,13 @@
 "use server";
 
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
+import { Song } from "@/features/sections/song/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -14,7 +15,15 @@ import { SongSchema } from "@/features/sections/song/schemas";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songGet = async (songId: string) => {
+type SongGet = (songId: string) => Promise<
+	| { actionResultType: "SUCCESS"; song: Song }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const songGet: SongGet = async (songId) => {
 	try {
 		const songDoc = await db
 			.collection(collectionNameGet(collection.SONGS))
@@ -34,7 +43,7 @@ export const songGet = async (songId: string) => {
 
 		const song = songParseResult.output;
 
-		return { actionResultType: actionResultType.SUCCESS, song };
+		return { actionResultType: ActionResultType.SUCCESS, song };
 	} catch (error) {
 		return actionErrorMessageGet("Error getting song");
 	}

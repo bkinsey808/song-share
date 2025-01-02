@@ -1,7 +1,7 @@
 import { SongLogForm } from "./types";
 import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
-export const songLogDefaultGet = () => {
+export const songLogFormDefaultGet = (): SongLogForm => {
 	const defaultLog: SongLogForm = {
 		logId: "",
 		songId: "",

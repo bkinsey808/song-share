@@ -13,13 +13,16 @@ import { serverParse } from "@/features/global/serverParse";
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 /** delete the active user */
-export const userActiveUnset = async ({
+
+type UserActiveUnset = ({
 	uid,
 	fuid,
 }: {
 	uid: string;
 	fuid: string | null;
-}) => {
+}) => Promise<{ usersActive: Record<string, unknown> }>;
+
+export const userActiveUnset: UserActiveUnset = async ({ uid, fuid }) => {
 	// get the fuid user public doc
 	const fuidUserPublicDocSnapshot = await db
 		.collection(collectionNameGet(collection.USERS_PUBLIC))

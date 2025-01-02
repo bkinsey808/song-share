@@ -2,7 +2,7 @@
 
 import { sessionExtend } from "./sessionExtend";
 import { songLogGet } from "./songLogGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -14,20 +14,30 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songLogDelete = async ({
+type SongLogDelete = ({
 	songId,
 	logId,
 }: {
 	songId: string;
 	logId: string;
-}) => {
+}) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+	  }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const songLogDelete: SongLogDelete = async ({ songId, logId }) => {
 	try {
 		if (!logId) {
 			return actionErrorMessageGet("Log ID is required");
 		}
 
 		const sessionExtendResult = await sessionExtend();
-		if (sessionExtendResult.actionResultType === actionResultType.ERROR) {
+		if (sessionExtendResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 		const { uid } = sessionExtendResult.sessionCookieData;
@@ -36,7 +46,7 @@ export const songLogDelete = async ({
 			songId,
 			uid,
 		});
-		if (songLogResult.actionResultType === actionResultType.ERROR) {
+		if (songLogResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Song log not found");
 		}
 		const { songLog } = songLogResult;
@@ -64,7 +74,7 @@ export const songLogDelete = async ({
 		}
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 		};
 	} catch (error) {
 		console.error({ error });

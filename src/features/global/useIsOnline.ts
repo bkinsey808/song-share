@@ -17,12 +17,14 @@ const useIsOnline = (): IsOnlineValues => {
 	const [isOnline, setOnlineStatus] = useState(window.navigator.onLine);
 
 	useEffect(() => {
-		const toggleOnlineStatus = () => setOnlineStatus(window.navigator.onLine);
+		const toggleOnlineStatus = (): void => {
+			setOnlineStatus(window.navigator.onLine);
+		};
 
 		window.addEventListener("online", toggleOnlineStatus);
 		window.addEventListener("offline", toggleOnlineStatus);
 
-		return () => {
+		return (): void => {
 			window.removeEventListener("online", toggleOnlineStatus);
 			window.removeEventListener("offline", toggleOnlineStatus);
 		};

@@ -1,6 +1,8 @@
+import { JSX } from "react";
+
 import { IconBrand } from "@/features/design-system/IconBrand";
 
-export const AboutBlurb = () => {
+export const AboutBlurb = (): JSX.Element => {
 	return (
 		<>
 			<p>

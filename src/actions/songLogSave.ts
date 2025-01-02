@@ -4,10 +4,11 @@ import { flatten } from "valibot";
 
 import { sessionExtend } from "./sessionExtend";
 import { songLogGet } from "./songLogGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { getFormError } from "@/features/form/getFormError";
 import { serverParse } from "@/features/global/serverParse";
 import { SongLogFormSchema } from "@/features/sections/song-log/schemas";
 import { SongLogForm } from "@/features/sections/song-log/types";
@@ -18,17 +19,19 @@ import { SongLogForm } from "@/features/sections/song-log/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-const getFormError = (formError: string) => {
-	console.error(formError);
-	return {
-		actionResultType: actionResultType.ERROR,
-		formError,
-		fieldErrors: undefined,
-	};
-};
-
 // eslint-disable-next-line @typescript-eslint/require-await
-export const songLogSave = async (logFormValues: SongLogForm) => {
+
+type SongLogSave = (logFormValues: SongLogForm) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			logId: string;
+	  }
+	| {
+			actionResultType: "ERROR";
+			fieldErrors: ReturnType<typeof flatten>["nested"];
+	  }
+>;
+export const songLogSave: SongLogSave = async (logFormValues) => {
 	if (!logFormValues.logId) {
 		logFormValues = {
 			...logFormValues,
@@ -40,7 +43,7 @@ export const songLogSave = async (logFormValues: SongLogForm) => {
 		const logFormParseResult = serverParse(SongLogFormSchema, logFormValues);
 		if (!logFormParseResult.success) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: flatten<typeof SongLogFormSchema>(
 					logFormParseResult.issues,
 				).nested,
@@ -48,7 +51,7 @@ export const songLogSave = async (logFormValues: SongLogForm) => {
 		}
 
 		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
 		const { sessionCookieData } = extendSessionResult;
@@ -58,7 +61,7 @@ export const songLogSave = async (logFormValues: SongLogForm) => {
 			songId: logFormValues.songId,
 			uid,
 		});
-		if (songLogResult.actionResultType === actionResultType.ERROR) {
+		if (songLogResult.actionResultType === ActionResultType.ERROR) {
 			await db
 				.collection(collectionNameGet(collection.SONG_LOGS))
 				.doc(`${uid}_${logFormValues.songId}`)
@@ -94,7 +97,7 @@ export const songLogSave = async (logFormValues: SongLogForm) => {
 		}
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			logId: logFormValues.logId,
 		};
 	} catch (error) {

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 
-export const useUserLibrarySubscription = () => {
+export const useUserLibrarySubscription = (): void => {
 	const { userIds, userLibrarySubscribe, userLibraryUnsubscribe } =
 		useAppStore();
 
@@ -16,7 +16,7 @@ export const useUserLibrarySubscription = () => {
 	}, [userIds]);
 
 	useEffect(() => {
-		return () => {
+		return (): void => {
 			userLibraryUnsubscribe();
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps

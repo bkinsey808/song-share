@@ -4,7 +4,7 @@ import { toast } from "@/components/ui/use-toast";
 
 export const userLoadClick =
 	(_uid: string) =>
-	(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
+	(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]): void => {
 		e.preventDefault();
 
 		toast({

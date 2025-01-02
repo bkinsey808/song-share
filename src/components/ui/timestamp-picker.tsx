@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { DateTimePicker } from "./datetime-picker";
 import { appDateTimeFormat } from "@/features/time-zone/consts";
@@ -16,8 +16,8 @@ export const TimestampPicker = ({
 	timeZone,
 	ref,
 	...props
-}: TimestampPickerProps) => {
-	const handleChange = (date: Date | undefined) => {
+}: TimestampPickerProps): JSX.Element => {
+	const handleChange = (date: Date | undefined): void => {
 		if (date) {
 			const isoDate = jsDateTimeZone2iso(date, "UTC");
 			onChange(isoDate);

@@ -18,7 +18,7 @@ export type QRSlice = QRSliceState & {
 export const createQRSlice: AppQRSlice = (set, get) => {
 	sliceResetFns.add(() => set(QRSliceInitialState));
 	return {
-		getQRUrl: () => {
+		getQRUrl: (): string | undefined => {
 			const { fuid, sessionCookieData } = get();
 			const f = fuid ?? sessionCookieData?.uid;
 			if (!f) {

@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { flatten } from "valibot";
 
 import { userActiveSet } from "./userActiveSet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { registerFormFieldKey } from "@/features/auth/consts";
 import { RegistrationSchema } from "@/features/auth/schemas";
@@ -42,12 +42,23 @@ export const register = async ({
 	songIds: string[];
 	playlistIds: string[];
 	userIds: string[];
-}) => {
+}): Promise<
+	| {
+			actionResultType: "SUCCESS";
+			sessionCookieData: SessionCookieData;
+			usersActive: Record<string, string>;
+	  }
+	| {
+			actionResultType: "ERROR";
+			fieldErrors?: ReturnType<typeof flatten>["nested"];
+			formError?: string;
+	  }
+> => {
 	try {
 		const result = serverParse(RegistrationSchema, registrationData);
 		if (!result.success) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: flatten<typeof RegistrationSchema>(result.issues).nested,
 			};
 		}
@@ -60,7 +71,7 @@ export const register = async ({
 			.get();
 		if (usernameSnapshot.exists) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: {
 					[registerFormFieldKey.Username]: ["Username is already taken"],
 				},
@@ -120,14 +131,14 @@ export const register = async ({
 		});
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			sessionCookieData,
 			usersActive,
 		};
 	} catch (error) {
 		console.error({ error });
 		return {
-			actionResultType: actionResultType.ERROR,
+			actionResultType: ActionResultType.ERROR,
 			formError: "Failed to register",
 		};
 	}

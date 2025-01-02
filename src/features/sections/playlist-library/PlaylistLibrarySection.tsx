@@ -1,5 +1,7 @@
 "use client";
 
+import { JSX } from "react";
+
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -7,7 +9,7 @@ import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { getKeys } from "@/features/global/getKeys";
 import { tw } from "@/features/global/tw";
 
-export const PlaylistLibrarySection = () => {
+export const PlaylistLibrarySection = (): JSX.Element => {
 	const {
 		playlistLibrary,
 		playlistLoadClick,

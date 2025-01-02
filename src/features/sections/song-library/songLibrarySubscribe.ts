@@ -17,7 +17,7 @@ export const songLibrarySubscribe =
 	}: {
 		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
 		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
-	}) => {
+	}): void => {
 		const { songIds, songUnsubscribeFns, songLibrary } = get();
 		const songSubscriptionsSongIds = getKeys(songUnsubscribeFns);
 		const songIdsToUnsubscribe = songSubscriptionsSongIds.filter(

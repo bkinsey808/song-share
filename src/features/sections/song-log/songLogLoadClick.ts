@@ -16,7 +16,7 @@ export const songLogLoadClick =
 		logId: string;
 		form: UseFormReturn<SongLogForm> | null;
 	}) =>
-	(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
+	(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]): void => {
 		e.preventDefault();
 
 		if (form?.formState.isDirty) {

@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
+import React, { JSX } from "react";
 
 import { GridProvider, useGridContext } from "./GridContext";
 
-const TestComponent = () => {
+const TestComponent = (): JSX.Element => {
 	const {
 		fixedClassName,
 		scrollingClassName,

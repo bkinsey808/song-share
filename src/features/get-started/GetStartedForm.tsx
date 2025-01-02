@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect } from "react";
+import { JSX, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { GetStartedFormSchema } from "./schemas";
@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const GetStartedForm = () => {
+export const GetStartedForm = (): JSX.Element => {
 	const { getStartedFormSubmit, getStartedFormSet } = useAppStore();
 
 	const form = useForm<GetStartedFormType>({

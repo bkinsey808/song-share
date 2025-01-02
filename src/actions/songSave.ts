@@ -5,10 +5,11 @@ import { flatten } from "valibot";
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { userDocGet } from "./userDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { getFormError } from "@/features/form/getFormError";
 import { serverParse } from "@/features/global/serverParse";
 import { SongSchema } from "@/features/sections/song/schemas";
 import type { Song } from "@/features/sections/song/types";
@@ -19,20 +20,13 @@ import type { Song } from "@/features/sections/song/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-const getFormError = (formError: string) => {
-	console.error(formError);
-	return {
-		actionResultType: actionResultType.ERROR,
-		formError,
-		fieldErrors: undefined,
-	};
-};
-
-const saveOrCreateSong = async (
+type SaveOrCreateSong = (
 	songId: string | null,
 	uid: string,
 	song: Song,
-) => {
+) => Promise<string>;
+
+const saveOrCreateSong: SaveOrCreateSong = async (songId, uid, song) => {
 	if (song.sharer && song.sharer !== uid) {
 		throw new Error("User does not own this song");
 	}
@@ -41,7 +35,7 @@ const saveOrCreateSong = async (
 	}
 	if (songId) {
 		const songResult = await songGet(songId);
-		if (songResult.actionResultType === actionResultType.ERROR) {
+		if (songResult.actionResultType === ActionResultType.ERROR) {
 			console.warn("Song not found");
 		} else {
 			if (!!songResult.song.sharer && songResult.song.sharer !== uid) {
@@ -61,24 +55,35 @@ const saveOrCreateSong = async (
 	return songId;
 };
 
-export const songSave = async ({
+type SongSave = ({
 	song,
 	songId,
 }: {
 	song: Song;
 	songId: string | null;
-}) => {
+}) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			songId: string;
+	  }
+	| {
+			actionResultType: "ERROR";
+			fieldErrors: ReturnType<typeof flatten>["nested"];
+	  }
+>;
+
+export const songSave: SongSave = async ({ song, songId }) => {
 	try {
 		const songParseResult = serverParse(SongSchema, song);
 		if (!songParseResult.success) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: flatten<typeof SongSchema>(songParseResult.issues).nested,
 			};
 		}
 
 		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
 
@@ -86,7 +91,7 @@ export const songSave = async ({
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
+		if (userDocResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Failed to get user doc");
 		}
 		const { userDoc } = userDocResult;
@@ -100,7 +105,7 @@ export const songSave = async ({
 		});
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			songId: newSongId,
 		};
 	} catch (error) {

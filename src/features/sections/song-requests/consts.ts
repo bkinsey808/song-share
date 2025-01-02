@@ -12,7 +12,7 @@ export const songRequestsSortData = {
 		label: "Song Name (A-Z)",
 		sort:
 			(songRequests: Record<string, Song>) =>
-			(aSongId: string, bSongId: string) => {
+			(aSongId: string, bSongId: string): number => {
 				const a = songRequests[aSongId]?.songName;
 				const b = songRequests[bSongId]?.songName;
 				return a?.localeCompare(b);
@@ -22,7 +22,7 @@ export const songRequestsSortData = {
 		label: "Song Name (Z-A)",
 		sort:
 			(songRequests: Record<string, Song>) =>
-			(aSongId: string, bSongId: string) => {
+			(aSongId: string, bSongId: string): number => {
 				const a = songRequests[aSongId]?.songName;
 				const b = songRequests[bSongId]?.songName;
 				return b?.localeCompare(a);

@@ -3,7 +3,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import * as React from "react";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,10 @@ export const DialogClose = DialogPrimitive.Close;
 
 type DialogOverlayProps = ComponentProps<typeof DialogPrimitive.Overlay>;
 
-export const DialogOverlay = ({ className, ...props }: DialogOverlayProps) => (
+export const DialogOverlay = ({
+	className,
+	...props
+}: DialogOverlayProps): JSX.Element => (
 	<DialogPrimitive.Overlay
 		className={cn(
 			"fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
@@ -33,7 +36,7 @@ export const DialogContent = ({
 	className,
 	children,
 	...props
-}: DialogContentProps) => (
+}: DialogContentProps): JSX.Element => (
 	<DialogPortal>
 		<DialogOverlay />
 		<DialogPrimitive.Content
@@ -55,7 +58,7 @@ export const DialogContent = ({
 export const DialogHeader = ({
 	className,
 	...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
 	<div
 		className={cn(
 			"flex flex-col space-y-1.5 text-center sm:text-left",
@@ -68,7 +71,7 @@ export const DialogHeader = ({
 export const DialogFooter = ({
 	className,
 	...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+}: React.HTMLAttributes<HTMLDivElement>): JSX.Element => (
 	<div
 		className={cn(
 			"flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
@@ -80,7 +83,10 @@ export const DialogFooter = ({
 
 type DialogTitleProps = ComponentProps<typeof DialogPrimitive.Title>;
 
-export const DialogTitle = ({ className, ...props }: DialogTitleProps) => (
+export const DialogTitle = ({
+	className,
+	...props
+}: DialogTitleProps): JSX.Element => (
 	<DialogPrimitive.Title
 		className={cn(
 			"text-lg font-semibold leading-none tracking-tight",
@@ -97,7 +103,7 @@ type DialogDescriptionProps = ComponentProps<
 export const DialogDescription = ({
 	className,
 	...props
-}: DialogDescriptionProps) => (
+}: DialogDescriptionProps): JSX.Element => (
 	<DialogPrimitive.Description
 		className={cn("text-sm text-muted-foreground", className)}
 		{...props}

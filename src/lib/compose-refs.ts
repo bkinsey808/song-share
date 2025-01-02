@@ -7,7 +7,7 @@ type PossibleRef<T> = React.Ref<T> | undefined;
  * Set a given ref to a given value
  * This utility takes care of different types of refs: callback refs and RefObject(s)
  */
-function setRef<T>(ref: PossibleRef<T>, value: T) {
+function setRef<T>(ref: PossibleRef<T>, value: T): void {
 	if (typeof ref === "function") {
 		ref(value);
 	} else if (ref !== null && ref !== undefined) {
@@ -20,14 +20,14 @@ function setRef<T>(ref: PossibleRef<T>, value: T) {
  * Accepts callback refs and RefObject(s)
  */
 function composeRefs<T>(...refs: PossibleRef<T>[]) {
-	return (node: T) => refs.forEach((ref) => setRef(ref, node));
+	return (node: T): void => refs.forEach((ref) => setRef(ref, node));
 }
 
 /**
  * A custom hook that composes multiple refs
  * Accepts callback refs and RefObject(s)
  */
-function useComposedRefs<T>(...refs: PossibleRef<T>[]) {
+function useComposedRefs<T>(...refs: PossibleRef<T>[]): React.Ref<T> {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	return React.useCallback(composeRefs(...refs), refs);
 }

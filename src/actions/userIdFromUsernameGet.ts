@@ -1,6 +1,6 @@
 "use server";
 
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -14,7 +14,15 @@ import { serverParse } from "@/features/global/serverParse";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-export const userIdFromUsernameGet = async (username: string) => {
+export const userIdFromUsernameGet = async (
+	username: string,
+): Promise<
+	| { actionResultType: "SUCCESS"; userId: string }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+> => {
 	try {
 		// get the username from the userNames collection
 		const usernamesDoc = await db
@@ -40,7 +48,7 @@ export const userIdFromUsernameGet = async (username: string) => {
 		}
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			userId,
 		};
 	} catch (error) {

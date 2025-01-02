@@ -23,7 +23,7 @@ export function useTimeout(callback: () => void, delay: number | null): void {
 			savedCallback.current();
 		}, delay);
 
-		return () => {
+		return (): void => {
 			clearTimeout(id);
 		};
 	}, [delay]);

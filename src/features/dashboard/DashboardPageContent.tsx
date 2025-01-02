@@ -1,12 +1,14 @@
 "use client";
 
+import { JSX } from "react";
+
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { PageColumn } from "@/features/layout/PageColumn";
 import PageContent from "@/features/layout/PageContent";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 import { sectionData } from "@/features/sections/consts";
 
-export const DashboardPageContent = () => {
+export const DashboardPageContent = (): JSX.Element => {
 	const { sectionsDashboardGet } = useAppStore();
 	const pageColumns = sectionsDashboardGet();
 

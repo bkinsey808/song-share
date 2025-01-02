@@ -4,7 +4,7 @@ import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songRequestsGridFormSubmit =
 	(get: AppSliceGet, set: AppSliceSet) =>
-	async (e: FormEvent<HTMLFormElement>) => {
+	async (e: FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 		const { songRequestsGridForm } = get();
 

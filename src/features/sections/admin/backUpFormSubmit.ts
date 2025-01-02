@@ -1,15 +1,16 @@
 import { FormEvent } from "react";
 
+import { BackUpForm } from "./types";
 import { backUp } from "@/actions/backUp";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
 export const backUpFormSubmit =
 	(get: AppSliceGet, set: AppSliceSet) =>
-	async (e: FormEvent<HTMLFormElement>) => {
+	async (e: FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 		const { backUpForm } = get();
 
@@ -34,7 +35,7 @@ export const backUpFormSubmit =
 			const backUpResult = await backUp(backUpFormValues);
 
 			switch (backUpResult.actionResultType) {
-				case actionResultType.ERROR:
+				case ActionResultType.ERROR:
 					const keys = backUpResult.fieldErrors
 						? getKeys(backUpResult.fieldErrors)
 						: undefined;
@@ -43,10 +44,13 @@ export const backUpFormSubmit =
 						if (!message) {
 							return;
 						}
-						backUpForm.setError(key, {
-							type: "manual",
-							message,
-						});
+						backUpForm.setError(
+							key as keyof BackUpForm | "root" | `root.${string}`,
+							{
+								type: "manual",
+								message,
+							},
+						);
 					});
 
 					toast({
@@ -55,7 +59,7 @@ export const backUpFormSubmit =
 					});
 
 					break;
-				case actionResultType.SUCCESS:
+				case ActionResultType.SUCCESS:
 					toast({ title: "Back up completed" });
 					break;
 			}

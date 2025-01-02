@@ -2,7 +2,10 @@ import { getNoteFromNumber } from "./getNoteFromNumber";
 import { getNoteNumber } from "./getNoteNumber";
 
 /** notes can take the form of C#4 or Db4, etc */
-export const transposeNote = (note: string, interval: number) => {
+export const transposeNote = (
+	note: string,
+	interval: number,
+): string | undefined => {
 	const noteNumber = getNoteNumber(note);
 
 	if (noteNumber === undefined) {

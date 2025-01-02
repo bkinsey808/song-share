@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { JSX } from "react";
 
 import { WakeLockProvider, useWakeLockContext } from "./WakeLockContext";
 
@@ -10,10 +11,10 @@ const mockUseWakeLock = {
 };
 
 jest.mock("./useWakeLock", () => ({
-	useWakeLock: () => mockUseWakeLock,
+	useWakeLock: (): typeof mockUseWakeLock => mockUseWakeLock,
 }));
 
-const TestComponent = () => {
+const TestComponent = (): JSX.Element => {
 	const { requestWakeLock, releaseWakeLock, isWakeLockActive } =
 		useWakeLockContext();
 	return (

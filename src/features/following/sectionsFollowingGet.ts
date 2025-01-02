@@ -2,7 +2,11 @@ import { AppSliceGet } from "@/features/app-store/types";
 import { sectionId } from "@/features/sections/consts";
 import { SectionId } from "@/features/sections/types";
 
-export const sectionsFollowingGet = (get: AppSliceGet) => () => {
+type SectionsFollowingGet = (
+	get: AppSliceGet,
+) => () => [SectionId[], SectionId[]];
+
+export const sectionsFollowingGet: SectionsFollowingGet = (get) => () => {
 	const { isSignedIn } = get();
 
 	const leftSections: SectionId[] = [

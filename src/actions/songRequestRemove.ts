@@ -2,11 +2,12 @@
 
 import { sessionExtend } from "./sessionExtend";
 import { userPublicDocGet } from "./userPublicDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
+import { SongRequests } from "@/features/sections/song-requests/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
@@ -14,7 +15,7 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songRequestRemove = async ({
+type SongRequestRemove = ({
 	songId,
 	fuid,
 	requestUserId,
@@ -22,10 +23,25 @@ export const songRequestRemove = async ({
 	songId: string;
 	fuid: string | null;
 	requestUserId?: string;
+}) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			songRequests: SongRequests;
+	  }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const songRequestRemove: SongRequestRemove = async ({
+	songId,
+	fuid,
+	requestUserId,
 }) => {
 	try {
 		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 		const { sessionCookieData } = extendSessionResult;
@@ -34,7 +50,7 @@ export const songRequestRemove = async ({
 		requestUserId = requestUserId ?? uid;
 
 		const userPublicGetResult = await userPublicDocGet(fuid ?? uid);
-		if (userPublicGetResult.actionResultType === actionResultType.ERROR) {
+		if (userPublicGetResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Public user not found");
 		}
 		const { userPublicDoc } = userPublicGetResult;
@@ -58,7 +74,7 @@ export const songRequestRemove = async ({
 			.update({ songRequests });
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			songRequests,
 		};
 	} catch (error) {

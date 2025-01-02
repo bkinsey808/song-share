@@ -1,8 +1,9 @@
 import Image from "next/image";
+import { JSX } from "react";
 
 const brand = process.env.NEXT_PUBLIC_BRAND ?? "Song Share";
 
-export const IconBrand = () => {
+export const IconBrand = (): JSX.Element => {
 	return (
 		<span className="whitespace-nowrap">
 			<Image

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useFirestoreClient } from "./useFirebaseClient";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const useLibrarySubscription = () => {
+export const useLibrarySubscription = (): void => {
 	const {
 		songIds,
 		playlistIds,
@@ -28,7 +28,7 @@ export const useLibrarySubscription = () => {
 	}, [playlistIds, initialized]);
 
 	useEffect(() => {
-		return () => {
+		return (): void => {
 			songLibraryUnsubscribe();
 			playlistLibraryUnsubscribe();
 		};

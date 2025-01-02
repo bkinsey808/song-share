@@ -4,15 +4,20 @@ import { UseFormReturn } from "react-hook-form";
 import { SongLogForm } from "./types";
 import { songLogSave } from "@/actions/songLogSave";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const songLogSubmit =
-	(_get: AppSliceGet, _set: AppSliceSet) =>
-	(form: UseFormReturn<SongLogForm>) =>
-	async (e: FormEvent<HTMLFormElement>) => {
+type SongLogSubmit = (
+	_get: AppSliceGet,
+	_set: AppSliceSet,
+) => (
+	form: UseFormReturn<SongLogForm>,
+) => (e: FormEvent<HTMLFormElement>) => Promise<void>;
+
+export const songLogSubmit: SongLogSubmit =
+	(_get, _set) => (form) => async (e) => {
 		e.preventDefault();
 
 		if (!form) {
@@ -36,7 +41,7 @@ export const songLogSubmit =
 			});
 
 			switch (logSaveResult.actionResultType) {
-				case actionResultType.ERROR:
+				case ActionResultType.ERROR:
 					const keys = logSaveResult.fieldErrors
 						? getKeys(logSaveResult.fieldErrors)
 						: undefined;
@@ -57,7 +62,7 @@ export const songLogSubmit =
 					});
 
 					break;
-				case actionResultType.SUCCESS:
+				case ActionResultType.SUCCESS:
 					// this also sets the form to not dirty
 					form.reset({
 						...logFormValues,

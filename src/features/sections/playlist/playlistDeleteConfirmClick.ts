@@ -1,10 +1,15 @@
 import { playlistDelete } from "@/actions/playlistDelete";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const playlistDeleteConfirmClick =
-	(get: AppSliceGet, set: AppSliceSet) => async () => {
+type PlaylistDeleteConfirmClick = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => () => Promise<void>;
+
+export const playlistDeleteConfirmClick: PlaylistDeleteConfirmClick =
+	(get, set) => async () => {
 		set({
 			playlistDeletingIs: true,
 		});
@@ -33,7 +38,7 @@ export const playlistDeleteConfirmClick =
 		}
 
 		const result = await playlistDelete(playlistId);
-		if (result.actionResultType === actionResultType.ERROR) {
+		if (result.actionResultType === ActionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: "There was an error deleting the playlist",

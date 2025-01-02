@@ -16,7 +16,7 @@ export const userLibrarySubscribe =
 	}: {
 		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
 		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
-	}) => {
+	}): void => {
 		if (!db) {
 			return;
 		}

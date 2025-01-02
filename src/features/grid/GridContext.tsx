@@ -43,4 +43,4 @@ export const GridProvider: React.FC<{
 	);
 };
 
-export const useGridContext = () => useContext(GridContext);
+export const useGridContext = (): GridContextValue => useContext(GridContext);

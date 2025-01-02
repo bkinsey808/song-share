@@ -13,7 +13,9 @@ export const formFieldSchemasGet = <T>(
 	>
 		? T
 		: never,
-) =>
+): {
+	[key in keyof typeof data]: (typeof data)[key]["schema"];
+} =>
 	getKeys(data).reduce(
 		(acc, key) => ({
 			...acc,

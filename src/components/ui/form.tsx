@@ -1,10 +1,11 @@
 "use client";
 
 import { Slot } from "@radix-ui/react-slot";
-import { ComponentProps, createContext, useContext, useId } from "react";
+import { ComponentProps, JSX, createContext, useContext, useId } from "react";
 import {
 	Controller,
 	ControllerProps,
+	FieldError,
 	FieldPath,
 	FieldValues,
 	FormProvider,
@@ -32,7 +33,7 @@ export const FormField = <
 	TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
 	...props
-}: ControllerProps<TFieldValues, TName>) => {
+}: ControllerProps<TFieldValues, TName>): JSX.Element => {
 	return (
 		<FormFieldContext.Provider value={{ name: props.name }}>
 			<Controller {...props} />
@@ -40,7 +41,17 @@ export const FormField = <
 	);
 };
 
-export const useFormField = () => {
+export const useFormField = (): {
+	id: string;
+	name: string;
+	formItemId: string;
+	formDescriptionId: string;
+	formMessageId: string;
+	isDirty: boolean;
+	isTouched: boolean;
+	invalid: boolean;
+	error?: FieldError;
+} => {
 	const fieldContext = useContext(FormFieldContext);
 	const itemContext = useContext(FormItemContext);
 	const { getFieldState, formState } = useFormContext();
@@ -73,7 +84,10 @@ const FormItemContext = createContext<FormItemContextValue>(
 
 type FormItemProps = ComponentProps<"div">;
 
-export const FormItem = ({ className, ...props }: FormItemProps) => {
+export const FormItem = ({
+	className,
+	...props
+}: FormItemProps): JSX.Element => {
 	const id = useId();
 
 	return (
@@ -85,7 +99,10 @@ export const FormItem = ({ className, ...props }: FormItemProps) => {
 
 type FormLabelProps = ComponentProps<typeof Label>;
 
-export const FormLabel = ({ className, ...props }: FormLabelProps) => {
+export const FormLabel = ({
+	className,
+	...props
+}: FormLabelProps): JSX.Element => {
 	const { error, formItemId } = useFormField();
 	return (
 		<Label
@@ -97,7 +114,7 @@ export const FormLabel = ({ className, ...props }: FormLabelProps) => {
 };
 type FormControlProps = ComponentProps<typeof Slot>;
 
-export const FormControl = ({ ...props }: FormControlProps) => {
+export const FormControl = ({ ...props }: FormControlProps): JSX.Element => {
 	const { error, formItemId, formDescriptionId, formMessageId } =
 		useFormField();
 
@@ -120,7 +137,7 @@ type FormDescriptionProps = ComponentProps<"p">;
 export const FormDescription = ({
 	className,
 	...props
-}: FormDescriptionProps) => {
+}: FormDescriptionProps): JSX.Element => {
 	const { formDescriptionId } = useFormField();
 
 	return (
@@ -138,7 +155,7 @@ export const FormMessage = ({
 	className,
 	children,
 	...props
-}: FormMessageProps) => {
+}: FormMessageProps): JSX.Element | null => {
 	const { error, formMessageId } = useFormField();
 	const body = error ? String(error?.message) : children;
 

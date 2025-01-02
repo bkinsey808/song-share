@@ -4,7 +4,8 @@ import {
 } from "@/features/app-store/types";
 
 export const songLibraryAddSongIds =
-	(get: AppSliceGet, set: SetType) => (songIds: string[]) => {
+	(get: AppSliceGet, set: SetType) =>
+	(songIds: string[]): void => {
 		const currentSongIds = get().songIds;
 		const newSongIds = Array.from(new Set([...currentSongIds, ...songIds]));
 		set({ songIds: newSongIds });

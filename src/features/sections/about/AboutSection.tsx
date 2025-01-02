@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import { JSX } from "react";
 
 import { sectionId } from "../consts";
 import { AboutBlurb } from "./AboutBlurb";
 import { IconBrand } from "@/features/design-system/IconBrand";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 
-export const AboutSection = () => {
+export const AboutSection = (): JSX.Element => {
 	return (
 		<section data-title="About Section">
 			<SectionAccordion

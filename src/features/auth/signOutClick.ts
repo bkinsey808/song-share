@@ -2,9 +2,11 @@ import { signOut } from "@/actions/signOut";
 import { toast } from "@/components/ui/use-toast";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const signOutClick = (get: AppSliceGet, set: AppSliceSet) => () => {
+type SignOutClick = (get: AppSliceGet, set: AppSliceSet) => () => void;
+
+export const signOutClick: SignOutClick = (get, set) => () => {
 	const { sessionCookieData, fuid } = get();
-	void (async () => {
+	void (async (): Promise<void> => {
 		await signOut({ uid: sessionCookieData?.uid ?? null, fuid });
 		const { setOpenAppModal } = get();
 		set({

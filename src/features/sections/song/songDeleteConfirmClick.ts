@@ -1,11 +1,16 @@
-import { songLogDefaultGet } from "../song-log/songLogDefaultGet";
+import { songLogFormDefaultGet } from "../song-log/songLogFormDefaultGet";
 import { songDelete } from "@/actions/songDelete";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const songDeleteConfirmClick =
-	(get: AppSliceGet, set: AppSliceSet) => async () => {
+type SongDeleteConfirmClick = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => () => Promise<void>;
+
+export const songDeleteConfirmClick: SongDeleteConfirmClick =
+	(get, set) => async () => {
 		set({
 			songDeleting: true,
 		});
@@ -24,7 +29,7 @@ export const songDeleteConfirmClick =
 		}
 
 		songForm?.reset(songDefaultGet());
-		songLogForm?.reset(songLogDefaultGet());
+		songLogForm?.reset(songLogFormDefaultGet());
 
 		if (!songIdToDelete) {
 			toast({
@@ -36,7 +41,7 @@ export const songDeleteConfirmClick =
 		}
 
 		const result = await songDelete(songIdToDelete);
-		if (result.actionResultType === actionResultType.ERROR) {
+		if (result.actionResultType === ActionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: "There was an error deleting the song",

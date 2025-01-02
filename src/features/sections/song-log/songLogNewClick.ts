@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 
-import { songLogDefaultGet } from "./songLogDefaultGet";
+import { songLogFormDefaultGet } from "./songLogFormDefaultGet";
 import { SongLogForm } from "./types";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
@@ -13,7 +13,7 @@ export const songLogNewClick =
 		form: UseFormReturn<SongLogForm>;
 		songId?: string | null;
 	}) =>
-	() => {
+	(): void => {
 		const { sessionCookieData } = get();
 		const uid = sessionCookieData?.uid;
 		if (!uid) {
@@ -32,7 +32,7 @@ export const songLogNewClick =
 
 		form.reset(
 			{
-				...songLogDefaultGet(),
+				...songLogFormDefaultGet(),
 				songId: songId ?? "",
 			},
 			{

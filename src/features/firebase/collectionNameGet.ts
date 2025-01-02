@@ -1,6 +1,8 @@
 import { Collection } from "./types";
 
-export const collectionNameGet = (collection: Collection) => {
+type CollectionNameGet = (collection: Collection) => string;
+
+export const collectionNameGet: CollectionNameGet = (collection) => {
 	const env = process.env.NODE_ENV || "development";
 
 	return `${env}_${collection}`;

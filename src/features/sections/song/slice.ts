@@ -46,7 +46,7 @@ export type SongSlice = SongSliceState & {
 	songDeleteClick: ReturnType<typeof songDeleteClick>;
 	songFormSet: (songForm: UseFormReturn<Song>) => void;
 	songDeleteConfirmClick: () => Promise<void>;
-	playlistSongAddButtonShouldShow: () => boolean;
+	playlistSongAddButtonShouldShow: ReturnType<typeof playlistSongAddButtonShow>;
 	playlistSongAddClick: ReturnType<typeof playlistSongAddClick>;
 	songActiveClick: ({
 		songId,
@@ -71,28 +71,28 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 		...songSliceInitialState,
 		songSubmit: songSubmit(get, set),
 		songNewClick: songNewClick(get, set),
-		songIsUnsavedSet: (unsavedSong) => {
+		songIsUnsavedSet: (unsavedSong): void => {
 			set({ songUnsavedIs: unsavedSong });
 		},
 		songDeleteClick: songDeleteClick(get, set),
-		songFormSet: (songForm) => {
+		songFormSet: (songForm): void => {
 			set({ songForm });
 		},
 		songDeleteConfirmClick: songDeleteConfirmClick(get, set),
 		playlistSongAddButtonShouldShow: playlistSongAddButtonShow(get),
 		playlistSongAddClick: playlistSongAddClick(get, set),
 		songActiveClick: songActiveClick(get),
-		songIdSet: (songId) => {
+		songIdSet: (songId): void => {
 			set({ songId });
 		},
-		songActiveIdSet: (songId) => {
+		songActiveIdSet: (songId): void => {
 			set({ songActiveId: songId });
 		},
-		songNameGet: (songId) => {
+		songNameGet: (songId): string | undefined => {
 			const { songLibrary } = get();
 			return songId ? songLibrary[songId]?.songName : undefined;
 		},
-		songKeyGet: (songId) => {
+		songKeyGet: (songId): string | undefined => {
 			const { songLibrary } = get();
 			const songKey = songId ? songLibrary[songId]?.songKey : undefined;
 			return songKey !== undefined ? keyMap.get(songKey) : undefined;
@@ -107,7 +107,7 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 			songKey: undefined,
 			songKeyString: undefined,
 		}),
-		isSharer: (songId: string) => {
+		isSharer: (songId: string): boolean => {
 			const { songLibrary, isSignedIn } = get();
 
 			if (!isSignedIn) {
@@ -119,7 +119,7 @@ export const createSongSlice: AppSongSlice = (set, get) => {
 	};
 };
 
-export const useSong = () =>
+export const useSong = (): Song =>
 	useAppStore((state) =>
 		state.songId ? state.songLibrary[state.songId] : state.songDefaultGet(),
 	);

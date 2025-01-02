@@ -1,7 +1,7 @@
 "use server";
 
 import { sessionExtend } from "./sessionExtend";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -13,10 +13,19 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songIdSet = async ({ songId }: { songId: string }) => {
+type SongIdSet = ({ songId }: { songId: string }) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+	  }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+export const songIdSet: SongIdSet = async ({ songId }) => {
 	try {
 		const sessionExtendResult = await sessionExtend();
-		if (sessionExtendResult.actionResultType === actionResultType.ERROR) {
+		if (sessionExtendResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 		const sessionCookieData = sessionExtendResult.sessionCookieData;
@@ -27,7 +36,7 @@ export const songIdSet = async ({ songId }: { songId: string }) => {
 		});
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 		};
 	} catch (error) {
 		console.error(error);

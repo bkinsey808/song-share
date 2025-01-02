@@ -30,7 +30,7 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 	...sectionSliceInitialState,
 	sectionsDashboardGet: sectionsDashboardGet(get),
 	sectionsFollowingGet: sectionsFollowingGet(get),
-	sectionToggle: (sectionId, open, scrollToElement) => {
+	sectionToggle: (sectionId, open, scrollToElement): void => {
 		set((state) => {
 			const isOpen = state.openSections.includes(sectionId);
 			if (open === undefined) {
@@ -86,5 +86,5 @@ export const createSectionSlice: AppSectionSlice = (set, get) => ({
 });
 
 // makes it reactive
-export const useOpenSection = (sectionId: SectionId) =>
+export const useOpenSection = (sectionId: SectionId): boolean =>
 	useAppStore((state) => state.openSections.includes(sectionId));

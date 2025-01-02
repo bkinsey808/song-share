@@ -1,6 +1,7 @@
 import {
 	ButtonHTMLAttributes,
 	ComponentProps,
+	JSX,
 	createContext,
 	useContext,
 } from "react";
@@ -18,7 +19,7 @@ export const Grid = (
 		/** gets applied to both the grid header and grid rows */
 		readonly gridClassName: string;
 	},
-) => {
+): JSX.Element => {
 	return (
 		<GridContext.Provider value={{ gridClassName: props.gridClassName }}>
 			{props.children}
@@ -29,7 +30,7 @@ export const Grid = (
 export const GridHeader = ({
 	className,
 	...props
-}: ButtonHTMLAttributes<HTMLDivElement>) => {
+}: ButtonHTMLAttributes<HTMLDivElement>): JSX.Element => {
 	const { gridClassName } = useContext(GridContext);
 
 	return (
@@ -46,7 +47,7 @@ export const GridHeader = ({
 
 type GridRowProps = ComponentProps<"div">;
 
-export const GridRow = ({ className, ...props }: GridRowProps) => {
+export const GridRow = ({ className, ...props }: GridRowProps): JSX.Element => {
 	const { gridClassName } = useContext(GridContext);
 
 	return (

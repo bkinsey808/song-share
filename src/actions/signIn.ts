@@ -5,9 +5,9 @@ import { cookies } from "next/headers";
 import { userActiveSet } from "./userActiveSet";
 import { userDocGet } from "./userDocGet";
 import { userPublicDocGet } from "./userPublicDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
-import { signInResultType } from "@/features/auth/consts";
+import { SignInResultType } from "@/features/auth/consts";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
 import { sessionWarningTimestampGet } from "@/features/auth/sessionWarningTimestampGet";
@@ -15,6 +15,7 @@ import { SessionCookieData } from "@/features/auth/types";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { SongRequests } from "@/features/sections/song-requests/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
@@ -22,32 +23,63 @@ import { db } from "@/features/firebase/firebaseServer";
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-export const signIn = async ({
+type SignIn = ({
 	uid,
 	fuid,
-	songIds = [],
-	playlistIds = [],
-	userIds = [],
+	songIds,
+	playlistIds,
+	userIds,
 }: {
 	uid: string;
 	fuid: string | null;
 	songIds: string[];
 	playlistIds: string[];
 	userIds: string[];
+}) => Promise<
+	| {
+			signInResultType: "EXISTING";
+			userData: SessionCookieData;
+			songIds: string[];
+			playlistIds: string[];
+			userIds: string[];
+			songId: string | null;
+			playlistId: string | null;
+			songActiveId: string | null;
+			playlistActiveId: string | null;
+			timeZone: string | null;
+			songRequests: SongRequests;
+			usersActive: Record<string, string>;
+			fullScreenActive: boolean;
+	  }
+	| {
+			signInResultType: "NEW";
+	  }
+	| {
+			signInResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const signIn: SignIn = async ({
+	uid,
+	fuid,
+	songIds = [],
+	playlistIds = [],
+	userIds = [],
 }) => {
 	try {
 		const existingUserDocResult = await userDocGet(uid);
-		if (existingUserDocResult.actionResultType === actionResultType.ERROR) {
+		if (existingUserDocResult.actionResultType === ActionResultType.ERROR) {
 			return {
-				signInResultType: signInResultType.NEW,
+				signInResultType: SignInResultType.NEW,
 			};
 		}
 		const existingUserDoc = existingUserDocResult.userDoc;
 
 		const existingUserPublicResult = await userPublicDocGet(uid);
-		if (existingUserPublicResult.actionResultType === actionResultType.ERROR) {
+		if (existingUserPublicResult.actionResultType === ActionResultType.ERROR) {
 			return {
-				signInResultType: signInResultType.ERROR,
+				signInResultType: SignInResultType.ERROR,
 				message: "UserPublicDoc data is invalid",
 			};
 		}
@@ -97,16 +129,16 @@ export const signIn = async ({
 			existingUserPublicDoc;
 
 		return {
-			signInResultType: signInResultType.EXISTING,
+			signInResultType: SignInResultType.EXISTING,
 			userData: sessionCookieData,
 			songIds: newSongIds,
 			playlistIds: newPlaylistIds,
 			userIds: newUserIds,
 			songId,
-			playlistId,
+			playlistId: playlistId ?? null,
 			songActiveId,
-			playlistActiveId,
-			timeZone,
+			playlistActiveId: playlistActiveId ?? null,
+			timeZone: timeZone ?? null,
 			songRequests,
 			usersActive,
 			fullScreenActive: existingUserDoc.fullScreenActive ?? false,
@@ -115,7 +147,7 @@ export const signIn = async ({
 		console.error({ error });
 
 		return {
-			signInResultType: signInResultType.ERROR,
+			signInResultType: SignInResultType.ERROR,
 			message: "Failed to sign in",
 		};
 	}

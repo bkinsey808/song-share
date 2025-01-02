@@ -3,13 +3,20 @@ import { MouseEventHandler } from "react";
 import { sectionId } from "../consts";
 import { playlistIdSet } from "@/actions/playlistIdSet";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import type { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const playlistLoadClick =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	(playlistId: string | null) =>
-	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
+type PlaylistLoadClick = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => (
+	playlistId: string | null,
+) => (
+	e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"],
+) => Promise<void>;
+
+export const playlistLoadClick: PlaylistLoadClick =
+	(get, set) => (playlistId) => async (e) => {
 		e.preventDefault();
 
 		const { playlistIsUnsaved, isSignedIn, sectionToggle } = get();
@@ -30,7 +37,7 @@ export const playlistLoadClick =
 		if (isSignedIn) {
 			const result = await playlistIdSet(playlistId);
 
-			if (result.actionResultType === actionResultType.ERROR) {
+			if (result.actionResultType === ActionResultType.ERROR) {
 				toast({
 					variant: "destructive",
 					title: result.message,

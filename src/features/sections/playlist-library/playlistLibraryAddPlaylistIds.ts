@@ -1,10 +1,12 @@
-import {
-	AppSliceGet,
-	AppSliceSet as SetType,
-} from "@/features/app-store/types";
+import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const playlistLibraryAddPlaylistIds =
-	(get: AppSliceGet, set: SetType) => (playlistIds: string[]) => {
+type PlaylistLibraryAddPlaylistIds = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => (playlistIds: string[]) => void;
+
+export const playlistLibraryAddPlaylistIds: PlaylistLibraryAddPlaylistIds =
+	(get, set) => (playlistIds) => {
 		const currentPlaylistIds = get().playlistIds;
 		const newPlaylistIds = Array.from(
 			new Set([...currentPlaylistIds, ...playlistIds]),

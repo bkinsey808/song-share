@@ -3,7 +3,7 @@ import * as React from "react";
 export const useAutoResizeTextarea = (
 	ref: React.ForwardedRef<HTMLTextAreaElement> | undefined,
 	autoResize: boolean,
-) => {
+): { textAreaRef: React.RefObject<HTMLTextAreaElement | null> } => {
 	const textAreaRef = React.useRef<HTMLTextAreaElement>(null);
 
 	React.useImperativeHandle(ref, () => textAreaRef.current!);
@@ -27,7 +27,9 @@ export const useAutoResizeTextarea = (
 
 		textAreaEl?.addEventListener("input", updateTextareaHeight);
 
-		return () => textAreaEl?.removeEventListener("input", updateTextareaHeight);
+		return (): void => {
+			textAreaEl?.removeEventListener("input", updateTextareaHeight);
+		};
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

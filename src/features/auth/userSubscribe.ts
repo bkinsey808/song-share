@@ -11,17 +11,22 @@ import {
 	UserPublicDocSchema,
 } from "@/features/firebase/schemas";
 
-export const userSubscribe =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	({
-		uid,
-		db,
-		clearDb,
-	}: {
-		uid: string;
-		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
-		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
-	}) => {
+type UserSubscribe = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => ({
+	uid,
+	db,
+	clearDb,
+}: {
+	uid: string;
+	db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+	clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+}) => void;
+
+export const userSubscribe: UserSubscribe =
+	(get, set) =>
+	({ uid, db, clearDb }) => {
 		if (!db) {
 			return;
 		}

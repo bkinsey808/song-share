@@ -1,17 +1,22 @@
 import { playlistActiveSet } from "@/actions/playlistActiveSet";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const playlistActiveClick =
-	(get: AppSliceGet, _set: AppSliceSet) => (playlistId: string) => async () => {
+type PlaylistActiveClick = (
+	get: AppSliceGet,
+	_set: AppSliceSet,
+) => (playlistId: string) => () => Promise<void>;
+
+export const playlistActiveClick: PlaylistActiveClick =
+	(get, _set) => (playlistId) => async () => {
 		const { fuid } = get();
 		if (fuid) {
 			return;
 		}
 
 		const playlistActiveResult = await playlistActiveSet(playlistId);
-		if (playlistActiveResult.actionResultType === actionResultType.ERROR) {
+		if (playlistActiveResult.actionResultType === ActionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: "There was an error setting the active playlist",

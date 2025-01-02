@@ -1,6 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { JSX } from "react";
 import { useForm } from "react-hook-form";
 
 import { RegistrationSchema } from "./schemas";
@@ -29,7 +30,7 @@ export const RegisterForm = ({
 	setOpen,
 }: {
 	readonly setOpen: (open: boolean) => void;
-}) => {
+}): JSX.Element => {
 	const form = useForm<RegistrationData>({
 		resolver: valibotResolver(RegistrationSchema),
 		defaultValues,

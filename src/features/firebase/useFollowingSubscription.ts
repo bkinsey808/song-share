@@ -14,7 +14,7 @@ import { sectionId } from "@/features/sections/consts";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 import { SongSchema } from "@/features/sections/song/schemas";
 
-export const useFollowingSubscription = (fuid: string | string[]) => {
+export const useFollowingSubscription = (fuid: string | string[]): void => {
 	const {
 		setFuid,
 		setFollowing,
@@ -213,7 +213,7 @@ export const useFollowingSubscription = (fuid: string | string[]) => {
 
 		unsubscribeFns.push(userPublicUnsubscribe);
 
-		return () => {
+		return (): void => {
 			unsubscribeFns.forEach((fn) => fn());
 			setFuid(null);
 		};

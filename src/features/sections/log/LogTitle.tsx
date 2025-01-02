@@ -1,8 +1,10 @@
 "use client";
 
+import { JSX } from "react";
+
 import { useSongLogs } from "@/features/sections/song-log/slice";
 
-export const LogTitle = () => {
+export const LogTitle = (): JSX.Element => {
 	const songLogs = useSongLogs();
 	const numberOfLogs = songLogs.length;
 

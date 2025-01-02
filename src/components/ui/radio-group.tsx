@@ -2,12 +2,15 @@
 
 import { CheckIcon } from "@radix-ui/react-icons";
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
 type RadioGroupProps = ComponentProps<typeof RadioGroupPrimitive.Root>;
-export const RadioGroup = ({ className, ...props }: RadioGroupProps) => {
+export const RadioGroup = ({
+	className,
+	...props
+}: RadioGroupProps): JSX.Element => {
 	return (
 		<RadioGroupPrimitive.Root
 			className={cn("grid gap-2", className)}
@@ -21,7 +24,7 @@ type RadioGroupItemProps = ComponentProps<typeof RadioGroupPrimitive.Item>;
 export const RadioGroupItem = ({
 	className,
 	...props
-}: RadioGroupItemProps) => {
+}: RadioGroupItemProps): JSX.Element => {
 	return (
 		<RadioGroupPrimitive.Item
 			className={cn(

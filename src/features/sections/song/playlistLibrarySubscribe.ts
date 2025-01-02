@@ -8,15 +8,20 @@ import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 import { getKeys } from "@/features/global/getKeys";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 
-export const playlistLibrarySubscribe =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	({
-		db,
-		clearDb,
-	}: {
-		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
-		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
-	}) => {
+type PlaylistLibrarySubscribe = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => ({
+	db,
+	clearDb,
+}: {
+	db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+	clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+}) => void;
+
+export const playlistLibrarySubscribe: PlaylistLibrarySubscribe =
+	(get, set) =>
+	({ db, clearDb }) => {
 		const { playlistIds, playlistUnsubscribeFns, playlistLibrary } = get();
 		const playlistSubscriptionsSongIds = getKeys(playlistUnsubscribeFns);
 

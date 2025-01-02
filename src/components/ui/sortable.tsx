@@ -32,7 +32,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Slot, type SlotProps } from "@radix-ui/react-slot";
-import { createContext, useContext, useMemo, useState } from "react";
+import { JSX, createContext, useContext, useMemo, useState } from "react";
 
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { composeRefs } from "@/lib/compose-refs";
@@ -133,7 +133,7 @@ export const Sortable = <TData extends { id: UniqueIdentifier }>({
 	overlay,
 	children,
 	...props
-}: SortableProps<TData>) => {
+}: SortableProps<TData>): JSX.Element => {
 	const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
 	const sensors = useSensors(
 		useSensor(MouseSensor),
@@ -197,7 +197,7 @@ export const SortableOverlay = ({
 	dropAnimation = dropAnimationOpts,
 	children,
 	...props
-}: SortableOverlayProps) => {
+}: SortableOverlayProps): JSX.Element => {
 	return (
 		<DragOverlay dropAnimation={dropAnimation} {...props}>
 			{activeId ? (
@@ -221,7 +221,7 @@ const SortableItemContext = createContext<SortableItemContextProps>({
 	isDragging: false,
 });
 
-function useSortableItem() {
+function useSortableItem(): SortableItemContextProps {
 	const context = useContext(SortableItemContext);
 
 	if (!context) {
@@ -262,7 +262,7 @@ export const SortableItem = ({
 	className,
 	ref,
 	...props
-}: SortableItemProps) => {
+}: SortableItemProps): JSX.Element => {
 	const {
 		attributes,
 		listeners,
@@ -315,7 +315,7 @@ export const SortableDragHandle = ({
 	className,
 	ref,
 	...props
-}: SortableDragHandleProps) => {
+}: SortableDragHandleProps): JSX.Element => {
 	const { attributes, listeners, isDragging } = useSortableItem();
 
 	return (

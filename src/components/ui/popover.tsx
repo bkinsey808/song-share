@@ -2,7 +2,7 @@
 
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as React from "react";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -19,7 +19,7 @@ export const PopoverContent = ({
 	align = "center",
 	sideOffset = 4,
 	...props
-}: PopoverContentProps) => (
+}: PopoverContentProps): JSX.Element => (
 	<PopoverPrimitive.Portal>
 		<PopoverPrimitive.Content
 			align={align}

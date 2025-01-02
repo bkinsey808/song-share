@@ -81,7 +81,7 @@ export const createUserLibrarySlice: AppUserLibrarySlice = (set, get) => {
 				userLibrarySort: sort,
 			});
 		},
-		userSet: ({ userId, userPublicDoc }) => {
+		userSet: ({ userId, userPublicDoc }): void => {
 			if (userId) {
 				// had to do it this way because otherwise component wouldn't re-render
 				set((innerState) => ({
@@ -96,18 +96,18 @@ export const createUserLibrarySlice: AppUserLibrarySlice = (set, get) => {
 		userLibraryGridFormSubmit: userLibraryGridFormSubmit(get, set),
 		usernameGet: usernameGet(get),
 		isActiveGet: userActiveIs(get),
-		userIdsAdd: (userIds) => {
+		userIdsAdd: (userIds): void => {
 			const currentUserIds = get().userIds;
 			const newUserIds = Array.from(new Set([...currentUserIds, ...userIds]));
 			set({ userIds: newUserIds });
 		},
-		usersActiveSet: (usersActive) => {
+		usersActiveSet: (usersActive): void => {
 			set({ usersActive });
 		},
 	};
 };
 
-export const useSortedFilteredUserIds = () =>
+export const useSortedFilteredUserIds = (): string[] =>
 	useAppStore((state) => {
 		const search = state.userLibrarySearch.toLowerCase();
 		const filteredUserIds = Array.from(new Set(state.userIds)).filter(

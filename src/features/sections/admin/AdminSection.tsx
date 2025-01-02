@@ -1,6 +1,8 @@
+import { JSX } from "react";
+
 import { BackUpForm } from "./BackUpForm";
 
-export const AdminSection = () => {
+export const AdminSection = (): JSX.Element => {
 	return (
 		<div>
 			Admin Section

@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { JSX, ReactNode, useEffect } from "react";
 
 import { useUserLibrarySubscription } from "../sections/user-library/useUserLibrarySubscription";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -13,7 +13,7 @@ export const DashboardProvider = ({
 	children,
 }: {
 	readonly children: ReactNode;
-}) => {
+}): JSX.Element => {
 	const { fuid, setFuid } = useAppStore();
 
 	useEffect(() => {

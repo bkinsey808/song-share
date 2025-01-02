@@ -2,6 +2,7 @@
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
+import { JSX } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { InferOutput, array, object, string } from "valibot";
 
@@ -32,7 +33,7 @@ const schema = object({
 
 export type Schema = InferOutput<typeof schema>;
 
-export function VerticalSortingDemo() {
+export const VerticalSortingDemo = (): JSX.Element => {
 	const form = useForm<Schema>({
 		resolver: valibotResolver(schema),
 		defaultValues: {
@@ -49,7 +50,7 @@ export function VerticalSortingDemo() {
 		},
 	});
 
-	function onSubmit(input: Schema) {
+	function onSubmit(input: Schema): void {
 		console.log({ input });
 	}
 
@@ -165,4 +166,4 @@ export function VerticalSortingDemo() {
 			</CardContent>
 		</Card>
 	);
-}
+};

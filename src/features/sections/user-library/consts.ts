@@ -10,19 +10,23 @@ export const userLibrarySortDefault = UserLibrarySort.USERNAME_ASC;
 export const userLibrarySortData = {
 	[UserLibrarySort.USERNAME_ASC]: {
 		label: "Username (A-Z)",
-		sort: (userLibrary: UserLibrary) => (aUserId: string, bUserId: string) => {
-			const a = userLibrary[aUserId]?.username;
-			const b = userLibrary[bUserId]?.username;
-			return a?.localeCompare(b);
-		},
+		sort:
+			(userLibrary: UserLibrary) =>
+			(aUserId: string, bUserId: string): number => {
+				const a = userLibrary[aUserId]?.username;
+				const b = userLibrary[bUserId]?.username;
+				return a?.localeCompare(b);
+			},
 	},
 	[UserLibrarySort.USERNAME_DESC]: {
 		label: "Username (Z-A)",
-		sort: (userLibrary: UserLibrary) => (aUserId: string, bUserId: string) => {
-			const a = userLibrary[aUserId]?.username;
-			const b = userLibrary[bUserId]?.username;
-			return b?.localeCompare(a);
-		},
+		sort:
+			(userLibrary: UserLibrary) =>
+			(aUserId: string, bUserId: string): number => {
+				const a = userLibrary[aUserId]?.username;
+				const b = userLibrary[bUserId]?.username;
+				return b?.localeCompare(a);
+			},
 	},
 } as const;
 

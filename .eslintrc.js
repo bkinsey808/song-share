@@ -35,6 +35,7 @@ module.exports = {
 		"no-case-declarations": "off",
 		"no-shadow": "error",
 		"react/prefer-read-only-props": "error",
+		"@typescript-eslint/explicit-function-return-type": "error",
 	},
 	overrides: [
 		{

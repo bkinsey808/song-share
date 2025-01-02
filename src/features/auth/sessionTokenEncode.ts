@@ -4,8 +4,12 @@ import { SessionCookieData } from "./types";
 
 const sessionPrivateKey = process.env.SESSION_PRIVATE_KEY;
 
-export const sessionTokenEncode = async (
+type SessionTokenEncode = (
 	sessionCookieData: SessionCookieData,
+) => Promise<string>;
+
+export const sessionTokenEncode: SessionTokenEncode = async (
+	sessionCookieData,
 ) => {
 	if (!sessionPrivateKey) {
 		throw new Error("SESSION_PRIVATE_KEY is not defined");

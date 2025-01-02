@@ -9,7 +9,7 @@ export const songRequestsRemoveAllClick = (
 	get: AppSliceGet,
 ) => {
 	return (songId: string) =>
-		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
+		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]): void => {
 			e.preventDefault();
 			const { confirmModalOpen } = get();
 			confirmModalOpen({

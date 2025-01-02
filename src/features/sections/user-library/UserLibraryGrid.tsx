@@ -2,7 +2,7 @@
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { ArrowDownIcon, ArrowUpIcon } from "@radix-ui/react-icons";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -30,7 +30,7 @@ import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 
-export const UserLibraryGrid = () => {
+export const UserLibraryGrid = (): JSX.Element => {
 	const {
 		userLibrarySort,
 		userLibrarySortSet,

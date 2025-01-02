@@ -2,7 +2,7 @@
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { DateTime } from "luxon";
-import { useEffect, useMemo, useState } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { SettingsSchema } from "./schemas";
@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const SettingsForm = () => {
+export const SettingsForm = (): JSX.Element => {
 	const timezoneOptions = useMemo(() => {
 		return Intl.supportedValuesOf("timeZone").map((timeZone) => {
 			const dt = DateTime.local().setZone(timeZone);

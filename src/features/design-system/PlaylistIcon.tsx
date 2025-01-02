@@ -1,8 +1,10 @@
+import { JSX } from "react";
+
 export const PlaylistIcon = ({
 	props,
 }: {
 	readonly props?: React.SVGProps<SVGSVGElement>;
-}) => {
+}): JSX.Element => {
 	const { height = 15, width = 15, ...otherProps } = props ?? {};
 	return (
 		<svg

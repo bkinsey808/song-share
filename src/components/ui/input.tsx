@@ -1,11 +1,15 @@
 import * as React from "react";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
 export type InputProps = ComponentProps<"input">;
 
-export const Input = ({ className, type, ...props }: InputProps) => {
+export const Input = ({
+	className,
+	type,
+	...props
+}: InputProps): JSX.Element => {
 	return (
 		<input
 			type={type}

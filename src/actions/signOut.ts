@@ -5,13 +5,15 @@ import { cookies } from "next/headers";
 import { userActiveUnset } from "./userActiveUnset";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 
-export const signOut = async ({
+type Signout = ({
 	uid,
 	fuid,
 }: {
 	uid: string | null;
 	fuid: string | null;
-}) => {
+}) => Promise<void>;
+
+export const signOut: Signout = async ({ uid, fuid }) => {
 	if (uid) {
 		try {
 			await userActiveUnset({ uid, fuid });

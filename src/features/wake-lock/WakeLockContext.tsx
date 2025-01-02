@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useEffect } from "react";
+import { JSX, ReactNode, createContext, useContext, useEffect } from "react";
 
 import { useWakeLock } from "./useWakeLock";
 
@@ -18,12 +18,12 @@ export const WakeLockProvider = ({
 	children,
 }: {
 	readonly children: ReactNode;
-}) => {
+}): JSX.Element => {
 	const { requestWakeLock, releaseWakeLock, isWakeLockActive } = useWakeLock();
 
 	useEffect(() => {
 		void requestWakeLock();
-		return () => {
+		return (): void => {
 			void releaseWakeLock();
 		};
 	}, [requestWakeLock, releaseWakeLock]);

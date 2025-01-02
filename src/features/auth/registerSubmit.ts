@@ -5,7 +5,7 @@ import { sessionWarningTimestampGet } from "./sessionWarningTimestampGet";
 import { RegistrationData } from "./types";
 import { register } from "@/actions/register";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
@@ -13,7 +13,7 @@ import { getKeys } from "@/features/global/getKeys";
 export const registerSubmit =
 	(get: AppSliceGet, set: AppSliceSet) =>
 	(form: UseFormReturn<RegistrationData>) =>
-	(e: React.FormEvent<HTMLFormElement>) => {
+	(e: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		e.preventDefault();
 		return form.handleSubmit(async (registrationData) => {
 			{
@@ -47,7 +47,7 @@ export const registerSubmit =
 				console.log({ result });
 
 				switch (result.actionResultType) {
-					case actionResultType.ERROR:
+					case ActionResultType.ERROR:
 						const keys = result.fieldErrors
 							? getKeys(result.fieldErrors)
 							: undefined;
@@ -67,7 +67,7 @@ export const registerSubmit =
 						});
 
 						break;
-					case actionResultType.SUCCESS:
+					case ActionResultType.SUCCESS:
 						set({
 							isSignedIn: true,
 							isSigningIn: false,

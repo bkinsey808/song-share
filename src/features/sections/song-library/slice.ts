@@ -75,7 +75,7 @@ export const createSongLibrarySlice: AppSongLibrarySlice = (set, get) => {
 		},
 		songLibraryGridFormSubmit: songLibraryGridFormSubmit(get, set),
 		songLibraryGridFormSet: (form) => set({ songLibraryGridForm: form }),
-		songLibrarySongSet: ({ songId, song }) => {
+		songLibrarySongSet: ({ songId, song }): void => {
 			if (songId) {
 				// had to do it this way because otherwise component wouldn't re-render
 				set((innerState) => ({
@@ -90,14 +90,16 @@ export const createSongLibrarySlice: AppSongLibrarySlice = (set, get) => {
 	};
 };
 
-export const useSongLibrarySortData = () =>
+export const useSongLibrarySortData = ():
+	| undefined
+	| (typeof songLibrarySortData)[keyof typeof songLibrarySortData] =>
 	useAppStore((state) =>
 		state.songLibrarySort
 			? songLibrarySortData[state.songLibrarySort]
 			: undefined,
 	);
 
-export const useSortedFilteredSongIds = () =>
+export const useSortedFilteredSongIds = (): string[] =>
 	useAppStore((state) => {
 		const search = state.songLibrarySearch.toLowerCase();
 		const filteredSongIds = state.songIds.filter((songId) => {

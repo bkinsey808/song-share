@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback } from "react";
+import { JSX, useCallback } from "react";
 
 import { RegisterForm } from "./RegisterForm";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Modal } from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
-export const RegisterModal = () => {
+export const RegisterModal = (): JSX.Element => {
 	const { openAppModal, setOpenAppModal } = useAppStore();
 
 	const setOpen = useCallback(

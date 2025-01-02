@@ -3,7 +3,7 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { type VariantProps, cva } from "class-variance-authority";
-import { ComponentProps, ReactElement } from "react";
+import { ComponentProps, JSX, ReactElement } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,10 @@ type ToastProviderProps = ComponentProps<typeof ToastPrimitives.Provider> & {
 	readonly className?: string;
 };
 
-export const ToastViewport = ({ className, ...props }: ToastProviderProps) => (
+export const ToastViewport = ({
+	className,
+	...props
+}: ToastProviderProps): JSX.Element => (
 	<ToastPrimitives.Viewport
 		className={cn(
 			"fixed bottom-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-auto sm:right-0 sm:top-[2rem] sm:flex-col md:max-w-[420px]",
@@ -42,7 +45,11 @@ const toastVariants = cva(
 export type ToastProps = ComponentProps<typeof ToastPrimitives.Root> &
 	VariantProps<typeof toastVariants>;
 
-export const Toast = ({ className, variant, ...props }: ToastProps) => {
+export const Toast = ({
+	className,
+	variant,
+	...props
+}: ToastProps): JSX.Element => {
 	return (
 		<ToastPrimitives.Root
 			className={cn(toastVariants({ variant }), className)}
@@ -53,7 +60,10 @@ export const Toast = ({ className, variant, ...props }: ToastProps) => {
 
 type ToastActionProps = ComponentProps<typeof ToastPrimitives.Action>;
 
-const ToastAction = ({ className, ...props }: ToastActionProps) => (
+const ToastAction = ({
+	className,
+	...props
+}: ToastActionProps): JSX.Element => (
 	<ToastPrimitives.Action
 		className={cn(
 			"inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
@@ -65,7 +75,10 @@ const ToastAction = ({ className, ...props }: ToastActionProps) => (
 
 type ToastCloseProps = ComponentProps<typeof ToastPrimitives.Close>;
 
-export const ToastClose = ({ className, ...props }: ToastCloseProps) => (
+export const ToastClose = ({
+	className,
+	...props
+}: ToastCloseProps): JSX.Element => (
 	<ToastPrimitives.Close
 		className={cn(
 			"absolute right-1 top-1 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-1 group-hover:opacity-100 group-[.destructive]:text-red-300 group-[.destructive]:hover:text-red-50 group-[.destructive]:focus:ring-red-400 group-[.destructive]:focus:ring-offset-red-600",
@@ -80,7 +93,10 @@ export const ToastClose = ({ className, ...props }: ToastCloseProps) => (
 
 type ToastTitleProps = ComponentProps<typeof ToastPrimitives.Title>;
 
-export const ToastTitle = ({ className, ...props }: ToastTitleProps) => (
+export const ToastTitle = ({
+	className,
+	...props
+}: ToastTitleProps): JSX.Element => (
 	<ToastPrimitives.Title
 		className={cn("text-sm font-semibold [&+div]:text-xs", className)}
 		{...props}
@@ -92,7 +108,7 @@ type ToastDescriptionProps = ComponentProps<typeof ToastPrimitives.Description>;
 export const ToastDescription = ({
 	className,
 	...props
-}: ToastDescriptionProps) => (
+}: ToastDescriptionProps): JSX.Element => (
 	<ToastPrimitives.Description
 		className={cn("text-sm opacity-90", className)}
 		{...props}

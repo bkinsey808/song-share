@@ -2,7 +2,7 @@
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { ArrowDownIcon, ArrowUpIcon, TrashIcon } from "@radix-ui/react-icons";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -31,7 +31,7 @@ import { Grid } from "@/features/grid/Grid";
 import { GridHeader } from "@/features/grid/GridHeader";
 import { GridRow } from "@/features/grid/GridRow";
 
-export const SongLibraryGrid = () => {
+export const SongLibraryGrid = (): JSX.Element => {
 	const {
 		songLoadClick,
 		songActiveId,

@@ -1,8 +1,10 @@
 "use client";
 
+import { JSX } from "react";
+
 import { useMediaQuery } from "../global/useMediaQuery";
 
-export const FaviconLinks = () => {
+export const FaviconLinks = (): JSX.Element => {
 	const prefersLightMode = useMediaQuery("(prefers-color-scheme: light)");
 
 	return (

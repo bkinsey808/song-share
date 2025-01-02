@@ -15,7 +15,7 @@ import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
  * It is the time in seconds that the cookie will be stored.
  */
 export const sessionCookieOptions: Partial<ResponseCookie> = {
-	maxAge: 60 * 60 * 24 * 365, // 1 year
+	maxAge: 60 * 60 * 24 * 7, // 1 week for session cookie
 	httpOnly: true,
 	secure: process.env.NODE_ENV === "production",
 	sameSite: "strict" as ResponseCookie["sameSite"],

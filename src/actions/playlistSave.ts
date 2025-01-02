@@ -5,10 +5,11 @@ import { flatten } from "valibot";
 import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { userDocGet } from "./userDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { getFormError } from "@/features/form/getFormError";
 import { serverParse } from "@/features/global/serverParse";
 import { PlaylistSchema } from "@/features/sections/playlist/schemas";
 import type { Playlist } from "@/features/sections/playlist/types";
@@ -19,19 +20,16 @@ import type { Playlist } from "@/features/sections/playlist/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-const getFormError = (formError: string) => {
-	console.error(formError);
-	return {
-		actionResultType: actionResultType.ERROR,
-		formError,
-		fieldErrors: [],
-	};
-};
-
-const saveOrCreatePlaylist = async (
+type SaveOrCreatePlaylist = (
 	playlistId: string | null,
 	uid: string,
 	playlist: Playlist,
+) => Promise<string>;
+
+const saveOrCreatePlaylist: SaveOrCreatePlaylist = async (
+	playlistId,
+	uid,
+	playlist,
 ) => {
 	if (playlist.sharer && playlist.sharer !== uid) {
 		throw new Error("User does not own this playlist");
@@ -43,7 +41,7 @@ const saveOrCreatePlaylist = async (
 
 	if (playlistId) {
 		const playlistResult = await playlistGet(playlistId);
-		if (playlistResult.actionResultType === actionResultType.ERROR) {
+		if (playlistResult.actionResultType === ActionResultType.ERROR) {
 			throw new Error("Playlist not found");
 		}
 		if (playlistResult.playlist.sharer !== uid) {
@@ -63,38 +61,50 @@ const saveOrCreatePlaylist = async (
 	return playlistId;
 };
 
-export const playlistSave = async ({
+type PlaylistSave = ({
 	playlist,
 	playlistId,
 }: {
 	playlist: Playlist;
 	playlistId: string | null;
-}) => {
+}) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			playlistId: string;
+	  }
+	| {
+			actionResultType: "ERROR";
+			formError?: string;
+			fieldErrors?: ReturnType<typeof flatten>["nested"];
+	  }
+>;
+
+export const playlistSave: PlaylistSave = async ({ playlist, playlistId }) => {
 	try {
 		const result = serverParse(PlaylistSchema, playlist);
 		if (!result.success) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: flatten<typeof PlaylistSchema>(result.issues).nested,
 			};
 		}
 
 		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
 		const { sessionCookieData } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
+		if (userDocResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Failed to get user doc");
 		}
 		const { userDoc } = userDocResult;
 
 		if (playlistId) {
 			const playlistResult = await playlistGet(playlistId);
-			if (playlistResult.actionResultType === actionResultType.ERROR) {
+			if (playlistResult.actionResultType === ActionResultType.ERROR) {
 				return getFormError("Playlist not found");
 			}
 			if (
@@ -118,7 +128,7 @@ export const playlistSave = async ({
 		}
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			playlistId: newPlaylistId,
 		};
 	} catch (error) {

@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect } from "react";
+import { JSX, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { backUpFormFieldData, backUpFormFieldKey } from "./consts";
@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const BackUpForm = () => {
+export const BackUpForm = (): JSX.Element => {
 	const { backUpFormSubmit, backUpFormSet } = useAppStore();
 
 	const form = useForm<BackUpFormType>({

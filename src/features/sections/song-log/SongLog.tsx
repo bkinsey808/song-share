@@ -1,10 +1,12 @@
+import { JSX } from "react";
+
 import { sectionId } from "../consts";
 import { SongLogForm } from "./SongLogForm";
 import { SongLogGrid } from "./SongLogGrid";
 import { SongLogTitle } from "./SongLogTitle";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 
-export const SongLog = () => {
+export const SongLog = (): JSX.Element => {
 	return (
 		<SectionAccordion
 			sectionId={sectionId.SONG_LOG}

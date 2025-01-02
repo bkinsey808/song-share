@@ -1,6 +1,6 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { DragHandleDots2Icon, TrashIcon } from "@radix-ui/react-icons";
-import { useEffect, useMemo } from "react";
+import { JSX, useEffect, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 import { PlaylistGridFormSchema } from "./schemas";
@@ -19,7 +19,7 @@ import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 
-export const PlaylistGrid = () => {
+export const PlaylistGrid = (): JSX.Element => {
 	const {
 		playlistId,
 		songActiveId,

@@ -1,10 +1,12 @@
+import { JSX } from "react";
+
 import { IconBrand } from "../design-system/IconBrand";
 import { GetStartedForm } from "../get-started/GetStartedForm";
 import { PageColumn } from "../layout/PageColumn";
 import { AboutBlurb } from "../sections/about/AboutBlurb";
 import { RegisterSignInButton } from "./RegisterSignInButton";
 
-export const HomePage = () => {
+export const HomePage = (): JSX.Element => {
 	return (
 		<div className="lg:h-[100dvh] lg:overflow-hidden">
 			<main className="grid grid-cols-1 lg:h-full lg:grid-cols-2 lg:pt-0">

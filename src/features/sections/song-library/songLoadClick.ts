@@ -3,13 +3,20 @@ import { MouseEventHandler } from "react";
 import { sectionId } from "../consts";
 import { songIdSet } from "@/actions/songIdSet";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import type { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const songLoadClick =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	(songId: string) =>
-	async (e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
+type SongLoadClick = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => (
+	songId: string,
+) => (
+	e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"],
+) => Promise<void>;
+
+export const songLoadClick: SongLoadClick =
+	(get, set) => (songId) => async (e) => {
 		e.preventDefault();
 
 		const { songUnsavedIs, isSignedIn, sectionToggle } = get();
@@ -30,7 +37,7 @@ export const songLoadClick =
 		if (isSignedIn) {
 			const result = await songIdSet({ songId });
 
-			if (result.actionResultType === actionResultType.ERROR) {
+			if (result.actionResultType === ActionResultType.ERROR) {
 				toast({
 					variant: "destructive",
 					title: result.message,

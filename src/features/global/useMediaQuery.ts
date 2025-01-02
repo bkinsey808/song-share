@@ -31,7 +31,7 @@ export function useMediaQuery(
 	});
 
 	// Handles the change event of the media query.
-	function handleChange() {
+	function handleChange(): void {
 		setMatches(getMatches(query));
 	}
 
@@ -48,7 +48,7 @@ export function useMediaQuery(
 			matchMedia.addEventListener("change", handleChange);
 		}
 
-		return () => {
+		return (): void => {
 			if (matchMedia.removeListener) {
 				matchMedia.removeListener(handleChange);
 			} else {

@@ -15,7 +15,7 @@ export const Textarea = ({
 	autoResize = false,
 	ref,
 	...props
-}: TextareaProps) => {
+}: TextareaProps): React.JSX.Element => {
 	const { textAreaRef } = useAutoResizeTextarea(ref, autoResize);
 
 	return (

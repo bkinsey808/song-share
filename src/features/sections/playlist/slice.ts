@@ -65,18 +65,18 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 		playlistGridFormSubmit: playlistGridFormSubmit(get, set),
 		playlistNewClick: playlistNewClick(get, set),
 		playlistIsUnsaved: false,
-		playlistIsUnsavedSet: (unsavedPlaylist) => {
+		playlistIsUnsavedSet: (unsavedPlaylist): void => {
 			set({ playlistIsUnsaved: unsavedPlaylist });
 		},
 		playlistDeleteClick: playlistDeleteClick(get),
 		playlistFormSet: (playlistForm) => set({ playlistForm }),
-		playlistGridFormSet: (playlistGridForm) => {
+		playlistGridFormSet: (playlistGridForm): void => {
 			set({ playlistGridForm });
 		},
 		playlistDeleteConfirmClick: playlistDeleteConfirmClick(get, set),
 		playlistLoadClick: playlistLoadClick(get, set),
 		playlistActiveClick: playlistActiveClick(get, set),
-		playlistIdSet: (playlistId) => {
+		playlistIdSet: (playlistId): void => {
 			set({ playlistId });
 		},
 		playlistLibraryUnsubscribe: playlistLibraryUnsubscribe(get),
@@ -85,13 +85,13 @@ export const createPlaylistSlice: AppPlaylistSlice = (set, get) => {
 			sharer: get().sessionCookieData?.uid ?? "",
 			songs: [],
 		}),
-		playlistActiveIdSet: (playlistId) => {
+		playlistActiveIdSet: (playlistId): void => {
 			set({ playlistActiveId: playlistId });
 		},
 	};
 };
 
-export const usePlaylist = () =>
+export const usePlaylist: () => Playlist = () =>
 	useAppStore((state) =>
 		state.playlistId
 			? state.playlistLibrary[state.playlistId]

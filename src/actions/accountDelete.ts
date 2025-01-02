@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { userDocGet } from "./userDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
@@ -17,11 +17,13 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const accountDelete = async () => {
+export const accountDelete = async (): Promise<{
+	actionResultType: keyof typeof ActionResultType;
+}> => {
 	try {
 		const cookieResult = await sessionCookieGet();
 
-		if (cookieResult.actionResultType === actionResultType.ERROR) {
+		if (cookieResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 
@@ -32,7 +34,7 @@ export const accountDelete = async () => {
 		}
 
 		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
+		if (userDocResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Error getting user doc");
 		}
 		const { userDoc } = userDocResult;
@@ -81,7 +83,7 @@ export const accountDelete = async () => {
 
 		(await cookies()).delete(SESSION_COOKIE_NAME);
 
-		return { actionResultType: actionResultType.SUCCESS };
+		return { actionResultType: ActionResultType.SUCCESS };
 	} catch (error) {
 		console.error({ error });
 		return actionErrorMessageGet("Error deleting account");

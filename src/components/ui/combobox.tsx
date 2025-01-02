@@ -2,7 +2,7 @@
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import * as React from "react";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, JSX, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -42,7 +42,7 @@ export const Combobox = ({
 	setSearch,
 	disabled = false,
 	ref,
-}: ComboboxProps) => {
+}: ComboboxProps): JSX.Element => {
 	const [open, setOpen] = useState(false);
 
 	return (

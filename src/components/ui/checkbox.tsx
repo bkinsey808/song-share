@@ -2,7 +2,7 @@
 
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export const Checkbox = ({
 	className,
 	value = false,
 	...props
-}: CheckboxProps) => {
+}: CheckboxProps): JSX.Element => {
 	return (
 		<CheckboxPrimitive.Root
 			className={cn(

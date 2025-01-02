@@ -7,12 +7,20 @@ export const SongLibrarySort = {
 
 export const songLibrarySortDefault = SongLibrarySort.SONG_NAME_ASC;
 
-export const songLibrarySortData = {
+export const songLibrarySortData: Record<
+	string,
+	{
+		label: string;
+		sort: (
+			songLibrary: Record<string, Song>,
+		) => (aSongId: string, bSongId: string) => number;
+	}
+> = {
 	[SongLibrarySort.SONG_NAME_ASC]: {
 		label: "Song Name (A-Z)",
 		sort:
 			(songLibrary: Record<string, Song>) =>
-			(aSongId: string, bSongId: string) => {
+			(aSongId: string, bSongId: string): number => {
 				const a = songLibrary[aSongId]?.songName;
 				const b = songLibrary[bSongId]?.songName;
 				return a?.localeCompare(b);
@@ -22,7 +30,7 @@ export const songLibrarySortData = {
 		label: "Song Name (Z-A)",
 		sort:
 			(songLibrary: Record<string, Song>) =>
-			(aSongId: string, bSongId: string) => {
+			(aSongId: string, bSongId: string): number => {
 				const a = songLibrary[aSongId]?.songName;
 				const b = songLibrary[bSongId]?.songName;
 				return b?.localeCompare(a);

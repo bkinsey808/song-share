@@ -1,17 +1,21 @@
 import { songActiveSet } from "@/actions/songActiveSet";
 import { toast } from "@/components/ui/use-toast";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet } from "@/features/app-store/types";
 
-export const songActiveClick =
-	(get: AppSliceGet) =>
-	({
-		songId,
-		playlistId,
-	}: {
-		songId: string;
-		playlistId?: string | undefined;
-	}) =>
+type SongActiveClick = (
+	get: AppSliceGet,
+) => ({
+	songId,
+	playlistId,
+}: {
+	songId: string;
+	playlistId?: string | undefined;
+}) => () => Promise<void>;
+
+export const songActiveClick: SongActiveClick =
+	(get) =>
+	({ songId, playlistId }) =>
 	async () => {
 		const { fuid } = get();
 		if (fuid) {
@@ -19,7 +23,7 @@ export const songActiveClick =
 		}
 
 		const activeSongResult = await songActiveSet({ songId, playlistId });
-		if (activeSongResult.actionResultType === actionResultType.ERROR) {
+		if (activeSongResult.actionResultType === ActionResultType.ERROR) {
 			toast({
 				variant: "destructive",
 				title: "There was an error setting the active song",

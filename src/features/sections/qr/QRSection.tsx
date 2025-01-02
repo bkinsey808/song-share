@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const QRSection = () => {
+export const QRSection = (): JSX.Element => {
 	const { getQRUrl, sessionCookieData } = useAppStore();
 	const { uid } = sessionCookieData ?? {};
 

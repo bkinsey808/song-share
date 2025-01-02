@@ -2,7 +2,7 @@
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -10,7 +10,10 @@ export const Accordion = AccordionPrimitive.Root;
 
 type AccordionItemProps = ComponentProps<typeof AccordionPrimitive.Item>;
 
-export const AccordionItem = ({ className, ...props }: AccordionItemProps) => (
+export const AccordionItem = ({
+	className,
+	...props
+}: AccordionItemProps): JSX.Element => (
 	<AccordionPrimitive.Item className={cn("border-b", className)} {...props} />
 );
 
@@ -20,7 +23,7 @@ export const AccordionTrigger = ({
 	className,
 	children,
 	...props
-}: AccordioTriggerProps) => (
+}: AccordioTriggerProps): JSX.Element => (
 	<AccordionPrimitive.Header className="flex">
 		<AccordionPrimitive.Trigger
 			className={cn(
@@ -41,7 +44,7 @@ export const AccordionContent = ({
 	className,
 	children,
 	...props
-}: AccordionContentProps) => (
+}: AccordionContentProps): JSX.Element => (
 	<AccordionPrimitive.Content
 		className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
 		{...props}

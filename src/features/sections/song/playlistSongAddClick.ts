@@ -1,10 +1,13 @@
 import { toast } from "@/components/ui/use-toast";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
-export const playlistSongAddClick =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	(options?: { songId?: string; playlistId?: string }) =>
-	() => {
+type PlaylistSongAddClick = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => (options?: { songId?: string; playlistId?: string }) => () => void;
+
+export const playlistSongAddClick: PlaylistSongAddClick =
+	(get, set) => (options) => () => {
 		set({ playlistSongAdding: true });
 		const { playlistForm, playlistGridForm, playlistIsUnsavedSet } = get();
 		const songIdCurrent = get().songId;

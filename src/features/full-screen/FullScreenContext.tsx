@@ -29,7 +29,9 @@ export const FullScreenProvider: React.FC<FullScreenProviderProps> = ({
 }) => {
 	const [isFullScreen, setIsFullScreen] = useState(false);
 
-	const requestFullScreen = async (element: RefObject<HTMLElement>) => {
+	const requestFullScreen = async (
+		element: RefObject<HTMLElement>,
+	): Promise<void> => {
 		try {
 			if (element.current) {
 				if (element.current.requestFullscreen) {
@@ -57,7 +59,7 @@ export const FullScreenProvider: React.FC<FullScreenProviderProps> = ({
 		}
 	};
 
-	const exitFullScreen = async () => {
+	const exitFullScreen = async (): Promise<void> => {
 		try {
 			if (document.exitFullscreen) {
 				await document.exitFullscreen();
@@ -83,13 +85,13 @@ export const FullScreenProvider: React.FC<FullScreenProviderProps> = ({
 		}
 	};
 
-	const handleFullScreenChange = () => {
+	const handleFullScreenChange = (): void => {
 		setIsFullScreen(document.fullscreenElement != null);
 	};
 
 	useEffect(() => {
 		document.addEventListener("fullscreenchange", handleFullScreenChange);
-		return () => {
+		return (): void => {
 			document.removeEventListener("fullscreenchange", handleFullScreenChange);
 		};
 	}, []);

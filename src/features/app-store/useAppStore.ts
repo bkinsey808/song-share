@@ -48,7 +48,7 @@ import { TimeZoneSlice, createTimeZoneSlice } from "@/features/time-zone/slice";
 
 export const sliceResetFns = new Set<() => void>();
 
-export const resetAllSlices = () => {
+export const resetAllSlices = (): void => {
 	sliceResetFns.forEach((resetFn) => {
 		resetFn();
 	});

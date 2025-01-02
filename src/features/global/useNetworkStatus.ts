@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 
-export const useNetworkStatus = () => {
+export const useNetworkStatus = (): boolean => {
 	const [isOnline, setIsOnline] = useState(navigator.onLine);
 
 	useEffect(() => {
-		const updateOnlineStatus = () => setIsOnline(navigator.onLine);
+		const updateOnlineStatus = (): void => {
+			setIsOnline(navigator.onLine);
+		};
 
 		window.addEventListener("online", updateOnlineStatus);
 		window.addEventListener("offline", updateOnlineStatus);
 
-		return () => {
+		return (): void => {
 			window.removeEventListener("online", updateOnlineStatus);
 			window.removeEventListener("offline", updateOnlineStatus);
 		};

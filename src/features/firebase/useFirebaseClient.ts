@@ -16,7 +16,11 @@ const firebaseConfig: FirebaseOptions = {
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-export const useFirestoreClient = () => {
+export const useFirestoreClient = (): {
+	getDb: () => Firestore | null;
+	initialized: boolean;
+	clearDb: () => void;
+} => {
 	const [db, setDb] = useState<Firestore | null>(null);
 	const [initialized, setInitialized] = useState(false); // Track initialization status
 

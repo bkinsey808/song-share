@@ -1,7 +1,7 @@
 "use server";
 
 import { sessionCookieGet } from "./sessionCookieGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { db } from "@/features/firebase/firebaseServer";
 import { backUpFormFieldKey } from "@/features/sections/admin/consts";
 import { BackUpForm } from "@/features/sections/admin/types";
@@ -12,23 +12,34 @@ import { BackUpForm } from "@/features/sections/admin/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
+export const backUp = async ({
+	fromPrefix,
+	toPrefix,
+}: BackUpForm): Promise<
+	| {
+			actionResultType: "SUCCESS";
+	  }
+	| {
+			actionResultType: "ERROR";
+			fieldErrors?: Record<string, string[]>;
+	  }
+> => {
 	try {
 		if (!fromPrefix || !toPrefix) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: { root: ["Prefixes are required"] },
 			};
 		}
 		if (toPrefix === fromPrefix) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: { root: ["Cannot overwrite same prefix"] },
 			};
 		}
 		if (toPrefix === "production") {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: {
 					[backUpFormFieldKey.TO_PREFIX]: ["Cannot overwrite production"],
 				},
@@ -37,9 +48,9 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 
 		const cookieResult = await sessionCookieGet();
 
-		if (cookieResult.actionResultType === actionResultType.ERROR) {
+		if (cookieResult.actionResultType === ActionResultType.ERROR) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: { root: ["Session expired"] },
 			};
 		}
@@ -51,7 +62,7 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 
 		if (collectionNames.length === 0) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: {
 					[backUpFormFieldKey.FROM_PREFIX]: [
 						"No collections with from prefix found",
@@ -85,16 +96,16 @@ export const backUp = async ({ fromPrefix, toPrefix }: BackUpForm) => {
 		);
 		if (failedCollections.length > 0) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: { root: ["Failed to backup collections"] },
 			};
 		}
 
-		return { actionResultType: actionResultType.SUCCESS };
+		return { actionResultType: ActionResultType.SUCCESS };
 	} catch (error) {
 		console.error(error);
 		return {
-			actionResultType: actionResultType.ERROR,
+			actionResultType: ActionResultType.ERROR,
 			fieldErrors: { root: ["Error backing up database"] },
 		};
 	}

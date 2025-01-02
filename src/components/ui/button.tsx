@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
-import { ComponentProps } from "react";
+import { ComponentProps, JSX } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -46,7 +46,7 @@ export const Button = ({
 	size,
 	asChild = false,
 	...props
-}: ButtonProps) => {
+}: ButtonProps): JSX.Element => {
 	const Comp = asChild ? Slot : "button";
 	return (
 		<Comp

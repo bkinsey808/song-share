@@ -1,12 +1,14 @@
 "use client";
 
+import { JSX } from "react";
+
 import { useSongLogs } from "../song-log/slice";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 
-export const LogGrid = () => {
+export const LogGrid = (): JSX.Element => {
 	const {
 		songLogLoadClick,
 		songLoadClick,

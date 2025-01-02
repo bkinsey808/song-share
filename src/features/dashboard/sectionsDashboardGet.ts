@@ -3,7 +3,11 @@ import { AppSliceGet } from "@/features/app-store/types";
 import { sectionId } from "@/features/sections/consts";
 import { SectionId } from "@/features/sections/types";
 
-export const sectionsDashboardGet = (get: AppSliceGet) => () => {
+type SectionsDashboardGet = (
+	get: AppSliceGet,
+) => () => [SectionId[], SectionId[]];
+
+export const sectionsDashboardGet: SectionsDashboardGet = (get) => () => {
 	const { isSignedIn, sessionCookieData } = get();
 	const { roles } = sessionCookieData ?? {};
 

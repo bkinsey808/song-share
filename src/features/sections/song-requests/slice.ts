@@ -68,21 +68,21 @@ export const createSongRequestsSlice: AppSongRequestsSlice = (set, get) => {
 		},
 		songRequestsGridFormSubmit: songRequestsGridFormSubmit(get, set),
 		songRequestsGridFormSet: (form) => set({ songRequestsGridForm: form }),
-		songRequestAdded: (songId) => {
+		songRequestAdded: (songId): boolean => {
 			const { sessionCookieData, songRequests } = get();
 
 			return sessionCookieData?.uid
 				? (songRequests?.[songId]?.includes(sessionCookieData?.uid) ?? false)
 				: false;
 		},
-		songRequestsSet: (songRequests) => {
+		songRequestsSet: (songRequests): void => {
 			set({ songRequests });
 		},
 		songRequestsRemoveAllClick: songRequestsRemoveAllClick(set, get),
 	};
 };
 
-export const useSortedFilteredSongRequestSongIds = () =>
+export const useSortedFilteredSongRequestSongIds = (): string[] =>
 	useAppStore((state) => {
 		const search = state.songRequestsSearch.toLowerCase();
 		const filteredSongIds = getKeys(state?.songRequests ?? {}).filter(

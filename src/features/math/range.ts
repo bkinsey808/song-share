@@ -1,5 +1,7 @@
+type Range = (start: number, stop?: number, step?: number) => number[];
+
 /** like python range() */
-export const range = (start: number, stop?: number, step?: number) => {
+export const range: Range = (start, stop, step) => {
 	if (typeof stop == "undefined") {
 		// one param defined
 		stop = start;

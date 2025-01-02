@@ -9,7 +9,7 @@ import {
 } from "@/features/design-system/Modal";
 import { appModal } from "@/features/modal/consts";
 
-export const SessionExpireWarningModal = () => {
+export const SessionExpireWarningModal = (): JSX.Element => {
 	const {
 		openAppModal,
 		setOpenAppModal,

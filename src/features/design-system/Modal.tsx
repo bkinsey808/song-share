@@ -1,5 +1,6 @@
 import {
 	ComponentProps,
+	JSX,
 	ReactNode,
 	useCallback,
 	useEffect,
@@ -22,7 +23,7 @@ export const Modal = ({
 	children,
 	ref,
 	...dialogProps
-}: ModalProps) => {
+}: ModalProps): JSX.Element => {
 	/** @see https://stackoverflow.com/questions/66067697/cannot-assign-to-read-only-property-current-in-react-useref#71574359 */
 	const mutableDialogRef = useRef<HTMLDialogElement | null>(null);
 
@@ -72,13 +73,13 @@ export const Modal = ({
 		const innerDialog = mutableDialogRef.current;
 		innerDialog?.addEventListener("close", handleClose);
 
-		return () => {
+		return (): void => {
 			innerDialog?.removeEventListener("close", handleClose);
 		};
 	}, [handleClose]);
 
 	useEffect(() => {
-		return () => {
+		return (): void => {
 			document.removeEventListener("click", handleClick);
 		};
 	}, [handleClick]);
@@ -116,7 +117,7 @@ export const ModalContent = ({
 	children,
 }: {
 	readonly children: ReactNode;
-}) => {
+}): JSX.Element => {
 	return (
 		<div className="h-full flex-grow overflow-auto">
 			<section className="flex flex-col gap-[2rem] p-[1rem]">
@@ -130,7 +131,7 @@ export const ModalFooter = ({
 	children,
 }: {
 	readonly children?: ReactNode;
-}) => {
+}): JSX.Element => {
 	return (
 		<footer
 			id="modal-footer"

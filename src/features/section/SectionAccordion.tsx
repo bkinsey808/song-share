@@ -1,7 +1,7 @@
 "use client";
 
 import { TriangleRightIcon } from "@radix-ui/react-icons";
-import { ReactNode, useEffect, useRef } from "react";
+import { JSX, ReactNode, useEffect, useRef } from "react";
 
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
@@ -21,7 +21,7 @@ export const SectionAccordion = ({
 	readonly buttonVariant?: Parameters<typeof Button>[0]["variant"];
 	readonly sectionId: SectionId;
 	readonly children: ReactNode;
-}) => {
+}): JSX.Element => {
 	const { sectionToggle } = useAppStore();
 	const isOpen = useOpenSection(sectionId);
 	const detailsRef = useRef<HTMLDetailsElement>(null);

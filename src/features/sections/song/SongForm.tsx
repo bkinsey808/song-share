@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 // import { KeySection } from "../key/KeySection.tsx.ignore";
@@ -30,7 +30,7 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 import { sectionId } from "@/features/sections/consts";
 
-export const SongForm = () => {
+export const SongForm = (): JSX.Element => {
 	const { isSignedIn } = useAppStore();
 	const {
 		songId,

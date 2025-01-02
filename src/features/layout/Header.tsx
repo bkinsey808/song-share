@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { JSX, RefObject, useEffect, useRef, useState } from "react";
 
 import { useFullScreen } from "../full-screen/FullScreenContext";
 import { useWakeLockContext } from "../wake-lock/WakeLockContext";
@@ -22,7 +22,7 @@ import { sectionId } from "@/features/sections/consts";
 
 const brand = process.env.NEXT_PUBLIC_BRAND ?? "Song Share";
 
-export const Header = () => {
+export const Header = (): JSX.Element | null => {
 	const {
 		sessionCookieData,
 		isSignedIn,

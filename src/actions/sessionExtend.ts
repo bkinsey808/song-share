@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 
 import { sessionCookieGet } from "./sessionCookieGet";
 import { userPublicDocGet } from "./userPublicDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { sessionCookieOptions } from "@/features/auth/sessionCookieOptions";
 import { sessionTokenEncode } from "@/features/auth/sessionTokenEncode";
@@ -13,21 +13,34 @@ import { SessionCookieData } from "@/features/auth/types";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { UserPublicDoc } from "@/features/firebase/types";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 import { jsDateTimeZone2iso } from "@/features/time-zone/jsDateTimeZone2iso";
 
-export const sessionExtend = async () => {
+type SessionExtend = () => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			sessionCookieData: SessionCookieData;
+			userPublicDoc: UserPublicDoc;
+	  }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const sessionExtend: SessionExtend = async () => {
 	try {
 		const cookieResult = await sessionCookieGet();
 
-		if (cookieResult.actionResultType === actionResultType.ERROR) {
+		if (cookieResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 
 		const sessionCookieData = cookieResult.sessionCookieData;
 
 		const userPublicGetResult = await userPublicDocGet();
-		if (userPublicGetResult.actionResultType === actionResultType.ERROR) {
+		if (userPublicGetResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Public user not found");
 		}
 		const { userPublicDoc } = userPublicGetResult;
@@ -60,7 +73,7 @@ export const sessionExtend = async () => {
 		);
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			sessionCookieData: newSessionCookieData,
 			userPublicDoc,
 		};

@@ -6,7 +6,7 @@ import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 
 export const songRequestAddClick = (set: AppSliceSet, get: AppSliceGet) => {
 	return (songId: string) =>
-		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]) => {
+		(e: Parameters<MouseEventHandler<HTMLButtonElement>>["0"]): void => {
 			e.preventDefault();
 
 			const { sessionCookieData, fuid } = get();
@@ -18,7 +18,7 @@ export const songRequestAddClick = (set: AppSliceSet, get: AppSliceGet) => {
 
 			set({ songRequestPending: true });
 
-			void (async () => {
+			void (async (): Promise<void> => {
 				// Add song to song requests
 				const songRequestAddResult = await songRequestAdd({
 					songId,

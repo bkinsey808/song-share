@@ -4,13 +4,20 @@ import * as S from "@effect/schema/Schema";
 import * as Either from "effect/Either";
 import { cookies } from "next/headers";
 
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { SESSION_COOKIE_NAME } from "@/features/auth/consts";
 import { SessionCookieDataSchema } from "@/features/auth/schemas";
 import { sessionTokenDecode } from "@/features/auth/sessionTokenDecode";
+import { SessionCookieData } from "@/features/auth/types";
 import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
-export const sessionCookieGet = async () => {
+export const sessionCookieGet = async (): Promise<
+	| {
+			actionResultType: "SUCCESS";
+			sessionCookieData: SessionCookieData;
+	  }
+	| { actionResultType: "ERROR"; message: string }
+> => {
 	try {
 		const sessionCookie = (await cookies()).get(SESSION_COOKIE_NAME);
 
@@ -29,7 +36,7 @@ export const sessionCookieGet = async () => {
 		}
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			sessionCookieData: result.right,
 		};
 	} catch (error) {

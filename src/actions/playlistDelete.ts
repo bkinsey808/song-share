@@ -3,7 +3,7 @@
 import { playlistGet } from "./playlistGet";
 import { sessionExtend } from "./sessionExtend";
 import { userDocGet } from "./userDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -15,14 +15,25 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const playlistDelete = async (playlistId: string) => {
+export const playlistDelete = async (
+	playlistId: string,
+): Promise<
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+	| {
+			actionResultType: "SUCCESS";
+			playlistIds: string[];
+	  }
+> => {
 	try {
 		if (!playlistId) {
 			return actionErrorMessageGet("Playlist id is required");
 		}
 
 		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 		const sessionCookieData = extendSessionResult.sessionCookieData;
@@ -30,7 +41,7 @@ export const playlistDelete = async (playlistId: string) => {
 		const { uid } = sessionCookieData;
 
 		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
+		if (userDocResult.actionResultType === ActionResultType.ERROR) {
 			return userDocResult;
 		}
 		const { userDoc } = userDocResult;
@@ -41,7 +52,7 @@ export const playlistDelete = async (playlistId: string) => {
 		);
 
 		const playlistResult = await playlistGet(playlistId);
-		if (playlistResult.actionResultType === actionResultType.ERROR) {
+		if (playlistResult.actionResultType === ActionResultType.ERROR) {
 			return playlistResult;
 		}
 		const { playlist } = playlistResult;
@@ -62,7 +73,7 @@ export const playlistDelete = async (playlistId: string) => {
 		});
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			playlistIds: newPlaylistIds,
 		};
 	} catch (error) {

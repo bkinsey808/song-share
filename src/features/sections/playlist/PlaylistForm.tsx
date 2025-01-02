@@ -1,7 +1,7 @@
 "use client";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useEffect } from "react";
+import { JSX, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { PlaylistDeleteConfirmModal } from "./PlaylistDeleteConfirmModal";
@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
-export const PlaylistForm = () => {
+export const PlaylistForm = (): JSX.Element => {
 	const { isSignedIn } = useAppStore();
 	const {
 		playlistId,

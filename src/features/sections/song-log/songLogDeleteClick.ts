@@ -1,23 +1,27 @@
 import { UseFormReturn } from "react-hook-form";
 
-import { songLogDefaultGet } from "./songLogDefaultGet";
+import { songLogFormDefaultGet } from "./songLogFormDefaultGet";
 import { SongLogForm } from "./types";
 import { songLogDelete } from "@/actions/songLogDelete";
 import { AppSliceGet } from "@/features/app-store/types";
 
-export const songLogDeleteClick =
-	(get: AppSliceGet) =>
-	({
-		songId,
-		logId,
-		form,
-		shouldClearSongId,
-	}: {
-		songId: string;
-		logId: string;
-		form: UseFormReturn<SongLogForm>;
-		shouldClearSongId: boolean;
-	}) =>
+type SongLogDeleteClick = (
+	get: AppSliceGet,
+) => ({
+	songId,
+	logId,
+	form,
+	shouldClearSongId,
+}: {
+	songId: string;
+	logId: string;
+	form: UseFormReturn<SongLogForm>;
+	shouldClearSongId: boolean;
+}) => () => void;
+
+export const songLogDeleteClick: SongLogDeleteClick =
+	(get) =>
+	({ songId, logId, form, shouldClearSongId }) =>
 	() => {
 		const { confirmModalOpen } = get();
 		confirmModalOpen({
@@ -32,7 +36,7 @@ export const songLogDeleteClick =
 
 				if (songDeleteResult.actionResultType === "SUCCESS") {
 					form.reset({
-						...songLogDefaultGet(),
+						...songLogFormDefaultGet(),
 						songId: shouldClearSongId || !songId ? "" : songId,
 					});
 				}

@@ -1,22 +1,25 @@
 import { AppSliceGet } from "@/features/app-store/types";
 
-export const playlistSongAddButtonShow = (get: AppSliceGet) => () => {
-	const { songId, playlistId } = get();
+type PlaylistSongAddButtonShow = (get: AppSliceGet) => () => boolean;
 
-	if (!songId || !playlistId) {
-		return false;
-	}
+export const playlistSongAddButtonShow: PlaylistSongAddButtonShow =
+	(get) => () => {
+		const { songId, playlistId } = get();
 
-	const playlist = get().playlistLibrary[playlistId];
+		if (!songId || !playlistId) {
+			return false;
+		}
 
-	if (!playlist) {
-		return false;
-	}
+		const playlist = get().playlistLibrary[playlistId];
 
-	const songs = playlist.songs;
-	if (!songs) {
-		return false;
-	}
+		if (!playlist) {
+			return false;
+		}
 
-	return !songs.find((song) => song.songId === songId);
-};
+		const songs = playlist.songs;
+		if (!songs) {
+			return false;
+		}
+
+		return !songs.find((song) => song.songId === songId);
+	};

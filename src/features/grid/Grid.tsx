@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 
 import { GridProvider } from "./GridContext";
 import { GridHeader } from "./GridHeader";
@@ -14,7 +14,7 @@ export const Grid = ({
 	fixedClassName,
 	scrollingClassName,
 	children,
-}: GridProps) => {
+}: GridProps): JSX.Element => {
 	return (
 		<GridProvider
 			fixedClassName={fixedClassName}

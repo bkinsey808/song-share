@@ -9,7 +9,7 @@ import {
 	HandIcon,
 	TrashIcon,
 } from "@radix-ui/react-icons";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, JSX, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -37,7 +37,7 @@ import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
 
-export const SongRequestsGrid = () => {
+export const SongRequestsGrid = (): JSX.Element => {
 	const {
 		songLoadClick,
 		songActiveId,

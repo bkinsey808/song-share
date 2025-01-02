@@ -3,7 +3,7 @@
 import { sessionExtend } from "./sessionExtend";
 import { songGet } from "./songGet";
 import { userDocGet } from "./userDocGet";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
@@ -15,27 +15,38 @@ import { actionErrorMessageGet } from "@/features/global/actionErrorMessageGet";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-export const songDelete = async (songId: string) => {
+type SongDelete = (songId: string) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			songIds: string[];
+	  }
+	| {
+			actionResultType: "ERROR";
+			message: string;
+	  }
+>;
+
+export const songDelete: SongDelete = async (songId) => {
 	try {
 		if (!songId) {
 			return actionErrorMessageGet("Song ID is required");
 		}
 
 		const sessionExtendResult = await sessionExtend();
-		if (sessionExtendResult.actionResultType === actionResultType.ERROR) {
+		if (sessionExtendResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("Session expired");
 		}
 		const { uid } = sessionExtendResult.sessionCookieData;
 
 		const userDocResult = await userDocGet();
-		if (userDocResult.actionResultType === actionResultType.ERROR) {
+		if (userDocResult.actionResultType === ActionResultType.ERROR) {
 			return actionErrorMessageGet("User not found");
 		}
 		const { userDoc } = userDocResult;
 		const userDocSongIds = userDoc.songIds ?? [];
 
 		const songResult = await songGet(songId);
-		if (songResult.actionResultType === actionResultType.ERROR) {
+		if (songResult.actionResultType === ActionResultType.ERROR) {
 			return songResult;
 		}
 		const { song } = songResult;
@@ -96,7 +107,7 @@ export const songDelete = async (songId: string) => {
 		});
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
+			actionResultType: ActionResultType.SUCCESS,
 			songIds,
 		};
 	} catch (error) {

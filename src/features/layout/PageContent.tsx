@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { JSX, ReactNode } from "react";
 
 import { Header } from "@/features/layout/Header";
 
@@ -6,7 +6,7 @@ export const PageContent = ({
 	children,
 }: {
 	readonly children?: ReactNode;
-}) => {
+}): JSX.Element => {
 	return (
 		<>
 			<Header />

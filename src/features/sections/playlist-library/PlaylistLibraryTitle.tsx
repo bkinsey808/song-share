@@ -1,9 +1,11 @@
 "use client";
 
+import { JSX } from "react";
+
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
 
-export const PlaylistLibraryTitle = () => {
+export const PlaylistLibraryTitle = (): JSX.Element => {
 	const { playlistLibrary } = useAppStore();
 	const numberOfPlaylists = getKeys(playlistLibrary).length;
 

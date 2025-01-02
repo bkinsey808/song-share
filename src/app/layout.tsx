@@ -1,6 +1,7 @@
 import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { JSX } from "react";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
@@ -30,7 +31,7 @@ export default function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
-}>) {
+}>): JSX.Element {
 	return (
 		<html lang="en" className={"lg:overflow-hidden"}>
 			<head>

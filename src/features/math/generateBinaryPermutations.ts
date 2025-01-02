@@ -1,9 +1,9 @@
 import { range } from "./range";
 
-export const generateBinaryPermutations = (n: number) => {
+export const generateBinaryPermutations = (n: number): string[] => {
 	const binaryNumbers = range(0, 2 ** n);
 	const sortedResult = binaryNumbers.sort((a, b) => {
-		const countOnes = (num: number) => {
+		const countOnes = (num: number): number => {
 			let count = 0;
 			while (num > 0) {
 				count += num & 1;

@@ -1,5 +1,7 @@
 "use client";
 
+import { JSX } from "react";
+
 import {
 	Toast,
 	ToastClose,
@@ -10,7 +12,7 @@ import {
 } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
-export function Toaster() {
+export const Toaster = (): JSX.Element => {
 	const { toasts } = useToast();
 
 	return (
@@ -32,4 +34,4 @@ export function Toaster() {
 			<ToastViewport />
 		</ToastProvider>
 	);
-}
+};

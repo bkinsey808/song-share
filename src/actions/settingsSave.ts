@@ -3,10 +3,11 @@
 import { flatten } from "valibot";
 
 import { sessionExtend } from "./sessionExtend";
-import { actionResultType } from "@/features/app-store/consts";
+import { ActionResultType } from "@/features/app-store/consts";
 import { collectionNameGet } from "@/features/firebase/collectionNameGet";
 import { collection } from "@/features/firebase/consts";
 import { db } from "@/features/firebase/firebaseServer";
+import { getFormError } from "@/features/form/getFormError";
 import { serverParse } from "@/features/global/serverParse";
 import { SettingsSchema } from "@/features/sections/settings/schemas";
 import { Settings } from "@/features/sections/settings/types";
@@ -17,28 +18,31 @@ import { Settings } from "@/features/sections/settings/types";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-const getFormError = (formError: string) => {
-	console.error(formError);
-	return {
-		actionResultType: actionResultType.ERROR,
-		formError,
-		fieldErrors: undefined,
-	};
-};
+type SettingsSave = ({ settings }: { settings: Settings }) => Promise<
+	| {
+			actionResultType: "SUCCESS";
+			timeZone: string | null;
+	  }
+	| {
+			actionResultType: "ERROR";
+			formError?: string;
+			fieldErrors?: ReturnType<typeof flatten>["nested"];
+	  }
+>;
 
-export const settingsSave = async ({ settings }: { settings: Settings }) => {
+export const settingsSave: SettingsSave = async ({ settings }) => {
 	try {
 		const settingsParseResult = serverParse(SettingsSchema, settings);
 		if (!settingsParseResult.success) {
 			return {
-				actionResultType: actionResultType.ERROR,
+				actionResultType: ActionResultType.ERROR,
 				fieldErrors: flatten<typeof SettingsSchema>(settingsParseResult.issues)
 					.nested,
 			};
 		}
 
 		const extendSessionResult = await sessionExtend();
-		if (extendSessionResult.actionResultType === actionResultType.ERROR) {
+		if (extendSessionResult.actionResultType === ActionResultType.ERROR) {
 			return getFormError("Session expired");
 		}
 
@@ -53,8 +57,8 @@ export const settingsSave = async ({ settings }: { settings: Settings }) => {
 			});
 
 		return {
-			actionResultType: actionResultType.SUCCESS,
-			timeZone: settings.timeZone,
+			actionResultType: ActionResultType.SUCCESS,
+			timeZone: settings.timeZone ?? null,
 		};
 	} catch (error) {
 		console.error({ error });

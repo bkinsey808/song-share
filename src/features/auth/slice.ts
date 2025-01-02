@@ -61,22 +61,22 @@ export const createAuthSlice: AppAuthSlice = (set, get) => {
 	return {
 		...authSliceInitialState,
 		setLastSignInCheck: (lastSignInCheck) => set({ lastSignInCheck }),
-		signIn: (sessionCookieData) => {
+		signIn: (sessionCookieData): void => {
 			set({ sessionCookieData, isSignedIn: true });
 		},
-		signOut: () => {
+		signOut: (): void => {
 			set({ sessionCookieData: null, isSignedIn: false });
 			const { setOpenAppModal } = get();
 			setOpenAppModal(null);
 		},
 		signInClick: signInClick(set, get),
-		accountManageClick: () => {
+		accountManageClick: (): void => {
 			const { setOpenAppModal } = get();
 			setOpenAppModal(appModal.ACCOUNT_MANAGE);
 		},
 		signOutClick: signOutClick(get, set),
 		signOutAndClearLocalClick: signOutAndClearLocalClick(get),
-		deleteAccountClick: () => {
+		deleteAccountClick: (): void => {
 			const { setOpenAppModal } = get();
 			setOpenAppModal(appModal.ACCOUNT_DELETE_CONFIRM);
 		},

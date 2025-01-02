@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { JSX, useEffect } from "react";
 
 import { tw } from "../global/tw";
 import { useGridContext } from "./GridContext";
@@ -16,7 +16,7 @@ export const GridHeader = ({
 	className,
 	section,
 	children,
-}: GridHeaderProps) => {
+}: GridHeaderProps): JSX.Element => {
 	const { fixedColumnCount, scrollingColumnCount } = useGridContext();
 
 	const childrenArray = React.Children.toArray(children);

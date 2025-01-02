@@ -59,7 +59,7 @@ type AppModalSlice = StateCreator<AppSlice, [], [], ModalSlice>;
 export const createModalSlice: AppModalSlice = (set, get) => ({
 	...modalSliceInitialState,
 	setOpenAppModal: (modal) => set({ openAppModal: modal }),
-	confirmModalOpen: ({ heading, buttonLabel, content, confirmFn }) => {
+	confirmModalOpen: ({ heading, buttonLabel, content, confirmFn }): void => {
 		set({
 			openAppModal: appModal.CONFIRM,
 			confirmModalHeading: heading,
@@ -70,10 +70,10 @@ export const createModalSlice: AppModalSlice = (set, get) => ({
 			confirmModalError: undefined,
 		});
 	},
-	confirmModalConfirmClick: () => {
+	confirmModalConfirmClick: (): void => {
 		set({ confirmModalSuccessWaiting: true, confirmModalError: undefined });
 		const { confirmModalFn } = get();
-		void (async () => {
+		void (async (): Promise<void> => {
 			const result = await confirmModalFn?.();
 			if (result?.actionResultType === "ERROR") {
 				set({ confirmModalError: result.message });
