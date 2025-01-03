@@ -34,6 +34,7 @@ type SongRequestRemove = ({
 	  }
 >;
 
+// eslint-disable-next-line complexity
 export const songRequestRemove: SongRequestRemove = async ({
 	songId,
 	fuid,
@@ -47,7 +48,7 @@ export const songRequestRemove: SongRequestRemove = async ({
 		const { sessionCookieData } = extendSessionResult;
 		const { uid } = sessionCookieData;
 
-		requestUserId = requestUserId ?? uid;
+		const requestUserIdWithDefault = requestUserId ?? uid;
 
 		const userPublicGetResult = await userPublicDocGet(fuid ?? uid);
 		if (userPublicGetResult.actionResultType === ActionResultType.ERROR) {
@@ -57,11 +58,11 @@ export const songRequestRemove: SongRequestRemove = async ({
 
 		const songRequests = userPublicDoc.songRequests ?? {};
 		const songRequestUserIds = songRequests[songId] ?? [];
-		if (!songRequestUserIds.includes(requestUserId)) {
+		if (!songRequestUserIds.includes(requestUserIdWithDefault)) {
 			return actionErrorMessageGet("Song not already requested");
 		}
 		const newSongRequestUserIds = songRequestUserIds.filter(
-			(id) => id !== requestUserId,
+			(id) => id !== requestUserIdWithDefault,
 		);
 		if (newSongRequestUserIds.length === 0) {
 			delete songRequests[songId];

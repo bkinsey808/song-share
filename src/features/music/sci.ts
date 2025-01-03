@@ -36,5 +36,7 @@ export const sciList = Either.isRight(parseEitherResult)
 
 export const sciListError = Either.isLeft(parseEitherResult);
 
-export const getSciBySpelling = (spelling: readonly string[]) =>
+export const getSciBySpelling = (
+	spelling: readonly string[],
+): SciType | undefined =>
 	sciList?.find((sci) => sci.txtSpelling === spelling.join(","));

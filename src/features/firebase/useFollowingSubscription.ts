@@ -62,6 +62,7 @@ export const useFollowingSubscription = (fuid: string | string[]): void => {
 
 		const userPublicUnsubscribe = onSnapshot(
 			doc(db, collectionNameGet(collection.USERS_PUBLIC), fuid),
+			// eslint-disable-next-line complexity
 			(userPublicSnapshot) => {
 				if (userPublicSnapshot.metadata.fromCache) {
 					clearDb();

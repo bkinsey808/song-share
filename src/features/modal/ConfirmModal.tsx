@@ -37,11 +37,13 @@ export const ConfirmModal = (): JSX.Element => {
 		>
 			<ModalContent>
 				{ConfirmModalContent ? (
-					typeof ConfirmModalContent === "string" ? (
-						ConfirmModalContent
-					) : (
-						<ConfirmModalContent />
-					)
+					<>
+						{typeof ConfirmModalContent === "string" ? (
+							ConfirmModalContent
+						) : (
+							<ConfirmModalContent />
+						)}
+					</>
 				) : null}
 			</ModalContent>
 

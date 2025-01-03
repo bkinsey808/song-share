@@ -20,7 +20,7 @@ export type LetterAndAccidental =
 
 export const letterAndAccidentalToNumber = (
 	letterAndAccidental: LetterAndAccidental,
-) => {
+): number => {
 	// make sure to handle # ## b bb
 	const letter = letterAndAccidental[0] as keyof typeof letterToNumber;
 	const accidental = letterAndAccidental.slice(

@@ -13,6 +13,7 @@ type SignInClick = (
 ) => (redirectPath?: string) => () => void;
 
 export const signInClick: SignInClick = (set, get) => (redirectPath) => () => {
+	// eslint-disable-next-line complexity
 	void (async (): Promise<void> => {
 		try {
 			const { isSignedIn } = get();
@@ -92,7 +93,6 @@ export const signInClick: SignInClick = (set, get) => (redirectPath) => () => {
 
 					if (redirectPath) {
 						window.location.href = redirectPath;
-						return;
 					}
 			}
 		} catch (error) {

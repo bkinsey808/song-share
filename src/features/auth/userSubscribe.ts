@@ -32,6 +32,7 @@ export const userSubscribe: UserSubscribe =
 		}
 		const userUnsubscribeFn = onSnapshot(
 			doc(db, collectionNameGet(collection.USERS), uid),
+			// eslint-disable-next-line complexity
 			(userSnapshot) => {
 				if (userSnapshot.metadata.fromCache) {
 					clearDb();
@@ -93,6 +94,7 @@ export const userSubscribe: UserSubscribe =
 
 		const userPublicUnsubscribeFn = onSnapshot(
 			doc(db, collectionNameGet(collection.USERS_PUBLIC), uid),
+			// eslint-disable-next-line complexity
 			(userPublicSnapshot) => {
 				if (!userPublicSnapshot.exists) {
 					console.warn(`User public ${uid} does not exist`);

@@ -28,6 +28,5 @@ export const songActiveClick: SongActiveClick =
 				variant: "destructive",
 				title: "There was an error setting the active song",
 			});
-			return;
 		}
 	};

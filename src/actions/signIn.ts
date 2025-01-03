@@ -60,6 +60,7 @@ type SignIn = ({
 	  }
 >;
 
+// eslint-disable-next-line complexity
 export const signIn: SignIn = async ({
 	uid,
 	fuid,

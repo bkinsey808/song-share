@@ -7,6 +7,7 @@ type PlaylistSongAddClick = (
 ) => (options?: { songId?: string; playlistId?: string }) => () => void;
 
 export const playlistSongAddClick: PlaylistSongAddClick =
+	// eslint-disable-next-line complexity
 	(get, set) => (options) => () => {
 		set({ playlistSongAdding: true });
 		const { playlistForm, playlistGridForm, playlistIsUnsavedSet } = get();

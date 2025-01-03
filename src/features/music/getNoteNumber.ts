@@ -3,7 +3,7 @@ import {
 	letterAndAccidentalToNumber,
 } from "./letterAndAccidentalToNumber";
 
-export const getNoteNumber = (note?: string) => {
+export const getNoteNumber = (note?: string): number | undefined => {
 	if (note === undefined) {
 		return undefined;
 	}

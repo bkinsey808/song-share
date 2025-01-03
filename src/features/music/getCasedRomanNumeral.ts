@@ -7,7 +7,7 @@ export const getCasedRomanNumeral = ({
 }: {
 	romanNumeral?: string | undefined;
 	scale: Scale;
-}) => {
+}): string | undefined => {
 	const romanNumerals = getRomanNumerals(scale);
 	const foundRomanNumeral = romanNumerals.find(
 		(rn) => rn.toLowerCase() === romanNumeral?.toLowerCase(),

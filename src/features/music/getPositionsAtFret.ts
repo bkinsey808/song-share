@@ -19,7 +19,7 @@ export const getPositionsAtFret = ({
 	maxFret: number;
 	maxFretSpan: number;
 	maxMuted: number;
-}) => {
+}): (number | "x")[][] => {
 	const values = getPositionValuesForFret({
 		fret,
 		maxFret,

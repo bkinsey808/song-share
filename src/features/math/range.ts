@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 type Range = (start: number, stop?: number, step?: number) => number[];
 
 /** like python range() */

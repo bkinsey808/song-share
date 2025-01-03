@@ -8,7 +8,7 @@ export const getNoteFromNumber = ({
 	noteNumber: number | "x";
 	preferFlats?: boolean;
 	includeOctave?: boolean;
-}) => {
+}): string => {
 	if (noteNumber === "x") {
 		return "x";
 	}

@@ -20,7 +20,7 @@ export const getPositions = ({
 	maxMuted?: number;
 	maxFrets?: number;
 	maxFretSpan?: number;
-}) => {
+}): (number | "x")[][] | undefined => {
 	if (!chord || !keyNote || !tuning) {
 		return undefined;
 	}

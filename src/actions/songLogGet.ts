@@ -43,6 +43,7 @@ export const songLogGet: SongLogGet = async ({ songId, uid }) => {
 			}
 
 			const sessionCookieData = cookieResult.sessionCookieData;
+			// eslint-disable-next-line no-param-reassign
 			uid = sessionCookieData.uid;
 		}
 

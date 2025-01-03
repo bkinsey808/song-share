@@ -26,6 +26,7 @@ type SongDelete = (songId: string) => Promise<
 	  }
 >;
 
+// eslint-disable-next-line complexity
 export const songDelete: SongDelete = async (songId) => {
 	try {
 		if (!songId) {

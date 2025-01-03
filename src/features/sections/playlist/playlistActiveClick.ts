@@ -21,6 +21,5 @@ export const playlistActiveClick: PlaylistActiveClick =
 				variant: "destructive",
 				title: "There was an error setting the active playlist",
 			});
-			return;
 		}
 	};

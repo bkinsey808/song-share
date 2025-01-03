@@ -9,7 +9,7 @@ export const isCellInPosition = ({
 	position: Position;
 	fret: number;
 	course: number;
-}) => {
+}): boolean => {
 	const positionArray = getPositionArray(position);
 	return positionArray[course] === fret;
 };

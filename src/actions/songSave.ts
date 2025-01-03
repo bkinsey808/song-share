@@ -31,6 +31,7 @@ const saveOrCreateSong: SaveOrCreateSong = async (songId, uid, song) => {
 		throw new Error("User does not own this song");
 	}
 	if (!song.sharer) {
+		// eslint-disable-next-line no-param-reassign
 		song.sharer = uid;
 	}
 	if (songId) {
@@ -51,6 +52,7 @@ const saveOrCreateSong: SaveOrCreateSong = async (songId, uid, song) => {
 	const result = await db
 		.collection(collectionNameGet(collection.SONGS))
 		.add(song);
+	// eslint-disable-next-line no-param-reassign
 	songId = result.id;
 	return songId;
 };

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";
 
+// eslint-disable-next-line complexity
 export const SongFollowing = (): JSX.Element => {
 	const song = useSong();
 	const {

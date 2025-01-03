@@ -10,7 +10,7 @@ export const getChordNumbers = ({
 	chordScaleDegree: ChordScaleDegree;
 	chord: Chord;
 	keyNote?: KeyNote;
-}) => {
+}): number[] => {
 	const chordScaleIndex = chordScaleDegree
 		? degrees.indexOf(chordScaleDegree)
 		: undefined;

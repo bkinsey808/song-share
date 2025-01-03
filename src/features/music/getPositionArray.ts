@@ -1,6 +1,6 @@
 import { Position } from "./types";
 
-export const getPositionArray = (position: Position) => {
+export const getPositionArray = (position: Position): Position => {
 	if (!Array.isArray(position)) {
 		return [];
 	}

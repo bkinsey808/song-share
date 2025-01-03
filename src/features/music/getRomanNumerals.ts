@@ -3,7 +3,7 @@ import { getSpellingFromNoteNumber } from "./getSpellingFromNoteNumber";
 import { romanNumerals } from "./romanNumerals";
 import { Scale } from "./types";
 
-export const getRomanNumerals = (scale: Scale) => {
+export const getRomanNumerals = (scale: Scale): string[] => {
 	if (!scale) {
 		return [];
 	}

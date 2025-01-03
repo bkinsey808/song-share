@@ -7,6 +7,7 @@ export const generateBinaryPermutations = (n: number): string[] => {
 			let count = 0;
 			while (num > 0) {
 				count += num & 1;
+				// eslint-disable-next-line no-param-reassign
 				num >>= 1;
 			}
 			return count;

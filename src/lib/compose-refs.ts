@@ -11,6 +11,7 @@ function setRef<T>(ref: PossibleRef<T>, value: T): void {
 	if (typeof ref === "function") {
 		ref(value);
 	} else if (ref !== null && ref !== undefined) {
+		// eslint-disable-next-line no-param-reassign
 		(ref as React.MutableRefObject<T>).current = value;
 	}
 }

@@ -2,7 +2,7 @@ import { romanNumerals } from "./romanNumerals";
 
 export const getScaleIndexFromRomanNumeral = (
 	romanNumeral?: string | undefined,
-) => {
+): number | undefined => {
 	if (romanNumeral === undefined) {
 		return undefined;
 	}

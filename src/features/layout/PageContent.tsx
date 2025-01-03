@@ -18,5 +18,3 @@ export const PageContent = ({
 		</>
 	);
 };
-
-export default PageContent;

@@ -6,4 +6,4 @@ export const isDegreeInScale = ({
 }: {
 	degree: string;
 	scale: Scale;
-}) => scale.includes(degree);
+}): boolean => scale.includes(degree);

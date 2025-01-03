@@ -33,6 +33,7 @@ type SongLogSave = (logFormValues: SongLogForm) => Promise<
 >;
 export const songLogSave: SongLogSave = async (logFormValues) => {
 	if (!logFormValues.logId) {
+		// eslint-disable-next-line no-param-reassign
 		logFormValues = {
 			...logFormValues,
 			logId: crypto.randomUUID(),

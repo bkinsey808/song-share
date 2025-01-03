@@ -12,7 +12,7 @@ export const getInKeyScale = ({
 	chord: Chord;
 	keyNote?: KeyNote;
 	scale: Scale;
-}) => {
+}): boolean => {
 	const chordNumbers = getChordNumbers({ chordScaleDegree, chord, keyNote });
 	const keyScaleNumbers = getKeyScaleNumbers({ keyNote, scale });
 

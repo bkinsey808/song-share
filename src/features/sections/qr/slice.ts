@@ -2,8 +2,6 @@ import { StateCreator } from "zustand";
 
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 
-``;
-
 // eslint-disable-next-line @typescript-eslint/ban-types
 type QRSliceState = {};
 

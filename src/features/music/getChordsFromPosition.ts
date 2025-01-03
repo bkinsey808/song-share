@@ -11,7 +11,18 @@ export const getChordsFromPosition = ({
 	tuning: Tuning;
 	position: Position;
 	keyNote?: KeyNote;
-}) => {
+}):
+	| {
+			rawNoteNumbers: number[];
+			chordSpelling: string[];
+			noteNumber: number;
+			scaleDegreeNumber?: number;
+			scaleDegree?: string;
+			spelling: string;
+			name?: string;
+			preferred?: boolean;
+	  }[]
+	| undefined => {
 	const openNumbers = tuning.map((note) => getNoteNumber(note));
 	const keyNoteNumber = getNoteNumber(keyNote);
 	if (keyNoteNumber === undefined) {
@@ -72,8 +83,44 @@ export const getChordsFromPosition = ({
 				scaleDegree,
 				spelling: chordSpelling.join(","),
 				name: sci?.txtName,
-				preferred: sci?.booPrefer,
+				preferred: !!sci?.booPrefer,
 			};
 		})
-		.filter(({ noteNumber }) => noteNumber !== "x");
+		.filter(
+			(
+				chord,
+			): chord is {
+				rawNoteNumbers: number[];
+				chordSpelling: (
+					| "b2"
+					| "2"
+					| "b3"
+					| "3"
+					| "4"
+					| "b5"
+					| "5"
+					| "b6"
+					| "6"
+					| "b7"
+					| "7"
+				)[];
+				noteNumber: number;
+				scaleDegreeNumber: number;
+				scaleDegree:
+					| "b2"
+					| "2"
+					| "b3"
+					| "3"
+					| "4"
+					| "b5"
+					| "5"
+					| "b6"
+					| "6"
+					| "b7"
+					| "7";
+				spelling: string;
+				name: string;
+				preferred: boolean;
+			} => chord.noteNumber !== "x",
+		);
 };

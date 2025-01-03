@@ -36,6 +36,7 @@ const saveOrCreatePlaylist: SaveOrCreatePlaylist = async (
 	}
 
 	if (!playlist.sharer) {
+		// eslint-disable-next-line no-param-reassign
 		playlist.sharer = uid;
 	}
 
@@ -57,6 +58,7 @@ const saveOrCreatePlaylist: SaveOrCreatePlaylist = async (
 	const result = await db
 		.collection(collectionNameGet(collection.PLAYLISTS))
 		.add(playlist);
+	// eslint-disable-next-line no-param-reassign
 	playlistId = result.id;
 	return playlistId;
 };
@@ -79,6 +81,7 @@ type PlaylistSave = ({
 	  }
 >;
 
+// eslint-disable-next-line complexity
 export const playlistSave: PlaylistSave = async ({ playlist, playlistId }) => {
 	try {
 		const result = serverParse(PlaylistSchema, playlist);

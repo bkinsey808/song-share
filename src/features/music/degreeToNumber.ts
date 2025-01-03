@@ -10,7 +10,7 @@ const numericDegreePartToNumber = {
 	7: 11,
 } as const;
 
-export const degreeToNumber = (degree: string) => {
+export const degreeToNumber = (degree: string): number | undefined => {
 	// degree takes the form of bb3, etc
 	// parse using regex
 	const degreeRegex = /([b#]{0,2})(\d)/;

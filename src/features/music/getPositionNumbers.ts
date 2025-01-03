@@ -1,7 +1,10 @@
 import { getTuningNumbers } from "./getTuningNumbers";
 import { Position, Tuning } from "./types";
 
-export const getPositionNumbers = (position: Position, tuning: Tuning) => {
+export const getPositionNumbers = (
+	position: Position,
+	tuning: Tuning,
+): number[] => {
 	const tuningNumbers = getTuningNumbers(tuning);
 
 	return Array.from(

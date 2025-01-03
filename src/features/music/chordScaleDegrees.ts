@@ -9,7 +9,7 @@ import { Chord, Scale } from "./types";
  *  for example '2-3-4-5-6-7' and '3-5' would return ['1', '4', '5'] because the major chord is found at
  *  the 1st, 4th, and 5th degrees of the major scale.
  */
-export const chordScaleDegrees = (scale: Scale, chord: Chord) => {
+export const chordScaleDegrees = (scale: Scale, chord: Chord): string[] => {
 	const scaleNumbers = getSciNumbers(scale);
 
 	// map over the scale degrees

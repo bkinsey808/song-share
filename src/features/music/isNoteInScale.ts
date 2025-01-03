@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { getNoteNumber } from "./getNoteNumber";
 import { getSciNumbers } from "./getSciNumbers";
 import { Scale } from "./types";
@@ -10,7 +11,7 @@ export const isNoteInScale = ({
 	keyNote?: string | undefined;
 	scale: Scale;
 	note?: string | undefined;
-}) => {
+}): boolean => {
 	const sciNumbers = getSciNumbers(scale, keyNote);
 	const noteNumber = (getNoteNumber(note) ?? 0) % 12;
 	const scaleDegreeIndex = sciNumbers.indexOf(noteNumber);

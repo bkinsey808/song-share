@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { add, format } from "date-fns";
 import { type Locale, enUS } from "date-fns/locale";
 import {
@@ -513,6 +514,7 @@ const TimePickerInput = ({
 		return !flag ? `0${key}` : calculatedValue.slice(1, 2) + key;
 	};
 
+	// eslint-disable-next-line complexity
 	const handleKeyDown = (
 		e: React.KeyboardEvent<HTMLInputElement>,
 	): JSX.Element | undefined => {
@@ -583,6 +585,7 @@ type TimePickerRef = Ref<{
 	secondRef: HTMLInputElement | null;
 }>;
 
+// eslint-disable-next-line complexity
 const TimePicker = ({
 	date,
 	onChange,

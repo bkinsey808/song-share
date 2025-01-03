@@ -8,7 +8,7 @@ export const getKeyScaleNumbers = ({
 }: {
 	keyNote?: KeyNote;
 	scale: Scale;
-}) => {
+}): number[] => {
 	const keyNoteNumber = getNoteNumber(keyNote) ?? 0;
 
 	const scaleNumbers = [

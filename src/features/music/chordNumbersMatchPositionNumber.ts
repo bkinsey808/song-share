@@ -1,7 +1,7 @@
 export const chordNumbersMatchPositionNumbers = (
 	chordNumbers: number[],
 	positionNumbers: number[],
-) => {
+): boolean => {
 	const normalizedPositionNumbers = Array.from(
 		new Set(positionNumbers.map((positionNumber) => positionNumber % 12)),
 	);

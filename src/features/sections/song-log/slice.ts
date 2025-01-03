@@ -82,8 +82,7 @@ export const useSongLogs = (songId?: string | null): SongLogEntrySong[] =>
 				...entry,
 				songId: innerSongId,
 			}));
-			acc = acc.concat(v);
-			return acc;
+			return acc.concat(v);
 		}, [] as SongLogEntrySong[]);
 		return songLogs;
 	});

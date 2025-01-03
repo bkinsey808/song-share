@@ -6,17 +6,22 @@ import { SongLogEntry } from "./types";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useFirestoreClient } from "@/features/firebase/useFirebaseClient";
 
-export const songLogSubscribe =
-	(get: AppSliceGet, set: AppSliceSet) =>
-	({
-		uid,
-		db,
-		clearDb,
-	}: {
-		uid: string;
-		db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
-		clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
-	}): void => {
+type SongLogSubscribe = (
+	get: AppSliceGet,
+	set: AppSliceSet,
+) => ({
+	uid,
+	db,
+	clearDb,
+}: {
+	uid: string;
+	db: ReturnType<ReturnType<typeof useFirestoreClient>["getDb"]>;
+	clearDb: ReturnType<typeof useFirestoreClient>["clearDb"];
+}) => void;
+
+export const songLogSubscribe: SongLogSubscribe =
+	(get, set) =>
+	({ uid, db, clearDb }) => {
 		if (!db) {
 			return;
 		}
@@ -36,7 +41,7 @@ export const songLogSubscribe =
 					const songLogParseResult = safeParse(SongLogSchema, songLog);
 					if (!songLogParseResult.success) {
 						console.warn(`Invalid data for song log ${songLog.logId}`, songLog);
-						return;
+						return undefined;
 					}
 					return songLogParseResult.output;
 				})

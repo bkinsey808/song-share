@@ -24,6 +24,7 @@ type UserActiveSet = ({
 	fuid: string | null;
 }) => Promise<{ usersActive: Record<string, string> }>;
 
+// eslint-disable-next-line complexity
 export const userActiveSet: UserActiveSet = async ({ uid, fuid }) => {
 	// get the fuid user doc
 	const fuidUserDocSnapshot = await db

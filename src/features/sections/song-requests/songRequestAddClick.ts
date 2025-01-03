@@ -31,7 +31,6 @@ export const songRequestAddClick = (set: AppSliceSet, get: AppSliceGet) => {
 						variant: "destructive",
 						title: songRequestAddResult.message,
 					});
-					return;
 				} else {
 					set({
 						songRequestPending: false,

@@ -2,7 +2,7 @@ import { degreeToNumber } from "./degreeToNumber";
 import { getNoteNumber } from "./getNoteNumber";
 import { KeyNote, Scale } from "./types";
 
-export const getSciNumbers = (sci: Scale, keyNote?: KeyNote) => {
+export const getSciNumbers = (sci: Scale, keyNote?: KeyNote): number[] => {
 	const keyNoteNumber = getNoteNumber(keyNote) ?? 0;
 
 	return [

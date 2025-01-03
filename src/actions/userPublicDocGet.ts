@@ -31,6 +31,7 @@ export const userPublicDocGet = async (
 			}
 
 			const sessionCookieData = cookieResult.sessionCookieData;
+			// eslint-disable-next-line no-param-reassign
 			uid = sessionCookieData.uid;
 		}
 

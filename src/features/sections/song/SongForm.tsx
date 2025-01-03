@@ -30,6 +30,7 @@ import { useAppStore } from "@/features/app-store/useAppStore";
 import { SectionAccordion } from "@/features/section/SectionAccordion";
 import { sectionId } from "@/features/sections/consts";
 
+// eslint-disable-next-line complexity
 export const SongForm = (): JSX.Element => {
 	const { isSignedIn } = useAppStore();
 	const {

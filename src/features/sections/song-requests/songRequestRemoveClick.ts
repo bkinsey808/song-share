@@ -32,7 +32,6 @@ export const songRequestRemoveClick = (set: AppSliceSet, get: AppSliceGet) => {
 						variant: "destructive",
 						title: songRequestRemoveResult.message,
 					});
-					return;
 				} else {
 					set({
 						songRequestPending: false,

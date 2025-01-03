@@ -1,7 +1,10 @@
 import { degrees } from "./degrees";
 import { getNoteNumber } from "./getNoteNumber";
 
-export const getScaleDegree = (keyNote?: string, note?: string) => {
+export const getScaleDegree = (
+	keyNote?: string,
+	note?: string,
+): string | undefined => {
 	const keyNoteNumber = getNoteNumber(keyNote);
 	const noteNumber = getNoteNumber(note);
 

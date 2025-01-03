@@ -8,7 +8,7 @@ export const getPositionValuesForFret = ({
 	fret: number;
 	maxFret: number;
 	maxFretSpan: number;
-}) => {
+}): Position[number][] => {
 	const valueSet = new Set<Position[number]>([0, "x"]);
 
 	if (fret > 0) {
