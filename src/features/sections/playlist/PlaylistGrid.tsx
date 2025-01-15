@@ -9,15 +9,13 @@ import { PlaylistGridForm } from "./types";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-	Sortable,
-	SortableDragHandle,
-	SortableItem,
-} from "@/components/ui/sortable";
+import { Sortable, SortableDragHandle } from "@/components/ui/sortable";
 import { useAppStore } from "@/features/app-store/useAppStore";
-import { Grid, GridHeader, GridRow } from "@/features/design-system/Grid";
 import { tw } from "@/features/global/tw";
 import { useFormSubmitOnChange } from "@/features/global/useFormSubmitOnChange";
+import { Grid } from "@/features/grid/Grid";
+import { GridHeader } from "@/features/grid/GridHeader";
+import { GridRow } from "@/features/grid/GridRow";
 
 export const PlaylistGrid = (): JSX.Element => {
 	const {
@@ -70,89 +68,90 @@ export const PlaylistGrid = (): JSX.Element => {
 		<Form {...form}>
 			{/* isDirty: {form.formState.isDirty.toString()} */}
 			<form onSubmit={playlistGridFormSubmit}>
-				<Grid gridClassName={tw`grid-cols-[1.5rem,2fr,5rem]`}>
-					<GridHeader>
-						<div></div>
-						<div>Song Name</div>
-						<div>Options</div>
-					</GridHeader>
+				<Sortable
+					value={fields}
+					onMove={({ activeIndex, overIndex }) => move(activeIndex, overIndex)}
+					overlay={
+						<div className="grid grid-cols-[1.5rem,2fr,5rem] gap-[0.5rem]">
+							<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
+							<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
+							<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
+						</div>
+					}
+				>
 					<RadioGroup
 						name="songActiveId"
 						id="songActiveId"
 						value={songActiveId ?? ""}
 					>
-						<Sortable
-							value={fields}
-							onMove={({ activeIndex, overIndex }) =>
-								move(activeIndex, overIndex)
-							}
-							overlay={
-								<div className="grid grid-cols-[1.5rem,2fr,5rem] gap-[0.5rem]">
-									<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
-									<div className="h-[2rem] w-full rounded-sm bg-primary/10" />
-									<div className="h-[2rem] shrink-0 rounded-sm bg-primary/10" />
-								</div>
-							}
+						<Grid
+							fixedClassName={tw`grid-cols-[1.5rem,15rem]`}
+							scrollingClassName={tw`grid-cols-[5rem]`}
 						>
+							<GridHeader>
+								<div></div>
+								<div>Song Name</div>
+								<div>Options</div>
+							</GridHeader>
 							{playlistId &&
 								fields.map((field, index) => {
 									const songId = field.songId;
+									const songName = songNameGet(songId);
+									console.log({ songId, songName });
 									return (
-										<SortableItem key={field.id} value={field.id} asChild>
-											<GridRow key={songId}>
-												<div className="align-center grid justify-center">
-													<RadioGroupItem
-														className="self-center"
-														id={songId}
-														disabled={!!fuid}
-														value={songId}
-														onClick={songActiveClick({
-															songId,
-															playlistId,
-														})}
+										<GridRow key={songId} sortableItemValue={field.id}>
+											<div className="align-center grid justify-center">
+												<RadioGroupItem
+													className="self-center"
+													id={songId}
+													disabled={!!fuid}
+													value={songId}
+													onClick={songActiveClick({
+														songId,
+														playlistId,
+													})}
+												/>
+											</div>
+											<div>
+												<Button
+													variant="outline"
+													className="min-h-[2rem] w-full justify-start"
+													onClick={songLoadClick(songId)}
+													title="Load song"
+												>
+													{songNameGet(songId)}
+												</Button>
+											</div>
+											<div className="flex gap-[0.5rem]">
+												<SortableDragHandle
+													variant="outline"
+													size="icon"
+													className="size-8 shrink-0"
+													title="Drag to reorder"
+												>
+													<DragHandleDots2Icon
+														className="size-4"
+														aria-hidden="true"
 													/>
-												</div>
-												<div>
-													<Button
-														variant="outline"
-														className="min-h-[2rem] w-full justify-start"
-														onClick={songLoadClick(songId)}
-														title="Load song"
-													>
-														{songNameGet(songId)}
-													</Button>
-												</div>
-												<div className="flex gap-[0.5rem]">
-													<SortableDragHandle
-														variant="outline"
-														size="icon"
-														className="size-8 shrink-0"
-														title="Drag to reorder"
-													>
-														<DragHandleDots2Icon
-															className="size-4"
-															aria-hidden="true"
-														/>
-													</SortableDragHandle>
+												</SortableDragHandle>
 
-													<Button
-														variant="outline"
-														onClick={() => remove(index)}
-														title="Remove song from playlist"
-													>
-														<TrashIcon
-															className="size-4 text-destructive"
-															aria-hidden="true"
-														/>
-													</Button>
-												</div>
-											</GridRow>
-										</SortableItem>
+												<Button
+													variant="outline"
+													onClick={() => remove(index)}
+													title="Remove song from playlist"
+												>
+													<TrashIcon
+														className="size-4 text-destructive"
+														aria-hidden="true"
+													/>
+												</Button>
+											</div>
+										</GridRow>
 									);
 								})}
-						</Sortable>
+						</Grid>
 					</RadioGroup>
-				</Grid>
+				</Sortable>
 			</form>
 		</Form>
 	);
