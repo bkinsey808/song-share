@@ -81,7 +81,7 @@ export const VerticalSortingDemo = (): JSX.Element => {
 				</CardHeader>
 			</div>
 			<CardContent>
-				<Form {...form}>
+				<Form form={form}>
 					<form
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="flex w-full flex-col gap-4"
@@ -114,7 +114,11 @@ export const VerticalSortingDemo = (): JSX.Element => {
 												render={({ field }) => (
 													<FormItem>
 														<FormControl>
-															<Input className="h-8" {...field} />
+															<Input
+																className="h-8"
+																// eslint-disable-next-line react/jsx-props-no-spreading
+																{...field}
+															/>
 														</FormControl>
 													</FormItem>
 												)}
@@ -125,7 +129,11 @@ export const VerticalSortingDemo = (): JSX.Element => {
 												render={({ field }) => (
 													<FormItem>
 														<FormControl>
-															<Input className="h-8" {...field} />
+															<Input
+																className="h-8"
+																// eslint-disable-next-line react/jsx-props-no-spreading
+																{...field}
+															/>
 														</FormControl>
 													</FormItem>
 												)}

@@ -29,6 +29,7 @@ export type BadgeProps = React.HTMLAttributes<HTMLDivElement> &
 
 function Badge({ className, variant, ...props }: BadgeProps): JSX.Element {
 	return (
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		<div className={cn(badgeVariants({ variant }), className)} {...props} />
 	);
 }

@@ -61,7 +61,7 @@ export const PlaylistForm = (): JSX.Element => {
 			<PlaylistDeleteConfirmModal />
 			Playlist ID: {playlistId}
 			{/* Saved? {playlistIsUnsaved ? "No" : "Yes"} */}
-			<Form {...form}>
+			<Form form={form}>
 				<form onSubmit={playlistSubmit}>
 					<div className="mr-[0.1rem] flex flex-wrap gap-[0.5rem]">
 						{playlistId && isSignedIn ? (
@@ -82,10 +82,20 @@ export const PlaylistForm = (): JSX.Element => {
 						<FormField
 							control={form.control}
 							name="playlistName"
-							render={({ field }) => (
+							render={({
+								field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							}) => (
 								<FormItem>
 									<FormControl>
-										<Input placeholder="Playlist Name" {...field} />
+										<Input
+											placeholder="Playlist Name"
+											name={name}
+											onBlur={onBlur}
+											onChange={onChange}
+											ref={ref}
+											value={value}
+											disabled={!!fieldDisabled}
+										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>

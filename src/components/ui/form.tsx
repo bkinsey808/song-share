@@ -1,7 +1,14 @@
 "use client";
 
 import { Slot } from "@radix-ui/react-slot";
-import { ComponentProps, JSX, createContext, useContext, useId } from "react";
+import {
+	ComponentProps,
+	JSX,
+	ReactNode,
+	createContext,
+	useContext,
+	useId,
+} from "react";
 import {
 	Controller,
 	ControllerProps,
@@ -9,13 +16,26 @@ import {
 	FieldPath,
 	FieldValues,
 	FormProvider,
+	UseFormReturn,
 	useFormContext,
 } from "react-hook-form";
 
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-export const Form = FormProvider;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const Form = <T extends Record<string, any>>({
+	form,
+	children,
+}: {
+	readonly form: UseFormReturn<T>;
+	readonly children: ReactNode;
+}): JSX.Element => {
+	// eslint-disable-next-line react/jsx-props-no-spreading
+	return <FormProvider {...form}>{children}</FormProvider>;
+};
+
+// export const Form = FormProvider;
 
 type FormFieldContextValue<
 	TFieldValues extends FieldValues = FieldValues,
@@ -36,7 +56,10 @@ export const FormField = <
 }: ControllerProps<TFieldValues, TName>): JSX.Element => {
 	return (
 		<FormFieldContext.Provider value={{ name: props.name }}>
-			<Controller {...props} />
+			<Controller
+				// eslint-disable-next-line react/jsx-props-no-spreading
+				{...props}
+			/>
 		</FormFieldContext.Provider>
 	);
 };
@@ -92,7 +115,11 @@ export const FormItem = ({
 
 	return (
 		<FormItemContext.Provider value={{ id }}>
-			<div className={cn("space-y-2", className)} {...props} />
+			<div
+				className={cn("space-y-2", className)}
+				// eslint-disable-next-line react/jsx-props-no-spreading
+				{...props}
+			/>
 		</FormItemContext.Provider>
 	);
 };
@@ -108,6 +135,7 @@ export const FormLabel = ({
 		<Label
 			className={cn(error && "text-destructive", "font-bold", className)}
 			htmlFor={formItemId}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -127,6 +155,7 @@ export const FormControl = ({ ...props }: FormControlProps): JSX.Element => {
 					: `${formDescriptionId} ${formMessageId}`
 			}
 			aria-invalid={!!error}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -144,6 +173,7 @@ export const FormDescription = ({
 		<p
 			id={formDescriptionId}
 			className={cn("text-[0.8rem] text-muted-foreground", className)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -167,6 +197,7 @@ export const FormMessage = ({
 		<p
 			id={formMessageId}
 			className={cn("text-[0.8rem] font-medium text-destructive", className)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		>
 			{body}

@@ -47,16 +47,22 @@ export const SongLogForm = (): JSX.Element => {
 		<>
 			{/* isDirty: {form.formState.isDirty.toString()}
 			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
-			<Form {...form}>
+			<Form form={form}>
 				<form onSubmit={songLogSubmit(form)}>
 					<FormField
 						name="date"
 						control={form.control}
-						render={({ field }) => (
+						render={({ field: { onChange, ref, value, fieldDisabled } }) => (
 							<FormItem className="flex flex-col">
 								<FormLabel>Log Date Time</FormLabel>
 								<FormControl>
-									<TimestampPicker {...field} timeZone={timeZone} />
+									<TimestampPicker
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										timeZone={timeZone}
+										disabled={!!fieldDisabled}
+									/>
 								</FormControl>
 							</FormItem>
 						)}
@@ -65,14 +71,20 @@ export const SongLogForm = (): JSX.Element => {
 					<FormField
 						name="notes"
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem className="flex flex-col">
 								<FormLabel>Song Log Notes</FormLabel>
 								<FormControl>
 									<Textarea
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										disabled={form.formState.isSubmitting && !!fieldDisabled}
 										autoResize={true}
-										{...field}
-										disabled={form.formState.isSubmitting}
 									/>
 								</FormControl>
 							</FormItem>

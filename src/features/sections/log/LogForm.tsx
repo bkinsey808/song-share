@@ -61,17 +61,23 @@ export const LogForm = (): JSX.Element => {
 		<>
 			{/* isDirty: {form.formState.isDirty.toString()}
 			<pre>{JSON.stringify(form.getValues(), null, 2)}</pre> */}
-			<Form {...form}>
+			<Form form={form}>
 				<form onSubmit={songLogSubmit(form)}>
 					<div className="flex gap-[1rem]">
 						<FormField
 							name="date"
 							control={form.control}
-							render={({ field }) => (
+							render={({ field: { onChange, ref, value, fieldDisabled } }) => (
 								<FormItem className="flex flex-col">
 									<FormLabel>Log Date Time</FormLabel>
 									<FormControl>
-										<TimestampPicker {...field} timeZone={timeZone} />
+										<TimestampPicker
+											timeZone={timeZone}
+											onChange={onChange}
+											ref={ref}
+											value={value}
+											disabled={!!fieldDisabled}
+										/>
 									</FormControl>
 								</FormItem>
 							)}
@@ -80,18 +86,21 @@ export const LogForm = (): JSX.Element => {
 						<FormField
 							name="songId"
 							control={form.control}
-							render={({ field }) => (
+							render={({ field: { onChange, ref, value, fieldDisabled } }) => (
 								<FormItem className="flex flex-grow flex-col">
 									<FormLabel>Song</FormLabel>
 									<FormControl>
 										<Combobox
-											{...field}
 											options={songOptions.filter((option) =>
 												option.search.includes(search.toLocaleLowerCase()),
 											)}
 											search={search}
 											setSearch={setSearch}
 											label="song"
+											onChange={onChange}
+											ref={ref}
+											value={value}
+											disabled={!!fieldDisabled}
 										/>
 									</FormControl>
 								</FormItem>
@@ -102,14 +111,20 @@ export const LogForm = (): JSX.Element => {
 					<FormField
 						name="notes"
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem className="flex flex-col">
 								<FormLabel>Log Notes</FormLabel>
 								<FormControl>
 									<Textarea
 										autoResize={true}
-										{...field}
-										disabled={form.formState.isSubmitting}
+										disabled={form.formState.isSubmitting || !!fieldDisabled}
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
 									/>
 								</FormControl>
 							</FormItem>

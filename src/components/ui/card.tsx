@@ -10,6 +10,7 @@ export const Card = ({ className, ...props }: CardProps): JSX.Element => (
 			"rounded-xl border bg-card text-card-foreground shadow",
 			className,
 		)}
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		{...props}
 	/>
 );
@@ -20,6 +21,7 @@ export const CardHeader = ({
 	className,
 	...props
 }: CardHeaderProps): JSX.Element => (
+	// eslint-disable-next-line react/jsx-props-no-spreading
 	<div className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
 );
 
@@ -31,6 +33,7 @@ export const CardTitle = ({
 }: CardTitleProps): JSX.Element => (
 	<h3
 		className={cn("font-semibold leading-none tracking-tight", className)}
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		{...props}
 	/>
 );
@@ -41,6 +44,7 @@ export const CardDescription = ({
 	className,
 	...props
 }: CardDescriptionProps): JSX.Element => (
+	// eslint-disable-next-line react/jsx-props-no-spreading
 	<p className={cn("text-sm text-muted-foreground", className)} {...props} />
 );
 
@@ -50,6 +54,7 @@ export const CardContent = ({
 	className,
 	...props
 }: CardContentProps): JSX.Element => (
+	// eslint-disable-next-line react/jsx-props-no-spreading
 	<div className={cn("p-6 pt-0", className)} {...props} />
 );
 CardContent.displayName = "CardContent";
@@ -60,5 +65,6 @@ export const CardFooter = ({
 	className,
 	...props
 }: CardFooterProps): JSX.Element => (
+	// eslint-disable-next-line react/jsx-props-no-spreading
 	<div className={cn("flex items-center p-6 pt-0", className)} {...props} />
 );

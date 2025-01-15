@@ -37,7 +37,7 @@ export const BackUpForm = (): JSX.Element => {
 	}, [form, backUpFormSet]);
 
 	return (
-		<Form {...form}>
+		<Form form={form}>
 			{form.formState.errors.root && (
 				<div className="text-red-500">{form.formState.errors.root.message}</div>
 			)}
@@ -46,13 +46,22 @@ export const BackUpForm = (): JSX.Element => {
 					<FormField
 						name={backUpFormFieldKey.FROM_PREFIX}
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem>
 								<FormLabel>
 									{backUpFormFieldData[backUpFormFieldKey.FROM_PREFIX].label}
 								</FormLabel>
 								<FormControl>
-									<Input {...field} />
+									<Input
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										disabled={!!fieldDisabled}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -61,13 +70,22 @@ export const BackUpForm = (): JSX.Element => {
 					<FormField
 						name={backUpFormFieldKey.TO_PREFIX}
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem>
 								<FormLabel>
 									{backUpFormFieldData[backUpFormFieldKey.TO_PREFIX].label}
 								</FormLabel>
 								<FormControl>
-									<Input {...field} />
+									<Input
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										disabled={!!fieldDisabled}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>

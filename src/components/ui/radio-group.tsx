@@ -14,6 +14,7 @@ export const RadioGroup = ({
 	return (
 		<RadioGroupPrimitive.Root
 			className={cn("grid gap-2", className)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -31,6 +32,7 @@ export const RadioGroupItem = ({
 				"aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		>
 			<RadioGroupPrimitive.Indicator className="flex items-center justify-center">

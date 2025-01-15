@@ -39,7 +39,7 @@ export const RegisterForm = ({
 	const { registerSubmit } = useAppStore();
 
 	return (
-		<Form {...form}>
+		<Form {...{ form }}>
 			<form onSubmit={registerSubmit(form)}>
 				<ModalContent>
 					<FormField
@@ -49,7 +49,11 @@ export const RegisterForm = ({
 							<FormItem>
 								<FormLabel>Username</FormLabel>
 								<FormControl>
-									<Input placeholder="Username" {...field} />
+									<Input
+										placeholder="Username"
+										// eslint-disable-next-line react/jsx-props-no-spreading
+										{...field}
+									/>
 								</FormControl>
 								<FormDescription>
 									This is your public display name.
@@ -67,6 +71,7 @@ export const RegisterForm = ({
 								<FormControl>
 									<Checkbox
 										className="block"
+										// eslint-disable-next-line react/jsx-props-no-spreading
 										{...field}
 										onCheckedChange={() => field.onChange(!field.value)}
 									/>

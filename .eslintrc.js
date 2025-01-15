@@ -14,8 +14,8 @@ module.exports = {
 	plugins: ["destructuring", "prettier", "security"],
 	rules: {
 		"array-callback-return": "error",
-		"camelcase": ["error", { properties: "always" }],
-		"complexity": ["error", { max: 10 }],
+		camelcase: ["error", { properties: "always" }],
+		complexity: ["error", { max: 10 }],
 		"destructuring/in-params": "off",
 		"handle-callback-err": ["error", "^(err|error)$"],
 		"import/no-named-as-default": "error",
@@ -80,6 +80,7 @@ module.exports = {
 		"react/react-in-jsx-scope": "off",
 		"security/detect-object-injection": "off",
 		"react/prop-types": "off",
+		"react/jsx-props-no-spreading": ["error", { explicitSpread: "ignore" }],
 	},
 	overrides: [
 		{

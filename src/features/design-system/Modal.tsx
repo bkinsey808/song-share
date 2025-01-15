@@ -102,6 +102,7 @@ export const Modal = ({
 					}
 				}
 			}}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...dialogProps}
 		>
 			{heading ? (

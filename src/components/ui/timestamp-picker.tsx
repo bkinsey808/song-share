@@ -38,6 +38,7 @@ export const TimestampPicker = ({
 			value={zonedIsoDate}
 			onChange={handleChange}
 			displayFormat={{ hour24: appDateTimeFormat }}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);

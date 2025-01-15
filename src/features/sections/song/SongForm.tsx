@@ -84,7 +84,7 @@ export const SongForm = (): JSX.Element => {
 			<SongDeleteConfirmModal />
 			<div>SongId: {songId}</div>
 			<div>Form song key: {form.getValues().songKey}</div>
-			<Form {...form}>
+			<Form form={form}>
 				<form onSubmit={songSubmit}>
 					<div className="mr-[0.1rem] flex flex-wrap gap-[0.5rem]">
 						{songId && isSignedIn ? (
@@ -107,13 +107,19 @@ export const SongForm = (): JSX.Element => {
 						<FormField
 							name="songName"
 							control={form.control}
-							render={({ field }) => (
+							render={({
+								field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							}) => (
 								<FormItem className="flex-1">
 									<FormControl>
 										<Input
 											placeholder="Song Name"
-											{...field}
-											disabled={form.formState.isSubmitting}
+											disabled={form.formState.isSubmitting || !!fieldDisabled}
+											name={name}
+											onBlur={onBlur}
+											onChange={onChange}
+											ref={ref}
+											value={value}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -131,13 +137,19 @@ export const SongForm = (): JSX.Element => {
 						<FormField
 							name="lyrics"
 							control={form.control}
-							render={({ field }) => (
+							render={({
+								field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							}) => (
 								<FormItem>
 									<FormControl>
 										<Textarea
 											autoResize={true}
-											{...field}
-											disabled={form.formState.isSubmitting}
+											disabled={form.formState.isSubmitting || !!fieldDisabled}
+											name={name}
+											onBlur={onBlur}
+											onChange={onChange}
+											ref={ref}
+											value={value}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -155,13 +167,19 @@ export const SongForm = (): JSX.Element => {
 						<FormField
 							name="translation"
 							control={form.control}
-							render={({ field }) => (
+							render={({
+								field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							}) => (
 								<FormItem>
 									<FormControl>
 										<Textarea
 											autoResize={true}
-											{...field}
-											disabled={form.formState.isSubmitting}
+											disabled={form.formState.isSubmitting || !!fieldDisabled}
+											name={name}
+											onBlur={onBlur}
+											onChange={onChange}
+											ref={ref}
+											value={value}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -179,13 +197,19 @@ export const SongForm = (): JSX.Element => {
 						<FormField
 							name="credits"
 							control={form.control}
-							render={({ field }) => (
+							render={({
+								field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							}) => (
 								<FormItem>
 									<FormControl>
 										<Textarea
 											autoResize={true}
-											{...field}
-											disabled={form.formState.isSubmitting}
+											disabled={form.formState.isSubmitting || !!fieldDisabled}
+											name={name}
+											onBlur={onBlur}
+											onChange={onChange}
+											ref={ref}
+											value={value}
 										/>
 									</FormControl>
 									<FormMessage />
@@ -203,39 +227,37 @@ export const SongForm = (): JSX.Element => {
 						<FormField
 							name="songKeyString"
 							control={form.control}
-							render={({ field }) => (
-								<FormItem>
-									{/* Field value: {form.getValues().songKey},{" "}
+							render={({ field }) => {
+								const onChange = (newValue: string): void => {
+									field.onChange(newValue);
+									form.setValue("songKey", keys[newValue as keyof typeof keys]);
+								};
+								const options = keyOptionsWithNone.filter((option) =>
+									option.search.includes(songKeySearch.toLocaleLowerCase()),
+								);
+								const disabled =
+									form.formState.isSubmitting || !!field.fieldDisabled;
+								return (
+									<FormItem>
+										{/* Field value: {form.getValues().songKey},{" "}
 									{keyMap.get(form.getValues().songKey)} */}
-									<FormLabel>Song Key</FormLabel>
-									<FormControl>
-										<Combobox
-											{...field}
-											options={keyOptionsWithNone.filter((option) =>
-												option.search.includes(
-													songKeySearch.toLocaleLowerCase(),
-												),
-											)}
-											onChange={(value) => {
-												field.onChange(value);
-												console.log({
-													value,
-													fv: field.value,
-													k: keys[value as keyof typeof keys],
-												});
-												form.setValue(
-													"songKey",
-													value ? keys[value as keyof typeof keys] : undefined,
-												);
-											}}
-											search={songKeySearch}
-											setSearch={songKeySearchSet}
-											label="song key"
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
+										<FormLabel>Song Key</FormLabel>
+										<FormControl>
+											<Combobox
+												options={options}
+												onChange={onChange}
+												search={songKeySearch}
+												setSearch={songKeySearchSet}
+												label="song key"
+												disabled={disabled}
+												value={field.value}
+												ref={field.ref}
+											/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								);
+							}}
 						/>
 					</SectionAccordion>
 

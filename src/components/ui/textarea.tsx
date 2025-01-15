@@ -25,6 +25,7 @@ export const Textarea = ({
 				className,
 			)}
 			ref={textAreaRef}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);

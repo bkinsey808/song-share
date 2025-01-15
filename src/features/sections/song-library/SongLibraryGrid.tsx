@@ -81,7 +81,7 @@ export const SongLibraryGrid = (): JSX.Element => {
 	return (
 		<>
 			{/* isDirty: {form.formState.isDirty.toString()} */}
-			<Form {...form}>
+			<Form form={form}>
 				<form
 					onSubmit={songLibraryGridFormSubmit}
 					className="flex gap-[1rem] pr-[0.1rem]"
@@ -89,11 +89,21 @@ export const SongLibraryGrid = (): JSX.Element => {
 					<FormField
 						name="search"
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem className="w-[10rem] flex-grow">
 								<FormLabel>Search</FormLabel>
 								<FormControl>
-									<Input className="h-[1.6rem]" {...field} />
+									<Input
+										className="h-[1.6rem]"
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										disabled={!!fieldDisabled}
+									/>
 								</FormControl>
 							</FormItem>
 						)}
@@ -101,22 +111,26 @@ export const SongLibraryGrid = (): JSX.Element => {
 					<FormField
 						name="sort"
 						control={form.control}
-						render={({ field }) => (
-							<FormItem className="h-[3rem] w-[10rem]">
-								<FormLabel>Sort</FormLabel>
-								<FormControl>
-									<Combobox
-										options={songLibrarySortOptions}
-										label="sort"
-										search={sortSearch}
-										setSearch={setSortSearch}
-										disabled={form.formState.isSubmitting}
-										valueDefault={songLibrarySortDefault}
-										{...field}
-									/>
-								</FormControl>
-							</FormItem>
-						)}
+						render={({ field: { onChange, ref, value, fieldDisabled } }) => {
+							return (
+								<FormItem className="h-[3rem] w-[10rem]">
+									<FormLabel>Sort</FormLabel>
+									<FormControl>
+										<Combobox
+											label={"sort"}
+											onChange={onChange}
+											options={songLibrarySortOptions}
+											ref={ref}
+											value={value}
+											search={sortSearch}
+											setSearch={setSortSearch}
+											valueDefault={songLibrarySortDefault}
+											disabled={form.formState.isSubmitting || !!fieldDisabled}
+										/>
+									</FormControl>
+								</FormItem>
+							);
+						}}
 					/>
 				</form>
 			</Form>

@@ -62,20 +62,26 @@ export const SettingsForm = (): JSX.Element => {
 	}, [form, useSystemTimeZone]);
 
 	return (
-		<Form {...form}>
+		<Form form={form}>
 			<form onSubmit={settingsSubmit}>
 				<div className="flex gap-[2rem]">
 					<FormField
 						name="useSystemTimeZone"
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem>
 								<FormLabel>Use System Timezone</FormLabel>
 								<FormControl>
 									<Checkbox
 										className="block"
-										{...field}
-										onCheckedChange={() => field.onChange(!field.value)}
+										onCheckedChange={() => onChange(!value)}
+										name={name}
+										onBlur={onBlur}
+										ref={ref}
+										value={value}
+										disabled={!!fieldDisabled}
 									/>
 								</FormControl>
 							</FormItem>
@@ -85,7 +91,7 @@ export const SettingsForm = (): JSX.Element => {
 					<FormField
 						name="timeZone"
 						control={form.control}
-						render={({ field }) => (
+						render={({ field: { onChange, ref, value, fieldDisabled } }) => (
 							<FormItem>
 								<FormLabel>Time Zone</FormLabel>
 								<FormControl>
@@ -96,8 +102,14 @@ export const SettingsForm = (): JSX.Element => {
 										label="timezone"
 										search={search}
 										setSearch={setSearch}
-										disabled={form.formState.isSubmitting || useSystemTimeZone}
-										{...field}
+										disabled={
+											form.formState.isSubmitting ||
+											useSystemTimeZone ||
+											!!fieldDisabled
+										}
+										onChange={onChange}
+										ref={ref}
+										value={value}
 									/>
 								</FormControl>
 							</FormItem>

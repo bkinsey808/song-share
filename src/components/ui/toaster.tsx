@@ -19,6 +19,7 @@ export const Toaster = (): JSX.Element => {
 		<ToastProvider>
 			{toasts.map(({ id, title, description, action, ...props }) => {
 				return (
+					// eslint-disable-next-line react/jsx-props-no-spreading
 					<Toast key={id} {...props}>
 						<div className="grid gap-1">
 							{title && <ToastTitle>{title}</ToastTitle>}

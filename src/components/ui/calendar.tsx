@@ -70,6 +70,7 @@ function Calendar({
 					),
 				} as Partial<CustomComponents>
 			}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);

@@ -163,6 +163,7 @@ export const Sortable = <TData extends { id: UniqueIdentifier }>({
 			}}
 			onDragCancel={() => setActiveId(null)}
 			collisionDetection={collisionDetection}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		>
 			<SortableContext
@@ -199,6 +200,7 @@ export const SortableOverlay = ({
 	...props
 }: SortableOverlayProps): JSX.Element => {
 	return (
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		<DragOverlay dropAnimation={dropAnimation} {...props}>
 			{activeId ? (
 				<SortableItem value={activeId} className="cursor-grabbing" asChild>
@@ -299,8 +301,11 @@ export const SortableItem = ({
 				)}
 				ref={composeRefs(ref, setNodeRef as React.Ref<HTMLDivElement>)}
 				style={style}
+				// eslint-disable-next-line react/jsx-props-no-spreading
 				{...(asTrigger ? attributes : {})}
+				// eslint-disable-next-line react/jsx-props-no-spreading
 				{...(asTrigger ? listeners : {})}
+				// eslint-disable-next-line react/jsx-props-no-spreading
 				{...props}
 			/>
 		</SortableItemContext.Provider>
@@ -326,8 +331,11 @@ export const SortableDragHandle = ({
 				"cursor-grab data-[state=dragging]:cursor-grabbing",
 				className,
 			)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...attributes}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...listeners}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);

@@ -30,6 +30,7 @@ export const Alert = ({
 	<div
 		role="alert"
 		className={cn(alertVariants({ variant }), className)}
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		{...props}
 	/>
 );
@@ -42,6 +43,7 @@ export const AlertTitle = ({
 }: AlertTitleProps): JSX.Element => (
 	<h5
 		className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		{...props}
 	/>
 );
@@ -52,5 +54,6 @@ export const AlertDescription = ({
 	className,
 	...props
 }: AlertDescriptionProps): JSX.Element => (
+	// eslint-disable-next-line react/jsx-props-no-spreading
 	<div className={cn("text-sm [&_p]:leading-relaxed", className)} {...props} />
 );

@@ -14,6 +14,7 @@ export const AccordionItem = ({
 	className,
 	...props
 }: AccordionItemProps): JSX.Element => (
+	// eslint-disable-next-line react/jsx-props-no-spreading
 	<AccordionPrimitive.Item className={cn("border-b", className)} {...props} />
 );
 
@@ -30,6 +31,7 @@ export const AccordionTrigger = ({
 				"flex flex-1 items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
 				className,
 			)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		>
 			{children}
@@ -47,6 +49,7 @@ export const AccordionContent = ({
 }: AccordionContentProps): JSX.Element => (
 	<AccordionPrimitive.Content
 		className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+		// eslint-disable-next-line react/jsx-props-no-spreading
 		{...props}
 	>
 		<div className={cn("pb-4 pt-0", className)}>{children}</div>

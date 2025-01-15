@@ -379,6 +379,7 @@ function Calendar({
 					);
 				},
 			}}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -560,6 +561,7 @@ const TimePickerInput = ({
 				onKeyDown?.(e);
 				handleKeyDown(e);
 			}}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -811,6 +813,7 @@ export const DateTimePicker = ({
 					onMonthChange={handleSelect}
 					yearRange={yearRange}
 					locale={locale}
+					// eslint-disable-next-line react/jsx-props-no-spreading
 					{...props}
 				/>
 				{granularity !== "day" && (

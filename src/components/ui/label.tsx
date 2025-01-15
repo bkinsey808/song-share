@@ -14,5 +14,9 @@ type LabelProps = ComponentProps<typeof LabelPrimitive.Root> &
 	VariantProps<typeof labelVariants>;
 
 export const Label = ({ className, ...props }: LabelProps): JSX.Element => (
-	<LabelPrimitive.Root {...props} className={cn(labelVariants(), className)} />
+	<LabelPrimitive.Root
+		// eslint-disable-next-line react/jsx-props-no-spreading
+		{...props}
+		className={cn(labelVariants(), className)}
+	/>
 );

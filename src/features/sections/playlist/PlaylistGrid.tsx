@@ -65,7 +65,7 @@ export const PlaylistGrid = (): JSX.Element => {
 	}, [form, playlistGridFormSet]);
 
 	return (
-		<Form {...form}>
+		<Form form={form}>
 			{/* isDirty: {form.formState.isDirty.toString()} */}
 			<form onSubmit={playlistGridFormSubmit}>
 				<Sortable
@@ -96,8 +96,6 @@ export const PlaylistGrid = (): JSX.Element => {
 							{playlistId &&
 								fields.map((field, index) => {
 									const songId = field.songId;
-									const songName = songNameGet(songId);
-									console.log({ songId, songName });
 									return (
 										<GridRow key={songId} sortableItemValue={field.id}>
 											<div className="align-center grid justify-center">

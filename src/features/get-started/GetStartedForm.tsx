@@ -37,20 +37,27 @@ export const GetStartedForm = (): JSX.Element => {
 	}, [form, getStartedFormSet]);
 
 	return (
-		<Form {...form}>
+		<Form form={form}>
 			<form onSubmit={getStartedFormSubmit}>
 				<div className="flex gap-[2rem]">
 					<FormField
 						name="songLeaderUserName"
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem>
 								<FormLabel>Song Leader Username</FormLabel>
 								<FormControl>
 									<Input
 										placeholder="Song Leader Username"
-										{...field}
 										autoFocus={true}
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										disabled={!!fieldDisabled}
 									/>
 								</FormControl>
 								<FormDescription>

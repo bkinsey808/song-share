@@ -74,7 +74,7 @@ export const UserLibraryGrid = (): JSX.Element => {
 	return (
 		<>
 			{/* isDirty: {form.formState.isDirty.toString()} */}
-			<Form {...form}>
+			<Form form={form}>
 				<form
 					onSubmit={userLibraryGridFormSubmit}
 					className="flex gap-[1rem] pr-[0.1rem]"
@@ -82,11 +82,21 @@ export const UserLibraryGrid = (): JSX.Element => {
 					<FormField
 						name="search"
 						control={form.control}
-						render={({ field }) => (
+						render={({
+							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+						}) => (
 							<FormItem className="w-[10rem] flex-grow">
 								<FormLabel>Search</FormLabel>
 								<FormControl>
-									<Input className="h-[1.6rem]" {...field} />
+									<Input
+										className="h-[1.6rem]"
+										name={name}
+										onBlur={onBlur}
+										onChange={onChange}
+										ref={ref}
+										value={value}
+										disabled={!!fieldDisabled}
+									/>
 								</FormControl>
 							</FormItem>
 						)}
@@ -94,7 +104,7 @@ export const UserLibraryGrid = (): JSX.Element => {
 					<FormField
 						name="sort"
 						control={form.control}
-						render={({ field }) => (
+						render={({ field: { onChange, ref, value, fieldDisabled } }) => (
 							<FormItem className="h-[3rem] w-[10rem]">
 								<FormLabel>Sort</FormLabel>
 								<FormControl>
@@ -103,9 +113,11 @@ export const UserLibraryGrid = (): JSX.Element => {
 										label="sort"
 										search={sortSearch}
 										setSearch={setSortSearch}
-										disabled={form.formState.isSubmitting}
+										disabled={form.formState.isSubmitting || !!fieldDisabled}
 										valueDefault={userLibrarySortDefault}
-										{...field}
+										onChange={onChange}
+										ref={ref}
+										value={value}
 									/>
 								</FormControl>
 							</FormItem>

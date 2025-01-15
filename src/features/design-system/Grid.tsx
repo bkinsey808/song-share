@@ -40,6 +40,7 @@ export const GridHeader = ({
 				gridClassName,
 				className,
 			)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
@@ -57,6 +58,7 @@ export const GridRow = ({ className, ...props }: GridRowProps): JSX.Element => {
 				gridClassName,
 				className,
 			)}
+			// eslint-disable-next-line react/jsx-props-no-spreading
 			{...props}
 		/>
 	);
