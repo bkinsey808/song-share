@@ -1,6 +1,6 @@
 import { JSX } from "react";
 
-import { SongLibraryGrid } from "./SongLibraryGrid";
+import { SongLibraryGrid } from "./grid/SongLibraryGrid";
 
 export const SongLibrarySection = (): JSX.Element => {
 	return (

@@ -13,10 +13,10 @@
 		"**/app/**/page.tsx": "${dirname(1)}/${dirname} <page>",
 		"**/app/**/layout.tsx": "${dirname(1)}/${dirname} <layout>",
 		"**/app/api/**/route.ts": "${dirname(1)}/${dirname} <route>",
-		"**/src/**/*.test.tsx": "${dirname}/${filename} <test>",
-		"**/src/**/*.tsx": "${dirname}/${filename}",
-		"**/src/**/*.test.ts": "${dirname}/${filename} <test>",
-		"**/src/**/*.ts": "${dirname}/${filename}"
+		"**/src/**/*.test.tsx": "${dirname(1)}/${dirname}/${filename} <test>",
+		"**/src/**/*.tsx": "${dirname(1)}/${dirname}/${filename}",
+		"**/src/**/*.test.ts": "${dirname(1)}/${dirname}/${filename} <test>",
+		"**/src/**/*.ts": "${dirname(1)}/${dirname}/${filename}"
 	},
 	"editor.quickSuggestions": {
 		"strings": true

@@ -28,6 +28,14 @@ import {
 	createSettingsSlice,
 } from "@/features/sections/settings/slice";
 import {
+	SongLibraryGridFormSlice,
+	createSongLibraryGridFormSlice,
+} from "@/features/sections/song-library/grid-form/slice";
+import {
+	SongLibraryGridSlice,
+	createSongLibraryGridSlice,
+} from "@/features/sections/song-library/grid/slice";
+import {
 	SongLibrarySlice,
 	createSongLibrarySlice,
 } from "@/features/sections/song-library/slice";
@@ -39,6 +47,10 @@ import {
 	SongRequestsSlice,
 	createSongRequestsSlice,
 } from "@/features/sections/song-requests/slice";
+import {
+	SongFormSlice,
+	createSongFormSlice,
+} from "@/features/sections/song/form/slice";
 import { SongSlice, createSongSlice } from "@/features/sections/song/slice";
 import {
 	UserLibrarySlice,
@@ -60,8 +72,11 @@ export type AppSlice = ModalSlice &
 	SettingsSlice &
 	TimeZoneSlice &
 	SongSlice &
+	SongFormSlice &
 	PlaylistSlice &
 	SongLibrarySlice &
+	SongLibraryGridFormSlice &
+	SongLibraryGridSlice &
 	PlaylistLibrarySlice &
 	UserLibrarySlice &
 	FollowingSlice &
@@ -101,8 +116,11 @@ export const useAppStore = create<AppSlice>()(
 			...createModalSlice(...a),
 			...createAuthSlice(...a),
 			...createSongSlice(...a),
+			...createSongFormSlice(...a),
 			...createPlaylistSlice(...a),
 			...createSongLibrarySlice(...a),
+			...createSongLibraryGridFormSlice(...a),
+			...createSongLibraryGridSlice(...a),
 			...createPlaylistLibrarySlice(...a),
 			...createUserLibrarySlice(...a),
 			...createFollowingSlice(...a),

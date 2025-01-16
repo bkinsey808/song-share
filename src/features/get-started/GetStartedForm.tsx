@@ -44,7 +44,7 @@ export const GetStartedForm = (): JSX.Element => {
 						name="songLeaderUserName"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem>
 								<FormLabel>Song Leader Username</FormLabel>
@@ -57,7 +57,7 @@ export const GetStartedForm = (): JSX.Element => {
 										onChange={onChange}
 										ref={ref}
 										value={value}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 								<FormDescription>

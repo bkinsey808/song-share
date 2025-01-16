@@ -1,6 +1,5 @@
 import { FormEvent } from "react";
 
-import { songLogFormDefaultGet } from "../song-log/songLogFormDefaultGet";
 import { SongForm } from "./types";
 import { songSave } from "@/actions/songSave";
 import { toast } from "@/components/ui/use-toast";
@@ -8,6 +7,7 @@ import { ActionResultType } from "@/features/app-store/consts";
 import { AppSliceGet, AppSliceSet } from "@/features/app-store/types";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { getKeys } from "@/features/global/getKeys";
+import { songLogFormDefaultGet } from "@/features/sections/song-log/songLogFormDefaultGet";
 
 type SongSubmit = (
 	get: AppSliceGet,

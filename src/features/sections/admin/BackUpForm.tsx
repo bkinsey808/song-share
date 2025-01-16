@@ -47,7 +47,7 @@ export const BackUpForm = (): JSX.Element => {
 						name={backUpFormFieldKey.FROM_PREFIX}
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem>
 								<FormLabel>
@@ -60,7 +60,7 @@ export const BackUpForm = (): JSX.Element => {
 										onChange={onChange}
 										ref={ref}
 										value={value}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 								<FormMessage />
@@ -71,7 +71,7 @@ export const BackUpForm = (): JSX.Element => {
 						name={backUpFormFieldKey.TO_PREFIX}
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem>
 								<FormLabel>
@@ -84,7 +84,7 @@ export const BackUpForm = (): JSX.Element => {
 										onChange={onChange}
 										ref={ref}
 										value={value}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 								<FormMessage />

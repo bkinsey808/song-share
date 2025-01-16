@@ -14,6 +14,7 @@ type GridContextValue = {
 
 const GridContext = createContext<GridContextValue>({} as GridContextValue);
 
+/** @deprecated */
 export const Grid = (
 	props: ButtonHTMLAttributes<HTMLDivElement> & {
 		/** gets applied to both the grid header and grid rows */
@@ -27,6 +28,7 @@ export const Grid = (
 	);
 };
 
+/** @deprecated */
 export const GridHeader = ({
 	className,
 	...props
@@ -48,6 +50,7 @@ export const GridHeader = ({
 
 type GridRowProps = ComponentProps<"div">;
 
+/** @deprecated */
 export const GridRow = ({ className, ...props }: GridRowProps): JSX.Element => {
 	const { gridClassName } = useContext(GridContext);
 

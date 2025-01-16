@@ -1,8 +1,8 @@
 import { Unsubscribe } from "firebase/firestore";
 import { StateCreator } from "zustand";
 
-import { playlistLibrarySubscribe } from "../song/playlistLibrarySubscribe";
 import { playlistLibraryAddPlaylistIds } from "./playlistLibraryAddPlaylistIds";
+import { playlistLibrarySubscribe } from "./playlistLibrarySubscribe";
 import { playlistLoadClick } from "./playlistLoadClick";
 import { AppSlice, sliceResetFns } from "@/features/app-store/useAppStore";
 import { Playlist } from "@/features/sections/playlist/types";

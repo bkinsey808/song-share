@@ -1,6 +1,6 @@
 import { MouseEventHandler } from "react";
 
-import { sectionId } from "../consts";
+import { sectionId } from "../../consts";
 import { songIdSet } from "@/actions/songIdSet";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/consts";

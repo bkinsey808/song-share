@@ -3,7 +3,7 @@
 import { JSX } from "react";
 
 import { SongFollowing } from "./SongFollowing";
-import { SongForm } from "./SongForm";
+import { SongForm } from "./form/SongForm";
 import { useAppStore } from "@/features/app-store/useAppStore";
 import { SongLog } from "@/features/sections/song-log/SongLog";
 

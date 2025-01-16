@@ -1,4 +1,4 @@
-import { songLogFormDefaultGet } from "../song-log/songLogFormDefaultGet";
+import { songLogFormDefaultGet } from "../../song-log/songLogFormDefaultGet";
 import { songDelete } from "@/actions/songDelete";
 import { toast } from "@/components/ui/use-toast";
 import { ActionResultType } from "@/features/app-store/consts";

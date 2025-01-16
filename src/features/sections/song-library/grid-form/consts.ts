@@ -1,4 +1,4 @@
-import { Song } from "../song/types";
+import { Song } from "@/features/sections/song/types";
 
 export const SongLibrarySort = {
 	SONG_NAME_ASC: "SONG_NAME_ASC",

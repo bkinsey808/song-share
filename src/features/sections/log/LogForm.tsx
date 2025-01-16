@@ -67,7 +67,7 @@ export const LogForm = (): JSX.Element => {
 						<FormField
 							name="date"
 							control={form.control}
-							render={({ field: { onChange, ref, value, fieldDisabled } }) => (
+							render={({ field: { onChange, ref, value, disabled } }) => (
 								<FormItem className="flex flex-col">
 									<FormLabel>Log Date Time</FormLabel>
 									<FormControl>
@@ -76,7 +76,7 @@ export const LogForm = (): JSX.Element => {
 											onChange={onChange}
 											ref={ref}
 											value={value}
-											disabled={!!fieldDisabled}
+											disabled={!!disabled}
 										/>
 									</FormControl>
 								</FormItem>
@@ -86,7 +86,7 @@ export const LogForm = (): JSX.Element => {
 						<FormField
 							name="songId"
 							control={form.control}
-							render={({ field: { onChange, ref, value, fieldDisabled } }) => (
+							render={({ field: { onChange, ref, value, disabled } }) => (
 								<FormItem className="flex flex-grow flex-col">
 									<FormLabel>Song</FormLabel>
 									<FormControl>
@@ -100,7 +100,7 @@ export const LogForm = (): JSX.Element => {
 											onChange={onChange}
 											ref={ref}
 											value={value}
-											disabled={!!fieldDisabled}
+											disabled={!!disabled}
 										/>
 									</FormControl>
 								</FormItem>
@@ -112,14 +112,14 @@ export const LogForm = (): JSX.Element => {
 						name="notes"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem className="flex flex-col">
 								<FormLabel>Log Notes</FormLabel>
 								<FormControl>
 									<Textarea
 										autoResize={true}
-										disabled={form.formState.isSubmitting || !!fieldDisabled}
+										disabled={form.formState.isSubmitting || !!disabled}
 										name={name}
 										onBlur={onBlur}
 										onChange={onChange}

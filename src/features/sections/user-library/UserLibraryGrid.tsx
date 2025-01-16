@@ -83,7 +83,7 @@ export const UserLibraryGrid = (): JSX.Element => {
 						name="search"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem className="w-[10rem] flex-grow">
 								<FormLabel>Search</FormLabel>
@@ -95,7 +95,7 @@ export const UserLibraryGrid = (): JSX.Element => {
 										onChange={onChange}
 										ref={ref}
 										value={value}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 							</FormItem>
@@ -104,7 +104,7 @@ export const UserLibraryGrid = (): JSX.Element => {
 					<FormField
 						name="sort"
 						control={form.control}
-						render={({ field: { onChange, ref, value, fieldDisabled } }) => (
+						render={({ field: { onChange, ref, value, disabled } }) => (
 							<FormItem className="h-[3rem] w-[10rem]">
 								<FormLabel>Sort</FormLabel>
 								<FormControl>
@@ -113,7 +113,7 @@ export const UserLibraryGrid = (): JSX.Element => {
 										label="sort"
 										search={sortSearch}
 										setSearch={setSortSearch}
-										disabled={form.formState.isSubmitting || !!fieldDisabled}
+										disabled={form.formState.isSubmitting || !!disabled}
 										valueDefault={userLibrarySortDefault}
 										onChange={onChange}
 										ref={ref}

@@ -1,5 +1,3 @@
-import { getKeys } from "@/features/global/getKeys";
-
 export const keys = {
 	C: 0,
 	"C#": 1,
@@ -58,20 +56,3 @@ export const scaleDegrees = {
 	b7: 10,
 	"7": 11,
 } as const;
-
-export const keyOptions = getKeys(keys).map((key) => {
-	return {
-		value: key,
-		label: key,
-		search: `${key.toLocaleLowerCase()}`,
-	};
-});
-
-export const keyOptionsWithNone = [
-	{
-		value: "",
-		label: "None",
-		search: "None",
-	},
-	...keyOptions,
-];

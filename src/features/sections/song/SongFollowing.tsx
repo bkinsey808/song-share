@@ -1,7 +1,7 @@
 import { AvatarIcon, HandIcon } from "@radix-ui/react-icons";
 import { JSX } from "react";
 
-import { useSong } from "./slice";
+import { useSong } from "./useSong";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/features/app-store/useAppStore";

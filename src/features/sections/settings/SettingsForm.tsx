@@ -69,7 +69,7 @@ export const SettingsForm = (): JSX.Element => {
 						name="useSystemTimeZone"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem>
 								<FormLabel>Use System Timezone</FormLabel>
@@ -81,7 +81,7 @@ export const SettingsForm = (): JSX.Element => {
 										onBlur={onBlur}
 										ref={ref}
 										value={value}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 							</FormItem>
@@ -91,7 +91,7 @@ export const SettingsForm = (): JSX.Element => {
 					<FormField
 						name="timeZone"
 						control={form.control}
-						render={({ field: { onChange, ref, value, fieldDisabled } }) => (
+						render={({ field: { onChange, ref, value, disabled } }) => (
 							<FormItem>
 								<FormLabel>Time Zone</FormLabel>
 								<FormControl>
@@ -105,7 +105,7 @@ export const SettingsForm = (): JSX.Element => {
 										disabled={
 											form.formState.isSubmitting ||
 											useSystemTimeZone ||
-											!!fieldDisabled
+											!!disabled
 										}
 										onChange={onChange}
 										ref={ref}

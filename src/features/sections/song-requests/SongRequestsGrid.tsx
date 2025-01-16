@@ -96,7 +96,7 @@ export const SongRequestsGrid = (): JSX.Element => {
 						name="search"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem className="w-[10rem] flex-grow">
 								<FormLabel>Search</FormLabel>
@@ -108,7 +108,7 @@ export const SongRequestsGrid = (): JSX.Element => {
 										onChange={onChange}
 										ref={ref}
 										value={value}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 							</FormItem>
@@ -118,7 +118,7 @@ export const SongRequestsGrid = (): JSX.Element => {
 						name="sort"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem className="h-[3rem] w-[10rem]">
 								<FormLabel>Sort</FormLabel>
@@ -128,7 +128,7 @@ export const SongRequestsGrid = (): JSX.Element => {
 										label="sort"
 										search={sortSearch}
 										setSearch={setSortSearch}
-										disabled={form.formState.isSubmitting || !!fieldDisabled}
+										disabled={form.formState.isSubmitting || !!disabled}
 										valueDefault={songRequestsSortDefault}
 										{...{ name, onBlur, onChange, ref, value }}
 									/>

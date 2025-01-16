@@ -83,7 +83,7 @@ export const PlaylistForm = (): JSX.Element => {
 							control={form.control}
 							name="playlistName"
 							render={({
-								field: { name, onBlur, onChange, ref, value, fieldDisabled },
+								field: { name, onBlur, onChange, ref, value, disabled },
 							}) => (
 								<FormItem>
 									<FormControl>
@@ -94,7 +94,7 @@ export const PlaylistForm = (): JSX.Element => {
 											onChange={onChange}
 											ref={ref}
 											value={value}
-											disabled={!!fieldDisabled}
+											disabled={!!disabled}
 										/>
 									</FormControl>
 									<FormMessage />

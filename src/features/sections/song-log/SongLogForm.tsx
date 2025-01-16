@@ -52,7 +52,7 @@ export const SongLogForm = (): JSX.Element => {
 					<FormField
 						name="date"
 						control={form.control}
-						render={({ field: { onChange, ref, value, fieldDisabled } }) => (
+						render={({ field: { onChange, ref, value, disabled } }) => (
 							<FormItem className="flex flex-col">
 								<FormLabel>Log Date Time</FormLabel>
 								<FormControl>
@@ -61,7 +61,7 @@ export const SongLogForm = (): JSX.Element => {
 										ref={ref}
 										value={value}
 										timeZone={timeZone}
-										disabled={!!fieldDisabled}
+										disabled={!!disabled}
 									/>
 								</FormControl>
 							</FormItem>
@@ -72,7 +72,7 @@ export const SongLogForm = (): JSX.Element => {
 						name="notes"
 						control={form.control}
 						render={({
-							field: { name, onBlur, onChange, ref, value, fieldDisabled },
+							field: { name, onBlur, onChange, ref, value, disabled },
 						}) => (
 							<FormItem className="flex flex-col">
 								<FormLabel>Song Log Notes</FormLabel>
@@ -83,7 +83,7 @@ export const SongLogForm = (): JSX.Element => {
 										onChange={onChange}
 										ref={ref}
 										value={value}
-										disabled={form.formState.isSubmitting && !!fieldDisabled}
+										disabled={form.formState.isSubmitting && !!disabled}
 										autoResize={true}
 									/>
 								</FormControl>

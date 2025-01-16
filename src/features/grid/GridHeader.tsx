@@ -1,6 +1,6 @@
 "use client";
 
-import React, { JSX, useEffect } from "react";
+import { Children, JSX, ReactNode, useEffect } from "react";
 
 import { tw } from "../global/tw";
 import { useGridContext } from "./GridContext";
@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 type GridHeaderProps = {
 	readonly className?: string;
-	readonly children: React.ReactNode;
+	readonly children: ReactNode;
 	readonly section?: "fixed" | "scrolling";
 };
 
@@ -19,7 +19,7 @@ export const GridHeader = ({
 }: GridHeaderProps): JSX.Element => {
 	const { fixedColumnCount, scrollingColumnCount } = useGridContext();
 
-	const childrenArray = React.Children.toArray(children);
+	const childrenArray = Children.toArray(children);
 	const totalAllowedColumns = fixedColumnCount + scrollingColumnCount;
 
 	useEffect(() => {
